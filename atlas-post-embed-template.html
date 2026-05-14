@@ -183,6 +183,270 @@ result = lerp(cheap,
 	  </tbody>
 	</table>
 
+    <!-- 7. Callouts — critical notes, warnings, informational asides -->
+    <h2>07 // System Notices</h2>
+    <p>
+      Use callout blocks to surface critical constraints, performance warnings,
+      or contextual notes inline with the post narrative.
+      Each severity level maps to a distinct accent color.<sup class="atlas-fn-ref" id="fnref-1">[1]</sup>
+    </p>
+
+    <!-- atlas-callout severity variants:
+         [critical] red left border + red label
+         [warning]  amber left border + amber label
+         [note]     neutral, for supplementary info
+    -->
+    <div class="atlas-callout atlas-callout--critical">
+      <div class="atlas-callout__label">CRITICAL</div>
+      <div class="atlas-callout__body">
+        Shared memory bank conflicts degrade throughput by up to <strong>32×</strong>.
+        Never access consecutive addresses with a stride equal to the bank count.
+      </div>
+    </div>
+
+    <div class="atlas-callout atlas-callout--warning">
+      <div class="atlas-callout__label">WARNING</div>
+      <div class="atlas-callout__body">
+        Register spilling to local memory triggers implicit
+        <strong>DRAM reads</strong>. Profile with NSight before shipping.
+      </div>
+    </div>
+
+    <div class="atlas-callout atlas-callout--note">
+      <div class="atlas-callout__label">NOTE</div>
+      <div class="atlas-callout__body">
+        On Ampere architecture, L1 and shared memory share the same physical SRAM.
+        Tune the split via <span class="atlas-param">cudaFuncSetAttribute</span>.
+      </div>
+    </div>
+
+    <!-- 8. UML / Diagram — entity boxes + connectors -->
+    <h2>08 // Component Diagram</h2>
+    <p>
+      Dependency and class relationships rendered as inline boxes with typed
+      connectors. Use <code class="atlas-param">atlas-uml--row</code> for
+      horizontal layouts and <code class="atlas-param">atlas-uml--col</code>
+      for vertical pipelines.
+    </p>
+
+    <!-- atlas-uml classes:
+         [row]             flex row layout with centered arrows
+         node [interface] dashed border + italic stereotype label
+         node [critical]  red accent for bottleneck nodes
+         arrow [right]    ──────▶ solid connector
+         arrow [dashed]   - - -▶  dependency/usage connector
+    -->
+    <div class="atlas-uml atlas-uml--row">
+      <!-- Interface node — stereotyped with dashed border -->
+      <div class="atlas-uml-node atlas-uml-node--interface">
+        <div class="atlas-uml-node__stereo">«interface»</div>
+        <div class="atlas-uml-node__name">IKernelDispatch</div>
+        <div class="atlas-uml-node__member">+ dispatch(grid, block)</div>
+        <div class="atlas-uml-node__member">+ sync()</div>
+      </div>
+
+      <!-- Solid arrow: implements / calls -->
+      <div class="atlas-uml-arrow atlas-uml-arrow--right">──────▶</div>
+
+      <!-- Concrete implementation node -->
+      <div class="atlas-uml-node">
+        <div class="atlas-uml-node__name">ComputePass</div>
+        <div class="atlas-uml-node__member">- pipeline: Pipeline</div>
+        <div class="atlas-uml-node__member">+ dispatch(grid, block)</div>
+        <div class="atlas-uml-node__member">+ bindUAV(slot, buf)</div>
+      </div>
+
+      <!-- Dashed arrow: dependency -->
+      <div class="atlas-uml-arrow atlas-uml-arrow--dashed">- - -▶</div>
+
+      <!-- Critical bottleneck node -->
+      <div class="atlas-uml-node atlas-uml-node--critical">
+        <div class="atlas-uml-node__name">SharedMemPool</div>
+        <div class="atlas-uml-node__member">+ alloc(bytes)</div>
+        <div class="atlas-uml-node__member">+ free(ptr)</div>
+      </div>
+    </div>
+
+    <!-- 9. Timeline — ordered pipeline / process steps -->
+    <h2>09 // Render Pipeline Stages</h2>
+    <p>
+      The render frame decomposes into discrete sequential stages.
+      Each stage has a fixed budget; exceeding any node stalls the GPU queue.
+    </p>
+
+    <!--
+      atlas-timeline — vertical list with connecting spine
+      atlas-timeline__marker — step number or short ID label
+      atlas-timeline__title  — stage name (monospace, uppercase)
+      atlas-timeline__detail — longer description text
+    -->
+    <div class="atlas-timeline">
+      <div class="atlas-timeline__item">
+        <div class="atlas-timeline__marker">01</div>
+        <div class="atlas-timeline__content">
+          <div class="atlas-timeline__title">Cull &amp; Gather</div>
+          <div class="atlas-timeline__detail">
+            Frustum + occlusion culling. Surviving draw calls are batched
+            into indirect argument buffers on the GPU timeline.
+          </div>
+        </div>
+      </div>
+      <div class="atlas-timeline__item">
+        <div class="atlas-timeline__marker">02</div>
+        <div class="atlas-timeline__content">
+          <div class="atlas-timeline__title">GBuffer Pass</div>
+          <div class="atlas-timeline__detail">
+            Geometry stage writes <span class="atlas-param">BaseColor</span>,
+            <span class="atlas-param">WorldNormal</span>, and
+            <span class="atlas-param">Roughness</span> into MRT targets.
+          </div>
+        </div>
+      </div>
+      <div class="atlas-timeline__item">
+        <div class="atlas-timeline__marker">03</div>
+        <div class="atlas-timeline__content">
+          <div class="atlas-timeline__title">Lighting &amp; Shadows</div>
+          <div class="atlas-timeline__detail">
+            Deferred lighting pass consumes the GBuffer. Ray-traced shadow
+            maps are resolved and accumulated in a half-res buffer.
+          </div>
+        </div>
+      </div>
+      <div class="atlas-timeline__item">
+        <div class="atlas-timeline__marker">04</div>
+        <div class="atlas-timeline__content">
+          <div class="atlas-timeline__title">Post-Process &amp; Resolve</div>
+          <div class="atlas-timeline__detail">
+            TAA, bloom, and tone-mapping run as full-screen compute dispatches.
+            Output resolves to the swap-chain backbuffer.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. Comparison — before/after, A vs B -->
+    <h2>10 // Approach Comparison</h2>
+    <p>
+      Side-by-side analysis of two implementation strategies.
+      Left column highlights the flawed or legacy approach;
+      right column shows the preferred pattern.
+    </p>
+
+    <!-- atlas-comparison classes:
+         col [before] red label, left column
+         col [after]  green label, right column
+         __body accepts any inline content, code, lists
+    -->
+    <div class="atlas-comparison">
+      <div class="atlas-comparison__col atlas-comparison__col--before">
+        <div class="atlas-comparison__label">❌ Divergent Branch</div>
+        <div class="atlas-comparison__body">
+          All 32 threads evaluate both branches then mask results.<br /><br />
+          — 2× ALU cost<br />
+          — Pipeline stall on memory fetch<br />
+          — Warp efficiency: ~50%
+        </div>
+      </div>
+      <div class="atlas-comparison__col atlas-comparison__col--after">
+        <div class="atlas-comparison__label">✓ Branchless Select</div>
+        <div class="atlas-comparison__body">
+          Use <span class="atlas-param">lerp(a, b, step(t, x))</span>
+          to eliminate branch divergence entirely.<br /><br />
+          — Uniform control flow<br />
+          — No warp serialization<br />
+          — Warp efficiency: ~100%
+        </div>
+      </div>
+    </div>
+
+    <!-- 11. Architecture Schema — layered system diagram -->
+    <h2>11 // Execution Layer Model</h2>
+    <p>
+      System tiers stack top-to-bottom: each layer consumes the API
+      of the layer below. Bottlenecks propagate upward — identify
+      the deepest slow layer first.
+    </p>
+
+    <!-- atlas-schema classes:
+         __title      black header bar
+         __layer      one tier of the stack
+         layer [top]    dark left accent
+         layer [ok]     green left accent  (fast / healthy tier)
+         layer [warn]   amber left accent  (potentially slow)
+         layer [crit]   red left accent    (known bottleneck)
+         layer [bottom] grey left accent
+         __arrow      vertical divider between layers (optional)
+         __layer-sub  right-aligned sublabel / tech note
+    -->
+    <div class="atlas-schema">
+      <div class="atlas-schema__title">GPU Execution Stack — RTX 3080</div>
+
+      <div class="atlas-schema__layer atlas-schema__layer--top">
+        <span class="atlas-schema__layer-label">Application / Engine</span>
+        <span class="atlas-schema__layer-sub">Unreal Engine 5 · C++</span>
+      </div>
+      <div class="atlas-schema__arrow">▼</div>
+
+      <div class="atlas-schema__layer atlas-schema__layer--ok">
+        <span class="atlas-schema__layer-label">Graphics API</span>
+        <span class="atlas-schema__layer-sub">DirectX 12 · Vulkan</span>
+      </div>
+      <div class="atlas-schema__arrow">▼</div>
+
+      <div class="atlas-schema__layer atlas-schema__layer--warn">
+        <span class="atlas-schema__layer-label">Driver &amp; Command Queue</span>
+        <span class="atlas-schema__layer-sub">NVIDIA Driver 546 · PCIe 4.0 ×16</span>
+      </div>
+      <div class="atlas-schema__arrow">▼</div>
+
+      <div class="atlas-schema__layer atlas-schema__layer--crit">
+        <span class="atlas-schema__layer-label">Shader Model / HLSL</span>
+        <span class="atlas-schema__layer-sub">SM 6.6 · Compute Shader cs_6_6</span>
+      </div>
+      <div class="atlas-schema__arrow">▼</div>
+
+      <div class="atlas-schema__layer atlas-schema__layer--bottom">
+        <span class="atlas-schema__layer-label">Hardware — SM Cores &amp; Memory</span>
+        <span class="atlas-schema__layer-sub">8704 CUDA Cores · 10 GB GDDR6X</span>
+      </div>
+    </div>
+
+    <!-- 12. Footnotes — numbered citations and clarifications -->
+    <h2>12 // Notes &amp; References</h2>
+    <p>
+      Footnote references<sup class="atlas-fn-ref" id="fnref-2">[2]</sup> appear
+      inline as small superscript labels. The corresponding definitions
+      sit in the footnote block below, separated by a rule.
+    </p>
+
+    <!--
+      atlas-footnotes        — wrapper block, top border separator
+      atlas-footnotes__title — section label ("Notes", "References", etc.)
+      atlas-footnotes__list  — <ol> with decimal markers
+        li items = individual footnote definitions
+
+      Inline reference in body text:
+        <sup class="atlas-fn-ref" id="fnref-N">[N]</sup>
+    -->
+    <div class="atlas-footnotes">
+      <div class="atlas-footnotes__title">Notes &amp; References</div>
+      <ol class="atlas-footnotes__list">
+        <li id="fn-1">
+          Callout severity levels follow the same token conventions as
+          <span class="atlas-param">atlas-badge</span> color variants:
+          <code>--crit</code>, <code>--warn</code>, and neutral.
+        </li>
+        <li id="fn-2">
+          NVIDIA Ampere Architecture Whitepaper, 2020 —
+          shared memory bank conflict analysis, section 4.2.
+        </li>
+        <li id="fn-3">
+          All bandwidth figures measured with NSight Systems 2024.3
+          on a stock RTX 3080 (10 GB), driver 546.01, Windows 11.
+        </li>
+      </ol>
+    </div>
+
   </div><!-- /#atlas-body -->
 
   <!-- Footer mount -->
