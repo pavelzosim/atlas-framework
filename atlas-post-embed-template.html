@@ -35,6 +35,25 @@
 
   <!-- STYLES — served from atlas-framework.css (Wix Velo public folder) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/atlas-framework.css">
+
+  <!-- Fallback: footer styles inlined in case CDN version is stale -->
+  <style>
+    .atlas-footer { color: var(--atlas-ink, #000); font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace); padding-top: 20px; border-top: 1px solid var(--atlas-ink, #000); }
+    .atlas-footer__title { font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace); font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 30px; display: flex; justify-content: space-between; }
+    .atlas-footer__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 40px; }
+    .atlas-footer__col { display: flex; flex-direction: column; gap: 12px; }
+    .atlas-footer__col-label { font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace); font-size: .7rem; text-transform: uppercase; opacity: .5; }
+    .atlas-nc-link { font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace); font-size: .9rem; color: var(--atlas-ink, #000); text-decoration: none; display: inline-block; width: fit-content; padding: 2px 6px; }
+    .atlas-nc-link::before { content: '['; margin-right: 4px; }
+    .atlas-nc-link::after  { content: ']'; margin-left: 4px; }
+    .atlas-nc-link:hover   { background-color: #0000AA; color: #ffffff; }
+    .atlas-footer__support { margin-top: 20px; padding: 25px; border: 1px dashed var(--atlas-border, rgba(0,0,0,.15)); font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace); }
+    .atlas-footer__support-text { font-size: .85rem; display: block; margin-bottom: 15px; opacity: .8; }
+    .atlas-footer__support-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .atlas-footer__support-links a { color: var(--atlas-crit, #8b0000); text-decoration: none; font-weight: 700; font-size: .8rem; border-bottom: 1px solid var(--atlas-crit, #8b0000); }
+    .atlas-footer__support-links a:hover { background: var(--atlas-crit, #8b0000); color: #fff; }
+    @media (max-width: 600px) { .atlas-footer__grid { grid-template-columns: 1fr; } }
+  </style>
 </head>
 <body>
 
