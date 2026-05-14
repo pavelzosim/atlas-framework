@@ -1,17 +1,29 @@
 <!DOCTYPE html>
 <!--
   ╔══════════════════════════════════════════════════════════════╗
-  ║  SYSTEM ATLAS FRAMEWORK — POST EMBED TEMPLATE              ║
-  ║  HOW TO USE:                                                ║
-  ║  1. Copy this file, rename it per post.                    ║
-  ║  2. Edit the CONFIG block at the top of <script>.          ║
+  ║  SYSTEM ATLAS FRAMEWORK — POST EMBED TEMPLATE               ║
+  ║                                                              ║
+  ║  HOW TO USE:                                                 ║
+  ║  1. Copy this file, rename it per post.                     ║
+  ║  2. Edit POST_CONFIG at the top of <script>.                ║
   ║  3. Write post content inside #atlas-body.                  ║
-  ║  4. Paste into Wix Blog → Add HTML iframe element.         ║
-  ║                                                             ║
-  ║  If Wix Custom Code is loaded (Head + Body-End snippets),  ║
-  ║  the iframe will REUSE those global styles + AtlasFramework.║
-  ║  If standalone (e.g., local preview), it falls back to     ║
-  ║  self-contained styles bundled below.                       ║
+  ║  4. Paste into Wix Blog → Add HTML iframe element.          ║
+  ║                                                              ║
+  ║  Styles load from jsDelivr CDN (atlas-framework.css).        ║
+  ║  JS runs inline via buildFallbackFramework() — the Wix      ║
+  ║  Body-End snippet is inaccessible inside an iframe.          ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║  COMPONENT CLASSES (all in atlas-framework.css)             ║
+  ║  ─ atlas-arch-flow / atlas-node        flow diagram          ║
+  ║  ─ atlas-metric-group / atlas-bar-*    bar chart             ║
+  ║  ─ atlas-math-block                    LaTeX equation        ║
+  ║  ─ atlas-code-grid / atlas-code-card   code comparison       ║
+  ║  ─ atlas-callout ––critical/warning/note  callout box        ║
+  ║  ─ atlas-uml ––row/col                  UML diagram           ║
+  ║  ─ atlas-timeline                      step sequence         ║
+  ║  ─ atlas-comparison ––before/after      side-by-side diff     ║
+  ║  ─ atlas-schema                        layered arch diagram  ║
+  ║  ─ atlas-footnotes / atlas-fn-ref      footnotes             ║
   ╚══════════════════════════════════════════════════════════════╝
 -->
 <html lang="en">
@@ -585,14 +597,10 @@ var POST_CONFIG = {
 
 /* ═══════════════════════════════════════════════════════════════
    FRAMEWORK INIT
-   Tries to use global AtlasFramework (from Wix Body-End snippet).
-   Falls back to a minimal inline implementation if not available.
+   Wix iframes cannot access Body-End globals, so we always use
+   the inline fallback. AtlasFramework path kept for local preview.
 ═══════════════════════════════════════════════════════════════ */
 (function () {
-  /* CSS is now loaded directly via <link> — no fallback style tag to disable */
-
-  /* In Wix iframe AtlasFramework from Body-End is never accessible.
-	 Go straight to fallback; if somehow AF is present, use it.    */
   function tryInit() {
 	if (window.AtlasFramework) {
 	  runWithFramework(window.AtlasFramework);
@@ -633,9 +641,9 @@ var POST_CONFIG = {
 	  year:   POST_CONFIG.footerYear
 	});
 
-	}
+  }
 
-  /* ── minimal fallback (no dependency on Body-End snippet) ─── */
+  /* ── minimal fallback ───────────────────────────────────────── */
   function buildFallbackFramework() {
 	function $i(sel) { return typeof sel === 'string' ? document.querySelector(sel) : sel; }
 	function inj(t, h) { var el = $i(t); if (el) el.innerHTML = h; }

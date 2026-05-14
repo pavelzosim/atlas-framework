@@ -19,7 +19,6 @@ html, body { margin: 0; padding: 0; box-sizing: border-box; overflow-x: hidden; 
   --atlas-warn:          #7a5200;
   --atlas-ok:            #1a4d1a;
   --atlas-code-text:     #1a1a1a;
-  --atlas-grid:          rgba(0,0,0,0.06);
   --atlas-border:        rgba(0,0,0,0.15);
   --atlas-border-strong: rgba(0,0,0,0.4);
   --atlas-font-serif:    'Crimson Pro', Georgia, serif;
@@ -45,24 +44,13 @@ html, body { margin: 0; padding: 0; box-sizing: border-box; overflow-x: hidden; 
 /* ── Container ──────────────────────────────────────────────── */
 .atlas-container { max-width: 900px; width: 100%; background: transparent; padding: 0; border: none; box-sizing: border-box; font-family: var(--atlas-font-serif); color: var(--atlas-ink); margin: 0; }
 
-/* ── Window Chrome ──────────────────────────────────────────── */
-.atlas-window-chrome { border: 2px solid var(--atlas-border-strong); margin-bottom: var(--atlas-space-xl); font-family: var(--atlas-font-mono); }
+/* ── Title Bar (used inside Passport) ───────────────────────── */
 .atlas-title-bar { background: var(--atlas-ink); color: var(--atlas-bg); padding: 4px 10px; display: flex; justify-content: space-between; align-items: center; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; user-select: none; }
 .atlas-title-bar__left { display: flex; align-items: center; gap: 8px; }
 .atlas-title-bar__right { display: flex; align-items: center; gap: 6px; }
 .atlas-chrome-btn { width: 14px; height: 14px; border: 1px solid rgba(230,220,210,.4); background: rgba(230,220,210,.15); display: inline-flex; align-items: center; justify-content: center; font-size: .55rem; cursor: default; flex-shrink: 0; }
 
-/* ── Info Grid ──────────────────────────────────────────────── */
-.atlas-info-grid { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--atlas-border-strong); }
-.atlas-info-cell { padding: 10px 12px; font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; line-height: 1.8; }
-.atlas-info-cell:first-child { border-right: 1px solid var(--atlas-border); }
-.atlas-info-cell__key { opacity: .45; }
-.atlas-info-cell__value { font-weight: 700; }
-.atlas-info-cell__value.status-active { color: var(--atlas-ink); }
-.atlas-info-cell__value.status-crit   { color: var(--atlas-crit); }
-.atlas-info-cell__value.status-muted  { opacity: .55; }
-
-/* ── Meta Header / Footer ───────────────────────────────────── */
+/* ── Meta Header / Footer
 .atlas-meta-header { font-family: var(--atlas-font-mono); font-size: .75rem; text-transform: uppercase; letter-spacing: .1em; opacity: .5; border-bottom: 1px solid var(--atlas-border); padding-bottom: var(--atlas-space-sm); margin-bottom: var(--atlas-space-lg); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 .atlas-meta-footer { font-family: var(--atlas-font-mono); font-size: .75rem; text-transform: uppercase; letter-spacing: .1em; opacity: .5; border-top: 1px solid var(--atlas-border); padding-top: var(--atlas-space-md); margin-top: var(--atlas-space-xl); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 
