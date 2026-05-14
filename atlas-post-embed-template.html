@@ -166,6 +166,97 @@ result = lerp(cheap,
 	<h2>05 // Diagnostic Output</h2>
 	<div id="post-terminal"></div>
 
+	<!-- 5b. Code Snippets — multi-language syntax highlight reference
+		 Token classes (wrap in <span class="atlas-hl-*">):
+		   atlas-hl-com   — comments
+		   atlas-hl-key   — keywords (if, for, return, void...)
+		   atlas-hl-type  — types (float, int, bool, List<T>, uint3...)
+		   atlas-hl-str   — string literals
+		   atlas-hl-num   — numbers
+		   atlas-hl-func  — function calls
+		   atlas-hl-macro — preprocessor (#define, #pragma kernel)
+		   atlas-hl-attr  — attributes / decorators ([numthreads], [SerializeField])
+		   atlas-hl-ns    — namespace / class names
+		   atlas-hl-op    — operators (-> :: => +=)
+	-->
+	<h2>05b // Code Snippets</h2>
+
+	<div class="atlas-code-grid">
+
+	  <!-- HLSL / Compute Shader -->
+	  <div class="atlas-code-card atlas-code-card--standard">
+		<div class="atlas-card-label">HLSL — Compute Shader</div>
+		<div class="atlas-code-container">
+<pre><span class="atlas-hl-attr">[numthreads(8, 8, 1)]</span>
+<span class="atlas-hl-key">void</span> <span class="atlas-hl-func">CSMain</span>(uint3 id <span class="atlas-hl-op">:</span> SV_DispatchThreadID)
+{
+	<span class="atlas-hl-type">float2</span> uv = id.xy <span class="atlas-hl-op">/</span> (_TexSize <span class="atlas-hl-op">-</span> <span class="atlas-hl-num">1.0</span>);
+	<span class="atlas-hl-type">float4</span> color = <span class="atlas-hl-func">tex2D</span>(_Input, uv);
+	<span class="atlas-hl-com">// write result to UAV</span>
+	Output[id.xy] = color <span class="atlas-hl-op">*</span> <span class="atlas-hl-num">0.5</span>;
+}</pre>
+		</div>
+	  </div>
+
+	  <!-- C# / Unity -->
+	  <div class="atlas-code-card atlas-code-card--standard">
+		<div class="atlas-card-label">C# — Unity</div>
+		<div class="atlas-code-container">
+<pre><span class="atlas-hl-attr">[SerializeField]</span>
+<span class="atlas-hl-key">private</span> <span class="atlas-hl-type">ComputeShader</span> _shader;
+
+<span class="atlas-hl-key">void</span> <span class="atlas-hl-func">Dispatch</span>()
+{
+	<span class="atlas-hl-type">int</span> kernel = _shader.<span class="atlas-hl-func">FindKernel</span>(<span class="atlas-hl-str">"CSMain"</span>);
+	_shader.<span class="atlas-hl-func">SetTexture</span>(kernel,
+		<span class="atlas-hl-str">"Output"</span>, _renderTex);
+	_shader.<span class="atlas-hl-func">Dispatch</span>(kernel, <span class="atlas-hl-num">64</span>, <span class="atlas-hl-num">64</span>, <span class="atlas-hl-num">1</span>);
+}</pre>
+		</div>
+	  </div>
+
+	  <!-- Python -->
+	  <div class="atlas-code-card atlas-code-card--standard">
+		<div class="atlas-card-label">Python</div>
+		<div class="atlas-code-container">
+<pre><span class="atlas-hl-key">import</span> <span class="atlas-hl-ns">numpy</span> <span class="atlas-hl-key">as</span> np
+
+<span class="atlas-hl-key">def</span> <span class="atlas-hl-func">branchless_select</span>(a, b, t):
+	<span class="atlas-hl-com"># equivalent to HLSL lerp(a, b, step(0.5, t))</span>
+	mask = (t <span class="atlas-hl-op">&gt;=</span> <span class="atlas-hl-num">0.5</span>).<span class="atlas-hl-func">astype</span>(<span class="atlas-hl-type">float</span>)
+	<span class="atlas-hl-key">return</span> a <span class="atlas-hl-op">+</span> (b <span class="atlas-hl-op">-</span> a) <span class="atlas-hl-op">*</span> mask</pre>
+		</div>
+	  </div>
+
+	  <!-- C++ -->
+	  <div class="atlas-code-card atlas-code-card--standard">
+		<div class="atlas-card-label">C++</div>
+		<div class="atlas-code-container">
+<pre><span class="atlas-hl-macro">#include</span> <span class="atlas-hl-str">&lt;cstdint&gt;</span>
+
+<span class="atlas-hl-key">inline</span> <span class="atlas-hl-type">float</span> <span class="atlas-hl-func">branchless_lerp</span>(
+	<span class="atlas-hl-type">float</span> a, <span class="atlas-hl-type">float</span> b, <span class="atlas-hl-type">float</span> t)
+{
+	<span class="atlas-hl-com">// no branch, compiler-friendly</span>
+	<span class="atlas-hl-key">return</span> a <span class="atlas-hl-op">+</span> (b <span class="atlas-hl-op">-</span> a) <span class="atlas-hl-op">*</span> t;
+}</pre>
+		</div>
+	  </div>
+
+	  <!-- VEX (Houdini) -->
+	  <div class="atlas-code-card atlas-code-card--standard">
+		<div class="atlas-card-label">VEX — Houdini</div>
+		<div class="atlas-code-container">
+<pre><span class="atlas-hl-com">// Wrangle: Point cloud scatter weight</span>
+<span class="atlas-hl-type">float</span> density = <span class="atlas-hl-func">relbbox</span>(0, @P).y;
+<span class="atlas-hl-type">float</span> noise   = <span class="atlas-hl-func">fit</span>(<span class="atlas-hl-func">noise</span>(@P <span class="atlas-hl-op">*</span> <span class="atlas-hl-num">2.4</span>),
+					<span class="atlas-hl-num">0</span>, <span class="atlas-hl-num">1</span>, <span class="atlas-hl-num">0.2</span>, <span class="atlas-hl-num">1.0</span>);
+@weight = density <span class="atlas-hl-op">*</span> noise;</pre>
+		</div>
+	  </div>
+
+	</div><!-- /.atlas-code-grid -->
+
 	<!-- 6. Reference Data -->
 	<h2>06 // Reference Data</h2>
 	<table>

@@ -101,8 +101,32 @@ html, body { margin: 0; padding: 0; box-sizing: border-box; overflow-x: hidden; 
 .atlas-card-label { font-family: var(--atlas-font-mono); font-size: .75rem; opacity: .5; text-transform: uppercase; margin-bottom: 15px; font-weight: 700; }
 .atlas-code-container { background: var(--atlas-code-bg); padding: 20px; border-radius: 2px; overflow-x: auto; }
 .atlas-code-container pre { margin: 0; font-family: var(--atlas-font-mono); font-size: .95rem; color: var(--atlas-code-text); line-height: 1.6; }
-.atlas-hl-com { color: #555; font-style: italic; }
-.atlas-hl-key { color: #7a5200; }
+
+/* ── Syntax highlight tokens ────────────────────────────────────
+   Apply with <span class="atlas-hl-*"> inside <pre> blocks.
+
+   Token map:
+     atlas-hl-com    — comments          // # /* */
+     atlas-hl-key    — keywords          if else for return void
+     atlas-hl-type   — types / storage   float int bool List<T> uint3
+     atlas-hl-str    — string literals   "text" 'c'
+     atlas-hl-num    — numbers           0.5  42  0xFF  1e-3
+     atlas-hl-func   — function calls    dispatch() lerp() Dispatch()
+     atlas-hl-macro  — preprocessor      #define #pragma kernel
+     atlas-hl-attr   — attributes / decorators  [numthreads] [SerializeField]
+     atlas-hl-ns     — namespace / class names  System.Math  MyClass
+     atlas-hl-op     — operators         -> :: => += **
+   ─────────────────────────────────────────────────────────────── */
+.atlas-hl-com   { color: #666; font-style: italic; }
+.atlas-hl-key   { color: #7a5200; font-weight: 700; }
+.atlas-hl-type  { color: #1a4d1a; }
+.atlas-hl-str   { color: #5c1a1a; }
+.atlas-hl-num   { color: #003d66; }
+.atlas-hl-func  { color: #000; font-weight: 700; }
+.atlas-hl-macro { color: #8b0000; }
+.atlas-hl-attr  { color: #8b0000; opacity: .8; font-style: italic; }
+.atlas-hl-ns    { color: #1a1a6e; }
+.atlas-hl-op    { color: rgba(0,0,0,.55); }
 
 /* ── Terminal ───────────────────────────────────────────────── */
 .atlas-terminal { background: var(--atlas-code-bg); color: var(--atlas-ink-soft); padding: 20px; font-family: var(--atlas-font-mono); font-size: .92rem; border-left: 4px solid var(--atlas-border-strong); margin: var(--atlas-space-lg) 0; white-space: pre-wrap; line-height: 1.7; }
