@@ -46,6 +46,8 @@
     .atlas-arch-flow  { flex-wrap: wrap; }
     .atlas-footer__grid { grid-template-columns: repeat(auto-fit, minmax(min(200px,100%), 1fr)); }
     pre { white-space: pre-wrap; word-break: break-word; }
+    .atlas-code-container { overflow-x: hidden; }
+    .atlas-code-container pre { overflow-x: hidden; }
   </style>
 </head>
 <body>
@@ -234,22 +236,12 @@ var POST_CONFIG = {
 (function () {
   /* CSS is now loaded directly via <link> — no fallback style tag to disable */
 
-  /* Wait for AtlasFramework to be available (max ~2 s) */
-  var attempts = 0;
-  var maxAttempts = 20;
-
+  /* In Wix iframe AtlasFramework from Body-End is never accessible.
+	 Go straight to fallback; if somehow AF is present, use it.    */
   function tryInit() {
-	attempts++;
-
 	if (window.AtlasFramework) {
 	  runWithFramework(window.AtlasFramework);
-	  return;
-	}
-
-	if (attempts < maxAttempts) {
-	  setTimeout(tryInit, 100);
 	} else {
-	  /* Fallback: render via the simple built-in renderer */
 	  runWithFramework(buildFallbackFramework());
 	}
   }
