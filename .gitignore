@@ -1,0 +1,15 @@
+# Visual Studio
+.vs/
+*.sln
+*.pyproj
+*.csproj
+*.slnx
+
+# Backups
+*.bak
+
+# HLSL experiments (separate concern)
+HLSL-Experiments/
+Sun UE5 - Shader/
+AP_MOD_01_InitFromSurface.hlsl
+AP_MOD_02_MoveToTarget.hlsl

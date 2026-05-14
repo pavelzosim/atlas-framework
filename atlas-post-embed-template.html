@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  SYSTEM ATLAS FRAMEWORK — POST EMBED TEMPLATE              ║
+  ║  HOW TO USE:                                                ║
+  ║  1. Copy this file, rename it per post.                    ║
+  ║  2. Edit the CONFIG block at the top of <script>.          ║
+  ║  3. Write post content inside #atlas-body.                  ║
+  ║  4. Paste into Wix Blog → Add HTML iframe element.         ║
+  ║                                                             ║
+  ║  If Wix Custom Code is loaded (Head + Body-End snippets),  ║
+  ║  the iframe will REUSE those global styles + AtlasFramework.║
+  ║  If standalone (e.g., local preview), it falls back to     ║
+  ║  self-contained styles bundled below.                       ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- MathJax (only loaded if not already present on the parent page) -->
+  <script>
+	if (!window.MathJax) {
+	  var s1 = document.createElement('script');
+	  s1.src = 'https://polyfill.io/v3/polyfill.min.js?features=es6';
+	  document.head.appendChild(s1);
+	  var s2 = document.createElement('script');
+	  s2.id  = 'MathJax-script';
+	  s2.async = true;
+	  s2.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+	  document.head.appendChild(s2);
+	}
+  </script>
+
+  <!-- STYLES — served from atlas-framework.css (Wix Velo public folder) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/atlas-framework.css">
+</head>
+<body>
+
+<div class="atlas-container">
+
+  <!-- ═══════════════════════════════════════════════════════════
+	   MOUNT POINTS — rendered by AtlasFramework JS (Body-End)
+	   If JS is unavailable, these divs stay empty but layout
+	   still works via the fallback meta-header below.
+  ═══════════════════════════════════════════════════════════════ -->
+
+  <!-- Engineering Passport mount (replaces old window-chrome + meta-header) -->
+  <div id="post-passport"></div>
+
+  <!-- ─── FALLBACK meta-header (shown only when JS is blocked) ─
+	   Hide via JS in the init script below if AtlasFramework ran.
+  ─── -->
+  <div class="atlas-meta-header" id="post-meta-fallback">
+	<div>Project: SYSTEM_ATLAS // R&D_LOG</div>
+	<div>v0.8.4-ALPHA // EXPERIMENTAL</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+	   POST CONTENT — edit everything below this line per post
+  ═══════════════════════════════════════════════════════════════ -->
+  <div id="atlas-body">
+
+	<p>
+	  A procedural approach to rendering optimization. This document serves as the
+	  visual and logical standard for hardware-aware VFX development. All metrics
+	  are based on a <span class="atlas-param">NVIDIA_RTX_3080</span> baseline.
+	</p>
+
+	<!-- 1. Hardware Architecture -->
+	<h2>01 // Hardware Memory Hierarchy</h2>
+	<p>
+	  Understanding the "distance" of data is critical. Every millisecond of latency
+	  in <span class="atlas-param">VRAM_FETCH</span> is a wasted opportunity for the
+	  ALU to execute instructions.
+	</p>
+
+	<div class="atlas-arch-flow">
+	  <div class="atlas-node"><b>System RAM</b><span>~50 GB/s</span></div>
+	  <div class="atlas-flow-arrow">→</div>
+	  <div class="atlas-node atlas-node--critical"><b>PCIe x16</b><span>16 GB/s Limit</span></div>
+	  <div class="atlas-flow-arrow">→</div>
+	  <div class="atlas-node"><b>VRAM</b><span>900 GB/s</span></div>
+	  <div class="atlas-flow-arrow">→</div>
+	  <div class="atlas-node"><b>Registers</b><span>20+ TB/s</span></div>
+	</div>
+
+	<!-- 2. Physics & Mathematics -->
+	<h2>02 // Physical Constraints</h2>
+	<p>
+	  Shading models must respect energy conservation laws. The BRDF (\(f_r\)) defines
+	  how light interacts with microscopic surface details.
+	</p>
+
+	<div class="atlas-math-block">
+	  \[ L_o(p,\omega_o) = \int_{\Omega} f_r(p,\omega_i,\omega_o)\,
+		 L_i(p,\omega_i)\,(n\cdot\omega_i)\,d\omega_i \]
+	  <div class="atlas-formula-caption">Equation 1.1: The Rendering Equation (Simplified for Real-time)</div>
+	</div>
+
+	<!-- 3. Bandwidth Visualization -->
+	<h2>03 // Throughput Visualization</h2>
+	<p>
+	  The visual gap between VRAM and On-Chip memory explains why <b>Occupancy</b>
+	  is the most important metric in GPGPU programming.
+	</p>
+
+	<div class="atlas-metric-group">
+	  <div class="atlas-bar-label">
+		<span>VRAM Bandwidth (Standard)</span><span>900 GB/s</span>
+	  </div>
+	  <div class="atlas-bar-track">
+		<div class="atlas-bar-fill" style="width:15%;"></div>
+	  </div>
+
+	  <div class="atlas-bar-label">
+		<span>L1 Cache / Register Speed (Hashed)</span><span>20,000+ GB/s</span>
+	  </div>
+	  <div class="atlas-bar-track">
+		<div class="atlas-bar-fill atlas-bar-fill--hatched" style="width:100%;"></div>
+	  </div>
+	</div>
+
+	<!-- 4. Code Standards -->
+	<h2>04 // Execution Logic Comparison</h2>
+
+	<div class="atlas-code-grid">
+	  <div class="atlas-code-card atlas-code-card--alert">
+		<div class="atlas-card-label">Divergent (Inefficient)</div>
+		<div class="atlas-code-container">
+<pre><span class="atlas-hl-com">// Causes instruction stall</span>
+<span class="atlas-hl-key">if</span> (noise > 0.5) {
+	result = expensive_func();
+} <span class="atlas-hl-key">else</span> {
+	result = cheap_func();
+}</pre>
+		</div>
+	  </div>
+	  <div class="atlas-code-card atlas-code-card--standard">
+		<div class="atlas-card-label">Coherent (Preferred)</div>
+		<div class="atlas-code-container">
+<pre><span class="atlas-hl-com">// Branchless execution</span>
+<span class="atlas-hl-key">float</span> t = step(0.5, noise);
+result = lerp(cheap,
+			  expensive, t);</pre>
+		</div>
+	  </div>
+	</div>
+
+	<!-- 5. System Logs (using AtlasFramework.renderTerminal) -->
+	<h2>05 // Diagnostic Output</h2>
+	<div id="post-terminal"></div>
+
+	<!-- 6. Reference Data -->
+	<h2>06 // Reference Data</h2>
+	<table>
+	  <thead>
+		<tr>
+		  <th>Attribute</th>
+		  <th>Metric</th>
+		  <th>Priority</th>
+		</tr>
+	  </thead>
+	  <tbody>
+		<tr><td>Instruction Latency</td><td>4 cycles</td><td>Nominal</td></tr>
+		<tr><td>Memory Stall</td><td>~200 cycles</td><td>Critical</td></tr>
+		<tr><td>Thread Occupancy</td><td>12.5%</td><td>Immediate Attention</td></tr>
+	  </tbody>
+	</table>
+
+  </div><!-- /#atlas-body -->
+
+  <!-- Footer mount -->
+  <div id="post-footer"></div>
+
+  <!-- ── Site Footer ───────────────────────────────────────── -->
+  <div class="atlas-footer">
+    <div class="atlas-footer__title">
+      <span>0xF00TER // CONNECT_STAMP</span>
+      <span style="opacity:.5;">( ´◔ ω◔`) ノシ</span>
+    </div>
+
+    <div class="atlas-footer__grid">
+      <div class="atlas-footer__col">
+        <span class="atlas-footer__col-label">Code & Shared Tools</span>
+        <a href="https://github.com/pavelzosim" target="_blank" class="atlas-nc-link">GitHub</a>
+        <a href="https://gumroad.com" target="_blank" class="atlas-nc-link">Gumroad</a>
+      </div>
+      <div class="atlas-footer__col">
+        <span class="atlas-footer__col-label">Media & Documentation</span>
+        <a href="https://youtube.com" target="_blank" class="atlas-nc-link">YouTube_Breakdowns</a>
+      </div>
+      <div class="atlas-footer__col">
+        <span class="atlas-footer__col-label">Direct Communication</span>
+        <a href="https://linkedin.com/in/pavelzosim" target="_blank" class="atlas-nc-link">LinkedIn_Profile</a>
+      </div>
+    </div>
+
+    <div class="atlas-footer__support">
+      <span class="atlas-footer__support-text">// If you find this R&D useful, support future deep-dives:</span>
+      <div class="atlas-footer__support-links">
+        <a href="#">Patreon</a>
+        <a href="#">Buy Me a Coffee</a>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /.atlas-container -->
+
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   POST CONFIG — edit this block for each post
+═══════════════════════════════════════════════════════════════ */
+var POST_CONFIG = {
+  /* ── ENGINEERING PASSPORT ───────────────────────────────────
+	 Edit these fields for each new post.
+	 status options: DRAFT | IN_PROGRESS | EXPERIMENTAL | STABLE | COMPLETED | DEPRECATED
+  ──────────────────────────────────────────────────────────── */
+  prefix:    'SYSTEM_ATLAS // R&D_LOG',   // Zone A — static system label
+  project:   'SUN_SURFACE_UE5',
+  module:    'compute_shaders',
+  version:   '0.8.4-ALPHA',
+  logId:     '#042',
+  status:    'EXPERIMENTAL',              // controls badge color
+  author:    'P_ZOSIM',
+  created:   '2025.07.09',
+  modified:  '2025.07.11',               // set null to hide
+  wordCount: 1600,                        // auto-computes readTime (~8 MIN)
+  tags:      ['ComputeShaders', 'HLSL', 'UE5', 'GPU'],
+
+  /* ── FOOTER ─────────────────────────────────────────────── */
+  footerLabel:  'End of Technical Report',
+  footerAuthor: 'Pavel Zosim',
+  footerYear:   '2025',
+
+  /* ── TERMINAL LINES — **bold**, !!red!!, ~~green~~ ─────── */
+  terminalLines: [
+	'**[GPU_NSIGHT_REPORT]**',
+	'> Initiating Warp Occupancy analysis...',
+	'> Detected **Register Pressure** in Core_04',
+	'> Spill to Local Memory: !!TRUE (4.2MB)!!',
+	'> Performance Impact: !!High!!',
+	'> **Recommendation:** Reduce variable count in shader scope.'
+  ]
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   FRAMEWORK INIT
+   Tries to use global AtlasFramework (from Wix Body-End snippet).
+   Falls back to a minimal inline implementation if not available.
+═══════════════════════════════════════════════════════════════ */
+(function () {
+  /* CSS is now loaded directly via <link> — no fallback style tag to disable */
+
+  /* Wait for AtlasFramework to be available (max ~2 s) */
+  var attempts = 0;
+  var maxAttempts = 20;
+
+  function tryInit() {
+	attempts++;
+
+	if (window.AtlasFramework) {
+	  runWithFramework(window.AtlasFramework);
+	  return;
+	}
+
+	if (attempts < maxAttempts) {
+	  setTimeout(tryInit, 100);
+	} else {
+	  /* Fallback: render via the simple built-in renderer */
+	  runWithFramework(buildFallbackFramework());
+	}
+  }
+
+  function runWithFramework(AF) {
+	/* Hide static fallback header */
+	var fb = document.getElementById('post-meta-fallback');
+	if (fb) fb.style.display = 'none';
+
+	/* Engineering Passport — full document header */
+	AF.renderEngineeringPassport('#post-passport', {
+	  prefix:    POST_CONFIG.prefix,
+	  project:   POST_CONFIG.project,
+	  module:    POST_CONFIG.module,
+	  version:   POST_CONFIG.version,
+	  logId:     POST_CONFIG.logId,
+	  status:    POST_CONFIG.status,
+	  author:    POST_CONFIG.author,
+	  created:   POST_CONFIG.created,
+	  modified:  POST_CONFIG.modified,
+	  wordCount: POST_CONFIG.wordCount,
+	  tags:      POST_CONFIG.tags
+	});
+
+	/* Terminal */
+	AF.renderTerminal('#post-terminal', {
+	  lines: POST_CONFIG.terminalLines
+	});
+
+	/* Footer */
+	AF.renderFooter('#post-footer', {
+	  label:  POST_CONFIG.footerLabel,
+	  author: POST_CONFIG.footerAuthor,
+	  year:   POST_CONFIG.footerYear
+	});
+  }
+
+  /* ── minimal fallback (no dependency on Body-End snippet) ─── */
+  function buildFallbackFramework() {
+	function $i(sel) { return typeof sel === 'string' ? document.querySelector(sel) : sel; }
+	function inj(t, h) { var el = $i(t); if (el) el.innerHTML = h; }
+	var scMap = {
+	  'DRAFT':'muted','IN_PROGRESS':'active','EXPERIMENTAL':'warn',
+	  'STABLE':'ok','COMPLETED':'ok','DEPRECATED':'crit'
+	};
+	return {
+	  renderEngineeringPassport: function(t, o) {
+		o = o || {};
+		var status  = (o.status || 'DRAFT').toUpperCase();
+		var bCls    = scMap[status] || 'muted';
+		var sCls    = 'status--' + status.toLowerCase();
+		var prefix  = o.prefix  || 'SYSTEM_ATLAS // R&D_LOG';
+		var project = o.project || '—';
+		var module  = o.module  || '—';
+		var version = o.version || '—';
+		var logId   = o.logId   || '—';
+		var rt = o.readTime || (o.wordCount ? '~'+Math.ceil(Number(o.wordCount)/200)+' MIN' : null);
+		var meta = [
+		  {k:'AUTH',v:o.author||'—'},{k:'CREATED',v:o.created||'—'}
+		];
+		if (o.modified) meta.push({k:'LAST_MODIFIED',v:o.modified});
+		if (rt)         meta.push({k:'READ',v:rt});
+		var metaHTML = meta.map(function(m){
+		  return '<span class="atlas-passport__meta-item"><b>'+m.k+'</b>: '+m.v+'</span>';
+		}).join('');
+		var tags = Array.isArray(o.tags) ? o.tags : [];
+		var tagsHTML = tags.length
+		  ? '<div class="atlas-passport__tags">'+
+			  tags.map(function(tg){ return '<span class="atlas-passport__tag">'+tg+'</span>'; }).join('')+
+			'</div>' : '';
+		inj(t,
+		  '<div class="atlas-passport">'+
+			'<div class="atlas-title-bar">'+
+			  '<div class="atlas-title-bar__left">'+
+				'<span class="atlas-chrome-btn">▲</span><span>'+prefix+'</span>'+
+			  '</div>'+
+			  '<div class="atlas-title-bar__right">'+
+				'<span class="atlas-badge atlas-badge--'+bCls+' '+sCls+'">'+status+'</span>'+
+				'<span class="atlas-chrome-btn">—</span>'+
+				'<span class="atlas-chrome-btn">□</span>'+
+				'<span class="atlas-chrome-btn">✕</span>'+
+			  '</div>'+
+			'</div>'+
+			'<div class="atlas-passport__grid">'+
+			  '<div class="atlas-passport__cell">'+
+				'<div><span class="atlas-passport__key">PROJECT</span><span class="atlas-passport__value">'+project+'</span></div>'+
+				'<div><span class="atlas-passport__key">MODULE</span><span class="atlas-passport__value">'+module+'</span></div>'+
+			  '</div>'+
+			  '<div class="atlas-passport__cell">'+
+				'<div><span class="atlas-passport__key">VERSION</span><span class="atlas-passport__value '+sCls+'">'+version+'</span></div>'+
+				'<div><span class="atlas-passport__key">LOG_ID</span><span class="atlas-passport__value">'+logId+'</span></div>'+
+			  '</div>'+
+			'</div>'+
+			'<div class="atlas-passport__meta">'+metaHTML+'</div>'+
+			tagsHTML+
+		  '</div>');
+	  },
+	  renderTerminal: function(t, o) {
+		o = o || {};
+		var lines = (o.lines||[]).map(function(l){
+		  return l.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+				  .replace(/!!(.+?)!!/g,'<span class="red">$1</span>')
+				  .replace(/~~(.+?)~~/g,'<span class="ok">$1</span>');
+		}).join('\n');
+		inj(t,'<div class="atlas-terminal">'+lines+'</div>');
+	  },
+	  renderFooter: function(t, o) {
+		o = o || {};
+		var right = o.author ? o.author+' // '+(o.year||new Date().getFullYear()) : String(o.year||new Date().getFullYear());
+		inj(t,'<div class="atlas-meta-footer"><div>'+(o.label||'End of Report')+'</div><div>'+right+'</div></div>');
+	  }
+	};
+  }
+
+  if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', tryInit);
+  } else {
+	tryInit();
+  }
+}());
+</script>
+</body>
+</html>
