@@ -193,37 +193,8 @@ result = lerp(cheap,
   <!-- Footer mount -->
   <div id="post-footer"></div>
 
-  <!-- ── Site Footer ───────────────────────────────────────── -->
-  <div class="atlas-footer">
-    <div class="atlas-footer__title">
-      <span>0xF00TER // CONNECT_STAMP</span>
-      <span style="opacity:.5;">( ´◔ ω◔`) ノシ</span>
-    </div>
-
-    <div class="atlas-footer__grid">
-      <div class="atlas-footer__col">
-        <span class="atlas-footer__col-label">Code & Shared Tools</span>
-        <a href="https://github.com/pavelzosim" target="_blank" class="atlas-nc-link">GitHub</a>
-        <a href="https://gumroad.com" target="_blank" class="atlas-nc-link">Gumroad</a>
-      </div>
-      <div class="atlas-footer__col">
-        <span class="atlas-footer__col-label">Media & Documentation</span>
-        <a href="https://youtube.com" target="_blank" class="atlas-nc-link">YouTube_Breakdowns</a>
-      </div>
-      <div class="atlas-footer__col">
-        <span class="atlas-footer__col-label">Direct Communication</span>
-        <a href="https://linkedin.com/in/pavelzosim" target="_blank" class="atlas-nc-link">LinkedIn_Profile</a>
-      </div>
-    </div>
-
-    <div class="atlas-footer__support">
-      <span class="atlas-footer__support-text">// If you find this R&D useful, support future deep-dives:</span>
-      <div class="atlas-footer__support-links">
-        <a href="#">Patreon</a>
-        <a href="#">Buy Me a Coffee</a>
-      </div>
-    </div>
-  </div>
+  <!-- Site Footer mount — data from ATLAS_SITE (Body-End snippet) -->
+  <div id="atlas-site-footer"></div>
 
 </div><!-- /.atlas-container -->
 
@@ -324,6 +295,11 @@ var POST_CONFIG = {
 	  author: POST_CONFIG.footerAuthor,
 	  year:   POST_CONFIG.footerYear
 	});
+
+	/* Site Footer — data from ATLAS_SITE (Body-End snippet) */
+	if (AF.renderSiteFooter) {
+	  AF.renderSiteFooter('#atlas-site-footer');
+	}
   }
 
   /* ── minimal fallback (no dependency on Body-End snippet) ─── */
@@ -399,6 +375,34 @@ var POST_CONFIG = {
 		o = o || {};
 		var right = o.author ? o.author+' // '+(o.year||new Date().getFullYear()) : String(o.year||new Date().getFullYear());
 		inj(t,'<div class="atlas-meta-footer"><div>'+(o.label||'End of Report')+'</div><div>'+right+'</div></div>');
+	  },
+	  renderSiteFooter: function(t) {
+		var site = (window.ATLAS_SITE) || {};
+		var cols    = site.links   || [];
+		var support = site.support || null;
+		var tagline = site.tagline || '';
+		var html =
+		  '<div class="atlas-footer">'+
+		  '<div class="atlas-footer__title">'+
+			'<span>0xF00TER // CONNECT_STAMP</span>'+
+			(tagline ? '<span style="opacity:.5;">'+tagline+'</span>' : '')+
+		  '</div>';
+		if (cols.length) {
+		  html += '<div class="atlas-footer__grid">';
+		  cols.forEach(function(col) {
+			html += '<div class="atlas-footer__col"><span class="atlas-footer__col-label">'+col.label+'</span>';
+			(col.items||[]).forEach(function(item){ html += '<a href="'+item.url+'" target="_blank" class="atlas-nc-link">'+item.text+'</a>'; });
+			html += '</div>';
+		  });
+		  html += '</div>';
+		}
+		if (support) {
+		  html += '<div class="atlas-footer__support"><span class="atlas-footer__support-text">'+(support.text||'')+'</span><div class="atlas-footer__support-links">';
+		  (support.links||[]).forEach(function(l){ html += '<a href="'+l.url+'" target="_blank">'+l.text+'</a>'; });
+		  html += '</div></div>';
+		}
+		html += '</div>';
+		inj(t, html);
 	  }
 	};
   }

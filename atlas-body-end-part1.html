@@ -1,0 +1,168 @@
+﻿<!--
+  SYSTEM ATLAS FRAMEWORK - BODY-END CUSTOM CODE - PART 1 / 2
+  Wix Dashboard -> Settings -> Custom Code -> Body - end
+  Load ORDER: Part 1 first, then Part 2.
+
+  Contains: helpers, ATLAS_SITE config, methods 1-3b
+  (renderWindowChrome, renderMetaHeader, renderFooter, renderSiteFooter)
+-->
+<script>
+(function (global) {
+  'use strict';
+
+  function $(sel, root) { return (root || document).querySelector(sel); }
+
+  function inject(target, html) {
+    var el = typeof target === 'string' ? $(target) : target;
+    if (!el) { console.warn('[AtlasFramework] target not found:', target); return; }
+    el.innerHTML = html;
+  }
+
+  function nowUTC() {
+    var d = new Date();
+    var pad = function(n) { return String(n).padStart(2, '0'); };
+    return d.getUTCFullYear() + '-' + pad(d.getUTCMonth()+1) + '-' + pad(d.getUTCDate()) +
+           ' // ' + pad(d.getUTCHours()) + ':' + pad(d.getUTCMinutes()) + ' UTC';
+  }
+
+  /* ── ATLAS_SITE: edit here to update footer site-wide ───────── */
+  var ATLAS_SITE = {
+    author:  'Pavel Zosim',
+    year:    '2025',
+    tagline: '( ´◔ ω◔`) ノシ',
+    links: [
+      {
+        label: 'Code & Shared Tools',
+        items: [
+          { text: 'GitHub',  url: 'https://github.com/pavelzosim' },
+          { text: 'Gumroad', url: 'https://gumroad.com/pavelzosim' }
+        ]
+      },
+      {
+        label: 'Media & Documentation',
+        items: [
+          { text: 'YouTube_Breakdowns', url: 'https://youtube.com/@pavelzosim' }
+        ]
+      },
+      {
+        label: 'Direct Communication',
+        items: [
+          { text: 'LinkedIn_Profile', url: 'https://linkedin.com/in/pavelzosim' }
+        ]
+      }
+    ],
+    support: {
+      text: '// If you find this R&D useful, support future deep-dives:',
+      links: [
+        { text: 'Patreon',          url: 'https://patreon.com/pavelzosim' },
+        { text: 'Buy Me a Coffee',  url: 'https://buymeacoffee.com/pavelzosim' }
+      ]
+    }
+  };
+  global.ATLAS_SITE = ATLAS_SITE;
+
+  /* ── helpers exposed for Part 2 ─────────────────────────────── */
+  global._atlasInject  = inject;
+  global._atlasNowUTC  = nowUTC;
+
+  /* ── AtlasFramework: methods 1-3b ───────────────────────────── */
+  var AF = {
+
+    /* 1. WINDOW CHROME */
+    renderWindowChrome: function (target, opts) {
+      opts = opts || {};
+      var project   = opts.project     || 'SYSTEM_ATLAS';
+      var module    = opts.module      || '—';
+      var phase     = opts.phase       || 'R&D';
+      var build     = opts.build       || nowUTC();
+      var status    = opts.status      || 'NOMINAL';
+      var statusCls = opts.statusClass || 'status-active';
+      inject(target,
+        '<div class="atlas-window-chrome">' +
+          '<div class="atlas-title-bar">' +
+            '<div class="atlas-title-bar__left">' +
+              '<span class="atlas-chrome-btn">▲</span><span>' + project + '</span>' +
+            '</div>' +
+            '<div class="atlas-title-bar__right">' +
+              '<span class="atlas-badge atlas-badge--' +
+                (statusCls==='status-crit'?'crit':statusCls==='status-muted'?'muted':'active') +
+              '">' + status + '</span>' +
+              '<span class="atlas-chrome-btn">—</span>' +
+              '<span class="atlas-chrome-btn">□</span>' +
+              '<span class="atlas-chrome-btn">✕</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="atlas-info-grid">' +
+            '<div class="atlas-info-cell">' +
+              '<div><span class="atlas-info-cell__key">PROJECT  </span><span class="atlas-info-cell__value">' + project + '</span></div>' +
+              '<div><span class="atlas-info-cell__key">MODULE   </span><span class="atlas-info-cell__value">' + module + '</span></div>' +
+            '</div>' +
+            '<div class="atlas-info-cell">' +
+              '<div><span class="atlas-info-cell__key">PHASE    </span><span class="atlas-info-cell__value ' + statusCls + '">' + phase + '</span></div>' +
+              '<div><span class="atlas-info-cell__key">BUILD    </span><span class="atlas-info-cell__value">' + build + '</span></div>' +
+            '</div>' +
+          '</div>' +
+        '</div>');
+    },
+
+    /* 2. META HEADER */
+    renderMetaHeader: function (target, opts) {
+      opts = opts || {};
+      inject(target,
+        '<div class="atlas-meta-header">' +
+          '<div>' + (opts.left  || '') + '</div>' +
+          '<div>' + (opts.right || '') + '</div>' +
+        '</div>');
+    },
+
+    /* 3. META FOOTER */
+    renderFooter: function (target, opts) {
+      opts = opts || {};
+      var label  = opts.label  || 'End of Report';
+      var author = opts.author || '';
+      var year   = opts.year   || new Date().getFullYear();
+      var right  = author ? author + ' // ' + year : String(year);
+      inject(target,
+        '<div class="atlas-meta-footer"><div>' + label + '</div><div>' + right + '</div></div>');
+    },
+
+    /* 3b. SITE FOOTER — reads from ATLAS_SITE */
+    renderSiteFooter: function (target, opts) {
+      opts = opts || {};
+      var site    = global.ATLAS_SITE || {};
+      var tagline = opts.tagline || site.tagline || '';
+      var cols    = opts.links   || site.links   || [];
+      var support = opts.support !== undefined ? opts.support : site.support;
+      var html =
+        '<div class="atlas-footer">' +
+          '<div class="atlas-footer__title">' +
+            '<span>0xF00TER // CONNECT_STAMP</span>' +
+            (tagline ? '<span style="opacity:.5;">' + tagline + '</span>' : '') +
+          '</div>';
+      if (cols.length) {
+        html += '<div class="atlas-footer__grid">';
+        cols.forEach(function(col) {
+          html += '<div class="atlas-footer__col"><span class="atlas-footer__col-label">' + col.label + '</span>';
+          (col.items||[]).forEach(function(item) {
+            html += '<a href="' + item.url + '" target="_blank" class="atlas-nc-link">' + item.text + '</a>';
+          });
+          html += '</div>';
+        });
+        html += '</div>';
+      }
+      if (support) {
+        html += '<div class="atlas-footer__support"><span class="atlas-footer__support-text">' + (support.text||'') + '</span><div class="atlas-footer__support-links">';
+        (support.links||[]).forEach(function(l) {
+          html += '<a href="' + l.url + '" target="_blank">' + l.text + '</a>';
+        });
+        html += '</div></div>';
+      }
+      html += '</div>';
+      inject(target, html);
+    }
+  };
+
+  global.AtlasFramework = AF;
+
+}(window));
+</script>

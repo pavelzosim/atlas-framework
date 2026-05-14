@@ -1,0 +1,31 @@
+{
+  "tagline": "( ´◔ ω◔`) ノシ",
+  "links": [
+    {
+      "label": "Code & Shared Tools",
+      "items": [
+        { "text": "GitHub",  "url": "https://github.com/pavelzosim" },
+        { "text": "Gumroad", "url": "https://gumroad.com/pavelzosim" }
+      ]
+    },
+    {
+      "label": "Media & Documentation",
+      "items": [
+        { "text": "YouTube_Breakdowns", "url": "https://youtube.com/@pavelzosim" }
+      ]
+    },
+    {
+      "label": "Direct Communication",
+      "items": [
+        { "text": "LinkedIn_Profile", "url": "https://linkedin.com/in/pavelzosim" }
+      ]
+    }
+  ],
+  "support": {
+    "text": "// If you find this R&D useful, support future deep-dives:",
+    "links": [
+      { "text": "Patreon",          "url": "https://patreon.com/pavelzosim" },
+      { "text": "Buy Me a Coffee",  "url": "https://buymeacoffee.com/pavelzosim" }
+    ]
+  }
+}

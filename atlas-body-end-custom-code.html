@@ -54,6 +54,51 @@
   }
 
   /* ═══════════════════════════════════════════════════════════════
+	 ATLAS_SITE — single source of truth for site-wide footer data.
+	 Edit here once; all posts pick it up automatically.
+  ═══════════════════════════════════════════════════════════════ */
+  var ATLAS_SITE = {
+	author:  'Pavel Zosim',
+	year:    '2025',
+	tagline: '( ´◔ ω◔`) ノシ',
+
+	/* columns: label + array of { text, url } */
+	links: [
+	  {
+		label: 'Code & Shared Tools',
+		items: [
+		  { text: 'GitHub',  url: 'https://github.com/pavelzosim' },
+		  { text: 'Gumroad', url: 'https://gumroad.com/pavelzosim' }
+		]
+	  },
+	  {
+		label: 'Media & Documentation',
+		items: [
+		  { text: 'YouTube_Breakdowns', url: 'https://youtube.com/@pavelzosim' }
+		]
+	  },
+	  {
+		label: 'Direct Communication',
+		items: [
+		  { text: 'LinkedIn_Profile', url: 'https://linkedin.com/in/pavelzosim' }
+		]
+	  }
+	],
+
+	/* support / donate block (set to null to hide) */
+	support: {
+	  text: '// If you find this R&D useful, support future deep-dives:',
+	  links: [
+		{ text: 'Patreon',        url: 'https://patreon.com/pavelzosim' },
+		{ text: 'Buy Me a Coffee', url: 'https://buymeacoffee.com/pavelzosim' }
+	  ]
+	}
+  };
+
+  /* expose so iframes can read it too */
+  global.ATLAS_SITE = ATLAS_SITE;
+
+  /* ═══════════════════════════════════════════════════════════════
 	 AtlasFramework PUBLIC API
   ═══════════════════════════════════════════════════════════════ */
   var AtlasFramework = {
@@ -153,6 +198,62 @@
 	  );
 	},
 
+	/* ── 3b. SITE FOOTER — reads from ATLAS_SITE automatically ───
+	   Call with just a target; no options needed.
+	   Data comes from the global ATLAS_SITE config above.
+	   Pass opts to override individual fields if needed:
+		 author  {string}
+		 year    {string}
+		 links   {Array}   — same shape as ATLAS_SITE.links
+		 support {object}  — same shape as ATLAS_SITE.support
+	── ─── ─── ─── ─── ─── ─── ─── ─── ─── ─── ─── ─── ─── ─── */
+	renderSiteFooter: function (target, opts) {
+	  opts = opts || {};
+	  var site    = global.ATLAS_SITE || {};
+	  var author  = opts.author  || site.author  || '';
+	  var year    = opts.year    || site.year    || String(new Date().getFullYear());
+	  var tagline = opts.tagline || site.tagline || '';
+	  var cols    = opts.links   || site.links   || [];
+	  var support = opts.support !== undefined ? opts.support : site.support;
+
+	  /* title row */
+	  var html =
+		'<div class="atlas-footer">' +
+		  '<div class="atlas-footer__title">' +
+			'<span>0xF00TER // CONNECT_STAMP</span>' +
+			(tagline ? '<span style="opacity:.5;">' + tagline + '</span>' : '') +
+		  '</div>';
+
+	  /* link columns */
+	  if (cols.length) {
+		html += '<div class="atlas-footer__grid">';
+		cols.forEach(function (col) {
+		  html += '<div class="atlas-footer__col">' +
+			'<span class="atlas-footer__col-label">' + col.label + '</span>';
+		  (col.items || []).forEach(function (item) {
+			html += '<a href="' + item.url + '" target="_blank" class="atlas-nc-link">' + item.text + '</a>';
+		  });
+		  html += '</div>';
+		});
+		html += '</div>';
+	  }
+
+	  /* support block */
+	  if (support) {
+		html += '<div class="atlas-footer__support">' +
+		  '<span class="atlas-footer__support-text">' + (support.text || '') + '</span>' +
+		  '<div class="atlas-footer__support-links">';
+		(support.links || []).forEach(function (l) {
+		  html += '<a href="' + l.url + '" target="_blank">' + l.text + '</a>';
+		});
+		html += '</div></div>';
+	  }
+
+	  html += '</div>'; /* .atlas-footer */
+
+	  inject(target, html);
+	},
+
 	/* ── 4. STATUS BAR (narrow info strip) ───────────────────────
 	   Options:
 		 items  {Array<{key, value, crit}>}
@@ -215,7 +316,7 @@
 		 version     {string}   e.g. '0.8.4-ALPHA'
 		 logId       {string}   e.g. '#042'
 		 status      {string}   DRAFT | IN_PROGRESS | EXPERIMENTAL | STABLE | COMPLETED | DEPRECATED
-		 author      {string}   e.g. 'P_ZOSIM'
+		 author      {string}   e.g. 'PAVEL_ZOSIM'
 		 location    {string}   e.g. 'KIV_MD'
 		 created     {string}   e.g. '2025.07.09'
 		 modified    {string}   e.g. '2025.07.11'  (optional)

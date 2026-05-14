@@ -1,0 +1,139 @@
+﻿<!--
+  SYSTEM ATLAS FRAMEWORK - BODY-END CUSTOM CODE - PART 2 / 2
+  Wix Dashboard -> Settings -> Custom Code -> Body - end
+  Load ORDER: Part 1 first, then Part 2.
+
+  Contains: methods 4-7 + autoMount
+  (renderStatusBar, renderTerminal, renderEngineeringPassport, autoMount)
+-->
+<script>
+(function (global) {
+  'use strict';
+
+  var inject  = global._atlasInject;
+  var nowUTC  = global._atlasNowUTC;
+
+  /* wait for Part 1 if scripts load out of order */
+  function extend() {
+    var AF = global.AtlasFramework;
+    if (!AF) { return setTimeout(extend, 50); }
+
+    /* 4. STATUS BAR */
+    AF.renderStatusBar = function (target, opts) {
+      opts = opts || {};
+      var cells = (opts.items||[]).map(function(item) {
+        return '<span style="font-family:var(--atlas-font-mono,monospace);font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;margin-right:20px;' +
+          (item.crit ? 'color:var(--atlas-crit,#8b0000);' : 'opacity:0.6;') + '">' +
+          '<span style="opacity:0.5;">' + item.key + ': </span>' +
+          '<strong>' + item.value + '</strong></span>';
+      }).join('');
+      inject(target,
+        '<div style="border:1px solid var(--atlas-border,rgba(0,0,0,.15));padding:6px 12px;background:rgba(0,0,0,.03);display:flex;flex-wrap:wrap;gap:4px;margin-bottom:20px;">' +
+        cells + '</div>');
+    };
+
+    /* 5. TERMINAL */
+    AF.renderTerminal = function (target, opts) {
+      opts = opts || {};
+      var lines = (opts.lines||[]).map(function(l) {
+        return l.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+                .replace(/!!(.+?)!!/g,'<span class="red">$1</span>')
+                .replace(/~~(.+?)~~/g,'<span class="ok">$1</span>');
+      }).join('\n');
+      inject(target, '<div class="atlas-terminal">' + lines + '</div>');
+    };
+
+    /* 6. ENGINEERING PASSPORT */
+    AF.renderEngineeringPassport = function (target, opts) {
+      opts = opts || {};
+      var prefix   = opts.prefix   || 'SYSTEM_ATLAS // R&D_LOG';
+      var project  = opts.project  || '—';
+      var module   = opts.module   || '—';
+      var version  = opts.version  || '—';
+      var logId    = opts.logId    || '—';
+      var status   = (opts.status  || 'DRAFT').toUpperCase();
+      var author   = opts.author   || '—';
+      var location = opts.location || '—';
+      var created  = opts.created  || '—';
+      var modified = opts.modified || null;
+      var tags     = Array.isArray(opts.tags) ? opts.tags : [];
+      var readTime = opts.readTime || (opts.wordCount ? '~'+Math.ceil(Number(opts.wordCount)/200)+' MIN' : null);
+
+      var scMap = {
+        'DRAFT':        { badge:'atlas-badge--muted',  cls:'status--draft'        },
+        'IN_PROGRESS':  { badge:'atlas-badge--active', cls:'status--in_progress'  },
+        'EXPERIMENTAL': { badge:'atlas-badge--warn',   cls:'status--experimental' },
+        'STABLE':       { badge:'atlas-badge--ok',     cls:'status--stable'       },
+        'COMPLETED':    { badge:'atlas-badge--ok',     cls:'status--completed'    },
+        'DEPRECATED':   { badge:'atlas-badge--crit',   cls:'status--deprecated'   }
+      };
+      var sc = scMap[status] || scMap['DRAFT'];
+
+      var metaItems = [
+        {key:'AUTH',value:author},{key:'LOC',value:location},{key:'CREATED',value:created}
+      ];
+      if (modified) { metaItems.push({key:'LAST_MODIFIED',value:modified}); }
+      if (readTime) { metaItems.push({key:'READ',value:readTime}); }
+
+      var metaHTML = metaItems.map(function(m) {
+        return '<span class="atlas-passport__meta-item"><b>'+m.key+'</b>: '+m.value+'</span>';
+      }).join('');
+
+      var tagsHTML = tags.length
+        ? '<div class="atlas-passport__tags">'+
+            tags.map(function(t){ return '<span class="atlas-passport__tag">'+t+'</span>'; }).join('')+
+          '</div>' : '';
+
+      inject(target,
+        '<div class="atlas-passport">' +
+          '<div class="atlas-title-bar">' +
+            '<div class="atlas-title-bar__left"><span class="atlas-chrome-btn">▲</span><span>'+prefix+'</span></div>' +
+            '<div class="atlas-title-bar__right">' +
+              '<span class="atlas-badge '+sc.badge+' '+sc.cls+'">'+status+'</span>' +
+              '<span class="atlas-chrome-btn">—</span>' +
+              '<span class="atlas-chrome-btn">□</span>' +
+              '<span class="atlas-chrome-btn">✕</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="atlas-passport__grid">' +
+            '<div class="atlas-passport__cell">' +
+              '<div><span class="atlas-passport__key">PROJECT</span><span class="atlas-passport__value">'+project+'</span></div>' +
+              '<div><span class="atlas-passport__key">MODULE</span><span class="atlas-passport__value">'+module+'</span></div>' +
+            '</div>' +
+            '<div class="atlas-passport__cell">' +
+              '<div><span class="atlas-passport__key">VERSION</span><span class="atlas-passport__value '+sc.cls+'">'+version+'</span></div>' +
+              '<div><span class="atlas-passport__key">LOG_ID</span><span class="atlas-passport__value">'+logId+'</span></div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="atlas-passport__meta">'+metaHTML+'</div>' +
+          tagsHTML +
+        '</div>');
+    };
+
+    /* 7. AUTO-MOUNT */
+    AF.autoMount = function () {
+      document.querySelectorAll('[data-atlas-component]').forEach(function(el) {
+        var type = el.getAttribute('data-atlas-component');
+        var opts = {};
+        Array.prototype.forEach.call(el.attributes, function(attr) {
+          if (attr.name.startsWith('data-atlas-') && attr.name !== 'data-atlas-component') {
+            var key = attr.name.replace('data-atlas-','').replace(/-([a-z])/g,function(_,c){return c.toUpperCase();});
+            opts[key] = attr.value;
+          }
+        });
+        if (AF['render'+type]) { AF['render'+type](el, opts); }
+      });
+    };
+
+    /* auto-mount */
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() { AF.autoMount(); });
+    } else {
+      AF.autoMount();
+    }
+  }
+
+  extend();
+
+}(window));
+</script>

@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/atlas-framework.css">
+  <style>body{margin:0;padding:0;background:transparent;}</style>
+</head>
+<body>
+<div class="atlas-container"><div id="f"></div></div>
+<script>
+fetch('https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/atlas-site-footer-config.json')
+  .then(function(r){return r.json();})
+  .then(function(c){
+    var h='<div class="atlas-footer"><div class="atlas-footer__title"><span>0xF00TER // CONNECT_STAMP</span>'+(c.tagline?'<span style="opacity:.5;">'+c.tagline+'</span>':'')+'</div><div class="atlas-footer__grid">';
+    (c.links||[]).forEach(function(col){
+      h+='<div class="atlas-footer__col"><span class="atlas-footer__col-label">'+col.label+'</span>';
+      (col.items||[]).forEach(function(i){h+='<a href="'+i.url+'" target="_blank" class="atlas-nc-link">'+i.text+'</a>';});
+      h+='</div>';
+    });
+    h+='</div>';
+    if(c.support){
+      h+='<div class="atlas-footer__support"><span class="atlas-footer__support-text">'+c.support.text+'</span><div class="atlas-footer__support-links">';
+      (c.support.links||[]).forEach(function(l){h+='<a href="'+l.url+'" target="_blank">'+l.text+'</a>';});
+      h+='</div></div>';
+    }
+    h+='</div>';
+    document.getElementById('f').innerHTML=h;
+  });
+</script>
+</body>
+</html>
