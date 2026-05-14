@@ -33,27 +33,8 @@
 	}
   </script>
 
-  <!-- STYLES — served from atlas-framework.css (Wix Velo public folder) -->
+  <!-- STYLES — atlas-framework.css via jsDelivr CDN -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/atlas-framework.css">
-
-  <!-- Fallback: footer styles inlined in case CDN version is stale -->
-  <style>
-    .atlas-footer { color: var(--atlas-ink, #000); font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace); padding-top: 20px; border-top: 1px solid var(--atlas-ink, #000); }
-    .atlas-footer__title { font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace); font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 30px; display: flex; justify-content: space-between; }
-    .atlas-footer__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 40px; }
-    .atlas-footer__col { display: flex; flex-direction: column; gap: 12px; }
-    .atlas-footer__col-label { font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace); font-size: .7rem; text-transform: uppercase; opacity: .5; }
-    .atlas-nc-link { font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace); font-size: .9rem; color: var(--atlas-ink, #000); text-decoration: none; display: inline-block; width: fit-content; padding: 2px 6px; }
-    .atlas-nc-link::before { content: '['; margin-right: 4px; }
-    .atlas-nc-link::after  { content: ']'; margin-left: 4px; }
-    .atlas-nc-link:hover   { background-color: #0000AA; color: #ffffff; }
-    .atlas-footer__support { margin-top: 20px; padding: 25px; border: 1px dashed var(--atlas-border, rgba(0,0,0,.15)); font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace); }
-    .atlas-footer__support-text { font-size: .85rem; display: block; margin-bottom: 15px; opacity: .8; }
-    .atlas-footer__support-links { display: flex; gap: 20px; flex-wrap: wrap; }
-    .atlas-footer__support-links a { color: var(--atlas-crit, #8b0000); text-decoration: none; font-weight: 700; font-size: .8rem; border-bottom: 1px solid var(--atlas-crit, #8b0000); }
-    .atlas-footer__support-links a:hover { background: var(--atlas-crit, #8b0000); color: #fff; }
-    @media (max-width: 600px) { .atlas-footer__grid { grid-template-columns: 1fr; } }
-  </style>
 </head>
 <body>
 
@@ -193,9 +174,6 @@ result = lerp(cheap,
   <!-- Footer mount -->
   <div id="post-footer"></div>
 
-  <!-- Site Footer mount — data from ATLAS_SITE (Body-End snippet) -->
-  <div id="atlas-site-footer"></div>
-
 </div><!-- /.atlas-container -->
 
 
@@ -296,11 +274,7 @@ var POST_CONFIG = {
 	  year:   POST_CONFIG.footerYear
 	});
 
-	/* Site Footer — data from ATLAS_SITE (Body-End snippet) */
-	if (AF.renderSiteFooter) {
-	  AF.renderSiteFooter('#atlas-site-footer');
 	}
-  }
 
   /* ── minimal fallback (no dependency on Body-End snippet) ─── */
   function buildFallbackFramework() {
@@ -376,35 +350,8 @@ var POST_CONFIG = {
 		var right = o.author ? o.author+' // '+(o.year||new Date().getFullYear()) : String(o.year||new Date().getFullYear());
 		inj(t,'<div class="atlas-meta-footer"><div>'+(o.label||'End of Report')+'</div><div>'+right+'</div></div>');
 	  },
-	  renderSiteFooter: function(t) {
-		var site = (window.ATLAS_SITE) || {};
-		var cols    = site.links   || [];
-		var support = site.support || null;
-		var tagline = site.tagline || '';
-		var html =
-		  '<div class="atlas-footer">'+
-		  '<div class="atlas-footer__title">'+
-			'<span>0xF00TER // CONNECT_STAMP</span>'+
-			(tagline ? '<span style="opacity:.5;">'+tagline+'</span>' : '')+
-		  '</div>';
-		if (cols.length) {
-		  html += '<div class="atlas-footer__grid">';
-		  cols.forEach(function(col) {
-			html += '<div class="atlas-footer__col"><span class="atlas-footer__col-label">'+col.label+'</span>';
-			(col.items||[]).forEach(function(item){ html += '<a href="'+item.url+'" target="_blank" class="atlas-nc-link">'+item.text+'</a>'; });
-			html += '</div>';
-		  });
-		  html += '</div>';
-		}
-		if (support) {
-		  html += '<div class="atlas-footer__support"><span class="atlas-footer__support-text">'+(support.text||'')+'</span><div class="atlas-footer__support-links">';
-		  (support.links||[]).forEach(function(l){ html += '<a href="'+l.url+'" target="_blank">'+l.text+'</a>'; });
-		  html += '</div></div>';
-		}
-		html += '</div>';
-		inj(t, html);
+		};
 	  }
-	};
   }
 
   if (document.readyState === 'loading') {
