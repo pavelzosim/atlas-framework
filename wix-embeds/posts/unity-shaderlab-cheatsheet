@@ -15,7 +15,6 @@
 <div class="atlas-container">
 
   <div id="post-passport"></div>
-  <div id="post-terminal"></div>
 
   <!-- ════════════════════════════════════════
        КОНТЕНТ ПОСТА — сюда вставляешь всё
@@ -369,6 +368,9 @@
 	  </figure>
 
     <!-- ... остальные части ... -->
+
+    <!-- ═══ TERMINAL ═══════════════════════════════════════ -->
+    <div id="post-terminal"></div>
 
   </div>
   <!-- конец #atlas-body -->
