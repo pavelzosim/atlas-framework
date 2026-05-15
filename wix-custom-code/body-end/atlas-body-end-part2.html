@@ -1,4 +1,4 @@
-ï»¿<!--
+<!--
   SYSTEM ATLAS FRAMEWORK - BODY-END CUSTOM CODE - PART 2 / 2
   Wix Dashboard -> Settings -> Custom Code -> Body - end
   Load ORDER: Part 1 first, then Part 2.
@@ -46,13 +46,13 @@
     /* 6. ENGINEERING PASSPORT */
     AF.renderEngineeringPassport = function (target, opts) {
       opts = opts || {};
-      var project  = opts.project  || 'â€”';
-      var module   = opts.module   || 'â€”';
-      var version  = opts.version  || 'â€”';
-      var logId    = opts.logId    || 'â€”';
+      var project  = opts.project  || '—';
+      var module   = opts.module   || '—';
+      var version  = opts.version  || '—';
+      var logId    = opts.logId    || '—';
       var status   = (opts.status  || 'DRAFT').toUpperCase();
-      var author   = opts.author   || 'â€”';
-      var created  = opts.created  || 'â€”';
+      var author   = opts.author   || '—';
+      var created  = opts.created  || '—';
       var modified = opts.modified || null;
       var tags     = Array.isArray(opts.tags) ? opts.tags : [];
       var readTime = opts.readTime || (opts.wordCount ? '~'+Math.ceil(Number(opts.wordCount)/200)+' MIN' : null);

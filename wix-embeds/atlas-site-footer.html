@@ -1,19 +1,19 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--
-  ╔══════════════════════════════════════════════════════════════╗
-  ║  ATLAS SITE FOOTER — Two-block standalone embed             ║
-  ║                                                              ║
-  ║  Block 1 (index): categories + tags from config JSON        ║
-  ║  Block 2 (main):  support strip + 3-column link matrix      ║
-  ║                                                              ║
-  ║  Data source: atlas-site-footer-config.json (jsDelivr CDN)  ║
-  ╚══════════════════════════════════════════════════════════════╝
+  +--------------------------------------------------------------+
+  �  ATLAS SITE FOOTER � Two-block standalone embed             �
+  �                                                              �
+  �  Block 1 (index): categories + tags from config JSON        �
+  �  Block 2 (main):  support strip + 3-column link matrix      �
+  �                                                              �
+  �  Data source: atlas-site-footer-config.json (jsDelivr CDN)  �
+  +--------------------------------------------------------------+
 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/atlas-framework.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css">
 <style>
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; overflow-x: hidden; background: transparent; }
@@ -23,7 +23,7 @@ html, body { margin: 0; padding: 0; overflow-x: hidden; background: transparent;
 <body>
 <div id="f"></div>
 <script>
-var CONFIG_URL = 'https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/atlas-site-footer-config.json';
+var CONFIG_URL = 'https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-site-footer-config.json';
 
 fetch(CONFIG_URL)
   .then(function(r) { return r.json(); })
@@ -32,7 +32,7 @@ fetch(CONFIG_URL)
 
 function renderFooter(c) {
 
-  /* ── Block 1: index (categories + tags) ─────────────────── */
+  /* -- Block 1: index (categories + tags) ------------------- */
   var categoriesHTML = (c.categories || []).map(function(cat) {
     return '<a href="' + cat.url + '" class="atlas-blueprint-link" target="_top">[ ' + cat.text + ' ]</a>';
   }).join('');
@@ -63,7 +63,7 @@ function renderFooter(c) {
       '</div>';
   }
 
-  /* ── Block 2: main (support + matrix) ──────────────────────── */
+  /* -- Block 2: main (support + matrix) ------------------------ */
   var supportHTML = '';
   if (c.support) {
     var supportLinks = (c.support.links || []).map(function(l, idx, arr) {

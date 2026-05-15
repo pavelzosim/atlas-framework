@@ -1,4 +1,4 @@
-﻿<!--
+<!--
   SYSTEM ATLAS FRAMEWORK - BODY-END CUSTOM CODE - PART 1 / 2
   Wix Dashboard -> Settings -> Custom Code -> Body - end
   Load ORDER: Part 1 first, then Part 2.
@@ -25,11 +25,11 @@
            ' // ' + pad(d.getUTCHours()) + ':' + pad(d.getUTCMinutes()) + ' UTC';
   }
 
-  /* ── ATLAS_SITE: edit here to update footer site-wide ───────── */
+  /* -- ATLAS_SITE: edit here to update footer site-wide --------- */
   var ATLAS_SITE = {
     author:  'Pavel Zosim',
     year:    '2025',
-    tagline: '( ´◔ ω◔`) ノシ',
+    tagline: '( �? ??`) ??',
     links: [
       {
         label: 'Code & Shared Tools',
@@ -61,18 +61,18 @@
   };
   global.ATLAS_SITE = ATLAS_SITE;
 
-  /* ── helpers exposed for Part 2 ─────────────────────────────── */
+  /* -- helpers exposed for Part 2 ------------------------------- */
   global._atlasInject  = inject;
   global._atlasNowUTC  = nowUTC;
 
-  /* ── AtlasFramework: methods 1-3b ───────────────────────────── */
+  /* -- AtlasFramework: methods 1-3b ----------------------------- */
   var AF = {
 
     /* 1. WINDOW CHROME */
     renderWindowChrome: function (target, opts) {
       opts = opts || {};
       var project   = opts.project     || 'SYSTEM_ATLAS';
-      var module    = opts.module      || '—';
+      var module    = opts.module      || '�';
       var phase     = opts.phase       || 'R&D';
       var build     = opts.build       || nowUTC();
       var status    = opts.status      || 'NOMINAL';
@@ -81,15 +81,15 @@
         '<div class="atlas-window-chrome">' +
           '<div class="atlas-title-bar">' +
             '<div class="atlas-title-bar__left">' +
-              '<span class="atlas-chrome-btn">▲</span><span>' + project + '</span>' +
+              '<span class="atlas-chrome-btn">?</span><span>' + project + '</span>' +
             '</div>' +
             '<div class="atlas-title-bar__right">' +
               '<span class="atlas-badge atlas-badge--' +
                 (statusCls==='status-crit'?'crit':statusCls==='status-muted'?'muted':'active') +
               '">' + status + '</span>' +
-              '<span class="atlas-chrome-btn">—</span>' +
-              '<span class="atlas-chrome-btn">□</span>' +
-              '<span class="atlas-chrome-btn">✕</span>' +
+              '<span class="atlas-chrome-btn">�</span>' +
+              '<span class="atlas-chrome-btn">?</span>' +
+              '<span class="atlas-chrome-btn">?</span>' +
             '</div>' +
           '</div>' +
           '<div class="atlas-info-grid">' +
@@ -126,7 +126,7 @@
         '<div class="atlas-meta-footer"><div>' + label + '</div><div>' + right + '</div></div>');
     },
 
-    /* 3b. SITE FOOTER — reads from ATLAS_SITE */
+    /* 3b. SITE FOOTER � reads from ATLAS_SITE */
     renderSiteFooter: function (target, opts) {
       opts = opts || {};
       var site    = global.ATLAS_SITE || {};
