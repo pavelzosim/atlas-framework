@@ -15,16 +15,32 @@
 
 ---
 
-## Файлы фреймворка
+## Структура репозитория
 
-| Файл | Назначение | Куда вставлять в Wix |
-|---|---|---|
-| `atlas-body-end-part1.html` | JS-фреймворк, часть 1: helpers, renderWindowChrome, renderMetaHeader, renderFooter | **Body - end** Custom Code |
-| `atlas-body-end-part2.html` | JS-фреймворк, часть 2: renderStatusBar, renderTerminal, renderEngineeringPassport, autoMount | **Body - end** Custom Code |
-| `atlas-post-embed-template.html` | Шаблон каждого поста. Стили грузятся с CDN; JS работает inline через fallback | **HTML iframe** внутри поста |
-| `atlas-site-footer.html` | Standalone embed для сайтового футера | **HTML iframe** на нужных страницах |
-| `atlas-site-footer-config.json` | Данные сайтового футера (ссылки, tagline) | GitHub → CDN (jsDelivr) |
-| `atlas-framework.css` | Мастер-стили всех компонентов | GitHub → CDN (jsDelivr) |
+Каждая папка = одно место в Wix. Открываешь папку — видишь ровно то, что туда нужно скопировать.
+
+```
+wix-custom-code/
+  head/
+    atlas-head-custom-code.html      → Wix Custom Code → Head
+  body-end/
+    atlas-body-end-part1.html        → Wix Custom Code → Body-end  (добавить 1-м)
+    atlas-body-end-part2.html        → Wix Custom Code → Body-end  (добавить 2-м)
+
+wix-backend/
+  http-functions.js                  → Wix Editor → Dev Mode → Backend → http-functions.js
+
+wix-embeds/
+  atlas-site-header.html             → HTML iframe (паспорт/хедер)
+  atlas-site-footer.html             → HTML iframe (футер)
+  atlas-post-embed-template.html     → HTML iframe (шаблон поста, ОРИГИНАЛ — не трогать)
+
+cdn/
+  atlas-framework.css                → GitHub → jsDelivr CDN (авто)
+  atlas-site-footer-config.json      → GitHub → jsDelivr CDN (авто)
+
+ATLAS-FRAMEWORK-GUIDE.md            → этот файл
+```
 
 > **Важно:** Wix HTML iframe изолирован от Body-End скриптов — `window.AtlasFramework` внутри iframe недоступен. Пост-шаблон всегда использует встроенный `buildFallbackFramework()`.
 
@@ -427,20 +443,7 @@ https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/atlas-framework.
 
 ## Часть 7 — Структура файлов
 
-```
-atlas-framework.css              ← мастер-стили (GitHub → jsDelivr CDN)
-atlas-body-end-part1.html        ← Wix Body-End, часть 1
-atlas-body-end-part2.html        ← Wix Body-End, часть 2
-atlas-post-embed-template.html   ← ОРИГИНАЛ шаблона (не редактировать)
-atlas-site-footer.html           ← standalone footer embed для Wix
-atlas-site-footer-config.json    ← данные сайтового футера (CDN)
-ATLAS-FRAMEWORK-GUIDE.md        ← этот файл
-
-posts/
-  gpu-memory-hierarchy.html      ← пост #001
-  sun-surface-ue5-shaders.html   ← пост #002
-  ...
-```
+См. раздел **Структура репозитория** в начале документа.
 
 ---
 
@@ -482,39 +485,49 @@ posts/
 
 ## Часть 1 — Первоначальная настройка Wix (делается один раз)
 
-### Шаг 1 — Вставить CSS в Head
+### Шаг 1 — CSS в Head
 
-1. Открой **Wix Dashboard → Settings → Custom Code**
-2. Нажми **+ Add Custom Code**
-3. Вставь всё содержимое файла `atlas-head-custom-code.html`
-4. Настройки:
-   - **Name:** `Atlas Framework — Styles`
-   - **Add Code to:** `Head`
-   - **Load code on each new page:** ✅ All Pages
-5. Нажми **Apply**
+Файл: **`wix-custom-code/head/atlas-head-custom-code.html`**
 
-### Шаг 2 — Вставить JS Part 1 в Body-end
+1. Wix Dashboard → **Settings → Custom Code → + Add Custom Code**
+2. Вставь содержимое файла
+3. Name: `Atlas Framework — Styles` · Place: `Head` · Pages: All Pages
+4. **Apply**
 
-1. Снова нажми **+ Add Custom Code**
-2. Вставь содержимое `atlas-body-end-part1.html`
-3. Настройки:
-   - **Name:** `Atlas Framework — Part 1`
-   - **Add Code to:** `Body - end`
-   - **Load code on each new page:** ✅ All Pages
-4. Нажми **Apply**
+### Шаг 2 — JS Part 1 в Body-end
 
-### Шаг 3 — Вставить JS Part 2 в Body-end
+Файл: **`wix-custom-code/body-end/atlas-body-end-part1.html`**
 
-1. Снова нажми **+ Add Custom Code**
-2. Вставь содержимое `atlas-body-end-part2.html`
-3. Настройки:
-   - **Name:** `Atlas Framework — Part 2`
-   - **Add Code to:** `Body - end`
-   - **Load code on each new page:** ✅ All Pages
-4. Нажми **Apply**
+1. **+ Add Custom Code**
+2. Вставь содержимое файла
+3. Name: `Atlas Framework — Part 1` · Place: `Body - end` · Pages: All Pages
+4. **Apply**
 
-> Part 2 содержит retry-логику и дожидается инициализации Part 1 автоматически.  
-> После этих шагов `window.AtlasFramework` доступен на всех страницах сайта.
+### Шаг 3 — JS Part 2 в Body-end
+
+Файл: **`wix-custom-code/body-end/atlas-body-end-part2.html`**
+
+1. **+ Add Custom Code**
+2. Вставь содержимое файла
+3. Name: `Atlas Framework — Part 2` · Place: `Body - end` · Pages: All Pages
+4. **Apply**
+
+> Part 2 ждёт инициализации Part 1 автоматически. После этих шагов `window.AtlasFramework` доступен на всех страницах.
+
+### Шаг 4 — Backend endpoint (1 раз на сайт)
+
+Файл: **`wix-backend/http-functions.js`**
+
+1. Wix Editor → включи **Dev Mode**
+2. В панели слева откройся раздел **Backend**
+3. Создай файл с точным именем: **`http-functions.js`**
+4. Вставь содержимое файла из `wix-backend/http-functions.js`
+5. **Publish**
+
+После публикации endpoint доступен:
+```
+https://www.pavelzosim.com/_functions/getPostData?slug=my-post-slug
+```
 
 ---
 
@@ -522,12 +535,15 @@ posts/
 
 ### Шаг 1 — Скопировать шаблон
 
-Скопируй файл `atlas-post-embed-template.html`, переименуй по теме поста:
+Оригинал: **`wix-embeds/atlas-post-embed-template.html`** — не трогать.
+Скопируй его в папку `wix-embeds/posts/` и переименуй по теме поста:
 
 ```
-atlas-post-embed-template.html   ← оригинал, не трогать
-gpu-memory-hierarchy.html        ← копия для конкретного поста
-sun-surface-ue5.html             ← копия для другого поста
+wix-embeds/
+  atlas-post-embed-template.html   ← оригинал, не трогать
+  posts/
+    gpu-memory-hierarchy.html      ← пост #001
+    sun-surface-ue5.html           ← пост #002
 ```
 
 ### Шаг 2 — Заполнить POST_CONFIG
@@ -822,17 +838,7 @@ iframe загрузился
   → перерисовывает паспорт
 ```
 
-### Установка backend (1 раз на сайт)
-
-1. Wix Editor → **Dev Mode** → раздел **Backend**
-2. Создай файл с точным названием: **`http-functions.js`**
-3. Вставь содержимое файла `wix-http-functions.js` из репозитория
-4. **Publish**
-
-После публикации endpoint доступен:
-```
-https://www.pavelzosim.com/_functions/getPostData?slug=my-post-slug
-```
+> Backend уже настроен на шаге 4 установки (файл `wix-backend/http-functions.js`).
 
 ### Что заполняется автоматически
 
@@ -852,20 +858,30 @@ https://www.pavelzosim.com/_functions/getPostData?slug=my-post-slug
 
 
 ```
-atlas-head-custom-code.html          ← вставить в Wix Head (1 раз)
-atlas-body-end-part1.html            ← вставить в Wix Body-end (1 раз)
-atlas-body-end-part2.html            ← вставить в Wix Body-end (1 раз)
-wix-http-functions.js                ← создать как Backend/http-functions.js в Wix (1 раз)
-atlas-site-header.html               ← standalone passport embed
-atlas-site-footer.html               ← standalone footer embed
-atlas-post-embed-template.html       ← ОРИГИНАЛ ШАБЛОНА (не трогать)
-atlas-framework.css                  ← стили CDN через jsDelivr
-ATLAS-FRAMEWORK-GUIDE.md            ← этот файл
+wix-custom-code/
+  head/
+    atlas-head-custom-code.html        → Wix Custom Code → Head
+  body-end/
+    atlas-body-end-part1.html          → Wix Custom Code → Body-end (1-й)
+    atlas-body-end-part2.html          → Wix Custom Code → Body-end (2-й)
 
-posts/
-  gpu-memory-hierarchy.html          ← пост #001
-  sun-surface-ue5-shaders.html       ← пост #002
-  ...
+wix-backend/
+  http-functions.js                    → Wix Dev Mode → Backend → http-functions.js
+
+wix-embeds/
+  atlas-site-header.html               → HTML iframe (хедер/паспорт)
+  atlas-site-footer.html               → HTML iframe (футер)
+  atlas-post-embed-template.html       → ОРИГИНАЛ ШАБЛОНА (не трогать)
+  posts/
+    gpu-memory-hierarchy.html          → пост #001
+    sun-surface-ue5-shaders.html       → пост #002
+    ...
+
+cdn/
+  atlas-framework.css                  → jsDelivr CDN (авто через GitHub)
+  atlas-site-footer-config.json        → jsDelivr CDN (авто через GitHub)
+
+ATLAS-FRAMEWORK-GUIDE.md              → этот файл
 ```
 
 ---
@@ -873,5 +889,5 @@ posts/
 ```
 // END OF DOCUMENT
 // AUTH: P_ZOSIM // LOC: KIV_MD // 2025
-// SYSTEM_ATLAS FRAMEWORK v2.1 — Engineering Passport Edition
+// SYSTEM_ATLAS FRAMEWORK v3.0 — Folder Edition
 ```
