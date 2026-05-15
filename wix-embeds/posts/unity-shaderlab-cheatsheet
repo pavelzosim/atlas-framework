@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; overflow-x: hidden; }
+    .atlas-container { max-width: 100%; overflow-x: hidden; }
+    pre { white-space: pre-wrap; word-break: break-word; }
+  </style>
+</head>
+<body>
+<div class="atlas-container">
+
+  <div id="post-passport"></div>
+
+  <!-- ════════════════════════════════════════
+       КОНТЕНТ ПОСТА — сюда вставляешь всё
+       что LLM возвращает по частям
+  ════════════════════════════════════════ -->
+  <div id="atlas-body">
+
+	  <div id="atlas-body">
+
+		  <!-- ═══ BLOCK 01 ═══════════════════════════════════════════ -->
+		  <h2>01 // What is ShaderLab in Unity?</h2>
+
+		  <p>
+			  ShaderLab is Unity's shader definition language used to structure passes,
+			  render states and connect CG/HLSL code. A shader file contains two distinct layers:
+		  </p>
+
+		  <div class="atlas-comparison">
+			  <div class="atlas-comparison__col atlas-comparison__col--before">
+				  <div class="atlas-comparison__label">CG Shader</div>
+				  <div class="atlas-comparison__body">
+					  Uses Cg/HLSL to write GPU programs. Code is enclosed in
+					  <span class="atlas-param">CGPROGRAM / ENDCG</span> or
+					  <span class="atlas-param">HLSLPROGRAM / ENDHLSL</span> blocks
+					  and compiled into GPU instructions.
+				  </div>
+			  </div>
+			  <div class="atlas-comparison__col atlas-comparison__col--after">
+				  <div class="atlas-comparison__label">ShaderLab Wrapper</div>
+				  <div class="atlas-comparison__body">
+					  Unity-specific layer that defines Properties, SubShaders and Passes.
+					  Controls how the shader interacts with the Inspector and the rendering pipeline.
+				  </div>
+			  </div>
+		  </div>
+
+		  <!-- ═══ BLOCK 02 ═══════════════════════════════════════════ -->
+		  <h2>02 // Critical Changes (2024)</h2>
+
+		  <div class="atlas-callout atlas-callout--critical">
+			  <div class="atlas-callout__label">DEPRECATED</div>
+			  <div class="atlas-callout__body">
+				  <span class="atlas-param">CGPROGRAM</span> is fully deprecated in URP/HDRP.
+				  Use <span class="atlas-param">HLSLPROGRAM / ENDHLSL</span> to support modern shader targets.
+			  </div>
+		  </div>
+
+		  <div class="atlas-callout atlas-callout--note">
+			  <div class="atlas-callout__label">URP v12+</div>
+			  <div class="atlas-callout__body">
+				  URP now supports 3D Textures. Recent updates extend texture capabilities
+				  previously unavailable in the lightweight pipeline.
+			  </div>
+		  </div>
+
+		  <div class="atlas-callout atlas-callout--warning">
+			  <div class="atlas-callout__label">HDRP REQUIREMENT</div>
+			  <div class="atlas-callout__body">
+				  Full HDRP features — including advanced lighting and ray tracing — require
+				  <span class="atlas-param">DirectX 12</span>,
+				  <span class="atlas-param">Vulkan</span>, or
+				  <span class="atlas-param">Metal 3</span>.
+			  </div>
+		  </div>
+
+		  <h2>03 // Pipeline Comparison</h2>
+
+		  <table>
+			  <thead>
+				  <tr>
+					  <th>Capability</th>
+					  <th>Built-in</th>
+					  <th>URP (v12+)</th>
+					  <th>HDRP (2024+)</th>
+				  </tr>
+			  </thead>
+			  <tbody>
+				  <tr>
+					  <td>Stereo Instancing</td>
+					  <td>✘</td>
+					  <td>✓</td>
+					  <td>✓</td>
+				  </tr>
+				  <tr>
+					  <td>Ray Traced AO</td>
+					  <td>✘</td>
+					  <td>✘</td>
+					  <td>✓ (DX12/Vulkan)</td>
+				  </tr>
+				  <tr>
+					  <td>Shader Model</td>
+					  <td>
+						  <span class="atlas-param">3.0</span>
+					  </td>
+					  <td>
+						  <span class="atlas-param">4.5</span>
+					  </td>
+					  <td>
+						  <span class="atlas-param">6.5+</span>
+					  </td>
+				  </tr>
+				  <tr>
+					  <td>VRSS Support</td>
+					  <td>✘</td>
+					  <td>✓</td>
+					  <td>✓</td>
+				  </tr>
+			  </tbody>
+		  </table>
+
+	  </div>
+
+    <!-- ЧАСТЬ 3 от LLM -->
+	  <!-- ═══ BLOCK 04 ═══════════════════════════════════════════ -->
+	  <h2>04 // How ShaderLab Works with CG and HLSL</h2>
+
+	  <p>
+		  The GPU reads shader code sequentially — top to bottom. Each stage has a
+		  defined role and strict execution order:
+	  </p>
+
+	  <div class="atlas-timeline">
+
+		  <div class="atlas-timeline__item">
+			  <div class="atlas-timeline__marker">01</div>
+			  <div class="atlas-timeline__content">
+				  <div class="atlas-timeline__title">Properties</div>
+				  <div class="atlas-timeline__detail">Defines parameters exposed in the Inspector.</div>
+			  </div>
+		  </div>
+
+		  <div class="atlas-timeline__item">
+			  <div class="atlas-timeline__marker">02</div>
+			  <div class="atlas-timeline__content">
+				  <div class="atlas-timeline__title">SubShader Setup</div>
+				  <div class="atlas-timeline__detail">Contains tags and passes.</div>
+			  </div>
+		  </div>
+
+		  <div class="atlas-timeline__item">
+			  <div class="atlas-timeline__marker">03</div>
+			  <div class="atlas-timeline__content">
+				  <div class="atlas-timeline__title">Variable Declarations & Data Structures</div>
+				  <div class="atlas-timeline__detail">Global variables and helper structures.</div>
+			  </div>
+		  </div>
+
+		  <div class="atlas-timeline__item">
+			  <div class="atlas-timeline__marker">04</div>
+			  <div class="atlas-timeline__content">
+				  <div class="atlas-timeline__title">Helper Functions</div>
+				  <div class="atlas-timeline__detail">Common routines used by the shader.</div>
+			  </div>
+		  </div>
+
+		  <div class="atlas-timeline__item">
+			  <div class="atlas-timeline__marker">05</div>
+			  <div class="atlas-timeline__content">
+				  <div class="atlas-timeline__title">Vertex Shader</div>
+				  <div class="atlas-timeline__detail">Transforms geometry from object space to clip space.</div>
+			  </div>
+		  </div>
+
+		  <div class="atlas-timeline__item">
+			  <div class="atlas-timeline__marker">06</div>
+			  <div class="atlas-timeline__content">
+				  <div class="atlas-timeline__title">Rasterization</div>
+				  <div class="atlas-timeline__detail">Converts vertices to pixels.</div>
+			  </div>
+		  </div>
+
+		  <div class="atlas-timeline__item">
+			  <div class="atlas-timeline__marker">07</div>
+			  <div class="atlas-timeline__content">
+				  <div class="atlas-timeline__title">Fragment Shader</div>
+				  <div class="atlas-timeline__detail">Colors individual pixels.</div>
+			  </div>
+		  </div>
+
+		  <div class="atlas-timeline__item">
+			  <div class="atlas-timeline__marker">08</div>
+			  <div class="atlas-timeline__content">
+				  <div class="atlas-timeline__title">Frame Buffer</div>
+				  <div class="atlas-timeline__detail">Final rendered image output.</div>
+			  </div>
+		  </div>
+
+	  </div>
+
+	  <!-- ═══ BLOCK 05 ═══════════════════════════════════════════ -->
+	  <h2>05 // Shader Execution Data Flow</h2>
+
+	  <div class="atlas-arch-flow">
+		  <div class="atlas-node">
+			  <b>CPU</b>
+			  <span>Draw Call</span>
+		  </div>
+		  <div class="atlas-flow-arrow">→</div>
+		  <div class="atlas-node">
+			  <b>Vertex Shader</b>
+			  <span>Parallel Batches</span>
+		  </div>
+		  <div class="atlas-flow-arrow">→</div>
+		  <div class="atlas-node">
+			  <b>Rasterizer</b>
+			  <span>Pixel Interpolation</span>
+		  </div>
+		  <div class="atlas-flow-arrow">→</div>
+		  <div class="atlas-node">
+			  <b>Fragment Shader</b>
+			  <span>Per-pixel color</span>
+		  </div>
+		  <div class="atlas-flow-arrow">→</div>
+		  <div class="atlas-node">
+			  <b>Frame Buffer</b>
+			  <span>Final image</span>
+		  </div>
+	  </div>
+
+	  <!-- ═══ BLOCK 06 ═══════════════════════════════════════════ -->
+	  <h2>06 // Key Execution Rules</h2>
+
+	  <div class="atlas-callout atlas-callout--note">
+		  <div class="atlas-callout__label">DECLARATION ORDER</div>
+		  <div class="atlas-callout__body">
+			  Functions must be declared before they are called.
+			  Place helper functions above <span class="atlas-param">vert</span> and
+			  <span class="atlas-param">frag</span>.
+		  </div>
+	  </div>
+
+	  <div class="atlas-callout atlas-callout--note">
+		  <div class="atlas-callout__label">STAGE ORDER</div>
+		  <div class="atlas-callout__body">
+			  The vertex shader always runs before the fragment shader.
+			  This order is fixed by the GPU pipeline — not configurable.
+		  </div>
+	  </div>
+
+	  <div class="atlas-callout atlas-callout--warning">
+		  <div class="atlas-callout__label">NO FIXED PIXEL ORDER</div>
+		  <div class="atlas-callout__body">
+			  The GPU executes shader code in massively parallel batches.
+			  There is no guaranteed processing order for individual vertices or pixels.
+		  </div>
+	  </div>
+
+	  <!-- ═══ BLOCK 07 ═══════════════════════════════════════════ -->
+	  <h2>07 // Basic Color Shader</h2>
+
+	  <div class="atlas-code-card atlas-code-card--standard">
+		  <div class="atlas-card-label">Basic Color Shader — Built-in Pipeline</div>
+		  <div class="atlas-code-container">
+			  <pre>
+				  <span class="atlas-hl-key">Shader</span> <span class="atlas-hl-str">"Custom/BasicColor"</span>
+				  {
+				  <span class="atlas-hl-key">Properties</span>
+				  {
+				  <span class="atlas-hl-macro">_Color</span> (<span class="atlas-hl-str">"Main Color"</span>, <span class="atlas-hl-type">Color</span>) = (1,1,1,1)
+				  <span class="atlas-hl-com">// No semicolon at end of property declaration</span>
+				  }
+
+				  <span class="atlas-hl-key">SubShader</span>
+				  {
+				  <span class="atlas-hl-key">Pass</span>
+				  {
+				  <span class="atlas-hl-macro">CGPROGRAM</span>
+				  <span class="atlas-hl-attr">#pragma vertex</span> vert
+				  <span class="atlas-hl-attr">#pragma fragment</span> frag
+				  <span class="atlas-hl-macro">#include</span> <span class="atlas-hl-str">"UnityCG.cginc"</span>
+
+				  <span class="atlas-hl-type">fixed4</span> <span class="atlas-hl-macro">_Color</span>;  <span class="atlas-hl-com">// auto-generated uniform</span>
+
+				  <span class="atlas-hl-type">float4</span> <span class="atlas-hl-func">vert</span>(<span class="atlas-hl-type">float4</span> v : POSITION) : SV_POSITION
+				  {
+				  <span class="atlas-hl-key">return</span> <span class="atlas-hl-func">UnityObjectToClipPos</span>(v);
+				  }
+
+				  <span class="atlas-hl-type">fixed4</span> <span class="atlas-hl-func">frag</span>() : SV_Target
+				  {
+				  <span class="atlas-hl-key">return</span> <span class="atlas-hl-macro">_Color</span>;
+				  }
+				  <span class="atlas-hl-macro">ENDCG</span>
+				  }
+				  }
+				  }
+			  </pre>
+		  </div>
+	  </div>
+
+	  <div class="atlas-footnotes">
+		  <div class="atlas-footnotes__title">Notes</div>
+		  <ol class="atlas-footnotes__list">
+			  <li>Properties block: no semicolons at end of declarations.</li>
+			  <li>
+				  <span class="atlas-param">_Color</span> must be re-declared as a global uniform inside <span class="atlas-param">CGPROGRAM</span> to be accessible in shader code.
+			  </li>
+			  <li>
+				  <span class="atlas-param">vert</span> transforms geometry; <span class="atlas-param">frag</span> returns the final pixel color.
+			  </li>
+		  </ol>
+	  </div>
+
+    <!-- ... остальные части ... -->
+
+  </div>
+  <!-- конец #atlas-body -->
+
+</div>
+<!-- конец .atlas-container -->
+
+<script>
+/* ════════════════════════════════════════
+   POST_CONFIG — заполняешь один раз
+════════════════════════════════════════ */
+var POST_CONFIG = {
+  user:      'pavelzosim',
+  path:      '~',
+  command:   'cat unity_shaderlab.log',
+  prefix:    'SYSTEM_ATLAS // R&D_LOG',
+	project:   'UNITY_SHADERLAB',
+	module:    'surface_shaders',
+	version:   '1.3.3',
+	logId:     '#003',
+	status:    'STABLE',
+	slug:      'unity-shaderlab-cheatsheet',  // ← из URL поста
+	author:    '...',
+	created:   '----.--.--',
+	modified:  null,
+	wordCount: 2400,
+	title:     null,
+	tags:      [],
+	tagBaseUrl: 'https://www.pavelzosim.com/blog/tags/'
+	};
+</script>
+
+<!-- сюда вставляешь JS из atlas-post-embed-template.html (buildFallbackFramework и fetch) -->
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; overflow-x: hidden; }
+    .atlas-container { max-width: 100%; overflow-x: hidden; }
+    pre { white-space: pre-wrap; word-break: break-word; }
+  </style>
+</head>
+<body>
+<div class="atlas-container">
+
+  <div id="post-passport"></div>
+
+  <!-- ════════════════════════════════════════
+       КОНТЕНТ ПОСТА — сюда вставляешь всё
+       что LLM возвращает по частям
+  ════════════════════════════════════════ -->
+  <div id="atlas-body">
+
+    <!-- ЧАСТЬ 1 от LLM -->
+    <p>Вводный абзац поста...</p>
+
+    <!-- ЧАСТЬ 2 от LLM -->
+    <h2>01 // ShaderLab Structure</h2>
+    <p>Every Unity shader begins with a <code>Shader "Name"</code> declaration...</p>
+
+    <!-- ЧАСТЬ 3 от LLM -->
+    <h2>02 // Properties Block</h2>
+    <p>Properties are declared with type and default value:</p>
+    <div class="atlas-code-card atlas-code-card--standard">
+      <div class="atlas-card-label">Properties</div>
+      <div class="atlas-code-container">
+<pre><span class="atlas-hl-macro">_MainTex</span> (<span class="atlas-hl-str">"Albedo"</span>, <span class="atlas-hl-type">2D</span>) = <span class="atlas-hl-str">"white"</span> {}</pre>
+      </div>
+    </div>
+
+    <!-- ... остальные части ... -->
+
+  </div>
+  <!-- конец #atlas-body -->
+
+</div>
+<!-- конец .atlas-container -->
+
+<script>
+/* ════════════════════════════════════════
+   POST_CONFIG — заполняешь один раз
+════════════════════════════════════════ */
+var POST_CONFIG = {
+  user:      'pavelzosim',
+  path:      '~',
+  command:   'cat unity_shaderlab.log',
+  prefix:    'SYSTEM_ATLAS // R&D_LOG',
+  project:   'UNITY_SHADERLAB',
+  module:    'surface_shaders',
+  version:   '1.0.0',
+  logId:     '#003',
+  status:    'STABLE',
+  slug:      'unity-shaderlab-cheatsheet',  // ← из URL поста
+  author:    '...',
+  created:   '----.--.--',
+  modified:  null,
+  wordCount: 2400,
+  title:     null,
+  tags:      [],
+  tagBaseUrl: 'https://www.pavelzosim.com/blog/tags/'
+};
+</script>
+
+<!-- сюда вставляешь JS из atlas-post-embed-template.html (buildFallbackFramework и fetch) -->
+
+</body>
+</html>
+
+
+1. Берёшь atlas-post-embed-template.html целиком
+2. Меняешь POST_CONFIG (slug, project, module, version...)
+3. Очищаешь #atlas-body от примера
+4. Собираешь все части от LLM внутрь #atlas-body
+5. Весь файл целиком → Wix iframe

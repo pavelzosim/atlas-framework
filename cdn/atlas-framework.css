@@ -57,6 +57,7 @@ html, body { margin: 0; padding: 0; box-sizing: border-box; overflow-x: hidden; 
 /* ── Typography ─────────────────────────────────────────────── */
 .atlas-container h1 { font-family: var(--atlas-font-serif); font-weight: 600; text-transform: uppercase; font-size: 2.4rem; margin: 0 0 10px 0; letter-spacing: .02em; }
 .atlas-container h2 { font-family: var(--atlas-font-serif); font-weight: 600; text-transform: uppercase; font-size: 1.6rem; margin: var(--atlas-space-xl) 0 20px 0; border-bottom: 1px solid var(--atlas-ink); padding-bottom: 5px; }
+#atlas-body > *:first-child { margin-top: 0; }
 .atlas-container h3 { font-family: var(--atlas-font-mono); font-weight: 400; font-size: 1rem; text-transform: uppercase; margin: 30px 0 15px 0; opacity: .7; }
 .atlas-container p  { font-size: 1.2rem; line-height: 1.7; margin-bottom: 20px; color: var(--atlas-ink-soft); }
 .atlas-param { background: rgba(139,0,0,.05); color: var(--atlas-crit); padding: 1px 5px; font-family: var(--atlas-font-mono); font-size: .95em; border: 1px solid rgba(139,0,0,.1); }
@@ -88,7 +89,7 @@ html, body { margin: 0; padding: 0; box-sizing: border-box; overflow-x: hidden; 
 .atlas-code-card--standard { border-left: 3px solid var(--atlas-ink); }
 .atlas-card-label { font-family: var(--atlas-font-mono); font-size: .75rem; opacity: .5; text-transform: uppercase; margin-bottom: 15px; font-weight: 700; }
 .atlas-code-container { background: var(--atlas-code-bg); padding: 20px; border-radius: 2px; overflow-x: auto; }
-.atlas-code-container pre { margin: 0; font-family: var(--atlas-font-mono); font-size: .95rem; color: var(--atlas-code-text); line-height: 1.6; }
+.atlas-code-container pre { margin: 0; font-family: var(--atlas-font-mono); font-size: .82rem; color: var(--atlas-code-text); line-height: 1.65; tab-size: 2; }
 
 /* ── Syntax highlight tokens ────────────────────────────────────
    Apply with <span class="atlas-hl-*"> inside <pre> blocks.
@@ -318,7 +319,8 @@ html, body { margin: 0; padding: 0; box-sizing: border-box; overflow-x: hidden; 
   font-weight: 700;
   white-space: nowrap;
   padding-top: 2px;
-  min-width: 5.5em;
+  min-width: 8em;
+  flex-shrink: 0;
 }
 .atlas-callout--critical .atlas-callout__label { color: var(--atlas-crit); }
 .atlas-callout--warning  .atlas-callout__label { color: var(--atlas-warn); }
