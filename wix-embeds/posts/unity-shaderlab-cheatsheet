@@ -15,6 +15,7 @@
 <div class="atlas-container">
 
   <div id="post-passport"></div>
+  <div id="post-terminal"></div>
 
   <!-- ════════════════════════════════════════
        КОНТЕНТ ПОСТА — сюда вставляешь всё
@@ -414,8 +415,6 @@ var POST_CONFIG = {
 };
 </script>
 
-<!-- сюда вставляешь JS из atlas-post-embed-template.html (buildFallbackFramework и fetch) -->
-
 <script>
 /* ═══════════════════════════════════════════════════════════════
    AUTO-FETCH
@@ -535,4 +534,5 @@ function applyPostData(d) {
 </script>
 
 </body>
+</html>
 </html>
