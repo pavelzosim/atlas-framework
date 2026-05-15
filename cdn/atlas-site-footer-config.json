@@ -1,19 +1,5 @@
 {
   "tagline": "( ´◔ ω◔`) ノシ",
-  "categories": [
-    { "text": "Shaders",        "url": "https://www.pavelzosim.com/blog/category/shaders" },
-    { "text": "Unreal_Engine",  "url": "https://www.pavelzosim.com/blog/category/unreal-engine" },
-    { "text": "Web_Dev",        "url": "https://www.pavelzosim.com/blog/category/web-dev" },
-    { "text": "R&D_Notes",      "url": "https://www.pavelzosim.com/blog/category/rnd-notes" }
-  ],
-  "tags": [
-    { "text": "HLSL",       "url": "https://www.pavelzosim.com/blog/tags/hlsl" },
-    { "text": "ComputeShaders", "url": "https://www.pavelzosim.com/blog/tags/computeshaders" },
-    { "text": "UE5",        "url": "https://www.pavelzosim.com/blog/tags/ue5" },
-    { "text": "GPU",        "url": "https://www.pavelzosim.com/blog/tags/gpu" },
-    { "text": "CSS",        "url": "https://www.pavelzosim.com/blog/tags/css" },
-    { "text": "WixVelo",    "url": "https://www.pavelzosim.com/blog/tags/wixvelo" }
-  ],
   "links": [
     {
       "label": "Code & Shared Tools",

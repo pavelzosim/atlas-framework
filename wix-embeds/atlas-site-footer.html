@@ -23,56 +23,16 @@ html, body { margin: 0; padding: 0; overflow-x: hidden; background: transparent;
 <body>
 <div id="f"></div>
 <script>
-var CONFIG_URL  = 'https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-site-footer-config.json';
-var BACKEND_URL = 'https://www.pavelzosim.com/_functions/getBlogIndex';
+var CONFIG_URL = 'https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-site-footer-config.json';
 
-/* Fetch links/support from CDN config + tags/categories from backend */
-Promise.all([
-  fetch(CONFIG_URL).then(function(r) { return r.json(); }).catch(function() { return {}; }),
-  fetch(BACKEND_URL).then(function(r) { return r.ok ? r.json() : {}; }).catch(function() { return {}; })
-]).then(function(results) {
-  var config  = results[0];
-  var index   = results[1];
-  renderFooter(config, index);
-});
+fetch(CONFIG_URL)
+  .then(function(r) { return r.json(); })
+  .then(function(c) { renderFooter(c); })
+  .catch(function(e) { console.error('[atlas-footer]', e); });
 
-function renderFooter(c, idx) {
+function renderFooter(c) {
 
-  /* -- Block 1: index (categories + tags from Wix backend) -- */
-  var cats = (idx && idx.categories && idx.categories.length) ? idx.categories : (c.categories || []);
-  var tags = (idx && idx.tags       && idx.tags.length)       ? idx.tags       : (c.tags       || []);
-
-  var categoriesHTML = cats.map(function(cat) {
-    return '<a href="' + cat.url + '" class="atlas-blueprint-link" target="_top">[ ' + cat.text + ' ]</a>';
-  }).join('');
-
-  var tagsHTML = tags.map(function(tag) {
-    return '<a href="' + tag.url + '" class="atlas-blueprint-link" target="_top">#' + tag.text + '</a>';
-  }).join('');
-
-  var indexBlock = '';
-  if (categoriesHTML || tagsHTML) {
-    indexBlock =
-      '<div class="atlas-footer-block atlas-footer-block--index">' +
-        '<div class="atlas-footer-block__log-line">SYS.LOG // INDEX_DATA</div>' +
-        '<div class="atlas-footer-block__wix-content">' +
-          (categoriesHTML
-            ? '<div class="atlas-footer-block__wix-row">' +
-                '<span class="atlas-footer-block__wix-label">CATEGORIES:</span>' +
-                '<div class="atlas-footer-block__wix-list">' + categoriesHTML + '</div>' +
-              '</div>'
-            : '') +
-          (tagsHTML
-            ? '<div class="atlas-footer-block__wix-row">' +
-                '<span class="atlas-footer-block__wix-label">TAGS:</span>' +
-                '<div class="atlas-footer-block__wix-list">' + tagsHTML + '</div>' +
-              '</div>'
-            : '') +
-        '</div>' +
-      '</div>';
-  }
-
-  /* -- Block 2: main (support + matrix) ------------------------ */
+  /* -- support + matrix ---------------------------------------- */
   var supportHTML = '';
   if (c.support) {
     var supportLinks = (c.support.links || []).map(function(l, idx, arr) {
@@ -98,18 +58,17 @@ function renderFooter(c, idx) {
     '</div>';
   }).join('');
 
-  var mainBlock =
-    '<div class="atlas-footer-block atlas-footer-block--main">' +
-      '<div class="atlas-footer-block__support-header">' +
-        '<div class="atlas-footer-block__kaomoji">' + (c.tagline || '') + '</div>' +
-        '<div class="atlas-footer-block__support-title">Let\'s stay in touch</div>' +
-      '</div>' +
-      supportHTML +
-      '<div class="atlas-footer-block__matrix-zone">' + matrixHTML + '</div>' +
-    '</div>';
-
   document.getElementById('f').innerHTML =
-    '<div class="atlas-footer-wrapper">' + indexBlock + mainBlock + '</div>';
+    '<div class="atlas-footer-wrapper">' +
+      '<div class="atlas-footer-block atlas-footer-block--main">' +
+        '<div class="atlas-footer-block__support-header">' +
+          '<div class="atlas-footer-block__kaomoji">' + (c.tagline || '') + '</div>' +
+          '<div class="atlas-footer-block__support-title">Let\'s stay in touch</div>' +
+        '</div>' +
+        supportHTML +
+        '<div class="atlas-footer-block__matrix-zone">' + matrixHTML + '</div>' +
+      '</div>' +
+    '</div>';
 }
 </script>
 </body>
