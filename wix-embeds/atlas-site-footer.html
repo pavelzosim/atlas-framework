@@ -23,21 +23,30 @@ html, body { margin: 0; padding: 0; overflow-x: hidden; background: transparent;
 <body>
 <div id="f"></div>
 <script>
-var CONFIG_URL = 'https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-site-footer-config.json';
+var CONFIG_URL  = 'https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-site-footer-config.json';
+var BACKEND_URL = 'https://www.pavelzosim.com/_functions/getBlogIndex';
 
-fetch(CONFIG_URL)
-  .then(function(r) { return r.json(); })
-  .then(function(c) { renderFooter(c); })
-  .catch(function(e) { console.error('[atlas-footer]', e); });
+/* Fetch links/support from CDN config + tags/categories from backend */
+Promise.all([
+  fetch(CONFIG_URL).then(function(r) { return r.json(); }).catch(function() { return {}; }),
+  fetch(BACKEND_URL).then(function(r) { return r.ok ? r.json() : {}; }).catch(function() { return {}; })
+]).then(function(results) {
+  var config  = results[0];
+  var index   = results[1];
+  renderFooter(config, index);
+});
 
-function renderFooter(c) {
+function renderFooter(c, idx) {
 
-  /* -- Block 1: index (categories + tags) ------------------- */
-  var categoriesHTML = (c.categories || []).map(function(cat) {
+  /* -- Block 1: index (categories + tags from Wix backend) -- */
+  var cats = (idx && idx.categories && idx.categories.length) ? idx.categories : (c.categories || []);
+  var tags = (idx && idx.tags       && idx.tags.length)       ? idx.tags       : (c.tags       || []);
+
+  var categoriesHTML = cats.map(function(cat) {
     return '<a href="' + cat.url + '" class="atlas-blueprint-link" target="_top">[ ' + cat.text + ' ]</a>';
   }).join('');
 
-  var tagsHTML = (c.tags || []).map(function(tag) {
+  var tagsHTML = tags.map(function(tag) {
     return '<a href="' + tag.url + '" class="atlas-blueprint-link" target="_top">#' + tag.text + '</a>';
   }).join('');
 

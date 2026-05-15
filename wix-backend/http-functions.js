@@ -1,7 +1,10 @@
 ﻿/**
- * ATLAS BACKEND - Wix HTTP Function
+ * ATLAS BACKEND - Wix HTTP Functions
  * Install: Dev Mode → Backend → http-functions.js → Publish
- * Endpoint: https://www.pavelzosim.com/_functions/getPostData?slug=SLUG
+ *
+ * Endpoints:
+ *   getPostData  — https://www.pavelzosim.com/_functions/getPostData?slug=SLUG
+ *   getBlogIndex — https://www.pavelzosim.com/_functions/getBlogIndex
  */
 
 import { ok, badRequest, notFound, serverError } from 'wix-http-functions';
@@ -68,4 +71,56 @@ function buildPayload(post, tags) {
     modified: modified,
     tags:     tags
   };
+}
+
+/* ─────────────────────────────────────────────────────────────
+   getBlogIndex — returns all tags and categories for the footer
+   Endpoint: /_functions/getBlogIndex
+───────────────────────────────────────────────────────────── */
+export function get_getBlogIndex(request) {
+  var headers = {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*'
+  };
+
+  var BASE = 'https://www.pavelzosim.com/blog';
+
+  var tagsPromise = wixData.query('Blog/Tags')
+    .limit(100)
+    .find()
+    .then(function (r) {
+      return r.items.map(function (t) {
+        var label = t.label || t.name || t.slug || '';
+        var slug  = t.slug || label.toLowerCase().replace(/\s+/g, '-');
+        return { text: label, url: BASE + '/tags/' + slug };
+      }).filter(function (t) { return t.text; });
+    })
+    .catch(function () { return []; });
+
+  var catsPromise = wixData.query('Blog/Categories')
+    .limit(100)
+    .find()
+    .then(function (r) {
+      return r.items.map(function (c) {
+        var label = c.label || c.title || c.slug || '';
+        var slug  = c.slug || label.toLowerCase().replace(/\s+/g, '-');
+        return { text: label, url: BASE + '/category/' + slug };
+      }).filter(function (c) { return c.text; });
+    })
+    .catch(function () { return []; });
+
+  return Promise.all([tagsPromise, catsPromise])
+    .then(function (results) {
+      return ok({
+        headers: headers,
+        body: JSON.stringify({
+          source:     'atlas-backend',
+          tags:       results[0],
+          categories: results[1]
+        })
+      });
+    })
+    .catch(function (err) {
+      return serverError({ headers: headers, body: JSON.stringify({ error: String(err) }) });
+    });
 }
