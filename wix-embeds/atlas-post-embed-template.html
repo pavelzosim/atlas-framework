@@ -750,7 +750,7 @@ function applyPostData(d) {
 	  renderFooter: function(t, o) {
 		o = o || {};
 		var right = o.author ? o.author+' // '+(o.year||new Date().getFullYear()) : String(o.year||new Date().getFullYear());
-		inj(t,'<div class="atlas-meta-footer"><div>'+(o.label||'End of Report')+'</div><div>'+right+'</div></div>');
+		inj(t,'<div class="atlas-post-footer"><span>'+(o.label||'// END OF LOG')+'</span><span>'+right+'</span></div>');
 	  }
 	};
   }

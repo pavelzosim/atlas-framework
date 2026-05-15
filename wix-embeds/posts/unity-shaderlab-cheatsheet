@@ -22,8 +22,6 @@
   ════════════════════════════════════════ -->
   <div id="atlas-body">
 
-	  <div id="atlas-body">
-
 		  <!-- ═══ BLOCK 01 ═══════════════════════════════════════════ -->
 		  <h2>01 // What is ShaderLab in Unity?</h2>
 
@@ -318,10 +316,64 @@
 		  </ol>
 	  </div>
 
+	  <!-- ═══ BLOCK 08 ═══════════════════════════════════════════ -->
+	  <h2>08 // Shader Declaration & Properties</h2>
+
+	  <p>
+		  Before writing shader code, declare the shader's name and define its properties.
+		  This serves as the entry point for both the developer and the Unity Editor:
+	  </p>
+
+	  <div class="atlas-comparison">
+		  <div class="atlas-comparison__col atlas-comparison__col--before">
+			  <div class="atlas-comparison__label">Shader Identity</div>
+			  <div class="atlas-comparison__body">
+				  The shader name determines how it appears in Unity's material and shader menus
+				  and organizes it into logical folders —
+				  e.g. <span class="atlas-param">Custom/ExampleFlow</span>.
+				  Critical for maintaining a clean project structure.
+			  </div>
+		  </div>
+		  <div class="atlas-comparison__col atlas-comparison__col--after">
+			  <div class="atlas-comparison__label">Inspector Properties</div>
+			  <div class="atlas-comparison__body">
+				  The <span class="atlas-param">Properties</span> block exposes variables
+				  (textures, colors, floats) editable in the Inspector without touching code.
+				  Color tints and texture inputs can be adjusted in real time.
+			  </div>
+		  </div>
+	  </div>
+
+	  <div class="atlas-code-card atlas-code-card--standard">
+		  <div class="atlas-card-label">Step 1 — Shader Name & Properties Block</div>
+		  <div class="atlas-code-container">
+			  <pre>
+				  <span class="atlas-hl-key">Shader</span> <span class="atlas-hl-str">"Custom/ExampleFlow"</span>
+				  {
+				  <span class="atlas-hl-key">Properties</span>
+				  {
+				  <span class="atlas-hl-macro">_MainTex</span> (<span class="atlas-hl-str">"Texture"</span>, <span class="atlas-hl-type">2D</span>)    = <span class="atlas-hl-str">"white"</span> {}
+				  <span class="atlas-hl-macro">_Color</span>   (<span class="atlas-hl-str">"Tint"</span>,    <span class="atlas-hl-type">Color</span>) = (1,1,1,1)
+				  }
+				  }
+			  </pre>
+		  </div>
+	  </div>
+
+	  <figure class="atlas-figure">
+		<img
+		  src="https://static.wixstatic.com/media/ace175_17119243e76545398ebbd5abde114bd7~mv2.png/v1/fill/w_530,h_311,al_c,lg_1,q_85,enc_avif,quality_auto/ace175_17119243e76545398ebbd5abde114bd7~mv2.png"
+		  alt="Shader Declaration &amp; Properties example">
+		<figcaption>FIG_01 — Shader Declaration &amp; Properties: пример структуры блока Properties в ShaderLab</figcaption>
+	  </figure>
+
     <!-- ... остальные части ... -->
 
   </div>
   <!-- конец #atlas-body -->
+
+  <!-- Post footer mount -->
+  <div id="post-footer"></div>
 
 </div>
 <!-- конец .atlas-container -->
@@ -331,27 +383,156 @@
    POST_CONFIG — заполняешь один раз
 ════════════════════════════════════════ */
 var POST_CONFIG = {
-  user:      'pavelzosim',
-  path:      '~',
-  command:   'cat unity_shaderlab.log',
-  prefix:    'SYSTEM_ATLAS // R&D_LOG',
-	project:   'UNITY_SHADERLAB',
-	module:    'surface_shaders',
-	version:   '1.3.3',
-	logId:     '#003',
-	status:    'STABLE',
-	slug:      'unity-shaderlab-cheatsheet',  // ← из URL поста
-	author:    '...',
-	created:   '----.--.--',
-	modified:  null,
-	wordCount: 2400,
-	title:     null,
-	tags:      [],
-	tagBaseUrl: 'https://www.pavelzosim.com/blog/tags/'
-	};
+  user:        'pavelzosim',
+  path:        '~/unity',
+  command:     'cat unity_shaderlab.log',
+  prefix:      'SYSTEM_ATLAS // R&D_LOG',
+  project:     'UNITY_SHADERLAB',
+  module:      'surface_shaders',
+  version:     '1.3.3',
+  logId:       '#003',
+  status:      'STABLE',
+  slug:        'unity-shaderlab-cheatsheet',
+  author:      '...',
+  created:     '----.--.--',
+  modified:    null,
+  wordCount:   2400,
+  title:       null,
+  tags:        [],
+  tagBaseUrl:  'https://www.pavelzosim.com/blog/tags/',
+  footerLabel: '// END OF LOG — UNITY_SHADERLAB',
+  footerAuthor: 'pavelzosim',
+  footerYear:   '2025',
+  terminalLines: [
+	'**[ATLAS_COMPILE]** unity_shaderlab.log',
+	'> ShaderLab syntax: ~~OK~~',
+	'> Surface shader variants: ~~compiled (14)~~',
+	'> Pass count: 3 | Fallback: ~~defined~~',
+	'> DepthMask / Blend state: ~~verified~~',
+	'> Status: ~~STABLE~~'
+  ]
+};
 </script>
 
 <!-- сюда вставляешь JS из atlas-post-embed-template.html (buildFallbackFramework и fetch) -->
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   AUTO-FETCH
+═══════════════════════════════════════════════════════════════ */
+var BACKEND_URL = 'https://www.pavelzosim.com/_functions/getPostData';
+
+function applyPostData(d) {
+  if (d.author)                 POST_CONFIG.author   = d.author;
+  if (d.title)                  POST_CONFIG.title    = d.title;
+  if (d.created)                POST_CONFIG.created  = d.created;
+  if (d.modified !== undefined) POST_CONFIG.modified = d.modified;
+  if (Array.isArray(d.tags) && d.tags.length) POST_CONFIG.tags = d.tags;
+  if (window._atlasAF) runWithFramework(window._atlasAF);
+}
+
+(function () {
+  var slug = POST_CONFIG.slug || '';
+  if (!slug) return;
+  fetch(BACKEND_URL + '?slug=' + encodeURIComponent(slug))
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (data) { if (data && !data.error) applyPostData(data); })
+    .catch(function () {});
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   FRAMEWORK INIT
+═══════════════════════════════════════════════════════════════ */
+(function () {
+  function tryInit() {
+    if (window.AtlasFramework) { runWithFramework(window.AtlasFramework); }
+    else { runWithFramework(buildFallbackFramework()); }
+  }
+
+  function runWithFramework(AF) {
+    window._atlasAF = AF;
+    var fb = document.getElementById('post-meta-fallback');
+    if (fb) fb.style.display = 'none';
+    AF.renderEngineeringPassport('#post-passport', {
+      user:      POST_CONFIG.user,
+      path:      POST_CONFIG.path,
+      command:   POST_CONFIG.command,
+      prefix:    POST_CONFIG.prefix,
+      project:   POST_CONFIG.project,
+      module:    POST_CONFIG.module,
+      version:   POST_CONFIG.version,
+      logId:     POST_CONFIG.logId,
+      status:    POST_CONFIG.status,
+      author:    POST_CONFIG.author,
+      title:     POST_CONFIG.title,
+      created:   POST_CONFIG.created,
+      modified:  POST_CONFIG.modified,
+      wordCount: POST_CONFIG.wordCount,
+      tags:      POST_CONFIG.tags
+    });
+    AF.renderTerminal('#post-terminal', { lines: POST_CONFIG.terminalLines });
+    AF.renderFooter('#post-footer', {
+      label:  POST_CONFIG.footerLabel,
+      author: POST_CONFIG.footerAuthor,
+      year:   POST_CONFIG.footerYear
+    });
+  }
+
+  function buildFallbackFramework() {
+    function $i(sel) { return typeof sel === 'string' ? document.querySelector(sel) : sel; }
+    function inj(t, h) { var el = $i(t); if (el) el.innerHTML = h; }
+    return {
+      renderEngineeringPassport: function(t, o) {
+        o = o || {};
+        var status  = (o.status || 'DRAFT').toUpperCase();
+        var rt = o.readTime || (o.wordCount ? '~'+Math.ceil(Number(o.wordCount)/200)+' MIN' : null);
+        var meta = [ {k:'AUTH',v:o.author||'—'}, {k:'CREATED',v:o.created||'—'} ];
+        if (o.modified) meta.push({k:'LAST_MODIFIED',v:o.modified});
+        if (rt)         meta.push({k:'READ',v:rt});
+        var metaHTML = meta.map(function(m){ return '<span class="bp-meta-item"><b>'+m.k+'</b>: '+m.v+'</span>'; }).join('');
+        var tags = Array.isArray(o.tags) ? o.tags : [];
+        function toSlug(s) { return s.toLowerCase().replace(/\s+/g,'-'); }
+        var tagsHTML = tags.length ? '<div class="bp-tags">'+tags.map(function(tg){ return '<a href="https://www.pavelzosim.com/blog/tags/'+toSlug(tg)+'" class="atlas-blueprint-link" target="_top">#'+tg+'</a>'; }).join('')+'</div>' : '';
+        inj(t,
+          '<div class="passport-bp">'+
+            '<div class="bp-title-bar">'+
+              '<div class="bp-title-bar__left">'+
+                '<span class="bp-user-prompt">'+(o.user||'pavelzosim')+'</span>'+
+                '<span style="opacity:.4">:</span>'+
+                '<span class="bp-path-prompt">'+(o.path||'~')+'</span>'+
+                '<span class="bp-root-char">#</span>'+
+                '<span class="bp-command-text">'+(o.command||'cat log')+'</span>'+
+              '</div>'+
+              '<div class="bp-sys-status">[ SYS_STATUS: <b>'+status+'</b> ]</div>'+
+            '</div>'+
+            (o.title ? '<div class="bp-main-title">'+o.title+'</div>' : '')+
+            '<div class="bp-grid">'+
+              '<div class="bp-cell"><div><span class="bp-key">PROJECT</span><span class="bp-val">'+(o.project||'—')+'</span></div><div><span class="bp-key">MODULE</span><span class="bp-val">'+(o.module||'—')+'</span></div></div>'+
+              '<div class="bp-cell"><div><span class="bp-key">VERSION</span><span class="bp-val">'+(o.version||'—')+'</span></div><div><span class="bp-key">LOG_ID</span><span class="bp-val">'+(o.logId||'—')+'</span></div></div>'+
+            '</div>'+
+            '<div class="bp-meta">'+metaHTML+'</div>'+
+            tagsHTML+
+          '</div>');
+      },
+      renderTerminal: function(t, o) {
+        o = o || {};
+        var lines = (o.lines||[]).map(function(l){
+          return l.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/!!(.+?)!!/g,'<span class="red">$1</span>').replace(/~~(.+?)~~/g,'<span class="ok">$1</span>');
+        }).join('\n');
+        inj(t,'<div class="atlas-terminal">'+lines+'</div>');
+      },
+      renderFooter: function(t, o) {
+        o = o || {};
+        var right = o.author ? o.author+' // '+(o.year||new Date().getFullYear()) : String(o.year||new Date().getFullYear());
+        inj(t,'<div class="atlas-post-footer"><span>'+(o.label||'// END OF LOG')+'</span><span>'+right+'</span></div>');
+      }
+    };
+  }
+
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', tryInit); }
+  else { tryInit(); }
+}());
+</script>
 
 </body>
 </html>
