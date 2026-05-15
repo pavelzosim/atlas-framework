@@ -133,6 +133,9 @@ html, body { margin: 0; padding: 0; box-sizing: border-box; overflow-x: hidden; 
 .atlas-passport__meta-item b { font-weight: 700; opacity: 1; }
 .atlas-passport__tags  { border-top: 1px solid var(--atlas-border); padding: 8px 14px; display: flex; flex-wrap: wrap; gap: 6px; }
 .atlas-passport__tag   { font-family: var(--atlas-font-mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; padding: 3px 8px; border: 1px solid rgba(0,0,0,.4); opacity: .55; }
+/* Clickable tag variant — used when tagBaseUrl is set in CONFIG */
+.atlas-passport__tag--link { text-decoration: none; color: inherit; cursor: pointer; transition: opacity .15s, background .15s; }
+.atlas-passport__tag--link:hover { opacity: 1; background: var(--atlas-ink); color: var(--atlas-bg); }
 
 /* ── Badges ─────────────────────────────────────────────────── */
 .atlas-badge { display: inline-block; font-family: var(--atlas-font-mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; padding: 2px 7px; border: 1px solid currentColor; }

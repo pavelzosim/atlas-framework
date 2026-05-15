@@ -792,11 +792,61 @@ A: Да. Файл `atlas-post-embed-template.html` полностью автон
 
 ---
 
-## Часть 7 — Структура файлов (финальное дерево)
+## Часть 6 — Автоматизация метаданных через Wix Velo
+
+По умолчанию поля `author`, `created`, `modified`, `tags` заполняются вручную в блоке `POST_CONFIG`.  
+Если включён **Dev Mode** (Wix Velo), эти поля можно подставлять автоматически с реальными данными из Wix Blog.
+
+### Как это работает
+
+```
+Wix Blog Post Page
+  └─ Velo Page Code (atlas-velo-post-page.js)
+       └─ читает post.firstPublishedDate, post.tags, etc.
+            └─ postMessage → HTML iframe
+                 └─ listener в atlas-site-header.html / atlas-post-embed-template.html
+                      └─ обновляет CONFIG + перерисовывает passport
+```
+
+Iframe изолирован от Wix; единственный способ передать данные — `postMessage`.
+
+### Шаги настройки
+
+1. **Включи Dev Mode** в Wix Editor.
+2. Открой страницу поста → кнопка **Page Code**.
+3. Вставь содержимое файла `atlas-velo-post-page.js`.
+4. Убедись, что ID HTML-элементов в Wix совпадают:
+   - `#headerEmbed` — элемент с `atlas-site-header.html`
+   - `#postEmbed`   — элемент с `atlas-post-embed-template.html`  
+   *(переименуй в Properties Panel если нужно)*
+5. Убедись, что на странице поста есть компонент Wix Blog с ID `#wixBlogPostPage1`.  
+   *(обычно уже есть на шаблонных страницах блога)*
+6. **Publish** — и готово.
+
+### Что заполняется автоматически
+
+| Поле | Источник в Wix |
+|---|---|
+| `author` | `post.author.nickname` или `post.author.name` |
+| `created` | `post.firstPublishedDate` → `YYYY.MM.DD` |
+| `modified` | `post.lastPublishedDate` → `YYYY.MM.DD` (скрыто если = created) |
+| `tags` | `post.tags[].label` |
+| `wordCount` | не передаётся (Wix не раскрывает текст поста) — задай вручную |
+
+### Что по-прежнему заполняется вручную
+
+`prefix`, `project`, `module`, `version`, `logId`, `status`, `terminalLines` — это специфика каждого поста, Wix их не знает.
+
+---
+
+
 
 ```
 atlas-head-custom-code.html          ← вставить в Wix Head (1 раз)
 atlas-body-end-custom-code.html      ← вставить в Wix Body-end (1 раз)
+atlas-site-header.html               ← standalone passport embed
+atlas-site-footer.html               ← standalone footer embed
+atlas-velo-post-page.js              ← Velo Page Code (1 раз на страницу поста)
 atlas-post-embed-template.html       ← ОРИГИНАЛ ШАБЛОНА (не трогать)
 ATLAS-FRAMEWORK-GUIDE.md            ← этот файл
 

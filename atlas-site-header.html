@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  ATLAS SITE HEADER — Engineering Passport Embed             ║
+  ║                                                              ║
+  ║  HOW TO USE:                                                 ║
+  ║  1. Edit the CONFIG block below (project, status, tags…)    ║
+  ║  2. Paste the entire file into a Wix HTML iframe element.   ║
+  ║  3. Adjust iframe height to fit the passport block.         ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/atlas-framework.css">
+  <style>
+	*, *::before, *::after { box-sizing: border-box; }
+	html, body { margin: 0; padding: 0; overflow-x: hidden; background: transparent; }
+  </style>
+</head>
+<body>
+
+<div class="atlas-container">
+  <div id="site-passport"></div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   CONFIG — edit these fields for each page / post header
+   ───────────────────────────────────────────────────────────────
+   prefix   — static system label shown in the title bar
+   project  — project code (no spaces)
+   module   — sub-system or topic
+   version  — document version
+   logId    — sequential log number
+   status   — controls badge colour:
+				DRAFT | IN_PROGRESS | EXPERIMENTAL
+				STABLE | COMPLETED | DEPRECATED
+   author   — initials / handle
+   created  — creation date  YYYY.MM.DD
+   modified — last edit date YYYY.MM.DD  (null = hide)
+   wordCount— auto-computes readTime (~200 wpm); or set readTime manually
+   tags     — array of keyword strings
+   tagBaseUrl — base URL for tag filter links, e.g. '/blog?tag='
+               set to null to render tags as plain text (no links)
+═══════════════════════════════════════════════════════════════ */
+var CONFIG = {
+  prefix:     'SYSTEM_ATLAS // R&D_LOG',
+  project:    'SUN_SURFACE_UE5',
+  module:     'compute_shaders',
+  version:    '0.8.4-ALPHA',
+  logId:      '#042',
+  status:     'EXPERIMENTAL',
+  author:     'P_ZOSIM',
+  created:    '2025.07.09',
+  modified:   '2025.07.11',
+  wordCount:  1600,
+  tags:       ['ComputeShaders', 'HLSL', 'UE5', 'GPU'],
+
+  // Base URL for tag filter links — Wix Blog pattern: /blog/tags/tag-slug
+  // Tags are auto-converted to slug: lowercase + spaces replaced by hyphens
+  // e.g. "Compute Shaders" → https://www.pavelzosim.com/blog/tags/compute-shaders
+  tagBaseUrl: 'https://www.pavelzosim.com/blog/tags/'
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   VELO BRIDGE — receives post metadata from Wix page script.
+   Only auto-generated fields are overwritten (author, created,
+   modified, tags, wordCount). Manual fields (project, module,
+   version, logId, status, prefix) stay as set in CONFIG above.
+   Message schema: { source:'atlas-velo', author, created,
+                     modified, wordCount, tags }
+═══════════════════════════════════════════════════════════════ */
+window.addEventListener('message', function (e) {
+  var d = e.data;
+  if (!d || d.source !== 'atlas-velo') return;
+  if (d.author)               CONFIG.author    = d.author;
+  if (d.created)              CONFIG.created   = d.created;
+  if (d.modified !== undefined) CONFIG.modified = d.modified;
+  if (typeof d.wordCount === 'number') CONFIG.wordCount = d.wordCount;
+  if (Array.isArray(d.tags) && d.tags.length) CONFIG.tags = d.tags;
+  render(); // re-render passport with fresh data
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDERER — do not edit below this line
+═══════════════════════════════════════════════════════════════ */
+(function () {
+  var scMap = {
+	'DRAFT':'muted', 'IN_PROGRESS':'active', 'EXPERIMENTAL':'warn',
+	'STABLE':'ok', 'COMPLETED':'ok', 'DEPRECATED':'crit'
+  };
+
+  function render() {
+	var o      = CONFIG;
+	var status = (o.status || 'DRAFT').toUpperCase();
+	var bCls   = scMap[status] || 'muted';
+	var sCls   = 'status--' + status.toLowerCase();
+	var rt     = o.readTime || (o.wordCount ? '~' + Math.ceil(Number(o.wordCount) / 200) + ' MIN' : null);
+
+	var meta = [
+	  { k: 'AUTH',    v: o.author  || '—' },
+	  { k: 'CREATED', v: o.created || '—' }
+	];
+	if (o.modified) meta.push({ k: 'LAST_MODIFIED', v: o.modified });
+	if (rt)         meta.push({ k: 'READ', v: rt });
+
+	var metaHTML = meta.map(function (m) {
+	  return '<span class="atlas-passport__meta-item"><b>' + m.k + '</b>: ' + m.v + '</span>';
+	}).join('');
+
+	var tags     = Array.isArray(o.tags) ? o.tags : [];
+	var baseUrl  = o.tagBaseUrl || null;
+	function toSlug(s) { return s.toLowerCase().replace(/\s+/g, '-'); }
+	var tagsHTML = tags.length
+	  ? '<div class="atlas-passport__tags">' +
+		  tags.map(function (tg) {
+			return baseUrl
+			  ? '<a href="' + baseUrl + toSlug(tg) + '" class="atlas-passport__tag atlas-passport__tag--link" target="_top">' + tg + '</a>'
+			  : '<span class="atlas-passport__tag">' + tg + '</span>';
+		  }).join('') +
+		'</div>'
+	  : '';
+
+	document.getElementById('site-passport').innerHTML =
+	  '<div class="atlas-passport">' +
+		'<div class="atlas-title-bar">' +
+		  '<div class="atlas-title-bar__left">' +
+			'<span class="atlas-chrome-btn">▲</span>' +
+			'<span>' + (o.prefix || 'SYSTEM_ATLAS // R&D_LOG') + '</span>' +
+		  '</div>' +
+		  '<div class="atlas-title-bar__right">' +
+			'<span class="atlas-badge atlas-badge--' + bCls + ' ' + sCls + '">' + status + '</span>' +
+			'<span class="atlas-chrome-btn">—</span>' +
+			'<span class="atlas-chrome-btn">□</span>' +
+			'<span class="atlas-chrome-btn">✕</span>' +
+		  '</div>' +
+		'</div>' +
+		'<div class="atlas-passport__grid">' +
+		  '<div class="atlas-passport__cell">' +
+			'<div><span class="atlas-passport__key">PROJECT</span><span class="atlas-passport__value">' + (o.project || '—') + '</span></div>' +
+			'<div><span class="atlas-passport__key">MODULE</span><span class="atlas-passport__value">' + (o.module  || '—') + '</span></div>' +
+		  '</div>' +
+		  '<div class="atlas-passport__cell">' +
+			'<div><span class="atlas-passport__key">VERSION</span><span class="atlas-passport__value ' + sCls + '">' + (o.version || '—') + '</span></div>' +
+			'<div><span class="atlas-passport__key">LOG_ID</span><span class="atlas-passport__value">'  + (o.logId   || '—') + '</span></div>' +
+		  '</div>' +
+		'</div>' +
+		'<div class="atlas-passport__meta">' + metaHTML + '</div>' +
+		tagsHTML +
+	  '</div>';
+  }
+
+  // expose render so the postMessage bridge can call it
+  window.render = render;
+
+  if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', render);
+  } else {
+	render();
+  }
+}());
+</script>
+</body>
+</html>

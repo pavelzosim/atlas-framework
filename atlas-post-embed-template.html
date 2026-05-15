@@ -560,31 +560,36 @@ result = lerp(cheap,
 
 <script>
 /* ═══════════════════════════════════════════════════════════════
-   POST CONFIG — edit this block for each post
+   POST CONFIG — static fallback values
+   These are used when the post is opened locally or if Velo
+   postMessage data has not arrived yet.
+   When embedded in Wix, the Velo page script (atlas-velo-post-page.js)
+   automatically overwrites: created, modified, tags, author, wordCount.
+   Fields you always fill manually: project, module, version, logId,
+   status, prefix, terminalLines, footer*.
 ═══════════════════════════════════════════════════════════════ */
 var POST_CONFIG = {
-  /* ── ENGINEERING PASSPORT ───────────────────────────────────
-	 Edit these fields for each new post.
-	 status options: DRAFT | IN_PROGRESS | EXPERIMENTAL | STABLE | COMPLETED | DEPRECATED
-  ──────────────────────────────────────────────────────────── */
-  prefix:    'SYSTEM_ATLAS // R&D_LOG',   // Zone A — static system label
+  /* ── Always fill these manually ────────────────────────────── */
+  prefix:    'SYSTEM_ATLAS // R&D_LOG',
   project:   'SUN_SURFACE_UE5',
   module:    'compute_shaders',
   version:   '0.8.4-ALPHA',
   logId:     '#042',
-  status:    'EXPERIMENTAL',              // controls badge color
+  status:    'EXPERIMENTAL',   // DRAFT | IN_PROGRESS | EXPERIMENTAL | STABLE | COMPLETED | DEPRECATED
+
+  /* ── Auto-filled by Velo (fallback values used locally) ────── */
   author:    'P_ZOSIM',
   created:   '2025.07.09',
-  modified:  '2025.07.11',               // set null to hide
-  wordCount: 1600,                        // auto-computes readTime (~8 MIN)
+  modified:  '2025.07.11',     // null = hide
+  wordCount: 1600,
   tags:      ['ComputeShaders', 'HLSL', 'UE5', 'GPU'],
 
-  /* ── FOOTER ─────────────────────────────────────────────── */
+  /* ── Footer ─────────────────────────────────────────────────── */
   footerLabel:  'End of Technical Report',
   footerAuthor: 'Pavel Zosim',
   footerYear:   '2025',
 
-  /* ── TERMINAL LINES — **bold**, !!red!!, ~~green~~ ─────── */
+  /* ── Terminal lines — **bold**, !!red!!, ~~green~~ ──────────── */
   terminalLines: [
 	'**[GPU_NSIGHT_REPORT]**',
 	'> Initiating Warp Occupancy analysis...',
@@ -594,6 +599,25 @@ var POST_CONFIG = {
 	'> **Recommendation:** Reduce variable count in shader scope.'
   ]
 };
+
+/* ═══════════════════════════════════════════════════════════════
+   VELO BRIDGE — receives post data from Wix page script
+   Overwrites the auto-filled fields above with real Wix data.
+   Triggers a re-render of the passport if already mounted.
+═══════════════════════════════════════════════════════════════ */
+window.addEventListener('message', function (e) {
+  var d = e.data;
+  if (!d || d.source !== 'atlas-velo') return;
+  if (d.author)               POST_CONFIG.author    = d.author;
+  if (d.created)              POST_CONFIG.created   = d.created;
+  if (d.modified !== undefined) POST_CONFIG.modified = d.modified;
+  if (typeof d.wordCount === 'number') POST_CONFIG.wordCount = d.wordCount;
+  if (Array.isArray(d.tags) && d.tags.length) POST_CONFIG.tags = d.tags;
+  /* Re-render passport with fresh data */
+  if (window._atlasAF) {
+	runWithFramework(window._atlasAF);
+  }
+});
 
 /* ═══════════════════════════════════════════════════════════════
    FRAMEWORK INIT
@@ -610,6 +634,7 @@ var POST_CONFIG = {
   }
 
   function runWithFramework(AF) {
+	window._atlasAF = AF;
 	/* Hide static fallback header */
 	var fb = document.getElementById('post-meta-fallback');
 	if (fb) fb.style.display = 'none';
@@ -672,9 +697,12 @@ var POST_CONFIG = {
 		  return '<span class="atlas-passport__meta-item"><b>'+m.k+'</b>: '+m.v+'</span>';
 		}).join('');
 		var tags = Array.isArray(o.tags) ? o.tags : [];
+		function toSlug(s) { return s.toLowerCase().replace(/\s+/g, '-'); }
 		var tagsHTML = tags.length
 		  ? '<div class="atlas-passport__tags">'+
-			  tags.map(function(tg){ return '<span class="atlas-passport__tag">'+tg+'</span>'; }).join('')+
+			  tags.map(function(tg){
+				return '<a href="https://www.pavelzosim.com/blog/tags/'+toSlug(tg)+'" class="atlas-passport__tag atlas-passport__tag--link" target="_top">'+tg+'</a>';
+			  }).join('')+
 			'</div>' : '';
 		inj(t,
 		  '<div class="atlas-passport">'+
