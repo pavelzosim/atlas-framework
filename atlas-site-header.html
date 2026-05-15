@@ -4,9 +4,11 @@
   ║  ATLAS SITE HEADER — Engineering Passport Embed             ║
   ║                                                              ║
   ║  HOW TO USE:                                                 ║
-  ║  1. Edit the CONFIG block below (project, status, tags…)    ║
-  ║  2. Paste the entire file into a Wix HTML iframe element.   ║
-  ║  3. Adjust iframe height to fit the passport block.         ║
+  ║  1. Edit CONFIG: prefix, project, module, version, logId,   ║
+  ║     status, slug (copy from post URL).                      ║
+  ║  2. Paste entire file into a Wix HTML iframe element.       ║
+  ║  3. Install wix-http-functions.js in Wix Backend (once).    ║
+  ║  4. Adjust iframe height to fit the passport block.         ║
   ╚══════════════════════════════════════════════════════════════╝
 -->
 <html lang="en">
@@ -52,35 +54,59 @@ var CONFIG = {
   version:    '0.8.4-ALPHA',
   logId:      '#042',
   status:     'EXPERIMENTAL',
-  author:     'P_ZOSIM',
-  created:    '2025.07.09',
-  modified:   '2025.07.11',
-  wordCount:  1600,
-  tags:       ['ComputeShaders', 'HLSL', 'UE5', 'GPU'],
 
-  // Base URL for tag filter links — Wix Blog pattern: /blog/tags/tag-slug
-  // Tags are auto-converted to slug: lowercase + spaces replaced by hyphens
-  // e.g. "Compute Shaders" → https://www.pavelzosim.com/blog/tags/compute-shaders
+  // ── Copy slug from post URL: pavelzosim.com/post/THIS-PART ───────
+  // e.g. for /post/my-post-slug → slug: 'my-post-slug'
+  slug:       'procedural-sun-ue5-hlsl-compute-shaders',
+
+  // ── Auto-filled by backend (shown as placeholders until response) ─
+  author:     '...',
+  created:    '----.--.--',
+  modified:   null,
+  wordCount:  null,
+  title:      null,
+  tags:       [],
+
   tagBaseUrl: 'https://www.pavelzosim.com/blog/tags/'
 };
 
 /* ═══════════════════════════════════════════════════════════════
-   VELO BRIDGE — receives post metadata from Wix page script.
-   Only auto-generated fields are overwritten (author, created,
-   modified, tags, wordCount). Manual fields (project, module,
-   version, logId, status, prefix) stay as set in CONFIG above.
-   Message schema: { source:'atlas-velo', author, created,
-                     modified, wordCount, tags }
+   AUTO-FETCH — uses CONFIG.slug to call the Wix backend HTTP
+   function and populate author, created, modified, tags.
+   Requires wix-http-functions.js installed in Wix Backend.
 ═══════════════════════════════════════════════════════════════ */
+var BACKEND_URL = 'https://www.pavelzosim.com/_functions/getPostData';
+
+function applyData(d) {
+  if (d.author)                CONFIG.author   = d.author;
+  if (d.title)                 CONFIG.title    = d.title;
+  if (d.created)               CONFIG.created  = d.created;
+  if (d.modified !== undefined) CONFIG.modified = d.modified;
+  if (Array.isArray(d.tags) && d.tags.length) CONFIG.tags = d.tags;
+  window.render && window.render();
+}
+
+// 1. Fetch post data using slug from CONFIG
+(function () {
+  var slug = CONFIG.slug || '';
+  if (!slug) {
+    console.warn('[ATLAS] No slug in CONFIG — showing fallback values.');
+    return;
+  }
+  fetch(BACKEND_URL + '?slug=' + encodeURIComponent(slug))
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (data) {
+      if (data && !data.error) applyData(data);
+      else console.warn('[ATLAS] Backend returned:', JSON.stringify(data));
+    })
+    .catch(function (err) { console.warn('[ATLAS] Fetch failed:', err); });
+})();
+
+// 2. Accept postMessage as fallback (e.g. from Velo if needed)
 window.addEventListener('message', function (e) {
   var d = e.data;
-  if (!d || d.source !== 'atlas-velo') return;
-  if (d.author)               CONFIG.author    = d.author;
-  if (d.created)              CONFIG.created   = d.created;
-  if (d.modified !== undefined) CONFIG.modified = d.modified;
-  if (typeof d.wordCount === 'number') CONFIG.wordCount = d.wordCount;
-  if (Array.isArray(d.tags) && d.tags.length) CONFIG.tags = d.tags;
-  render(); // re-render passport with fresh data
+  if (!d || d.source !== 'atlas-backend') return;
+  applyData(d);
 });
 
 /* ═══════════════════════════════════════════════════════════════
@@ -137,6 +163,7 @@ window.addEventListener('message', function (e) {
 			'<span class="atlas-chrome-btn">✕</span>' +
 		  '</div>' +
 		'</div>' +
+		(o.title ? '<div class="atlas-passport__title">' + o.title + '</div>' : '') +
 		'<div class="atlas-passport__grid">' +
 		  '<div class="atlas-passport__cell">' +
 			'<div><span class="atlas-passport__key">PROJECT</span><span class="atlas-passport__value">' + (o.project || '—') + '</span></div>' +
@@ -155,7 +182,7 @@ window.addEventListener('message', function (e) {
   // expose render so the postMessage bridge can call it
   window.render = render;
 
-  if (document.readyState === 'loading') {
+  if (document.readyState === 'loading') { 
 	document.addEventListener('DOMContentLoaded', render);
   } else {
 	render();

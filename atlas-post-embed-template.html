@@ -560,13 +560,11 @@ result = lerp(cheap,
 
 <script>
 /* ═══════════════════════════════════════════════════════════════
-   POST CONFIG — static fallback values
-   These are used when the post is opened locally or if Velo
-   postMessage data has not arrived yet.
-   When embedded in Wix, the Velo page script (atlas-velo-post-page.js)
-   automatically overwrites: created, modified, tags, author, wordCount.
-   Fields you always fill manually: project, module, version, logId,
-   status, prefix, terminalLines, footer*.
+   POST CONFIG
+   Always fill manually: project, module, version, logId, status,
+   prefix, slug, terminalLines, footer*.
+   Auto-filled by backend: author, created, modified, tags.
+   Fallback values below are shown until backend responds.
 ═══════════════════════════════════════════════════════════════ */
 var POST_CONFIG = {
   /* ── Always fill these manually ────────────────────────────── */
@@ -577,12 +575,16 @@ var POST_CONFIG = {
   logId:     '#042',
   status:    'EXPERIMENTAL',   // DRAFT | IN_PROGRESS | EXPERIMENTAL | STABLE | COMPLETED | DEPRECATED
 
-  /* ── Auto-filled by Velo (fallback values used locally) ────── */
-  author:    'P_ZOSIM',
-  created:   '2025.07.09',
-  modified:  '2025.07.11',     // null = hide
-  wordCount: 1600,
-  tags:      ['ComputeShaders', 'HLSL', 'UE5', 'GPU'],
+  /* ── Copy slug from post URL: pavelzosim.com/post/THIS-PART ── */
+  slug:      'procedural-sun-ue5-hlsl-compute-shaders',
+
+  /* ── Auto-filled by backend (fallback values shown locally) ── */
+  author:    '...',
+  created:   '----.--.--',
+  modified:  null,
+  wordCount: null,
+  title:     null,
+  tags:      [],
 
   /* ── Footer ─────────────────────────────────────────────────── */
   footerLabel:  'End of Technical Report',
@@ -601,23 +603,29 @@ var POST_CONFIG = {
 };
 
 /* ═══════════════════════════════════════════════════════════════
-   VELO BRIDGE — receives post data from Wix page script
-   Overwrites the auto-filled fields above with real Wix data.
-   Triggers a re-render of the passport if already mounted.
+   AUTO-FETCH — uses POST_CONFIG.slug to call the Wix backend
+   and populate author, created, modified, tags automatically.
+   Requires wix-http-functions.js installed in Wix Backend.
 ═══════════════════════════════════════════════════════════════ */
-window.addEventListener('message', function (e) {
-  var d = e.data;
-  if (!d || d.source !== 'atlas-velo') return;
-  if (d.author)               POST_CONFIG.author    = d.author;
-  if (d.created)              POST_CONFIG.created   = d.created;
+var BACKEND_URL = 'https://www.pavelzosim.com/_functions/getPostData';
+
+function applyPostData(d) {
+  if (d.author)                 POST_CONFIG.author   = d.author;
+  if (d.title)                  POST_CONFIG.title    = d.title;
+  if (d.created)                POST_CONFIG.created  = d.created;
   if (d.modified !== undefined) POST_CONFIG.modified = d.modified;
-  if (typeof d.wordCount === 'number') POST_CONFIG.wordCount = d.wordCount;
   if (Array.isArray(d.tags) && d.tags.length) POST_CONFIG.tags = d.tags;
-  /* Re-render passport with fresh data */
-  if (window._atlasAF) {
-	runWithFramework(window._atlasAF);
-  }
-});
+  if (window._atlasAF) runWithFramework(window._atlasAF);
+}
+
+(function () {
+  var slug = POST_CONFIG.slug || '';
+  if (!slug) return;
+  fetch(BACKEND_URL + '?slug=' + encodeURIComponent(slug))
+	.then(function (r) { return r.ok ? r.json() : null; })
+	.then(function (data) { if (data && !data.error) applyPostData(data); })
+	.catch(function () {});
+})();
 
 /* ═══════════════════════════════════════════════════════════════
    FRAMEWORK INIT
@@ -648,6 +656,7 @@ window.addEventListener('message', function (e) {
 	  logId:     POST_CONFIG.logId,
 	  status:    POST_CONFIG.status,
 	  author:    POST_CONFIG.author,
+	  title:     POST_CONFIG.title,
 	  created:   POST_CONFIG.created,
 	  modified:  POST_CONFIG.modified,
 	  wordCount: POST_CONFIG.wordCount,
@@ -717,6 +726,7 @@ window.addEventListener('message', function (e) {
 				'<span class="atlas-chrome-btn">✕</span>'+
 			  '</div>'+
 			'</div>'+
+			(o.title ? '<div class="atlas-passport__title">'+o.title+'</div>' : '')+
 			'<div class="atlas-passport__grid">'+
 			  '<div class="atlas-passport__cell">'+
 				'<div><span class="atlas-passport__key">PROJECT</span><span class="atlas-passport__value">'+project+'</span></div>'+

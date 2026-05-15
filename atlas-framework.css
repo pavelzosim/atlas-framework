@@ -137,6 +137,9 @@ html, body { margin: 0; padding: 0; box-sizing: border-box; overflow-x: hidden; 
 .atlas-passport__tag--link { text-decoration: none; color: inherit; cursor: pointer; transition: opacity .15s, background .15s; }
 .atlas-passport__tag--link:hover { opacity: 1; background: var(--atlas-ink); color: var(--atlas-bg); }
 
+/* ── Passport title (H1 replacement) ───────────────────────── */
+.atlas-passport__title { border-top: 1px solid var(--atlas-border-strong); padding: 14px 16px 12px; font-family: var(--atlas-font-serif); font-size: 1.45rem; font-weight: 700; line-height: 1.3; letter-spacing: -.01em; }
+
 /* ── Badges ─────────────────────────────────────────────────── */
 .atlas-badge { display: inline-block; font-family: var(--atlas-font-mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; padding: 2px 7px; border: 1px solid currentColor; }
 .atlas-badge--active { color: var(--atlas-ink); }

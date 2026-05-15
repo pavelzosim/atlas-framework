@@ -471,7 +471,11 @@ posts/
 | Файл | Назначение | Куда вставлять в Wix |
 |---|---|---|
 | `atlas-head-custom-code.html` | CSS-манифест: все переменные, компоненты | **Head** Custom Code |
-| `atlas-body-end-custom-code.html` | JS-фреймворк: все `render*()` функции | **Body - end** Custom Code |
+| `atlas-body-end-part1.html` | JS-фреймворк часть 1 | **Body - end** Custom Code |
+| `atlas-body-end-part2.html` | JS-фреймворк часть 2 (retry, autoMount) | **Body - end** Custom Code |
+| `wix-http-functions.js` | Backend endpoint для метаданных поста | **Backend/http-functions.js** в Wix |
+| `atlas-site-header.html` | Standalone passport embed | **HTML iframe** |
+| `atlas-site-footer.html` | Standalone footer embed | **HTML iframe** |
 | `atlas-post-embed-template.html` | Шаблон каждого поста | **HTML iframe** внутри поста |
 
 ---
@@ -489,17 +493,28 @@ posts/
    - **Load code on each new page:** ✅ All Pages
 5. Нажми **Apply**
 
-### Шаг 2 — Вставить JS в Body-end
+### Шаг 2 — Вставить JS Part 1 в Body-end
 
 1. Снова нажми **+ Add Custom Code**
-2. Вставь всё содержимое файла `atlas-body-end-custom-code.html`
+2. Вставь содержимое `atlas-body-end-part1.html`
 3. Настройки:
-   - **Name:** `Atlas Framework — Scripts`
+   - **Name:** `Atlas Framework — Part 1`
    - **Add Code to:** `Body - end`
    - **Load code on each new page:** ✅ All Pages
 4. Нажми **Apply**
 
-> После этих двух шагов `window.AtlasFramework` доступен на всех страницах сайта.
+### Шаг 3 — Вставить JS Part 2 в Body-end
+
+1. Снова нажми **+ Add Custom Code**
+2. Вставь содержимое `atlas-body-end-part2.html`
+3. Настройки:
+   - **Name:** `Atlas Framework — Part 2`
+   - **Add Code to:** `Body - end`
+   - **Load code on each new page:** ✅ All Pages
+4. Нажми **Apply**
+
+> Part 2 содержит retry-логику и дожидается инициализации Part 1 автоматически.  
+> После этих шагов `window.AtlasFramework` доступен на всех страницах сайта.
 
 ---
 
@@ -767,7 +782,7 @@ terminalLines: [
 ## Часть 6 — Частые вопросы
 
 **Q: Паспорт не отображается, div пустой.**
-A: Проверь, что в Wix подключён `atlas-body-end-custom-code.html` в Body-end. В автономном iframe он должен отображаться всегда через fallback.
+A: Проверь, что в Wix подключены `atlas-body-end-part1.html` и `atlas-body-end-part2.html` в Body-end. В автономном iframe паспорт отображается через встроенный fallback.
 
 **Q: Хочу другой префикс в title-bar (не `SYSTEM_ATLAS // R&D_LOG`).**
 A: Измени поле `prefix` в POST_CONFIG:
@@ -792,50 +807,45 @@ A: Да. Файл `atlas-post-embed-template.html` полностью автон
 
 ---
 
-## Часть 6 — Автоматизация метаданных через Wix Velo
+## Часть 6 — Автоматическая подстановка метаданных
 
-По умолчанию поля `author`, `created`, `modified`, `tags` заполняются вручную в блоке `POST_CONFIG`.  
-Если включён **Dev Mode** (Wix Velo), эти поля можно подставлять автоматически с реальными данными из Wix Blog.
+iframe сам делает `fetch` запрос к Wix Backend HTTP Function по `slug` из `POST_CONFIG`.  
+Никаких element ID, `postMessage`, или Velo page code не нужно.
 
-### Как это работает
+### Схема работы
 
 ```
-Wix Blog Post Page
-  └─ Velo Page Code (atlas-velo-post-page.js)
-       └─ читает post.firstPublishedDate, post.tags, etc.
-            └─ postMessage → HTML iframe
-                 └─ listener в atlas-site-header.html / atlas-post-embed-template.html
-                      └─ обновляет CONFIG + перерисовывает passport
+iframe загрузился
+  → читает slug из POST_CONFIG
+  → fetch https://pavelzosim.com/_functions/getPostData?slug=...
+  → получает JSON: author, created, modified, tags
+  → перерисовывает паспорт
 ```
 
-Iframe изолирован от Wix; единственный способ передать данные — `postMessage`.
+### Установка backend (1 раз на сайт)
 
-### Шаги настройки
+1. Wix Editor → **Dev Mode** → раздел **Backend**
+2. Создай файл с точным названием: **`http-functions.js`**
+3. Вставь содержимое файла `wix-http-functions.js` из репозитория
+4. **Publish**
 
-1. **Включи Dev Mode** в Wix Editor.
-2. Открой страницу поста → кнопка **Page Code**.
-3. Вставь содержимое файла `atlas-velo-post-page.js`.
-4. Убедись, что ID HTML-элементов в Wix совпадают:
-   - `#headerEmbed` — элемент с `atlas-site-header.html`
-   - `#postEmbed`   — элемент с `atlas-post-embed-template.html`  
-   *(переименуй в Properties Panel если нужно)*
-5. Убедись, что на странице поста есть компонент Wix Blog с ID `#wixBlogPostPage1`.  
-   *(обычно уже есть на шаблонных страницах блога)*
-6. **Publish** — и готово.
+После публикации endpoint доступен:
+```
+https://www.pavelzosim.com/_functions/getPostData?slug=my-post-slug
+```
 
 ### Что заполняется автоматически
 
-| Поле | Источник в Wix |
+| Поле | Источник |
 |---|---|
-| `author` | `post.author.nickname` или `post.author.name` |
-| `created` | `post.firstPublishedDate` → `YYYY.MM.DD` |
-| `modified` | `post.lastPublishedDate` → `YYYY.MM.DD` (скрыто если = created) |
-| `tags` | `post.tags[].label` |
-| `wordCount` | не передаётся (Wix не раскрывает текст поста) — задай вручную |
+| `author` | хардкод `'Pavel Zosim'` в `wix-http-functions.js` |
+| `created` | `publishedDate` из `Blog/Posts` → `YYYY.MM.DD` |
+| `modified` | `lastPublishedDate` (скрыто если = created) |
+| `tags` | ID тегов → названия через `Blog/Tags` |
 
-### Что по-прежнему заполняется вручную
+### Что заполняется вручную (1 раз на пост)
 
-`prefix`, `project`, `module`, `version`, `logId`, `status`, `terminalLines` — это специфика каждого поста, Wix их не знает.
+`prefix`, `project`, `module`, `version`, `logId`, `status`, `slug`, `terminalLines`
 
 ---
 
@@ -843,17 +853,18 @@ Iframe изолирован от Wix; единственный способ пе
 
 ```
 atlas-head-custom-code.html          ← вставить в Wix Head (1 раз)
-atlas-body-end-custom-code.html      ← вставить в Wix Body-end (1 раз)
+atlas-body-end-part1.html            ← вставить в Wix Body-end (1 раз)
+atlas-body-end-part2.html            ← вставить в Wix Body-end (1 раз)
+wix-http-functions.js                ← создать как Backend/http-functions.js в Wix (1 раз)
 atlas-site-header.html               ← standalone passport embed
 atlas-site-footer.html               ← standalone footer embed
-atlas-velo-post-page.js              ← Velo Page Code (1 раз на страницу поста)
 atlas-post-embed-template.html       ← ОРИГИНАЛ ШАБЛОНА (не трогать)
+atlas-framework.css                  ← стили CDN через jsDelivr
 ATLAS-FRAMEWORK-GUIDE.md            ← этот файл
 
 posts/
   gpu-memory-hierarchy.html          ← пост #001
   sun-surface-ue5-shaders.html       ← пост #002
-  warp-occupancy-analysis.html       ← пост #003
   ...
 ```
 
