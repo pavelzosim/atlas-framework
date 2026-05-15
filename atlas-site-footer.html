@@ -1,53 +1,107 @@
 ﻿<!DOCTYPE html>
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  ATLAS SITE FOOTER — Two-block standalone embed             ║
+  ║                                                              ║
+  ║  Block 1 (index): categories + tags from config JSON        ║
+  ║  Block 2 (main):  support strip + 3-column link matrix      ║
+  ║                                                              ║
+  ║  Data source: atlas-site-footer-config.json (jsDelivr CDN)  ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/atlas-framework.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
-*,*::before,*::after{box-sizing:border-box}
-html,body{margin:0;padding:0;overflow-x:hidden;background:transparent}
-#f{width:100%;max-width:100%;overflow-x:hidden}
-:root{--ink:#000;--crit:#8b0000;--border:rgba(0,0,0,.15);--mono:'JetBrains Mono','Courier New',monospace}
-.atlas-footer{font-family:var(--mono);padding-top:20px;border-top:1px solid var(--ink);color:var(--ink);width:100%}
-.atlas-footer__title{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:30px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.atlas-footer__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:30px;margin-bottom:40px}
-.atlas-footer__col{display:flex;flex-direction:column;gap:10px}
-.atlas-footer__col-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;opacity:.5}
-.atlas-nc-link{font-size:.85rem;color:var(--ink);text-decoration:none;display:inline-block;width:fit-content;padding:2px 6px}
-.atlas-nc-link::before{content:'[';margin-right:3px}
-.atlas-nc-link::after{content:']';margin-left:3px}
-.atlas-nc-link:hover{background:#0000AA;color:#fff}
-.atlas-footer__support{margin-top:20px;padding:20px;border:1px dashed var(--border)}
-.atlas-footer__support-text{font-size:.8rem;display:block;margin-bottom:14px;opacity:.75}
-.atlas-footer__support-links{display:flex;gap:20px;flex-wrap:wrap}
-.atlas-footer__support-links a{color:var(--crit);text-decoration:none;font-weight:700;font-size:.78rem;border-bottom:1px solid var(--crit)}
-.atlas-footer__support-links a:hover{background:var(--crit);color:#fff}
-@media(max-width:500px){.atlas-footer__grid{grid-template-columns:1fr}}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; overflow-x: hidden; background: transparent; }
+#f { width: 100%; }
 </style>
 </head>
 <body>
 <div id="f"></div>
 <script>
-fetch('https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/atlas-site-footer-config.json')
-  .then(function(r){return r.json();})
-  .then(function(c){
-    var h='<div class="atlas-footer"><div class="atlas-footer__title"><span>0xF00TER // CONNECT_STAMP</span>'+(c.tagline?'<span style="opacity:.5">'+c.tagline+'</span>':'')+'</div><div class="atlas-footer__grid">';
-    (c.links||[]).forEach(function(col){
-      h+='<div class="atlas-footer__col"><span class="atlas-footer__col-label">'+col.label+'</span>';
-      (col.items||[]).forEach(function(i){h+='<a href="'+i.url+'" target="_blank" class="atlas-nc-link">'+i.text+'</a>';});
-      h+='</div>';
-    });
-    h+='</div>';
-    if(c.support){
-      h+='<div class="atlas-footer__support"><span class="atlas-footer__support-text">'+c.support.text+'</span><div class="atlas-footer__support-links">';
-      (c.support.links||[]).forEach(function(l){h+='<a href="'+l.url+'" target="_blank">'+l.text+'</a>';});
-      h+='</div></div>';
-    }
-    h+='</div>';
-    document.getElementById('f').innerHTML=h;
-  })
-  .catch(function(e){console.error('[atlas-footer]',e);});
+var CONFIG_URL = 'https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/atlas-site-footer-config.json';
+
+fetch(CONFIG_URL)
+  .then(function(r) { return r.json(); })
+  .then(function(c) { renderFooter(c); })
+  .catch(function(e) { console.error('[atlas-footer]', e); });
+
+function renderFooter(c) {
+
+  /* ── Block 1: index (categories + tags) ─────────────────── */
+  var categoriesHTML = (c.categories || []).map(function(cat) {
+    return '<a href="' + cat.url + '" class="atlas-blueprint-link" target="_top">[ ' + cat.text + ' ]</a>';
+  }).join('');
+
+  var tagsHTML = (c.tags || []).map(function(tag) {
+    return '<a href="' + tag.url + '" class="atlas-blueprint-link" target="_top">#' + tag.text + '</a>';
+  }).join('');
+
+  var indexBlock = '';
+  if (categoriesHTML || tagsHTML) {
+    indexBlock =
+      '<div class="atlas-footer-block atlas-footer-block--index">' +
+        '<div class="atlas-footer-block__log-line">SYS.LOG // INDEX_DATA</div>' +
+        '<div class="atlas-footer-block__wix-content">' +
+          (categoriesHTML
+            ? '<div class="atlas-footer-block__wix-row">' +
+                '<span class="atlas-footer-block__wix-label">CATEGORIES:</span>' +
+                '<div class="atlas-footer-block__wix-list">' + categoriesHTML + '</div>' +
+              '</div>'
+            : '') +
+          (tagsHTML
+            ? '<div class="atlas-footer-block__wix-row">' +
+                '<span class="atlas-footer-block__wix-label">TAGS:</span>' +
+                '<div class="atlas-footer-block__wix-list">' + tagsHTML + '</div>' +
+              '</div>'
+            : '') +
+        '</div>' +
+      '</div>';
+  }
+
+  /* ── Block 2: main (support + matrix) ──────────────────────── */
+  var supportHTML = '';
+  if (c.support) {
+    var supportLinks = (c.support.links || []).map(function(l, idx, arr) {
+      var link = '<a href="' + l.url + '" class="atlas-blueprint-link" target="_blank">[ ' + l.text + ' ]</a>';
+      return idx < arr.length - 1
+        ? link + '<span class="atlas-footer-block__support-divider">|</span>'
+        : link;
+    }).join('');
+    supportHTML =
+      '<div class="atlas-footer-block__support-content">' +
+        '<div class="atlas-footer-block__support-text">' + (c.support.text || '') + '</div>' +
+        '<div class="atlas-footer-block__support-links">' + supportLinks + '</div>' +
+      '</div>';
+  }
+
+  var matrixHTML = (c.links || []).map(function(group) {
+    var items = (group.items || []).map(function(item) {
+      return '<a href="' + item.url + '" class="atlas-blueprint-link" target="_blank">/ ' + item.text + '</a>';
+    }).join('');
+    return '<div class="atlas-footer-block__matrix-column">' +
+      '<span class="atlas-footer-block__column-label">' + group.label + '</span>' +
+      '<div class="atlas-footer-block__column-items">' + items + '</div>' +
+    '</div>';
+  }).join('');
+
+  var mainBlock =
+    '<div class="atlas-footer-block atlas-footer-block--main">' +
+      '<div class="atlas-footer-block__support-header">' +
+        '<div class="atlas-footer-block__kaomoji">' + (c.tagline || '') + '</div>' +
+        '<div class="atlas-footer-block__support-title">Let\'s stay in touch</div>' +
+      '</div>' +
+      supportHTML +
+      '<div class="atlas-footer-block__matrix-zone">' + matrixHTML + '</div>' +
+    '</div>';
+
+  document.getElementById('f').innerHTML =
+    '<div class="atlas-footer-wrapper">' + indexBlock + mainBlock + '</div>';
+}
 </script>
 </body>
 </html>

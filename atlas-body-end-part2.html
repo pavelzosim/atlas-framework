@@ -46,67 +46,60 @@
     /* 6. ENGINEERING PASSPORT */
     AF.renderEngineeringPassport = function (target, opts) {
       opts = opts || {};
-      var prefix   = opts.prefix   || 'SYSTEM_ATLAS // R&D_LOG';
       var project  = opts.project  || '—';
       var module   = opts.module   || '—';
       var version  = opts.version  || '—';
       var logId    = opts.logId    || '—';
       var status   = (opts.status  || 'DRAFT').toUpperCase();
       var author   = opts.author   || '—';
-      var location = opts.location || '—';
       var created  = opts.created  || '—';
       var modified = opts.modified || null;
       var tags     = Array.isArray(opts.tags) ? opts.tags : [];
       var readTime = opts.readTime || (opts.wordCount ? '~'+Math.ceil(Number(opts.wordCount)/200)+' MIN' : null);
 
-      var scMap = {
-        'DRAFT':        { badge:'atlas-badge--muted',  cls:'status--draft'        },
-        'IN_PROGRESS':  { badge:'atlas-badge--active', cls:'status--in_progress'  },
-        'EXPERIMENTAL': { badge:'atlas-badge--warn',   cls:'status--experimental' },
-        'STABLE':       { badge:'atlas-badge--ok',     cls:'status--stable'       },
-        'COMPLETED':    { badge:'atlas-badge--ok',     cls:'status--completed'    },
-        'DEPRECATED':   { badge:'atlas-badge--crit',   cls:'status--deprecated'   }
-      };
-      var sc = scMap[status] || scMap['DRAFT'];
-
       var metaItems = [
-        {key:'AUTH',value:author},{key:'LOC',value:location},{key:'CREATED',value:created}
+        {key:'AUTH',value:author},{key:'CREATED',value:created}
       ];
       if (modified) { metaItems.push({key:'LAST_MODIFIED',value:modified}); }
       if (readTime) { metaItems.push({key:'READ',value:readTime}); }
 
       var metaHTML = metaItems.map(function(m) {
-        return '<span class="atlas-passport__meta-item"><b>'+m.key+'</b>: '+m.value+'</span>';
+        return '<span class="bp-meta-item"><b>'+m.key+'</b>: '+m.value+'</span>';
       }).join('');
 
+      function toSlug(s) { return s.toLowerCase().replace(/\s+/g, '-'); }
+      var baseUrl = opts.tagBaseUrl || 'https://www.pavelzosim.com/blog/tags/';
       var tagsHTML = tags.length
-        ? '<div class="atlas-passport__tags">'+
-            tags.map(function(t){ return '<span class="atlas-passport__tag">'+t+'</span>'; }).join('')+
+        ? '<div class="bp-tags">'+
+            tags.map(function(tg){
+              return '<a href="'+baseUrl+toSlug(tg)+'" class="atlas-blueprint-link" target="_top">#'+tg+'</a>';
+            }).join('')+
           '</div>' : '';
 
       inject(target,
-        '<div class="atlas-passport">' +
-          '<div class="atlas-title-bar">' +
-            '<div class="atlas-title-bar__left"><span class="atlas-chrome-btn">▲</span><span>'+prefix+'</span></div>' +
-            '<div class="atlas-title-bar__right">' +
-              '<span class="atlas-badge '+sc.badge+' '+sc.cls+'">'+status+'</span>' +
-              '<span class="atlas-chrome-btn">—</span>' +
-              '<span class="atlas-chrome-btn">□</span>' +
-              '<span class="atlas-chrome-btn">✕</span>' +
+        '<div class="passport-bp">' +
+          '<div class="bp-title-bar">' +
+            '<div class="bp-title-bar__left">' +
+              '<span class="bp-user-prompt">'+(opts.user||'pavelzosim')+'</span>' +
+              '<span style="opacity:.4">:</span>' +
+              '<span class="bp-path-prompt">'+(opts.path||'~')+'</span>' +
+              '<span class="bp-root-char">#</span>' +
+              '<span class="bp-command-text">'+(opts.command||'cat log')+'</span>' +
+            '</div>' +
+            '<div class="bp-sys-status">[ SYS_STATUS: <b>'+status+'</b> ]</div>' +
+          '</div>' +
+          (opts.title ? '<div class="bp-main-title">'+opts.title+'</div>' : '') +
+          '<div class="bp-grid">' +
+            '<div class="bp-cell">' +
+              '<div><span class="bp-key">PROJECT</span><span class="bp-val">'+project+'</span></div>' +
+              '<div><span class="bp-key">MODULE</span><span class="bp-val">'+module+'</span></div>' +
+            '</div>' +
+            '<div class="bp-cell">' +
+              '<div><span class="bp-key">VERSION</span><span class="bp-val">'+version+'</span></div>' +
+              '<div><span class="bp-key">LOG_ID</span><span class="bp-val">'+logId+'</span></div>' +
             '</div>' +
           '</div>' +
-          (opts.title ? '<div class="atlas-passport__title">'+opts.title+'</div>' : '') +
-          '<div class="atlas-passport__grid">' +
-            '<div class="atlas-passport__cell">' +
-              '<div><span class="atlas-passport__key">PROJECT</span><span class="atlas-passport__value">'+project+'</span></div>' +
-              '<div><span class="atlas-passport__key">MODULE</span><span class="atlas-passport__value">'+module+'</span></div>' +
-            '</div>' +
-            '<div class="atlas-passport__cell">' +
-              '<div><span class="atlas-passport__key">VERSION</span><span class="atlas-passport__value '+sc.cls+'">'+version+'</span></div>' +
-              '<div><span class="atlas-passport__key">LOG_ID</span><span class="atlas-passport__value">'+logId+'</span></div>' +
-            '</div>' +
-          '</div>' +
-          '<div class="atlas-passport__meta">'+metaHTML+'</div>' +
+          '<div class="bp-meta">'+metaHTML+'</div>' +
           tagsHTML +
         '</div>');
     };
