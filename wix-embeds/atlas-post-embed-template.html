@@ -50,16 +50,18 @@
 
   <!-- Overflow guard — prevents horizontal scroll in Wix iframe
        regardless of whether CDN stylesheet loads or not          -->
-  <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; overflow-x: hidden; }
-    .atlas-container { max-width: 100%; overflow-x: hidden; }
-    .atlas-code-grid  { grid-template-columns: repeat(auto-fit, minmax(min(280px,100%), 1fr)); }
-    .atlas-arch-flow  { flex-wrap: wrap; }
-    .atlas-footer__grid { grid-template-columns: repeat(auto-fit, minmax(min(200px,100%), 1fr)); }
-    pre { white-space: pre-wrap; word-break: break-word; }
-    .atlas-code-container { overflow-x: hidden; }
-    .atlas-code-container pre { overflow-x: hidden; }
+	<style>
+	*, *::before, *::after { box-sizing: border-box; }
+	html, body {
+	  margin: 0;
+	  padding: 0;
+	  overflow-x: hidden;
+	  background: transparent;
+	}
+	.atlas-container {
+	  max-width: 100%;
+	  overflow-x: hidden;
+	}
   </style>
 </head>
 <body>
@@ -86,7 +88,7 @@
   <!-- ═══════════════════════════════════════════════════════════
 	   POST CONTENT — edit everything below this line per post
   ═══════════════════════════════════════════════════════════════ -->
-  <div id="atlas-body">
+	<div id="atlas-body" class="content-block">
 
 	<p>
 	  A procedural approach to rendering optimization. This document serves as the
