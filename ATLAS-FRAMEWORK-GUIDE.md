@@ -1,4 +1,57 @@
 # SYSTEM ATLAS FRAMEWORK — Руководство пользователя
+
+## ВАЖНО: Модульная архитектура CSS (2026)
+
+Atlas Framework теперь использует модульную структуру стилей:
+
+- **atlas-core.css** — глобальные переменные, шрифты, reset. Не изменяется LLM, подключается всегда.
+- **atlas-typography.css** — только типографика для `.content-block`. Можно редактировать LLM, не влияет на глобальные токены.
+- **atlas-framework.css** — точка входа, подключается через CDN и импортирует оба модуля абсолютными ссылками.
+
+**Пример содержимого `atlas-framework.css`:**
+```css
+@import url('https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-core.css');
+@import url('https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-typography.css');
+```
+
+**Как подключать CSS в шаблоне:**
+
+В `<head>` поста подключай только `atlas-framework.css` через CDN:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css?v=1.0.2">
+```
+> Меняй параметр `?v=...` при каждом обновлении CSS, чтобы сбросить кэш jsDelivr.
+
+**Структура контента:**
+
+Весь контент поста должен быть внутри:
+
+```html
+<main id="atlas-body" class="content-block">
+  <h2>Заголовок секции</h2>
+  <p>Текст...</p>
+  <!-- ... -->
+</main>
+```
+> Только так гарантируется применение всех правил из `atlas-typography.css`.
+
+**FAQ: Почему не применяются стили?**
+
+- Проверь, что используешь актуальную ссылку на `atlas-framework.css` с новым параметром версии.
+- Убедись, что контент находится внутри блока с классом `.content-block`.
+- Не добавляй инлайновые стили к заголовкам, спискам и параграфам.
+
+**Про purge CDN:**
+
+Для мгновенного обновления стилей после коммита в GitHub:
+- Измени версию в ссылке на CSS (`?v=...`)
+- Или вручную вызови purge:
+  ```
+  https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css
+  https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-core.css
+  https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-typography.css
+  ```
 сделать purge CDN после каждого изменения стилей, чтобы обновить кэш:
 Invoke-RestMethod "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css"
 Invoke-RestMethod "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-typography.css"
