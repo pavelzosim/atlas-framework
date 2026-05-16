@@ -817,3 +817,21 @@ html, body { margin: 0; padding: 0; box-sizing: border-box; overflow-x: hidden; 
   color: var(--atlas-ink-soft);
   margin: 0 0 16px 0;
 }
+
+/* ── Internal subheadings (h3 inside components) ────────────── */
+.atlas-comparison__col h3,
+.atlas-schema h3.atlas-schema__title {
+  font-family: var(--atlas-font-mono) !important;
+  font-size: var(--fs-meta);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 8px 0;
+  color: var(--atlas-ink);
+}
+.atlas-schema h3.atlas-schema__title {
+  padding: 8px 16px;
+  background: var(--atlas-ink);
+  color: var(--atlas-bg);
+  margin-bottom: 0;
+}
