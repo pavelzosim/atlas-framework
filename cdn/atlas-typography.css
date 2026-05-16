@@ -1,24 +1,11 @@
-﻿/*
-  ATLAS TYPOGRAPHY — Content Block Text Styles
-  ─────────────────────────────────────────────────────────────
-  Scope: .content-block only.
-  Safe for LLM to edit — changes here cannot affect site chrome.
-
-  Requires: atlas-core.css (for CSS custom properties)
-
-  Provides:
-    - h2, h3 inside .content-block
-    - p, strong, em
-    - ul / ol / li
-    - inline code
-    - .atlas-section-break (Page split dividers)
-    - .atlas-eof-divider (End of session line)
-*/
+﻿/* ==========================================================================
+   ── ФОКУС: H2, SECTION BREAK & EOF DIVIDER
+   ========================================================================== */
 
 /* ── Headings ───────────────────────────────────────────────── */
 .content-block h2 {
   font-family: var(--atlas-font-mono) !important;
-  font-size: 13px !important;                       /* Фиксируем под CodePen макет */
+  font-size: 13px !important;                       /* Точный размер из CodePen */
   font-weight: 700 !important;
   text-transform: uppercase !important;
   letter-spacing: .08em !important;
@@ -42,126 +29,51 @@
   flex-shrink: 0 !important;
 }
 
-.content-block h3 {
-  font-family: var(--atlas-font-mono) !important;
-  font-size: var(--fs-body) !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  color: var(--atlas-ink-muted) !important;
-  margin: 30px 0 15px 0 !important;
-  letter-spacing: .06em !important;
-  border: none !important;
-  padding: 0 !important;
-  line-height: 1.2 !important;
-}
-
-/* ── Body text ──────────────────────────────────────────────── */
-.content-block p {
-  font-family: var(--atlas-font-mono) !important;
-  font-size: 12.5px !important;                     /* Размер шрифта из CodePen */
-  line-height: 1.65 !important;
-  margin: 0 0 16px 0 !important;
-  color: var(--atlas-ink-soft) !important;
-  text-align: justify !important;                   /* Выравнивание по ширине полосы */
-}
-
-.content-block strong { font-weight: 700 !important; color: var(--atlas-ink) !important; }
-.content-block em     { font-style: italic !important; color: var(--atlas-ink-muted) !important; }
-
-/* ── Lists ──────────────────────────────────────────────────── */
-.content-block ul,
-.content-block ol {
-  font-family: var(--atlas-font-mono) !important;
-  font-size: 12.5px !important;
-  margin: 12px 0 16px 0 !important;
-  padding-left: 20px !important;
-  list-style: none !important;
-  list-style-type: none !important;
-  color: var(--atlas-ink-soft) !important;
-}
-
-.content-block li {
-  line-height: 1.6 !important;
-  margin-bottom: 6px !important;
-  position: relative !important;
-  list-style-type: none !important;
-}
-
-.content-block ul li::before {
-  content: "\25AB" !important;
-  position: absolute !important;
-  left: -16px !important;
-  color: var(--atlas-crit) !important;
-  font-size: 10px !important;
-  top: 3px !important;
-}
-
-.content-block ol {
-  counter-reset: atlas-ol !important;
-}
-
-.content-block ol li::before {
-  counter-increment: atlas-ol !important;
-  content: counter(atlas-ol, decimal-leading-zero) "." !important;
-  position: absolute !important;
-  left: -26px !important;
-  color: var(--atlas-ink-muted) !important;
-  font-size: var(--fs-meta) !important;
-  font-weight: 700 !important;
-}
-
-/* ── Inline code ────────────────────────────────────────────── */
-.content-block code {
-  font-family: var(--atlas-font-mono) !important;
-  font-size: var(--fs-code) !important;
-  background: var(--atlas-bg-alt) !important;
-  color: var(--atlas-ink) !important;
-  padding: 1px 5px !important;
-  border: 1px solid var(--atlas-border) !important;
-}
-
 /* ── Внутренний разделитель страниц (Section Break) ─────────── */
 .atlas-section-break {
-  position: relative;
-  height: 1px;
-  background: var(--atlas-border);
-  margin: 4rem 0;
+  position: relative !important;
+  height: 1px !important;
+  background: var(--atlas-border) !important;       /* Линия разделителя */
+  margin: 4rem 0 !important;                        /* Мощный вертикальный отступ */
+  display: block !important;                        /* Защита от схлопывания в Wix */
 }
 
 .atlas-section-break::before {
-  content: attr(data-index);
-  position: absolute;
-  top: -9px;
-  left: 6%;
-  background: var(--atlas-bg);
-  padding: 0 0.6rem;
-  font-family: var(--atlas-font-mono);
-  font-size: var(--fs-meta);
-  font-weight: 700;
-  color: var(--atlas-crit);
-  user-select: none;
+  content: attr(data-index) !important;
+  position: absolute !important;
+  top: -9px !important;                             /* Идеальное центрирование индекса на линии */
+  left: 6% !important;                              /* Смещение по макету */
+  background: var(--atlas-bg) !important;           /* Перекрывает линию цветом фона */
+  padding: 0 0.6rem !important;
+  font-family: var(--atlas-font-mono) !important;
+  font-size: var(--fs-meta) !important;             /* Токен 11px */
+  font-weight: 700 !important;
+  color: var(--atlas-crit) !important;              /* Красный системный цвет индекса */
+  user-select: none !important;
 }
 
 /* ── Финальный разделитель контента (EOF Divider) ────────────── */
 .atlas-eof-divider {
-  display: flex;
-  align-items: center;
-  margin: 5.5rem 0 2rem 0;
-  font-family: var(--atlas-font-mono);
-  font-size: var(--fs-meta);
-  color: var(--atlas-ink-muted);
-  letter-spacing: 0.12em;
-  user-select: none;
+  display: flex !important;                         /* Строит линию-текст-линию в ряд */
+  align-items: center !important;
+  margin: 5.5rem 0 2rem 0 !important;               /* Посадка в самом конце лога */
+  font-family: var(--atlas-font-mono) !important;
+  font-size: var(--fs-meta) !important;             /* Токен 11px */
+  color: var(--atlas-ink-muted) !important;         /* Приглушенный цвет мета-текста */
+  letter-spacing: 0.12em !important;
+  user-select: none !important;
 }
 
 .atlas-eof-divider__line {
-  flex: 1;
-  border-bottom: 1px dashed var(--atlas-border);
+  flex: 1 !important;                               /* Линии занимают всё свободное место */
+  border-bottom: 1px dashed var(--atlas-border) !important; /* Пунктир */
+  height: 0 !important;
 }
 
 .atlas-eof-divider__meta {
-  padding: 0 1.2rem;
-  font-weight: 700;
+  padding: 0 1.2rem !important;                     /* Отступы вокруг // END OF SESSION // EOF */
+  font-weight: 700 !important;
+  display: inline-block !important;
 }
 
 /* ── First child margin reset ───────────────────────────────── */
