@@ -11,13 +11,14 @@
     atlas-typography.css  — .content-block text styles
 */
 
-/* ==========================================================================
-   ── ATLAS CORE FRAMEWORK // MASTER LAYER
-   ========================================================================== */
+/*
+  ATLAS FRAMEWORK — Entry Point
+  ─────────────────────────────────────────────────────────────
+*/
 
-/* Жесткие абсолютные ссылки на модули в твоем репозитории */
-@import url('./atlas-core.css');
-@import url('./atlas-typography.css');
+/* Прописываем query-параметр прямо в относительный путь */
+@import url('./atlas-core.css?v=3.0.9');
+@import url('./atlas-typography.css?v=3.0.9');
 
 /* Сюда в будущем можно будет добавлять новые R&D компоненты */
 /* @import url('https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-components.css'); */
