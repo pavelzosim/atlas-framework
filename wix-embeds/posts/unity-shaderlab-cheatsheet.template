@@ -13,6 +13,9 @@
     .atlas-container { max-width: 100%; overflow-x: hidden; font-family: 'JetBrains Mono', 'Courier New', monospace !important; }
     h1, h2, h3, h4, h5, h6, p, span, div, li, td, th { font-family: 'JetBrains Mono', 'Courier New', monospace !important; }
     pre { white-space: pre-wrap; word-break: break-word; font-family: 'JetBrains Mono', 'Courier New', monospace !important; }
+    /* local overrides — block Wix h2 injection */
+    .content-block h2 { font-size: 13px !important; border-bottom: none !important; border-top: none !important; padding: 0 !important; margin: 0 0 12px 0 !important; }
+    .content-block p  { font-size: 12.5px !important; text-align: justify; }
   </style>
 </head>
 <body>
