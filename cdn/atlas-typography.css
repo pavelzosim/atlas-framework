@@ -26,17 +26,19 @@
   display: flex !important;
   align-items: center !important;
   border: none !important;
+  border-bottom: 0px solid transparent !important;
   padding: 0 !important;
+  padding-bottom: 0 !important;
   line-height: 1.2 !important;
   min-height: auto !important;
 }
 
 .content-block h2::before {
-  content: "» ";
-  color: var(--atlas-crit);
-  margin-right: 8px;
-  font-weight: 400;
-  flex-shrink: 0;
+  content: "» " !important;
+  color: var(--atlas-crit) !important;
+  margin-right: 8px !important;
+  font-weight: 400 !important;
+  flex-shrink: 0 !important;
 }
 
 .content-block h3 {
