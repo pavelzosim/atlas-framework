@@ -125,33 +125,28 @@
    SYSTEM ATLAS v3.0 — FIX FOR MISSING LINES (WIX COMPATIBILITY)
    ========================================================================== */
 
-/* ==========================================================================
-   ── РАЗДЕЛИТЕЛИ КОНТЕНТА (Wix-Iframe Optimized)
-   ========================================================================== */
-
-/* Внутренний разделитель страниц — привязываем к контексту .content-block */
+/* ── Внутренний разделитель страниц ─────────────────────────── */
 .content-block .atlas-section-break {
   position: relative !important;
   display: block !important;
   width: 100% !important;
   height: 1px !important;
   min-height: 1px !important;
-  background: rgba(0, 0, 0, 0.15) !important; /* Твоя серая линия */
+  background: rgba(0, 0, 0, 0.15) !important; 
   margin: 4rem 0 !important;
   padding: 0 !important;
   border: none !important;
   clear: both !important;
 }
 
-/* Число секции внутри линии */
 .content-block .atlas-section-break::before {
   content: attr(data-index) !important;
   position: absolute !important;
   top: 50% !important;
   left: 24px !important;
   transform: translateY(-50%) !important;
-  background: rgb(230, 220, 210) !important; /* Цвет бежевого фона */
-  color: #8b0000 !important; /* Бордовый дефолтный */
+  background: var(--atlas-bg) !important; 
+  color: var(--atlas-crit) !important; 
   padding: 0 0.6rem !important;
   font-family: var(--atlas-font-mono), monospace !important;
   font-size: 11px !important;
@@ -160,13 +155,18 @@
   z-index: 10 !important;
 }
 
-/* Финальный разделитель контента (EOF) */
+/* ── Финальный разделитель контента (EOF Divider) ────────────── */
 .content-block .atlas-eof-divider {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
   justify-content: space-between !important;
   margin: 5.5rem 0 2rem 0 !important;
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 11px !important;
+  color: var(--atlas-ink-muted) !important;
+  letter-spacing: 0.12em !important;
+  user-select: none !important;
   width: 100% !important;
 }
 
