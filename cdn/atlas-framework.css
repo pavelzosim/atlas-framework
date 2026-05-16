@@ -182,31 +182,6 @@ html, body { margin: 0; padding: 0; box-sizing: border-box; overflow-x: hidden; 
   .passport-bp .bp-cell:first-child { border-right: none; border-bottom: 1px solid rgba(0,0,0,.12); }
 }
 
-/* ── Passport v2 — clean class aliases (no bp- prefix) ─────── */
-.passport-bp .title-bar { border-bottom: 1px dashed #000; padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; font-size: var(--fs-meta); opacity: .35; transition: opacity .15s; }
-.passport-bp:hover .title-bar { opacity: .85; }
-.passport-bp .title-bar__left { display: flex; align-items: center; gap: 4px; }
-.passport-bp .user-prompt { color: #0000aa; font-weight: 700; }
-.passport-bp .path-prompt  { color: #0000aa; font-weight: 700; }
-.passport-bp .root-char    { opacity: .5; margin: 0 4px; }
-.passport-bp .command-text { opacity: .7; }
-.passport-bp .status-token { font-weight: 700; }
-.passport-bp .main-title   { font-family: var(--atlas-font-mono); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: 24px 18px; border-bottom: 1px solid #000; line-height: 1.4; }
-.passport-bp .grid-data    { display: grid; grid-template-columns: 1fr 1fr; }
-.passport-bp .cell-data    { padding: 18px 20px; font-size: 12px; line-height: 1.8; }
-.passport-bp .cell-data:first-child { border-right: 1px solid #000; }
-.passport-bp .data-row     { display: flex; margin-bottom: 8px; }
-.passport-bp .key-label    { color: rgba(0,0,0,.45); width: 75px; text-align: right; padding-right: 12px; flex-shrink: 0; }
-.passport-bp .val-value    { font-weight: 700; }
-.passport-bp .meta-data    { border-top: 1px solid #000; padding: 14px 18px; font-size: 11px; display: flex; gap: 24px; flex-wrap: wrap; color: rgba(0,0,0,.5); grid-column: span 2; }
-.passport-bp .meta-data b  { color: #000; }
-.passport-bp .meta-item b  { color: #000; }
-@media (max-width: 600px) {
-  .passport-bp .grid-data { grid-template-columns: 1fr; }
-  .passport-bp .cell-data:first-child { border-right: none; border-bottom: 1px solid rgba(0,0,0,.12); }
-  .passport-bp .meta-data { grid-column: span 1; flex-direction: column; gap: 8px; }
-}
-
 /* ── Blueprint link (dithering shadow on hover) ─────────────── */
 .atlas-blueprint-link { font-family: var(--atlas-font-mono); font-size: var(--fs-meta);
 .atlas-blueprint-link::after { content: ''; position: absolute; top: 2px; left: 2px; width: 100%; height: 100%; transform: translateZ(-1px); background-image: repeating-conic-gradient(#000 0% 25%, transparent 0% 50%); background-size: 2px 2px; opacity: 0; transition: opacity .1s; }
@@ -817,7 +792,7 @@ html, body { margin: 0; padding: 0; box-sizing: border-box; overflow-x: hidden; 
 }
 .content-block h2 {
   font-family: var(--atlas-font-mono) !important;
-  font-size: 13px !important;
+  font-size: var(--fs-body);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -825,8 +800,8 @@ html, body { margin: 0; padding: 0; box-sizing: border-box; overflow-x: hidden; 
   margin: 0 0 12px 0;
   display: flex;
   align-items: center;
-  border-bottom: none !important;
-  padding-bottom: 0 !important;
+  border-bottom: none;
+  padding-bottom: 0;
 }
 .content-block h2::before {
   content: "» ";
@@ -837,11 +812,10 @@ html, body { margin: 0; padding: 0; box-sizing: border-box; overflow-x: hidden; 
 }
 .content-block p {
   font-family: var(--atlas-font-mono) !important;
-  font-size: 12.5px !important;
+  font-size: var(--fs-body);
   line-height: 1.65;
   color: var(--atlas-ink-soft);
   margin: 0 0 16px 0;
-  text-align: justify;
 }
 .content-block ul,
 .content-block ol {
@@ -851,7 +825,7 @@ html, body { margin: 0; padding: 0; box-sizing: border-box; overflow-x: hidden; 
 }
 .content-block li {
   font-family: var(--atlas-font-mono) !important;
-  font-size: 12.5px;
+  font-size: var(--fs-body);
   line-height: 1.6;
   color: var(--atlas-ink-soft);
   margin-bottom: 6px;
@@ -867,7 +841,7 @@ html, body { margin: 0; padding: 0; box-sizing: border-box; overflow-x: hidden; 
 }
 .content-block code {
   font-family: var(--atlas-font-mono) !important;
-  font-size: 11.5px;
+  font-size: var(--fs-code);
   background: var(--atlas-bg-alt);
   color: var(--atlas-ink);
   padding: 2px 4px;
