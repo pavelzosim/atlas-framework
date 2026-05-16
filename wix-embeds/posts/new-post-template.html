@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css">
+  <style>
+	*, *::before, *::after { box-sizing: border-box; }
+	html, body { margin: 0; padding: 0; overflow-x: hidden;
+	  font-family: 'JetBrains Mono', 'Courier New', monospace !important; }
+	.atlas-container { max-width: 100%; overflow-x: hidden; }
+	pre { white-space: pre-wrap; word-break: break-word; }
+  </style>
+</head>
+<body>
+<div class="atlas-container">
+
+  <div id="atlas-body">
+
+	<div class="content-block">
+	  <h2>01 // Section Title</h2>
+	  <p>Section body text...</p>
+	</div>
+
+	<div class="atlas-section-break" data-index="// 01"></div>
+
+	<div class="content-block">
+	  <h2>02 // Section Title</h2>
+	  <p>Section body text...</p>
+	</div>
+
+	<div class="atlas-eof-divider">
+	  <div class="atlas-eof-divider__line"></div>
+	  <div class="atlas-eof-divider__meta">// END_OF_LOG</div>
+	  <div class="atlas-eof-divider__line"></div>
+	</div>
+
+  </div>
+
+  <div id="post-terminal"></div>
+  <div id="post-footer"></div>
+
+</div>
+
+<script>
+var POST_CONFIG = {
+  slug:      'post-slug-here',
+  project:   'PROJECT_NAME',
+  module:    'module_name',
+  version:   '1.0.0',
+  logId:     '#001',
+  status:    'STABLE',
+  author:    'pavelzosim',
+  created:   '2025.01.01',
+  modified:  null,
+  wordCount: 1000,
+  tags:      [],
+  tagBaseUrl: 'https://www.pavelzosim.com/blog/tags/',
+  terminalLines: [
+	'**SYSTEM_ATLAS** // LOG_END',
+	'~~STATUS: OK~~'
+  ],
+  footerLabel:  '// END OF LOG',
+  footerAuthor: 'pavelzosim',
+  footerYear:   new Date().getFullYear()
+};
+
+(function () {
+  function $q(sel) { return typeof sel === 'string' ? document.querySelector(sel) : sel; }
+  function inj(t, h) { var el = $q(t); if (el) el.innerHTML = h; }
+
+  function tryInit() {
+	var AF = window.AtlasFramework || buildFallback();
+	AF.renderTerminal('#post-terminal', { lines: POST_CONFIG.terminalLines });
+	AF.renderFooter('#post-footer', {
+	  label:  POST_CONFIG.footerLabel,
+	  author: POST_CONFIG.footerAuthor,
+	  year:   POST_CONFIG.footerYear
+	});
+  }
+
+  function buildFallback() {
+	return {
+	  renderTerminal: function (t, o) {
+		o = o || {};
+		var lines = (o.lines || []).map(function (l) {
+		  return l.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
+				  .replace(/!!(.+?)!!/g, '<span class="red">$1</span>')
+				  .replace(/~~(.+?)~~/g, '<span class="ok">$1</span>');
+		}).join('\n');
+		inj(t, '<div class="atlas-terminal">' + lines + '</div>');
+	  },
+	  renderFooter: function (t, o) {
+		o = o || {};
+		var right = o.author ? o.author + ' // ' + (o.year || new Date().getFullYear())
+							  : String(o.year || new Date().getFullYear());
+		inj(t, '<div class="atlas-post-footer"><span>' + (o.label || '// END OF LOG') +
+			   '</span><span>' + right + '</span></div>');
+	  }
+	};
+  }
+
+  if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', tryInit);
+  } else {
+	tryInit();
+  }
+}());
+</script>
+</body>
+</html>
