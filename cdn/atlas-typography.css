@@ -120,3 +120,26 @@
 
 /* ── First child margin reset ───────────────────────────────── */
 #atlas-body > *:first-child { margin-top: 0; }
+
+/* ── Финальный EOF разделитель ──────────────────────────────── */
+.content-block .atlas-eof-divider {
+  display: flex !important;
+  align-items: center !important;
+  margin-top: var(--atlas-space-xl) !important;    /* Отступ 60px от последнего h2/p */
+  margin-bottom: var(--atlas-space-md) !important; /* Отступ 25px снизу */
+  font-family: var(--atlas-font-mono) !important;
+  font-size: var(--fs-meta) !important;            /* Твой токен 11px */
+  color: var(--atlas-ink-muted) !important;        /* Твой токен rgba(0,0,0,0.5) */
+  letter-spacing: 0.12em !important;
+  user-select: none !important;
+}
+
+.content-block .atlas-eof-divider__line {
+  flex: 1 !important;
+  border-bottom: 1px dashed var(--atlas-border) !important; /* Твой токен rgba(0,0,0,0.15) */
+}
+
+.content-block .atlas-eof-divider__meta {
+  padding: 0 1.2rem !important;
+  font-weight: 700 !important;
+}
