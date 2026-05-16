@@ -11,24 +11,23 @@
     - p, strong, em
     - ul / ol / li
     - inline code
-    - #atlas-body first-child reset
+    - .atlas-section-break (Page split dividers)
+    - .atlas-eof-divider (End of session line)
 */
 
 /* ── Headings ───────────────────────────────────────────────── */
 .content-block h2 {
   font-family: var(--atlas-font-mono) !important;
-  font-size: var(--fs-title) !important;
+  font-size: 13px !important;                       /* Точный размер из CodePen */
   font-weight: 700 !important;
   text-transform: uppercase !important;
-  letter-spacing: .08em !important;
+  letter-spacing: 0.08em !important;
   color: var(--atlas-ink) !important;
-  margin: var(--atlas-space-xl) 0 20px 0 !important;
+  margin: 0 0 12px 0 !important;                    /* Компактный маржин из CodePen */
   display: flex !important;
   align-items: center !important;
   border: none !important;
-  border-bottom: 0px solid transparent !important;
   padding: 0 !important;
-  padding-bottom: 0 !important;
   line-height: 1.2 !important;
   min-height: auto !important;
 }
@@ -57,20 +56,21 @@
 /* ── Body text ──────────────────────────────────────────────── */
 .content-block p {
   font-family: var(--atlas-font-mono) !important;
-  font-size: var(--fs-body) !important;
-  line-height: 1.7;
-  margin: 0 0 16px 0;
-  color: var(--atlas-ink-soft);
+  font-size: 12.5px !important;                     /* Точный размер из CodePen */
+  line-height: 1.65 !important;
+  margin: 0 0 16px 0 !important;
+  color: var(--atlas-ink-soft) !important;
+  text-align: justify !important;                   /* Выравнивание по ширине из CodePen */
 }
 
-.content-block strong { font-weight: 700; color: var(--atlas-ink); }
-.content-block em     { font-style: italic; color: var(--atlas-ink-muted); }
+.content-block strong { font-weight: 700 !important; color: var(--atlas-ink) !important; }
+.content-block em     { font-style: italic !important; color: var(--atlas-ink-muted) !important; }
 
 /* ── Lists ──────────────────────────────────────────────────── */
 .content-block ul,
 .content-block ol {
   font-family: var(--atlas-font-mono) !important;
-  font-size: var(--fs-body) !important;
+  font-size: 12.5px !important;
   margin: 12px 0 16px 0 !important;
   padding-left: 20px !important;
   list-style: none !important;
@@ -104,42 +104,63 @@
   position: absolute !important;
   left: -26px !important;
   color: var(--atlas-ink-muted) !important;
-  font-size: var(--fs-meta) !important;
+  font-size: 11px !important;
   font-weight: 700 !important;
 }
 
 /* ── Inline code ────────────────────────────────────────────── */
 .content-block code {
   font-family: var(--atlas-font-mono) !important;
-  font-size: var(--fs-code);
-  background: var(--atlas-bg-alt);
-  color: var(--atlas-ink);
-  padding: 1px 5px;
-  border: 1px solid var(--atlas-border);
+  font-size: var(--fs-code) !important;
+  background: var(--atlas-bg-alt) !important;
+  color: var(--atlas-ink) !important;
+  padding: 1px 5px !important;
+  border: 1px solid var(--atlas-border) !important;
+}
+
+/* ── Внутренний разделитель страниц (Section Break) ─────────── */
+.atlas-section-break {
+  position: relative;
+  height: 1px;
+  background: var(--atlas-border);
+  margin: 4rem 0;
+}
+
+.atlas-section-break::before {
+  content: attr(data-index);
+  position: absolute;
+  top: -9px;
+  left: 6%;
+  background: var(--atlas-bg);
+  padding: 0 0.6rem;
+  font-family: var(--atlas-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--atlas-crit);
+  user-select: none;
+}
+
+/* ── Финальный разделитель (EOF Divider) ────────────────────── */
+.atlas-eof-divider {
+  display: flex;
+  align-items: center;
+  margin: 5.5rem 0 2rem 0;
+  font-family: var(--atlas-font-mono);
+  font-size: 11px;
+  color: var(--atlas-ink-muted);
+  letter-spacing: 0.12em;
+  user-select: none;
+}
+
+.atlas-eof-divider__line {
+  flex: 1;
+  border-bottom: 1px dashed var(--atlas-border);
+}
+
+.atlas-eof-divider__meta {
+  padding: 0 1.2rem;
+  font-weight: 700;
 }
 
 /* ── First child margin reset ───────────────────────────────── */
-#atlas-body > *:first-child { margin-top: 0; }
-
-/* ── Финальный EOF разделитель ──────────────────────────────── */
-.content-block .atlas-eof-divider {
-  display: flex !important;
-  align-items: center !important;
-  margin-top: var(--atlas-space-xl) !important;    /* Отступ 60px от последнего h2/p */
-  margin-bottom: var(--atlas-space-md) !important; /* Отступ 25px снизу */
-  font-family: var(--atlas-font-mono) !important;
-  font-size: var(--fs-meta) !important;            /* Твой токен 11px */
-  color: var(--atlas-ink-muted) !important;        /* Твой токен rgba(0,0,0,0.5) */
-  letter-spacing: 0.12em !important;
-  user-select: none !important;
-}
-
-.content-block .atlas-eof-divider__line {
-  flex: 1 !important;
-  border-bottom: 1px dashed var(--atlas-border) !important; /* Твой токен rgba(0,0,0,0.15) */
-}
-
-.content-block .atlas-eof-divider__meta {
-  padding: 0 1.2rem !important;
-  font-weight: 700 !important;
-}
+#atlas-body > *:first-child { margin-top: 0 !important; }
