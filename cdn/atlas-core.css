@@ -62,7 +62,7 @@ html, body {
 
 /* ── Container ──────────────────────────────────────────────── */
 .atlas-container {
-  max-width: 760px; /* Сужено до 760px под размеры макета песочницы */
+  max-width: 900px;
   width: 100%;
   background: transparent;
   padding: 0;
@@ -70,4 +70,5 @@ html, body {
   box-sizing: border-box;
   font-family: var(--atlas-font-mono);
   color: var(--atlas-ink);
-  margin: 0 auto;
+  margin: 0;
+}
