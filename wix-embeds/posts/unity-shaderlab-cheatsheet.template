@@ -3,20 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; overflow-x: hidden; font-family: 'JetBrains Mono', 'Courier New', monospace !important; }
-    .atlas-container { max-width: 100%; overflow-x: hidden; font-family: 'JetBrains Mono', 'Courier New', monospace !important; }
-    h1, h2, h3, h4, h5, h6, p, span, div, li, td, th { font-family: 'JetBrains Mono', 'Courier New', monospace !important; }
-    pre { white-space: pre-wrap; word-break: break-word; font-family: 'JetBrains Mono', 'Courier New', monospace !important; }
+    html, body { margin: 0; padding: 0; overflow-x: hidden; }
   </style>
 </head>
 <body>
 <div class="atlas-container">
+
+  <div id="passport-blueprint"></div>
 
   <!-- ════════════════════════════════════════
        КОНТЕНТ ПОСТА — сюда вставляешь всё
@@ -413,74 +409,144 @@
   </div>
   <!-- конец #atlas-body -->
 
-  <!-- Post footer mount -->
-  <div id="post-footer"></div>
+  <div id="site-footer"></div>
 
 </div>
 <!-- конец .atlas-container -->
 
 <script>
-/* ════════════════════════════════════════
-   POST_CONFIG — заполняешь один раз
-════════════════════════════════════════ */
-var POST_CONFIG = {
-  footerLabel:  '// END OF LOG — UNITY_SHADERLAB',
-  footerAuthor: 'pavelzosim',
-  footerYear:   '2025',
-  terminalLines: [
-	'**[ATLAS_COMPILE]** unity_shaderlab.log',
-	'> ShaderLab syntax: ~~OK~~',
-	'> Surface shader variants: ~~compiled (14)~~',
-	'> Pass count: 3 | Fallback: ~~defined~~',
-	'> DepthMask / Blend state: ~~verified~~',
-	'> Status: ~~STABLE~~'
-  ]
+var DATA = {
+  passport: {
+	user:     "pavelzosim",
+	path:     "~",
+	command:  "cat unity_shaderlab.log",
+	project:  "gpu_pipelines",
+	module:   "shaderlab_core",
+	version:  "3.2.1",
+	logId:    "#089",
+	status:   "STABLE",
+	title:    "UNITY SHADERLAB // CORE ARCHITECTURE CHEATSHEET",
+	author:   "P_ZOSIM",
+	created:  "2026.05.10",
+	modified: "2026.05.16",
+	readTime: "8 MIN"
+  },
+  footer: {
+	tagline: "( \u00b4\u25d4 \u03c9\u25d4`) \u30ce\u30b7",
+	categories: [
+	  { text: "Shader_Magic",     url: "https://www.pavelzosim.com/blog/tags/shader-magic" },
+	  { text: "Render_Pipelines", url: "https://www.pavelzosim.com/blog/tags/render-pipelines" }
+	],
+	tags: [
+	  { text: "Unity",         url: "https://www.pavelzosim.com/blog/tags/unity" },
+	  { text: "HLSL",          url: "https://www.pavelzosim.com/blog/tags/hlsl" },
+	  { text: "URP",           url: "https://www.pavelzosim.com/blog/tags/urp" },
+	  { text: "ComputeShader", url: "https://www.pavelzosim.com/blog/tags/compute-shader" }
+	],
+	links: [
+	  { label: "Code & Shared Tools",   items: [{ text: "GitHub",  url: "https://github.com/pavelzosim" }, { text: "Gumroad", url: "https://gumroad.com/pavelzosim" }] },
+	  { label: "Media & Documentation", items: [{ text: "YouTube_Breakdowns", url: "https://youtube.com/@pavelzosim" }] },
+	  { label: "Direct Communication",  items: [{ text: "LinkedIn_Profile",   url: "https://linkedin.com/in/pavelzosim" }] }
+	],
+	support: {
+	  text:  "// If you find this R&D useful, support future deep-dives:",
+	  links: [{ text: "Patreon", url: "https://patreon.com/pavelzosim" }, { text: "Buy Me a Coffee", url: "https://buymeacoffee.com/pavelzosim" }]
+	}
+  }
 };
-</script>
 
-<script>
-/* ═══════════════════════════════════════════════════════════════
-   FRAMEWORK INIT
-═══════════════════════════════════════════════════════════════ */
+function renderBlueprint(o) {
+  var el = document.getElementById('passport-blueprint');
+  if (!el) return;
+  var status = (o.status || 'STABLE').toUpperCase();
+  var meta = [
+	'<span class="meta-item"><b>AUTH</b>: ' + o.author + '</span>',
+	'<span class="meta-item"><b>CREATED</b>: ' + o.created + '</span>'
+  ];
+  if (o.modified) meta.push('<span class="meta-item"><b>MODIFIED</b>: ' + o.modified + '</span>');
+  if (o.readTime) meta.push('<span class="meta-item"><b>READ</b>: ~' + o.readTime + '</span>');
+  el.innerHTML =
+	'<div class="passport-bp">' +
+	  '<div class="title-bar">' +
+		'<div class="title-bar__left">' +
+		  '<span class="user-prompt">' + o.user + '</span>' +
+		  '<span style="opacity:.4">:</span>' +
+		  '<span class="path-prompt">' + o.path + '</span>' +
+		  '<span class="root-char">#</span>' +
+		  '<span class="command-text"> ' + o.command + '</span>' +
+		'</div>' +
+		'<div>[ SYS_STATUS: <span class="status-token">' + status + '</span> ]</div>' +
+	  '</div>' +
+	  '<div class="main-title">' + o.title + '</div>' +
+	  '<div class="grid-data">' +
+		'<div class="cell-data">' +
+		  '<div class="data-row"><span class="key-label">PROJECT</span><span class="val-value">' + o.project + '</span></div>' +
+		  '<div class="data-row"><span class="key-label">MODULE</span><span class="val-value">' + o.module + '</span></div>' +
+		'</div>' +
+		'<div class="cell-data">' +
+		  '<div class="data-row"><span class="key-label">VERSION</span><span class="val-value">' + o.version + '</span></div>' +
+		  '<div class="data-row"><span class="key-label">LOG_ID</span><span class="val-value">' + o.logId + '</span></div>' +
+		'</div>' +
+		'<div class="meta-data">' + meta.join('') + '</div>' +
+	  '</div>' +
+	'</div>';
+}
+
+function renderSiteFooter(f) {
+  var el = document.getElementById('site-footer');
+  if (!el) return;
+  var cats = f.categories.map(function(c) {
+	return '<a href="' + c.url + '" class="atlas-blueprint-link" target="_top">[ ' + c.text + ' ]</a>';
+  }).join(' ');
+  var tags = f.tags.map(function(t) {
+	return '<a href="' + t.url + '" class="atlas-blueprint-link" target="_top">#' + t.text + '</a>';
+  }).join(' ');
+  var supportLinks = f.support.links.map(function(l, i) {
+	return '<a href="' + l.url + '" class="atlas-blueprint-link" target="_top">[ ' + l.text + ' ]</a>' +
+	  (i < f.support.links.length - 1 ? '<span class="atlas-footer-block__support-divider"> | </span>' : '');
+  }).join('');
+  var matrix = f.links.map(function(g) {
+	return '<div class="atlas-footer-block__matrix-column">' +
+	  '<span class="atlas-footer-block__column-label">' + g.label + '</span>' +
+	  '<div class="atlas-footer-block__column-items">' +
+		g.items.map(function(item) {
+		  return '<a href="' + item.url + '" class="atlas-blueprint-link" target="_top">/ ' + item.text + '</a>';
+		}).join('') +
+	  '</div></div>';
+  }).join('');
+  el.innerHTML =
+	'<div class="atlas-footer-wrapper">' +
+	  '<div class="atlas-footer-block atlas-footer-block--index">' +
+		'<div class="atlas-footer-block__log-line">SYS.LOG // INDEX_DATA</div>' +
+		'<div class="atlas-footer-block__wix-content">' +
+		  '<div class="atlas-footer-block__wix-row"><span class="atlas-footer-block__wix-label">CATEGORIES:</span><div class="atlas-footer-block__wix-list">' + cats + '</div></div>' +
+		  '<div class="atlas-footer-block__wix-row"><span class="atlas-footer-block__wix-label">TAGS:</span><div class="atlas-footer-block__wix-list">' + tags + '</div></div>' +
+		'</div>' +
+	  '</div>' +
+	  '<div class="atlas-footer-block atlas-footer-block--main">' +
+		'<div class="atlas-footer-block__support-header">' +
+		  '<div class="atlas-footer-block__kaomoji">' + f.tagline + '</div>' +
+		  '<div class="atlas-footer-block__support-title">Let\'s stay in touch</div>' +
+		'</div>' +
+		'<div class="atlas-footer-block__support-content">' +
+		  '<div class="atlas-footer-block__support-text">' + f.support.text + '</div>' +
+		  '<div class="atlas-footer-block__support-links">' + supportLinks + '</div>' +
+		'</div>' +
+		'<div class="atlas-footer-block__matrix-zone">' + matrix + '</div>' +
+	  '</div>' +
+	'</div>';
+}
+
 (function () {
-  function tryInit() {
-    if (window.AtlasFramework) { runWithFramework(window.AtlasFramework); }
-    else { runWithFramework(buildFallbackFramework()); }
+  function init() {
+	renderBlueprint(DATA.passport);
+	renderSiteFooter(DATA.footer);
   }
-
-  function runWithFramework(AF) {
-    window._atlasAF = AF;
-    var fb = document.getElementById('post-meta-fallback');
-    if (fb) fb.style.display = 'none';
-    AF.renderTerminal('#post-terminal', { lines: POST_CONFIG.terminalLines });
-    AF.renderFooter('#post-footer', {
-      label:  POST_CONFIG.footerLabel,
-      author: POST_CONFIG.footerAuthor,
-      year:   POST_CONFIG.footerYear
-    });
+  if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', init);
+  } else {
+	init();
   }
-
-  function buildFallbackFramework() {
-    function $i(sel) { return typeof sel === 'string' ? document.querySelector(sel) : sel; }
-    function inj(t, h) { var el = $i(t); if (el) el.innerHTML = h; }
-    return {
-      renderTerminal: function(t, o) {
-        o = o || {};
-        var lines = (o.lines||[]).map(function(l){
-          return l.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/!!(.+?)!!/g,'<span class="red">$1</span>').replace(/~~(.+?)~~/g,'<span class="ok">$1</span>');
-        }).join('\n');
-        inj(t,'<div class="atlas-terminal">'+lines+'</div>');
-      },
-      renderFooter: function(t, o) {
-        o = o || {};
-        var right = o.author ? o.author+' // '+(o.year||new Date().getFullYear()) : String(o.year||new Date().getFullYear());
-        inj(t,'<div class="atlas-post-footer"><span>'+(o.label||'// END OF LOG')+'</span><span>'+right+'</span></div>');
-      }
-    };
-  }
-
-  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', tryInit); }
-  else { tryInit(); }
 }());
 </script>
 
