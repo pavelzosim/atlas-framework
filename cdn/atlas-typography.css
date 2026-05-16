@@ -78,3 +78,48 @@
 
 /* ── First child margin reset ───────────────────────────────── */
 #atlas-body > *:first-child { margin-top: 0 !important; }
+
+/* ── Внутренний разделитель страниц (Section Break) ─────────── */
+.atlas-section-break {
+  position: relative !important;
+  height: 1px !important;
+  background: var(--atlas-border) !important;       /* Аккуратная сплошная линия */
+  margin: var(--atlas-space-lg) 0 !important;       /* Отступы по твоим токенам */
+  display: block !important;
+}
+
+.atlas-section-break::before {
+  content: attr(data-index) !important;             /* Выводит номер "02", "03" из HTML */
+  position: absolute !important;
+  top: -9px !important;                             /* Ровно по центру линии */
+  left: 6% !important;
+  background: var(--atlas-bg) !important;           /* Перекрывает линию фоном */
+  padding: 0 0.6rem !important;
+  font-family: var(--atlas-font-mono) !important;
+  font-size: var(--fs-meta) !important;             /* Токен 11px */
+  font-weight: 700 !important;
+  color: var(--atlas-crit) !important;              /* Твой фирменный темно-красный */
+}
+
+/* ── Финальный разделитель контента (EOF Divider) ────────────── */
+.atlas-eof-divider {
+  display: flex !important;                         /* Строит элементы в одну линию */
+  align-items: center !important;
+  margin: var(--atlas-space-xl) 0 var(--atlas-space-md) 0 !important;
+  font-family: var(--atlas-font-mono) !important;
+  font-size: var(--fs-meta) !important;             /* Токен 11px */
+  color: var(--atlas-ink-muted) !important;
+  letter-spacing: 0.12em !important;
+  user-select: none !important;
+}
+
+.atlas-eof-divider__line {
+  flex: 1 !important;                               /* Линия занимает всё свободное пространство */
+  border-bottom: 1px dashed var(--atlas-border) !important; /* Пунктир */
+  height: 0 !important;
+}
+
+.atlas-eof-divider__meta {
+  padding: 0 1.2rem !important;                     /* Отступы вокруг текста // END OF SESSION // EOF */
+  font-weight: 700 !important;
+}
