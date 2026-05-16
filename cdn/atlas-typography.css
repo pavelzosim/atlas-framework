@@ -126,36 +126,23 @@
    ========================================================================== */
 
 /* Внутренний разделитель страниц */
-.atlas-section-break {
+.content-block .atlas-section-break {
   position: relative !important;
-  display: flex !important;          /* ИСПРАВЛЕНО: Флекс вместо block */
-  align-items: center !important;     /* ИСПРАВЛЕНО: Автоматическое центрирование по вертикали */
-  height: 20px !important;            /* ИСПРАВЛЕНО: Физическая высота, чтобы iframe не прятал текст */
+  display: block !important;
+  width: 100% !important;
+  height: 1px !important;
+  background: var(--atlas-border) !important;
   margin: 4rem 0 !important;
   border: none !important;
   padding: 0 !important;
-  background: transparent !important;
 }
 
-/* Сама горизонтальная линия теперь рендерится внутри блока */
-.atlas-section-break::after {
-  content: "" !important;
-  position: absolute !important;
-  left: 0 !important;
-  right: 0 !important;
-  height: 1px !important;
-  background: var(--atlas-border) !important;
-  z-index: 1 !important;
-}
-
-/* Число секции */
-.atlas-section-break::before {
+.content-block .atlas-section-break::before {
   content: attr(data-index) !important;
   position: absolute !important;
-  left: 24px !important;
-  /* ИСПРАВЛЕНО: Никаких отрицательных top! Текст встает ровно по центру линии */
   top: 50% !important;
-  transform: translateY(-50%) !important; 
+  left: 24px !important;
+  transform: translateY(-50%) !important; /* Центрируем ровно по оси линии */
   background: var(--atlas-bg) !important;
   padding: 0 0.6rem !important;
   font-family: var(--atlas-font-mono) !important;
@@ -164,14 +151,15 @@
   color: var(--atlas-crit) !important;
   user-select: none !important;
   line-height: 1 !important;
-  z-index: 2 !important; /* Встает поверх линии */
+  z-index: 2 !important;
 }
 
 /* Финальный EOF разделитель */
-.atlas-eof-divider {
+.content-block .atlas-eof-divider {
   display: flex !important;
+  flex-direction: row !important;
   align-items: center !important;
-  justify-content: space-between !important; /* ИСПРАВЛЕНО: Распределяет линии по бокам от текста */
+  justify-content: space-between !important;
   margin: 5.5rem 0 2rem 0 !important;
   font-family: var(--atlas-font-mono) !important;
   font-size: 11px !important;
@@ -181,16 +169,17 @@
   width: 100% !important;
 }
 
-.atlas-eof-divider__line {
-  flex: 1 1 auto !important;          /* ИСПРАВЛЕНО: Разрешаем линии резиновую ширину */
+.content-block .atlas-eof-divider__line {
+  flex: 1 1 auto !important;
   display: block !important;
   border: none !important;
   border-bottom: 1px dashed var(--atlas-border) !important;
-  height: 1px !important;             /* ИСПРАВЛЕНО: Даем физическую высоту */
+  height: 1px !important;
 }
 
-.atlas-eof-divider__meta {
+.content-block .atlas-eof-divider__meta {
   padding: 0 1.2rem !important;
   font-weight: 700 !important;
   flex-shrink: 0 !important;
+  white-space: nowrap !important;
 }
