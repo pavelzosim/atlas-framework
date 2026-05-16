@@ -20,6 +20,7 @@
   ════════════════════════════════════════ -->
   <div id="atlas-body">
 
+	<div class="content-block">
 		  <!-- ═══ BLOCK 01 ═══════════════════════════════════════════ -->
 		  <h2>01 // What is ShaderLab in Unity?</h2>
 
@@ -46,7 +47,11 @@
 				  </div>
 			  </div>
 		  </div>
+	</div><!-- end content-block 01 -->
 
+	<div class="atlas-section-break" data-index="02"></div>
+
+	<div class="content-block">
 		  <!-- ═══ BLOCK 02 ═══════════════════════════════════════════ -->
 		  <h2>02 // Critical Changes (2024)</h2>
 
@@ -118,16 +123,18 @@
 					  <td>✓</td>
 					  <td>✓</td>
 				  </tr>
-			  </tbody>
-		  </table>
+					</tbody>
+					</table>
 
-	  </div>
+			  </div><!-- end content-block 02 -->
 
-    <!-- ЧАСТЬ 3 от LLM -->
-	  <!-- ═══ BLOCK 04 ═══════════════════════════════════════════ -->
-	  <h2>04 // How ShaderLab Works with CG and HLSL</h2>
+			  <div class="atlas-section-break" data-index="03"></div>
 
-	  <p>
+			  <div class="content-block">
+				<!-- ═══ BLOCK 04 ═══════════════════════════════════════════ -->
+				<h2>04 // How ShaderLab Works with CG and HLSL</h2>
+
+				<p>
 		  The GPU reads shader code sequentially — top to bottom. Each stage has a
 		  defined role and strict execution order:
 	  </p>
@@ -200,6 +207,11 @@
 
 	  </div>
 
+	</div><!-- end content-block 04 -->
+
+	<div class="atlas-section-break" data-index="05"></div>
+
+	<div class="content-block">
 	  <!-- ═══ BLOCK 05 ═══════════════════════════════════════════ -->
 	  <h2>05 // Shader Execution Data Flow</h2>
 
@@ -230,6 +242,11 @@
 		  </div>
 	  </div>
 
+	</div><!-- end content-block 05 -->
+
+	<div class="atlas-section-break" data-index="06"></div>
+
+	<div class="content-block">
 	  <!-- ═══ BLOCK 06 ═══════════════════════════════════════════ -->
 	  <h2>06 // Key Execution Rules</h2>
 
@@ -258,6 +275,11 @@
 		  </div>
 	  </div>
 
+	</div><!-- end content-block 06 -->
+
+	<div class="atlas-section-break" data-index="07"></div>
+
+	<div class="content-block">
 	  <!-- ═══ BLOCK 07 ═══════════════════════════════════════════ -->
 	  <h2>07 // Basic Color Shader</h2>
 
@@ -314,6 +336,11 @@
 		  </ol>
 	  </div>
 
+	</div><!-- end content-block 07 -->
+
+	<div class="atlas-section-break" data-index="08"></div>
+
+	<div class="content-block">
 	  <!-- ═══ BLOCK 08 ═══════════════════════════════════════════ -->
 	  <h2>08 // Shader Declaration & Properties</h2>
 
@@ -365,17 +392,19 @@
 		<figcaption>FIG_01 — Shader Declaration &amp; Properties</figcaption>
 	  </figure>
 
-    <!-- ... остальные части ... -->
+	<!-- ... остальные части ... -->
 
-    <!-- ═══ EOF ═════════════════════════════════════════════ -->
-    <div class="atlas-eof-divider">
-      <span class="atlas-eof-divider__line"></span>
-      <span class="atlas-eof-divider__meta">// END OF SESSION // EOF</span>
-      <span class="atlas-eof-divider__line"></span>
-    </div>
+	</div><!-- end content-block 08 -->
 
-    <!-- ═══ TERMINAL ═══════════════════════════════════════ -->
-    <div id="post-terminal"></div>
+	<!-- ═══ EOF ═════════════════════════════════════════════ -->
+	<div class="atlas-eof-divider">
+	  <span class="atlas-eof-divider__line"></span>
+	  <span class="atlas-eof-divider__meta">// END OF SESSION // EOF</span>
+	  <span class="atlas-eof-divider__line"></span>
+	</div>
+
+	<!-- ═══ TERMINAL ═══════════════════════════════════════ -->
+	<div id="post-terminal"></div>
 
   </div>
   <!-- конец #atlas-body -->
@@ -419,7 +448,7 @@ var POST_CONFIG = {
     window._atlasAF = AF;
     var fb = document.getElementById('post-meta-fallback');
     if (fb) fb.style.display = 'none';
-    AF.renderTerminal
+    AF.renderTerminal('#post-terminal', { lines: POST_CONFIG.terminalLines });
     AF.renderFooter('#post-footer', {
       label:  POST_CONFIG.footerLabel,
       author: POST_CONFIG.footerAuthor,
@@ -431,7 +460,7 @@ var POST_CONFIG = {
     function $i(sel) { return typeof sel === 'string' ? document.querySelector(sel) : sel; }
     function inj(t, h) { var el = $i(t); if (el) el.innerHTML = h; }
     return {
-      renderTerminal
+      renderTerminal: function(t, o) {
         o = o || {};
         var lines = (o.lines||[]).map(function(l){
           return l.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/!!(.+?)!!/g,'<span class="red">$1</span>').replace(/~~(.+?)~~/g,'<span class="ok">$1</span>');
