@@ -5,22 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css">
   <style>
 	*, *::before, *::after { box-sizing: border-box; }
-	html, body { margin: 0; padding: 0; overflow-x: hidden;
-	  font-family: 'JetBrains Mono', 'Courier New', monospace !important; }
-	.atlas-container { max-width: 100%; overflow-x: hidden; }
-	pre { white-space: pre-wrap; word-break: break-word; }
+	html, body { margin: 0; padding: 0; overflow-x: hidden; font-family: 'JetBrains Mono', 'Courier New', monospace !important; }
+	.atlas-container { max-width: 100%; overflow-x: hidden; font-family: 'JetBrains Mono', 'Courier New', monospace !important; }
+	h1, h2, h3, h4, h5, h6, p, span, div, li, td, th { font-family: 'JetBrains Mono', 'Courier New', monospace !important; }
+	pre { white-space: pre-wrap; word-break: break-word; font-family: 'JetBrains Mono', 'Courier New', monospace !important; }
   </style>
 </head>
 <body>
 <div class="atlas-container">
 
+  <!-- ════════════════════════════════════════
+	   КОНТЕНТ ПОСТА — сюда вставляешь всё
+	   что LLM возвращает по частям
+  ════════════════════════════════════════ -->
   <div id="atlas-body">
 
 	<div class="content-block">
+	  <!-- ═══ BLOCK 01 ═══════════════════════════════════════════ -->
 	  <h2>01 // Section Title</h2>
 	  <p>Section body text...</p>
 	</div>
@@ -28,22 +33,28 @@
 	<div class="atlas-section-break" data-index="// 01"></div>
 
 	<div class="content-block">
+	  <!-- ═══ BLOCK 02 ═══════════════════════════════════════════ -->
 	  <h2>02 // Section Title</h2>
 	  <p>Section body text...</p>
 	</div>
 
+	<!-- ═══ EOF ══════════════════════════════════════════════════ -->
 	<div class="atlas-eof-divider">
-	  <div class="atlas-eof-divider__line"></div>
-	  <div class="atlas-eof-divider__meta">// END_OF_LOG</div>
-	  <div class="atlas-eof-divider__line"></div>
+	  <span class="atlas-eof-divider__line"></span>
+	  <span class="atlas-eof-divider__meta">// END OF SESSION // EOF</span>
+	  <span class="atlas-eof-divider__line"></span>
 	</div>
 
-  </div>
+	<!-- ═══ TERMINAL ═══════════════════════════════════════════ -->
+	<div id="post-terminal"></div>
 
-  <div id="post-terminal"></div>
+  </div>
+  <!-- конец #atlas-body -->
+
   <div id="post-footer"></div>
 
 </div>
+<!-- конец .atlas-container -->
 
 <script>
 var POST_CONFIG = {
@@ -60,10 +71,10 @@ var POST_CONFIG = {
   tags:      [],
   tagBaseUrl: 'https://www.pavelzosim.com/blog/tags/',
   terminalLines: [
-	'**SYSTEM_ATLAS** // LOG_END',
-	'~~STATUS: OK~~'
+	'**[ATLAS_COMPILE]** post-slug-here',
+	'> Status: ~~STABLE~~'
   ],
-  footerLabel:  '// END OF LOG',
+  footerLabel:  '// END OF LOG — POST_TITLE',
   footerAuthor: 'pavelzosim',
   footerYear:   new Date().getFullYear()
 };
@@ -96,7 +107,7 @@ var POST_CONFIG = {
 	  renderFooter: function (t, o) {
 		o = o || {};
 		var right = o.author ? o.author + ' // ' + (o.year || new Date().getFullYear())
-							  : String(o.year || new Date().getFullYear());
+							 : String(o.year || new Date().getFullYear());
 		inj(t, '<div class="atlas-post-footer"><span>' + (o.label || '// END OF LOG') +
 			   '</span><span>' + right + '</span></div>');
 	  }
