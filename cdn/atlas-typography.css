@@ -125,67 +125,60 @@
    SYSTEM ATLAS v3.0 — FIX FOR MISSING LINES (WIX COMPATIBILITY)
    ========================================================================== */
 
-/* ── Внутренний разделитель страниц (Section Break) ─────────── */
-.atlas-section-break {
+/* ==========================================================================
+   ── РАЗДЕЛИТЕЛИ КОНТЕНТА (Wix-Iframe Optimized)
+   ========================================================================== */
+
+/* Внутренний разделитель страниц — привязываем к контексту .content-block */
+.content-block .atlas-section-break {
   position: relative !important;
   display: block !important;
   width: 100% !important;
   height: 1px !important;
-  /* ЖЕСТКИЙ ФИКС: Явный цвет вместо переменной */
-  background: rgba(0, 0, 0, 0.15) !important; 
-  /* Уменьшаем маргины, чтобы не было гигантских дыр */
-  margin: 2.5rem 0 !important; 
-  border: none !important;
+  min-height: 1px !important;
+  background: rgba(0, 0, 0, 0.15) !important; /* Твоя серая линия */
+  margin: 4rem 0 !important;
   padding: 0 !important;
+  border: none !important;
   clear: both !important;
 }
 
-.atlas-section-break::before {
+/* Число секции внутри линии */
+.content-block .atlas-section-break::before {
   content: attr(data-index) !important;
   position: absolute !important;
-  /* Сдвигаем на 50% и компенсируем высоту шрифта через margin-top */
   top: 50% !important;
-  margin-top: -6px !important;
   left: 24px !important;
-  /* ЖЕСТКИЙ ФИКС: Физический цвет бежевого фона сайта и темного текста */
-  background: rgb(230, 220, 210) !important; 
-  color: #8b0000 !important; 
-  padding: 0 0.5rem !important;
-  font-family: 'JetBrains Mono', monospace !important;
+  transform: translateY(-50%) !important;
+  background: rgb(230, 220, 210) !important; /* Цвет бежевого фона */
+  color: #8b0000 !important; /* Бордовый дефолтный */
+  padding: 0 0.6rem !important;
+  font-family: var(--atlas-font-mono), monospace !important;
   font-size: 11px !important;
   font-weight: 700 !important;
-  user-select: none !important;
   line-height: 1 !important;
-  z-index: 99 !important;
+  z-index: 10 !important;
 }
 
-/* ── Финальный разделитель контента (EOF Divider) ────────────── */
-.atlas-eof-divider {
+/* Финальный разделитель контента (EOF) */
+.content-block .atlas-eof-divider {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
   justify-content: space-between !important;
-  margin: 3.5rem 0 2rem 0 !important;
-  font-family: 'JetBrains Mono', monospace !important;
-  font-size: 11px !important;
-  /* ЖЕСТКИЙ ФИКС: Физический приглушенный цвет текста */
-  color: rgba(0, 0, 0, 0.5) !important; 
-  letter-spacing: 0.12em !important;
-  user-select: none !important;
+  margin: 5.5rem 0 2rem 0 !important;
   width: 100% !important;
 }
 
-.atlas-eof-divider__line {
+.content-block .atlas-eof-divider__line {
   display: block !important;
   flex: 1 1 auto !important;
   height: 1px !important;
   border: none !important;
-  /* ЖЕСТКИЙ ФИКС: Физический цвет пунктира */
-  border-bottom: 1px dashed rgba(0, 0, 0, 0.15) !important; 
-  background: transparent !important;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.15) !important;
 }
 
-.atlas-eof-divider__meta {
+.content-block .atlas-eof-divider__meta {
   display: inline-block !important;
   padding: 0 1.2rem !important;
   font-weight: 700 !important;
