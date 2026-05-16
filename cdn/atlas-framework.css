@@ -16,8 +16,8 @@
    ========================================================================== */
 
 /* Жесткие абсолютные ссылки на модули в твоем репозитории */
-@import url('https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-core.css');
-@import url('https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-typography.css');
+@import url('./atlas-core.css');
+@import url('./atlas-typography.css');
 
 /* Сюда в будущем можно будет добавлять новые R&D компоненты */
 /* @import url('https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-components.css'); */
