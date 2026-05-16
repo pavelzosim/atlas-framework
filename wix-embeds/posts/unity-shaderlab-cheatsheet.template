@@ -14,8 +14,6 @@
 <body>
 <div class="atlas-container">
 
-  <div id="post-passport"></div>
-
   <!-- ════════════════════════════════════════
        КОНТЕНТ ПОСТА — сюда вставляешь всё
        что LLM возвращает по частям
@@ -364,10 +362,17 @@
 		<img
 		  src="https://static.wixstatic.com/media/ace175_17119243e76545398ebbd5abde114bd7~mv2.png/v1/fill/w_530,h_311,al_c,lg_1,q_85,enc_avif,quality_auto/ace175_17119243e76545398ebbd5abde114bd7~mv2.png"
 		  alt="Shader Declaration &amp; Properties example">
-		<figcaption>FIG_01 — Shader Declaration &amp; Properties: пример структуры блока Properties в ShaderLab</figcaption>
+		<figcaption>FIG_01 — Shader Declaration &amp; Properties</figcaption>
 	  </figure>
 
     <!-- ... остальные части ... -->
+
+    <!-- ═══ EOF ═════════════════════════════════════════════ -->
+    <div class="atlas-eof-divider">
+      <span class="atlas-eof-divider__line"></span>
+      <span class="atlas-eof-divider__meta">// END OF SESSION // EOF</span>
+      <span class="atlas-eof-divider__line"></span>
+    </div>
 
     <!-- ═══ TERMINAL ═══════════════════════════════════════ -->
     <div id="post-terminal"></div>
@@ -386,24 +391,7 @@
    POST_CONFIG — заполняешь один раз
 ════════════════════════════════════════ */
 var POST_CONFIG = {
-  user:        'pavelzosim',
-  path:        '~/unity',
-  command:     'cat unity_shaderlab.log',
-  prefix:      'SYSTEM_ATLAS // R&D_LOG',
-  project:     'UNITY_SHADERLAB',
-  module:      'surface_shaders',
-  version:     '1.3.3',
-  logId:       '#003',
-  status:      'STABLE',
-  slug:        'unity-shaderlab-cheatsheet',
-  author:      '...',
-  created:     '----.--.--',
-  modified:    null,
-  wordCount:   2400,
-  title:       null,
-  tags:        [],
-  tagBaseUrl:  'https://www.pavelzosim.com/blog/tags/',
-  footerLabel: '// END OF LOG — UNITY_SHADERLAB',
+  footerLabel:  '// END OF LOG — UNITY_SHADERLAB',
   footerAuthor: 'pavelzosim',
   footerYear:   '2025',
   terminalLines: [
@@ -419,29 +407,6 @@ var POST_CONFIG = {
 
 <script>
 /* ═══════════════════════════════════════════════════════════════
-   AUTO-FETCH
-═══════════════════════════════════════════════════════════════ */
-var BACKEND_URL = 'https://www.pavelzosim.com/_functions/getPostData';
-
-function applyPostData(d) {
-  if (d.author)                 POST_CONFIG.author   = d.author;
-  if (d.title)                  POST_CONFIG.title    = d.title;
-  if (d.created)                POST_CONFIG.created  = d.created;
-  if (d.modified !== undefined) POST_CONFIG.modified = d.modified;
-  if (Array.isArray(d.tags) && d.tags.length) POST_CONFIG.tags = d.tags;
-  if (window._atlasAF) runWithFramework(window._atlasAF);
-}
-
-(function () {
-  var slug = POST_CONFIG.slug || '';
-  if (!slug) return;
-  fetch(BACKEND_URL + '?slug=' + encodeURIComponent(slug))
-    .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (data) { if (data && !data.error) applyPostData(data); })
-    .catch(function () {});
-})();
-
-/* ═══════════════════════════════════════════════════════════════
    FRAMEWORK INIT
 ═══════════════════════════════════════════════════════════════ */
 (function () {
@@ -454,24 +419,7 @@ function applyPostData(d) {
     window._atlasAF = AF;
     var fb = document.getElementById('post-meta-fallback');
     if (fb) fb.style.display = 'none';
-    AF.renderEngineeringPassport('#post-passport', {
-      user:      POST_CONFIG.user,
-      path:      POST_CONFIG.path,
-      command:   POST_CONFIG.command,
-      prefix:    POST_CONFIG.prefix,
-      project:   POST_CONFIG.project,
-      module:    POST_CONFIG.module,
-      version:   POST_CONFIG.version,
-      logId:     POST_CONFIG.logId,
-      status:    POST_CONFIG.status,
-      author:    POST_CONFIG.author,
-      title:     POST_CONFIG.title,
-      created:   POST_CONFIG.created,
-      modified:  POST_CONFIG.modified,
-      wordCount: POST_CONFIG.wordCount,
-      tags:      POST_CONFIG.tags
-    });
-    AF.renderTerminal('#post-terminal', { lines: POST_CONFIG.terminalLines });
+    AF.renderTerminal
     AF.renderFooter('#post-footer', {
       label:  POST_CONFIG.footerLabel,
       author: POST_CONFIG.footerAuthor,
@@ -483,39 +431,7 @@ function applyPostData(d) {
     function $i(sel) { return typeof sel === 'string' ? document.querySelector(sel) : sel; }
     function inj(t, h) { var el = $i(t); if (el) el.innerHTML = h; }
     return {
-      renderEngineeringPassport: function(t, o) {
-        o = o || {};
-        var status  = (o.status || 'DRAFT').toUpperCase();
-        var rt = o.readTime || (o.wordCount ? '~'+Math.ceil(Number(o.wordCount)/200)+' MIN' : null);
-        var meta = [ {k:'AUTH',v:o.author||'—'}, {k:'CREATED',v:o.created||'—'} ];
-        if (o.modified) meta.push({k:'LAST_MODIFIED',v:o.modified});
-        if (rt)         meta.push({k:'READ',v:rt});
-        var metaHTML = meta.map(function(m){ return '<span class="bp-meta-item"><b>'+m.k+'</b>: '+m.v+'</span>'; }).join('');
-        var tags = Array.isArray(o.tags) ? o.tags : [];
-        function toSlug(s) { return s.toLowerCase().replace(/\s+/g,'-'); }
-        var tagsHTML = tags.length ? '<div class="bp-tags">'+tags.map(function(tg){ return '<a href="https://www.pavelzosim.com/blog/tags/'+toSlug(tg)+'" class="atlas-blueprint-link" target="_top">#'+tg+'</a>'; }).join('')+'</div>' : '';
-        inj(t,
-          '<div class="passport-bp">'+
-            '<div class="bp-title-bar">'+
-              '<div class="bp-title-bar__left">'+
-                '<span class="bp-user-prompt">'+(o.user||'pavelzosim')+'</span>'+
-                '<span style="opacity:.4">:</span>'+
-                '<span class="bp-path-prompt">'+(o.path||'~')+'</span>'+
-                '<span class="bp-root-char">#</span>'+
-                '<span class="bp-command-text">'+(o.command||'cat log')+'</span>'+
-              '</div>'+
-              '<div class="bp-sys-status">[ SYS_STATUS: <b>'+status+'</b> ]</div>'+
-            '</div>'+
-            (o.title ? '<div class="bp-main-title">'+o.title+'</div>' : '')+
-            '<div class="bp-grid">'+
-              '<div class="bp-cell"><div><span class="bp-key">PROJECT</span><span class="bp-val">'+(o.project||'—')+'</span></div><div><span class="bp-key">MODULE</span><span class="bp-val">'+(o.module||'—')+'</span></div></div>'+
-              '<div class="bp-cell"><div><span class="bp-key">VERSION</span><span class="bp-val">'+(o.version||'—')+'</span></div><div><span class="bp-key">LOG_ID</span><span class="bp-val">'+(o.logId||'—')+'</span></div></div>'+
-            '</div>'+
-            '<div class="bp-meta">'+metaHTML+'</div>'+
-            tagsHTML+
-          '</div>');
-      },
-      renderTerminal: function(t, o) {
+      renderTerminal
         o = o || {};
         var lines = (o.lines||[]).map(function(l){
           return l.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/!!(.+?)!!/g,'<span class="red">$1</span>').replace(/~~(.+?)~~/g,'<span class="ok">$1</span>');

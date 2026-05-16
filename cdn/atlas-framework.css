@@ -55,11 +55,11 @@ html, body { margin: 0; padding: 0; box-sizing: border-box; overflow-x: hidden; 
 .atlas-meta-footer { font-family: var(--atlas-font-mono); font-size: .75rem; text-transform: uppercase; letter-spacing: .1em; opacity: .5; border-top: 1px solid var(--atlas-border); padding-top: var(--atlas-space-md); margin-top: var(--atlas-space-xl); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 
 /* ── Typography ─────────────────────────────────────────────── */
-.atlas-container h1 { font-family: var(--atlas-font-mono); font-weight: 700; text-transform: uppercase; font-size: 1.5rem; margin: 0 0 10px 0; letter-spacing: .06em; }
-.atlas-container h2 { font-family: var(--atlas-font-mono); font-weight: 700; text-transform: uppercase; font-size: 1.1rem; margin: var(--atlas-space-xl) 0 20px 0; border-bottom: 1px solid var(--atlas-ink); padding-bottom: 5px; letter-spacing: .08em; }
+.atlas-container h1 { font-family: var(--atlas-font-mono) !important; font-weight: 700;
+.atlas-container h2 { font-family: var(--atlas-font-mono) !important; font-weight: 700;
 #atlas-body > *:first-child { margin-top: 0; }
-.atlas-container h3 { font-family: var(--atlas-font-mono); font-weight: 400; font-size: .9rem; text-transform: uppercase; margin: 30px 0 15px 0; opacity: .6; letter-spacing: .06em; }
-.atlas-container p  { font-family: var(--atlas-font-mono); font-size: .95rem; line-height: 1.8; margin-bottom: 20px; color: var(--atlas-ink-soft); }
+.atlas-container h3 { font-family: var(--atlas-font-mono) !important; font-weight: 400;
+.atlas-container p  { font-family: var(--atlas-font-mono) !important; font-size: .95rem;
 .atlas-param { background: rgba(139,0,0,.05); color: var(--atlas-crit); padding: 1px 5px; font-family: var(--atlas-font-mono); font-size: .95em; border: 1px solid rgba(139,0,0,.1); }
 
 /* ── Arch Flow ──────────────────────────────────────────────── */
@@ -717,4 +717,45 @@ html, body { margin: 0; padding: 0; box-sizing: border-box; overflow-x: hidden; 
   border-left: 1px solid var(--atlas-border);
   border-right: 1px solid var(--atlas-border);
   background: var(--atlas-bg);
+}
+
+/* ── Section Break ──────────────────────────────────────────── */
+.atlas-section-break {
+  position: relative;
+  height: 1px;
+  background: var(--atlas-border);
+  margin: 4.5rem 0;
+}
+.atlas-section-break::before {
+  content: attr(data-index);
+  position: absolute;
+  top: -9px;
+  left: 6%;
+  background: var(--atlas-bg);
+  padding: 0 0.6rem;
+  font-family: var(--atlas-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--atlas-crit);
+  user-select: none;
+}
+
+/* ── EOF Divider ────────────────────────────────────────────── */
+.atlas-eof-divider {
+  display: flex;
+  align-items: center;
+  margin: 5.5rem 0 2rem 0;
+  font-family: var(--atlas-font-mono);
+  font-size: 11px;
+  color: var(--atlas-ink-muted);
+  letter-spacing: 0.12em;
+  user-select: none;
+}
+.atlas-eof-divider__line {
+  flex: 1;
+  border-bottom: 1px dashed var(--atlas-border);
+}
+.atlas-eof-divider__meta {
+  padding: 0 1.2rem;
+  font-weight: 700;
 }
