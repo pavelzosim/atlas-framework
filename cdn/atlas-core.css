@@ -62,7 +62,7 @@ html, body {
 
 /* ── Container ──────────────────────────────────────────────── */
 .atlas-container {
-  max-width: 760px;                                 /* Сузили до ширины CodePen */
+  max-width: 760px; /* Сужено до 760px под размеры макета песочницы */
   width: 100%;
   background: transparent;
   padding: 0;
