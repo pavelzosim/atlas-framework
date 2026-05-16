@@ -1,5 +1,6 @@
 # SYSTEM ATLAS FRAMEWORK — Руководство пользователя
-
+сделать purge CDN после каждого изменения стилей, чтобы обновить кэш:
+Invoke-RestMethod "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css"
 ```
 ╔══════════════════════════════════════════════════════════════════╗
 ║  SYSTEM_ATLAS // R&D_LOG                    [STABLE] [—] [□] [✕] ║
