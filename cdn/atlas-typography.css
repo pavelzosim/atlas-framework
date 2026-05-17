@@ -390,3 +390,165 @@
   ) !important;
   background-size: 2px 2px !important;
 }
+
+/* ==========================================================================
+   ── SYSTEM ATLAS // SITE FOOTER COMPONENT
+   ========================================================================== */
+.atlas-footer-wrapper {
+  width: 100% !important;
+  max-width: 900px !important;
+  margin: 4rem 0 2rem 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Основной блок футера в виде рамки */
+.atlas-footer-block--main {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  border: 2px solid var(--atlas-ink, #000000) !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+/* Верхняя строка футера с Каомодзи и заголовком */
+.atlas-footer-block__support-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 8px 12px !important;
+  border-bottom: 2px solid var(--atlas-ink, #000000) !important;
+  background: var(--atlas-bg-alt, rgba(0,0,0,0.02)) !important;
+  font-size: 11px !important;
+}
+
+.atlas-footer-block__kaomoji {
+  font-weight: 700 !important;
+  color: var(--atlas-ink, #000000) !important;
+}
+
+.atlas-footer-block__support-title {
+  font-size: 10px !important;
+  text-transform: uppercase !important;
+  color: var(--atlas-ink-muted, rgba(0,0,0,0.5)) !important;
+  font-weight: 700 !important;
+}
+
+/* Средняя зона: Текст поддержки и быстрые контакты */
+.atlas-footer-block__support-content {
+  padding: 16px 12px !important;
+  border-bottom: 2px solid var(--atlas-ink, #000000) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 14px !important;
+}
+
+.atlas-footer-block__support-text {
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+  color: var(--atlas-ink-soft, rgba(0,0,0,0.85)) !important;
+}
+
+.atlas-footer-block__support-links {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+  padding-bottom: 4px !important; /* Запас под пиксельную тень кнопок контактов */
+}
+
+.atlas-footer-block__support-divider {
+  color: var(--atlas-ink-muted, rgba(0,0,0,0.25)) !important;
+  user-select: none !important;
+}
+
+/* Нижняя зона: 3-колончатая матрица ссылок */
+.atlas-footer-block__matrix-zone {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr !important;
+  width: 100% !important;
+}
+
+.atlas-footer-block__matrix-column {
+  padding: 14px 12px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+}
+
+/* Вертикальный разделитель между колонками матрицы */
+.atlas-footer-block__matrix-column:not(:last-child) {
+  border-right: 2px solid var(--atlas-ink, #000000) !important;
+}
+
+/* Метки категорий в матрице (выровнены по левому краю своей колонки) */
+.atlas-footer-block__column-label {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: var(--atlas-ink-muted, rgba(0,0,0,0.5)) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+.atlas-footer-block__column-items {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important; /* Чтобы кнопки занимали только ширину текста */
+  gap: 8px !important;
+  padding-bottom: 4px !important; /* Запас под пиксельную тень внутренних ссылок */
+}
+
+/* Универсальный DOS-эффект при наведении на любые ссылки футера */
+.atlas-footer-block .atlas-blueprint-link {
+  font-size: 12px !important;
+  color: var(--atlas-ink, #000000) !important;
+  text-decoration: none !important;
+  font-weight: 400 !important;
+  padding: 3px 6px !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  position: relative !important;
+  display: inline-block !important;
+  transition: none !important; /* Мгновенный отклик */
+}
+
+.atlas-footer-block .atlas-blueprint-link:hover {
+  text-decoration: none !important;
+  color: #ffffff !important;
+  background: #0000aa !important; /* Синий фон Volkov Commander */
+  border-color: var(--atlas-ink, #000000) !important;
+}
+
+/* Генерация шахматной тени 2х2 при ховере */
+.atlas-footer-block .atlas-blueprint-link:hover::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 4px !important;
+  left: 4px !important;
+  right: -4px !important;
+  bottom: -4px !important;
+  z-index: -1 !important;
+  background-image: conic-gradient(
+    #000000 0.25turn, 
+    transparent 0.25turn
+  ) !important;
+  background-size: 2px 2px !important;
+}
+
+/* ── Адаптивность под мобильные устройства ────────────────────── */
+@media (max-width: 700px) {
+  .atlas-footer-block__support-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+  }
+  
+  .atlas-footer-block__matrix-zone {
+    grid-template-columns: 1fr !important; /* Схлопываем матрицу в один столбец */
+  }
+  
+  .atlas-footer-block__matrix-column:not(:last-child) {
+    border-right: none !important;
+    border-bottom: 2px solid var(--atlas-ink, #000000) !important; /* Разделитель становится горизонтальным */
+  }
+}

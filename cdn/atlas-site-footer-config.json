@@ -1,31 +1,75 @@
+
+
 {
-  "tagline": "( ´◔ ω◔`) ノシ",
-  "links": [
-    {
-      "label": "Code & Shared Tools",
-      "items": [
-        { "text": "GitHub",  "url": "https://github.com/pavelzosim" },
-        { "text": "Gumroad", "url": "https://gumroad.com/pavelzosim" }
-      ]
+    "tagline": "(*_*) [ SYSTEM_ATLAS // EOF ]",
+    "support": {
+        "text": "Have a project or a pipeline bottleneck? Let's build something deterministic.",
+        "links": [
+            {
+                "text": "TELEGRAM",
+                "url": "https://t.me/YOUR_USERNAME"
+            },
+            {
+                "text": "LINKEDIN",
+                "url": "https://www.linkedin.com/in/pavelzosim/"
+            },
+            {
+                "text": "EMAIL",
+                "url": "mailto:YOUR_EMAIL@example.com"
+            }
+        ]
     },
-    {
-      "label": "Media & Documentation",
-      "items": [
-        { "text": "YouTube_Breakdowns", "url": "https://youtube.com/@pavelzosim" }
-      ]
-    },
-    {
-      "label": "Direct Communication",
-      "items": [
-        { "text": "LinkedIn_Profile", "url": "https://linkedin.com/in/pavelzosim" }
-      ]
-    }
-  ],
-  "support": {
-    "text": "// If you find this R&D useful, support future deep-dives:",
     "links": [
-      { "text": "Patreon",          "url": "https://patreon.com/pavelzosim" },
-      { "text": "Buy Me a Coffee",  "url": "https://buymeacoffee.com/pavelzosim" }
+        {
+            "label": "PROD_PIPELINES",
+            "items": [
+                {
+                    "text": "Houdini HDAs",
+                    "url": "https://www.pavelzosim.com/blog/tags/houdini"
+                },
+                {
+                    "text": "Real-time VFX",
+                    "url": "https://www.pavelzosim.com/blog/tags/vfx"
+                },
+                {
+                    "text": "Procedural Systems",
+                    "url": "https://www.pavelzosim.com/blog/tags/procedural"
+                }
+            ]
+        },
+        {
+            "label": "R&D_LOGS",
+            "items": [
+                {
+                    "text": "Unity Shaders",
+                    "url": "https://www.pavelzosim.com/blog/tags/unity"
+                },
+                {
+                    "text": "Unreal Engine",
+                    "url": "https://www.pavelzosim.com/blog/tags/unreal"
+                },
+                {
+                    "text": "GPU Optimization",
+                    "url": "https://www.pavelzosim.com/blog/tags/gpu"
+                }
+            ]
+        },
+        {
+            "label": "SYSTEM_ROOT",
+            "items": [
+                {
+                    "text": "About Me",
+                    "url": "https://www.pavelzosim.com/about"
+                },
+                {
+                    "text": "Master Bio",
+                    "url": "https://www.pavelzosim.com/bio"
+                },
+                {
+                    "text": "GitHub Profile",
+                    "url": "https://github.com/pavelzosim"
+                }
+            ]
+        }
     ]
-  }
 }
