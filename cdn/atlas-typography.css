@@ -308,3 +308,55 @@
   .bp-cell:first-child { border-right: none !important; border-bottom: 2px solid var(--atlas-ink, #000000) !important; }
   .bp-title-bar { flex-direction: column !important; align-items: flex-start !important; gap: 6px !important; }
 }
+
+
+/* ==========================================================================
+   ── SYSTEM ATLAS // BLUEPRINT BUTTONS & TAGS (VC HOVER EFFECT)
+   ========================================================================== */
+.bp-tags {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important; /* Немного увеличим зазор для объема кнопок */
+  padding: 10px 12px !important;
+  background: var(--atlas-bg-alt, rgba(0,0,0,0.02)) !important;
+}
+
+.atlas-blueprint-link {
+  font-size: 11px !important;
+  color: var(--atlas-ink, #000000) !important;
+  text-decoration: none !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  padding: 4px 8px !important;
+  border: 1px solid var(--atlas-ink, #000000) !important;
+  background: transparent !important;
+  position: relative !important;
+  display: inline-block !important;
+  transition: none !important; /* В DOS интерфейсах анимаций не было, переключаем мгновенно */
+}
+
+/* Эффект наведения в стиле Volkov Commander */
+.atlas-blueprint-link:hover {
+  text-decoration: none !important;
+  color: #ffffff !important; /* Текст становится белым на синем фоне */
+  background: #0000aa !important; /* Тот самый синий цвет из VC/NC */
+}
+
+/* Создаем пиксельную DOS-тень через псевдоэлемент */
+.atlas-blueprint-link:hover::after {
+  content: "" !important;
+  position: absolute !important;
+  /* Сдвиг тени вниз и вправо на 4px */
+  top: 4px !important;
+  left: 4px !important;
+  right: -4px !important;
+  bottom: -4px !important;
+  z-index: -1 !important;
+  
+  /* Шахматная сетка 2х2 (1 пиксель черный, 3 прозрачных) */
+  background-image: conic-gradient(
+    rgba(0, 0, 0, 1) 0.25turn, 
+    transparent 0.25turn
+  ) !important;
+  background-size: 2px 2px !important;
+}
