@@ -188,17 +188,13 @@
 
 
 /* ==========================================================================
-   ── ATLAS INTERFACE // HEADER COMPONENT
-   ========================================================================== */
-
-/* ==========================================================================
-   ── SYSTEM ATLAS // PASSPORT BLUEPRINT COMPONENT
+   ── SYSTEM ATLAS // PASSPORT BLUEPRINT HEADER COMPONENT
    ========================================================================== */
 .passport-bp {
   display: flex !important;
   flex-direction: column !important;
   width: 100% !important;
-  border: 2px solid var(--atlas-ink, #000000) !important;
+  border: 1px solid var(--atlas-ink, #000000) !important;
   margin: 1.5rem 0 3.5rem 0 !important;
   padding: 0 !important;
   background: transparent !important;
@@ -209,7 +205,7 @@
   justify-content: space-between !important;
   align-items: center !important;
   padding: 8px 12px !important;
-  border-bottom: 2px solid var(--atlas-ink, #000000) !important;
+  border-bottom: 1px solid var(--atlas-ink, #000000) !important;
   background: var(--atlas-bg-alt, rgba(0,0,0,0.02)) !important;
   font-size: 11px !important;
 }
@@ -231,7 +227,7 @@
   font-weight: 700 !important;
   padding: 18px 12px !important;
   text-transform: uppercase !important;
-  border-bottom: 2px solid var(--atlas-ink, #000000) !important;
+  border-bottom: 1px solid var(--atlas-ink, #000000) !important;
   line-height: 1.2 !important;
   letter-spacing: 0.02em !important;
   color: var(--atlas-ink, #000000) !important;
@@ -256,19 +252,25 @@
   border-right: 2px solid var(--atlas-ink, #000000) !important;
 }
 
+/* Изменено: распределяем ключ и значение по краям ячейки */
 .bp-cell > div {
   display: flex !important;
+  justify-content: space-between !important; /* Ключ — влево, значение — вправо */
   align-items: center !important;
+  width: 100% !important;
 }
 
 .bp-key {
   font-weight: 700 !important;
-  width: 75px !important;
   color: var(--atlas-ink-muted, rgba(0,0,0,0.5)) !important;
   display: inline-block !important;
 }
 
-.bp-val { color: var(--atlas-ink, #000000) !important; }
+/* Изменено: на всякий случай гарантируем выравнивание текста внутри значения */
+.bp-val { 
+  color: var(--atlas-ink, #000000) !important;
+  text-align: right !important; 
+}
 
 .bp-meta {
   display: flex !important;
@@ -276,7 +278,7 @@
   gap: 1.5rem !important;
   padding: 10px 12px !important;
   font-size: 11px !important;
-  border-bottom: 2px solid var(--atlas-ink, #000000) !important;
+  border-bottom: 1px solid var(--atlas-ink, #000000) !important;
   background: var(--atlas-bg-alt, rgba(0,0,0,0.01)) !important;
 }
 
