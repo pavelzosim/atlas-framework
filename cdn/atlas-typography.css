@@ -191,71 +191,120 @@
    ── ATLAS INTERFACE // HEADER COMPONENT
    ========================================================================== */
 
-.atlas-header {
-  display: block !important;
-  width: 100% !important;
-  margin: 0 0 3.5rem 0 !important;
-  padding: 1.5rem 0 0 0 !important;
-  background: transparent !important;
-  border: none !important;
-}
-
-/* Главный заголовок из бэкенда */
-.atlas-header h1 {
-  font-family: var(--atlas-font-mono), monospace !important;
-  font-size: 22px !important; /* Чуть крупнее секционных h2 */
-  font-weight: 700 !important;
-  color: var(--atlas-ink) !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-  margin: 0 0 14px 0 !important;
-  line-height: 1.25 !important;
-  border: none !important;
-  padding: 0 !important;
-}
-
-/* Панель метаданных */
-.atlas-header__meta {
+/* ==========================================================================
+   ── SYSTEM ATLAS // PASSPORT BLUEPRINT COMPONENT
+   ========================================================================== */
+.passport-bp {
   display: flex !important;
-  flex-direction: row !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  border: 2px solid var(--atlas-ink, #000000) !important;
+  margin: 1.5rem 0 3.5rem 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+.bp-title-bar {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 8px 12px !important;
+  border-bottom: 2px solid var(--atlas-ink, #000000) !important;
+  background: var(--atlas-bg-alt, rgba(0,0,0,0.02)) !important;
+  font-size: 11px !important;
+}
+
+.bp-title-bar__left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+.bp-user-prompt { color: var(--atlas-ink, #000000) !important; font-weight: 700 !important; }
+.bp-path-prompt { color: var(--atlas-ink-soft, rgba(0,0,0,0.85)) !important; }
+.bp-root-char { font-weight: 700 !important; margin-right: 4px !important; }
+.bp-command-text { color: var(--atlas-ink, #000000) !important; }
+.bp-sys-status { font-size: 10px !important; text-transform: uppercase !important; }
+
+.bp-main-title {
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  padding: 18px 12px !important;
+  text-transform: uppercase !important;
+  border-bottom: 2px solid var(--atlas-ink, #000000) !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0.02em !important;
+  color: var(--atlas-ink, #000000) !important;
+}
+
+.bp-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  width: 100% !important;
+  border-bottom: 2px solid var(--atlas-ink, #000000) !important;
+}
+
+.bp-cell {
+  padding: 10px 12px !important;
+  font-size: 11px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+}
+
+.bp-cell:first-child {
+  border-right: 2px solid var(--atlas-ink, #000000) !important;
+}
+
+.bp-cell > div {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.bp-key {
+  font-weight: 700 !important;
+  width: 75px !important;
+  color: var(--atlas-ink-muted, rgba(0,0,0,0.5)) !important;
+  display: inline-block !important;
+}
+
+.bp-val { color: var(--atlas-ink, #000000) !important; }
+
+.bp-meta {
+  display: flex !important;
   flex-wrap: wrap !important;
   gap: 1.5rem !important;
-  font-family: var(--atlas-font-mono), monospace !important;
-  font-size: var(--fs-status, 10px) !important;
-  color: var(--atlas-ink-muted) !important;
+  padding: 10px 12px !important;
+  font-size: 11px !important;
+  border-bottom: 2px solid var(--atlas-ink, #000000) !important;
+  background: var(--atlas-bg-alt, rgba(0,0,0,0.01)) !important;
+}
+
+.bp-meta-item b {
+  font-weight: 700 !important;
+  color: var(--atlas-ink-muted, rgba(0,0,0,0.5)) !important;
+}
+
+.bp-tags {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  padding: 10px 12px !important;
+  background: var(--atlas-bg-alt, rgba(0,0,0,0.02)) !important;
+}
+
+.atlas-blueprint-link {
+  font-size: 11px !important;
+  color: var(--atlas-ink, #000000) !important;
+  text-decoration: none !important;
+  font-weight: 700 !important;
   text-transform: uppercase !important;
-  margin: 0 0 12px 0 !important;
-  letter-spacing: 0.08em !important;
-  line-height: 1.4 !important;
 }
 
-.atlas-header__meta .meta-item {
-  display: inline-block !important;
-  white-space: nowrap !important;
-}
+.atlas-blueprint-link:hover { text-decoration: underline !important; }
 
-/* Цветовые статусы терминала */
-.atlas-header__meta .status-indicator {
-  margin-left: auto !important; /* Сдвигает статус в правый угол на десктопах */
-  transition: color 0.2s ease !important;
-}
-
-/* Жесткая черная разграничительная линия хедера */
-.atlas-header__border {
-  width: 100% !important;
-  height: 2px !important;
-  background: var(--atlas-ink) !important;
-  margin: 6px 0 0 0 !important;
-  padding: 0 !important;
-  border: none !important;
-}
-
-/* Адаптивность для мобильных экранов */
 @media (max-width: 600px) {
-  .atlas-header__meta .status-indicator {
-    margin-left: 0 !important; /* На мобилках статус падает в общий поток */
-  }
-  .atlas-header h1 {
-    font-size: 18px !important;
-  }
+  .bp-grid { grid-template-columns: 1fr !important; }
+  .bp-cell:first-child { border-right: none !important; border-bottom: 2px solid var(--atlas-ink, #000000) !important; }
+  .bp-title-bar { flex-direction: column !important; align-items: flex-start !important; gap: 6px !important; }
 }
