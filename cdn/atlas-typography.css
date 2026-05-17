@@ -554,7 +554,7 @@
 }
 
 /* ==========================================================================
-   ── ТАБЛИЦЫ: ЖЕСТКИЙ ФИКС ДЛЯ WIX (SYSTEM ATLAS OVERRIDES)
+   ── SYSTEM ATLAS // MODULE: TABLES
    ========================================================================== */
 .atlas-table-responsive {
   width: 100% !important;
@@ -562,36 +562,39 @@
   overflow-x: auto !important;
   margin: 24px 0 !important;
   display: block !important;
+  -webkit-overflow-scrolling: touch;
 }
 
 .atlas-table {
-  display: table !important; /* Критично для Wix */
+  display: table !important; /* Форсируем нативное поведение против resets */
   width: 100% !important;
   border-collapse: collapse !important;
-  border: 1px solid var(--atlas-border, rgba(0,0,0,0.2)) !important;
-  background: transparent !important;
-  font-size: 12px !important;
+  border-spacing: 0 !important;
+  border: 1px solid var(--atlas-border, rgba(0,0,0,0.15)) !important;
+  background: var(--atlas-bg, transparent) !important;
+  font-size: var(--fs-body, 12px) !important;
   line-height: 1.5 !important;
 }
 
 .atlas-table th,
 .atlas-table td {
-  border: 1px solid var(--atlas-border, rgba(0,0,0,0.2)) !important;
   padding: 10px 14px !important;
-  vertical-align: middle !important;
+  border: 1px solid var(--atlas-border, rgba(0,0,0,0.15)) !important;
+  vertical-align: top !important;
   text-align: left !important;
 }
 
 .atlas-table th {
-  background: var(--atlas-bg-alt, rgba(0,0,0,0.07)) !important;
+  background: var(--atlas-bg-alt, rgba(0,0,0,0.04)) !important;
   font-weight: 700 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.06em !important;
   color: var(--atlas-ink, #000000) !important;
+  text-transform: uppercase !important;
+  font-size: 11px !important;
+  letter-spacing: 0.06em !important;
 }
 
 .atlas-table td {
-  color: var(--atlas-ink-soft, rgba(0,0,0,0.85)) !important;
+  color: var(--atlas-ink-soft, rgba(0,0,0,0.75)) !important;
 }
 
 .atlas-table-num {
@@ -599,7 +602,7 @@
   font-variant-numeric: tabular-nums !important;
 }
 
-/* Статусы значений (atlas-param используется строго для конкретных данных) */
+/* Изолированные статусы для конкретных метрик и параметров */
 .atlas-table td .atlas-param[data-status="ok"]   { color: var(--atlas-ok, #1a4d1a) !important; font-weight: 700 !important; }
 .atlas-table td .atlas-param[data-status="warn"] { color: var(--atlas-warn, #7a5200) !important; font-weight: 700 !important; }
 .atlas-table td .atlas-param[data-status="crit"] { color: var(--atlas-crit, #8b0000) !important; font-weight: 700 !important; }
