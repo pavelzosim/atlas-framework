@@ -1,12 +1,11 @@
 /* atlas-code-theme.css — Стили для подсветки синтаксиса кода и оформления code-блоков. Используется для оформления вставок с программным кодом. */
-
 /* ==========================================================================
    ATLAS CODE THEME — Syntax Highlighting Engine (Prism.js Integration)
    ──────────────────────────────────────────────────────────────────────────
    Module: components/atlas-code-theme.css
    ========================================================================== */
 
-/* Базовый контейнер блока кода */
+/* 1. ГЕОМЕТРИЯ И БАЗОВЫЙ СТИЛЬ КОНТЕЙНЕРА */
 .content-block pre.atlas-code-block {
   position: relative !important;
   background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.02)) !important;
@@ -18,7 +17,7 @@
   border-radius: 0 !important;
 }
 
-/* Настройки моноширинного шрифта */
+/* Настройки моноширинного текста внутри блока */
 .content-block pre.atlas-code-block code {
   font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace) !important;
   font-size: 12px !important;
@@ -30,9 +29,20 @@
   border: none !important;
 }
 
-/* Верхняя плашка с указанием языка [ SOURCE_LANG: X ] */
+/* Стилизация внутреннего скроллбара под терминал */
+.content-block pre.atlas-code-block::-webkit-scrollbar { 
+  height: 4px; 
+}
+.content-block pre.atlas-code-block::-webkit-scrollbar-track {
+  background: transparent;
+}
+.content-block pre.atlas-code-block::-webkit-scrollbar-thumb { 
+  background: var(--atlas-border, rgba(0,0,0,0.15)); 
+}
+
+/* 2. ВЕРХНЯЯ ПЛАШКА С НАЗВАНИЕМ ЯЗЫКА [ SOURCE_LANG: X ] */
 .content-block pre.atlas-code-block[data-lang] {
-  padding-top: 38px !important;
+  padding-top: 38px !important; /* Выделяем место под заголовок */
 }
 .content-block pre.atlas-code-block[data-lang]::before {
   content: "[ SOURCE_LANG: " attr(data-lang) " ]" !important;
@@ -52,18 +62,9 @@
   text-transform: uppercase !important;
 }
 
-/* Внутренний скроллбар блока под стиль терминала */
-.content-block pre.atlas-code-block::-webkit-scrollbar { 
-  height: 4px; 
-}
-.content-block pre.atlas-code-block::-webkit-scrollbar-track {
-  background: transparent;
-}
-.content-block pre.atlas-code-block::-webkit-scrollbar-thumb { 
-  background: var(--atlas-border, rgba(0,0,0,0.15)); 
-}
+/* 3. ТОКЕНЫ ПОДСВЕТКИ PRISM (Строгий монохром на дизайн-токенах) */
 
-/* ── Токены синтаксиса Prism.js (Инженерный монохром Atlas) ─────────────── */
+/* Комментарии (Италик, блеклый цвет) */
 .token.comment,
 .token.prolog,
 .token.doctype,
@@ -72,10 +73,12 @@
   font-style: italic;
 }
 
+/* Знаки препинания, скобки */
 .token.punctuation {
   color: var(--atlas-ink-soft, rgba(0, 0, 0, 0.65)) !important;
 }
 
+/* Свойства, константы, теги */
 .token.property,
 .token.tag,
 .token.constant,
@@ -85,40 +88,44 @@
   font-weight: 700;
 }
 
+/* Числа и Булевы значения (Мягкий темный охристый тон из атласа) */
 .token.boolean,
 .token.number {
-  color: var(--atlas-warn, #7a5200) !important; /* Мягкий темный охристый тон */
+  color: var(--atlas-warn, #7a5200) !important;
 }
 
+/* Строки, селекторы, встроенные типы (Приглушенный зеленый лог-тон) */
 .token.selector,
 .token.attr-name,
 .token.string,
 .token.char,
 .token.builtin,
 .token.inserted {
-  color: var(--atlas-ok, #1a4d1a) !important; /* Приглушенный зеленый лог-тон */
+  color: var(--atlas-ok, #1a4d1a) !important;
 }
 
+/* Операторы */
 .token.operator,
 .token.entity,
-.token.url,
-.language-css .token.string,
-.style .token.string {
+.token.url {
   color: var(--atlas-ink, #000000) !important;
 }
 
+/* Ключевые слова (Выделяем жирным вместо яркого цвета) */
 .token.atrule,
 .token.attr-value,
 .token.keyword {
   color: var(--atlas-ink, #000000) !important;
-  font-weight: 700; /* Ключевые слова выделяем жирным начертанием */
+  font-weight: 700;
 }
 
+/* Имена функций и классов (Глубокий красный тон) */
 .token.function,
 .token.class-name {
-  color: var(--atlas-crit, #8b0000) !important; /* Глубокий красный для вызовов функций */
+  color: var(--atlas-crit, #8b0000) !important;
 }
 
+/* Переменные и регулярки */
 .token.regex,
 .token.important,
 .token.variable {
