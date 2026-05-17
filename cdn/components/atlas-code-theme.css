@@ -1,54 +1,37 @@
 /* atlas-code-theme.css — Стили для подсветки синтаксиса кода и оформления code-блоков. Используется для оформления вставок с программным кодом. */
 
-/* ==========================================================================
-   ── MODULE: ATLAS CODE THEME (HLSL EXTENSION)
-   ========================================================================== */
+/* ATLAS CODE THEME — Monochrome Block Style
+  ─────────────────────────────────────────────────────────────
+*/
 
-/* Базовый контейнер для сниппетов кода */
-.atlas-code-wrapper {
-    position: relative;
-    margin: 24px 0;
-    background: #0d0e11; /* Глубокий монохромный фон терминала */
-    border: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.15));
-    padding: 16px;
+.content-block pre.atlas-code-block {
+  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.02)) !important;
+  border: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+  padding: 14px !important;
+  margin: 20px 0 !important;
+  overflow-x: auto !important; /* Аккуратный горизонтальный скроллбалл, если строка длинная */
+  display: block !important;
+  border-radius: 0 !important;
 }
 
-/* Языковой маркер в углу контейнера */
-.atlas-code-wrapper::before {
-    content: attr(data-lang);
-    position: absolute;
-    top: 0;
-    right: 12px;
-    padding: 2px 6px;
-    font-size: 10px;
-    color: rgba(255, 255, 255, 0.3);
-    font-family: 'JetBrains Mono', monospace;
-    text-transform: uppercase;
-    border-left: 1px solid rgba(255, 255, 255, 0.05);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+.content-block pre.atlas-code-block code {
+  font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace) !important;
+  font-size: 12px !important;
+  line-height: 1.6 !important;
+  color: var(--atlas-ink-soft, rgba(0,0,0,0.85)) !important;
+  white-space: pre !important;
+  background: transparent !important; /* Сбрасываем фон инлайнового кода */
+  padding: 0 !important;
+  border: none !important;
 }
 
-.atlas-code-wrapper pre {
-    margin: 0;
-    overflow-x: auto;
+/* Стилизация скроллбара внутри блока кода (под терминал) */
+.content-block pre.atlas-code-block::-webkit-scrollbar {
+  height: 4px;
 }
-
-.atlas-code-wrapper code {
-    font-family: 'JetBrains Mono', monospace !important;
-    font-size: 13px;
-    line-height: 1.5;
-    color: #e3e6ed;
-    display: block;
+.content-block pre.atlas-code-block::-webkit-scrollbar-track {
+  background: transparent;
 }
-
-/* ── СИСТЕМНЫЕ ТОКЕНЫ ИЗ GUIDE ── */
-.atlas-hl-com  { color: #6272a4; font-style: italic; } /* Комментарии */
-.atlas-hl-key  { color: #ff79c6; font-weight: bold; }  /* Ключевые слова */
-.atlas-hl-type { color: #8be9fd; }                     /* Типы / Хранилище */
-.atlas-hl-num  { color: #bd93f9; }                     /* Числа */
-.atlas-hl-func { color: #50fa7b; }                     /* Вызовы функций */
-
-/* ── HLSL СПЕЦИФИКА (РАСШИРЕНИЕ МОДУЛЯ) ── */
-.atlas-hl-semantic { color: #ffb86c; font-style: italic; } /* SV_Target, SV_Position */
-.atlas-hl-macro    { color: #ff5555; }                     /* #define, #pragma kernel */
-
+.content-block pre.atlas-code-block::-webkit-scrollbar-thumb {
+  background: var(--atlas-border, rgba(0,0,0,0.15));
+}
