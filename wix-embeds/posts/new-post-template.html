@@ -11,6 +11,10 @@
 
 							<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css">
 
+								<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+								<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+								<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-glsl.min.js"></script>
+
 								<style>
 									*, *::before, *::after {
 									box-sizing: border-box;
@@ -91,6 +95,19 @@
 
 					<p>Данные лога подтверждают, что узким местом остаются объемные вычисления глубины, в то время как кастомная HLSL-библиотека эффективно утилизирует пропускную способность видеопамяти.</p>
 
+					<pre class="atlas-code-block" data-lang="HLSL">
+						<code class="language-glsl">
+							[numthreads(8, 8, 1)]
+							void CSMain(uint3 id : SV_DispatchThreadID) {
+							float3 uvw = float3(id) / float3(VolumeSize);
+							float density = SunVolumeTex.SampleLevel(LinearRepeatSampler, uvw, 0).r;
+
+							if (density < 0.01f) return;
+    
+    EvaluateRaymarchingDepth(id, uvw, density);
+}</code>
+					</pre>
+
 					<div class="atlas-section-break" data-index="x01"></div>
 
 					<div class="atlas-eof-divider">
@@ -140,16 +157,48 @@
 			/* ==========================================================================
 			── СЛУЖЕБНАЯ ЛОГИКА WIX (Динамический расчёт высоты iFrame)
 			========================================================================== */
-			function sendPostHeight() {
+			function sendPostHeight(reason) {
 			var height = document.documentElement.scrollHeight || document.body.scrollHeight;
 			window.parent.postMessage({
 			type: 'resize',
 			height: height
 			}, '*');
+			console.log("[ATLAS_DEBUG] Height sent to Wix: " + height + "px | Reason: " + reason);
 			}
 
-			window.addEventListener('load', sendPostHeight);
-			window.addEventListener('resize', sendPostHeight);
+			window.addEventListener('resize', function() {
+			sendPostHeight("Window resized");
+			});
+
+			/* ==========================================================================
+			── АВТОМАТИЧЕСКИЙ ПАРСИНГ КОДА (Prism Engine)
+			========================================================================== */
+			function processCodeBlocks() {
+			console.log("[ATLAS_DEBUG] Scanning DOM for code blocks...");
+			if (typeof Prism !== 'undefined') {
+			var blocks = document.querySelectorAll('#atlas-body pre code');
+			if (blocks.length > 0) {
+			console.log("[ATLAS_DEBUG] Found " + blocks.length + " code block(s). Executing Prism...");
+
+			var processedCount = 0;
+			blocks.forEach(function(el) {
+			Prism.highlightElement(el, false, function() {
+			processedCount++;
+			if (processedCount === blocks.length) {
+			console.log("[ATLAS_DEBUG] All code blocks successfully highlighted.");
+			setTimeout(function() { sendPostHeight("Prism parsing finished"); }, 50);
+			}
+			});
+			});
+			} else {
+			console.log("[ATLAS_DEBUG] No code blocks detected in this post.");
+			sendPostHeight("No code blocks found");
+			}
+			} else {
+			console.error("[ATLAS_DEBUG] Critical Error: Prism.js is missing or failed to initialize.");
+			sendPostHeight("Fallback (Prism missing)");
+			}
+			}
 
 			/* ==========================================================================
 			── РЕНДЕРИНГ КОМПОНЕНТА: ПАСПОРТ ПОСТА (ВЕРХНИЙ БЛОК)
@@ -183,8 +232,7 @@
 				return baseUrl
 				? '<a href="' + baseUrl + toSlug(tg) + '" class="atlas-blueprint-link" target="_top">#' + tg + '</a>'
 				: '<span class="atlas-blueprint-link" style="cursor:default">#' + tg + '</span>';
-				}).join('') +
-				'
+				}).join('') + '
 			</div>'
 			: '';
 
@@ -251,7 +299,7 @@
 			var supportLinks = (c.support.links || []).map(function(l, idx, arr) {
 			var link = '<a href="' + l.url + '" class="atlas-blueprint-link" target="_blank">[ ' + l.text + ' ]</a>';
 			return idx < arr.length - 1
-            ? link + '<span class="atlas-footer-block__support-divider">|</span>'
+                        ? link + '<span class="atlas-footer-block__support-divider">|</span>'
 			: link;
 			}).join('');
 
@@ -307,15 +355,15 @@
 			if (Array.isArray(d.tags) && d.tags.length) CONFIG.tags = d.tags;
 
 			renderPassport();
-			setTimeout(sendPostHeight, 50);
+			processCodeBlocks();
 			}
 
-			// 1. Отрисовка базового состояния паспорта
-			if (document.readyState === 'loading') {
-			document.addEventListener('DOMContentLoaded', renderPassport);
-			} else {
+			// 1. Старт системы при первичной загрузке DOM
+			window.addEventListener('load', function() {
+			console.log("[ATLAS_DEBUG] Production Template loaded. Initializing systems...");
 			renderPassport();
-			}
+			processCodeBlocks();
+			});
 
 			// 2. Запрос метаданных из базы Wix
 			(function () {
@@ -344,7 +392,7 @@
 			.then(function(c) {
 			if (c) {
 			renderFooter(c);
-			setTimeout(sendPostHeight, 80); // Финальный замер высоты под весь шаблон
+			setTimeout(function() { sendPostHeight("Footer configuration loaded"); }, 80);
 			}
 			})
 			.catch(function(e) { console.error('[atlas-footer-fetch]', e); });
