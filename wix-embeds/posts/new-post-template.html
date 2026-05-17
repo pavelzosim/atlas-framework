@@ -1,306 +1,354 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>System Atlas // Production Template</title>
+	<head>
+		<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<title>System Atlas // Production Template</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
+				<link rel="preconnect" href="https://fonts.googleapis.com">
+					<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+						<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css">
+							<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css">
 
-  <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
+								<style>
+									*, *::before, *::after {
+									box-sizing: border-box;
+									}
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden; /* Прячем скроллбары самого iframe-контейнера Wix */
-      background: transparent;
-      font-family: 'JetBrains Mono', 'Courier New', monospace !important;
-    }
+									html, body {
+									margin: 0;
+									padding: 0;
+									overflow: hidden; /* Прячем скроллбары самого iframe-контейнера Wix */
+									background: transparent;
+									font-family: 'JetBrains Mono', 'Courier New', monospace !important;
+									}
 
-    h1, h2, h3, h4, h5, h6, p, span, div, li, td, th {
-      font-family: 'JetBrains Mono', 'Courier New', monospace !important;
-    }
+									h1, h2, h3, h4, h5, h6, p, span, div, li, td, th {
+									font-family: 'JetBrains Mono', 'Courier New', monospace !important;
+									}
 
-    .atlas-container {
-      width: 100%;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 16px;
-    }
-  </style>
-</head>
-<body>
+									.atlas-container {
+									width: 100%;
+									max-width: 900px;
+									margin: 0 auto;
+									padding: 0 16px;
+									}
+								</style>
+							</head>
+	<body>
 
-  <div class="atlas-container">
+		<div class="atlas-container">
 
-    <header id="site-passport"></header>
+			<header id="site-passport"></header>
 
-    <main id="atlas-body">
-      <div class="content-block">
-        <h2>01 // PERFORMANCE_LOG_BENCHMARK</h2>
-        <p>Ниже приведены замеры производительности и лимитов памяти GPU в ходе R&D тестирования физически корректной поверхности солнца (Textureless Sun Surface) в различных проходах рендеринга.</p>
+			<main id="atlas-body">
+				<div class="content-block">
+					<h2>01 // PERFORMANCE_LOG_BENCHMARK</h2>
+					<p>Ниже приведены замеры производительности и лимитов памяти GPU в ходе R&D тестирования физически корректной поверхности солнца (Textureless Sun Surface) в различных проходах рендеринга.</p>
 
-        <div class="atlas-table-responsive">
-          <table>
-            <thead>
-              <tr>
-                <th>Instance / Pass Name</th>
-                <th>Pipeline Module</th>
-                <th class="atlas-table-num">Bandwidth / Frame Time</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Compute Shader (Sun Surface Volume)</td>
-                <td>VFX Runtime</td>
-                <td class="atlas-table-num"><span class="atlas-param" data-status="ok">1.8 ms</span></td>
-              </tr>
-              <tr>
-                <td>Procedural Explosion Attribute Baking</td>
-                <td>Houdini Core</td>
-                <td class="atlas-table-num"><span class="atlas-param" data-status="warn">84.2%</span></td>
-              </tr>
-              <tr>
-                <td>Vertex Buffer Streaming (Max Load)</td>
-                <td>Render Architecture</td>
-                <td class="atlas-table-num"><span class="atlas-param">180 GB/s</span></td>
-              </tr>
-              <tr>
-                <td>Raymarching Depth Evaluation</td>
-                <td>Post-Processing</td>
-                <td class="atlas-table-num"><span class="atlas-param" data-status="crit">4.1 ms</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+					<div class="atlas-table-responsive">
+						<table class="atlas-table">
+							<thead>
+								<tr>
+									<th>Instance / Pass Name</th>
+									<th>Pipeline Module</th>
+									<th class="atlas-table-num">Bandwidth / Frame Time</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Compute Shader (Sun Surface Volume)</td>
+									<td>VFX Runtime</td>
+									<td class="atlas-table-num">
+										<span class="atlas-param" data-status="ok">1.8 ms</span>
+									</td>
+								</tr>
+								<tr>
+									<td>Procedural Explosion Attribute Baking</td>
+									<td>Houdini Core</td>
+									<td class="atlas-table-num">
+										<span class="atlas-param" data-status="warn">84.2%</span>
+									</td>
+								</tr>
+								<tr>
+									<td>Vertex Buffer Streaming (Max Load)</td>
+									<td>Render Architecture</td>
+									<td class="atlas-table-num">
+										<span class="atlas-param">180 GB/s</span>
+									</td>
+								</tr>
+								<tr>
+									<td>Raymarching Depth Evaluation</td>
+									<td>Post-Processing</td>
+									<td class="atlas-table-num">
+										<span class="atlas-param" data-status="crit">4.1 ms</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 
-        <p>Данные лога подтверждают, что узким местом остаются объемные вычисления глубины, в то время как кастомная HLSL-библиотека эффективно утилизирует пропускную способность видеопамяти.</p>
+					<p>Данные лога подтверждают, что узким местом остаются объемные вычисления глубины, в то время как кастомная HLSL-библиотека эффективно утилизирует пропускную способность видеопамяти.</p>
 
-        <div class="atlas-section-break" data-index="x01"></div>
+					<div class="atlas-section-break" data-index="x01"></div>
 
-        <div class="atlas-eof-divider">
-          <span class="atlas-eof-divider__line"></span>
-          <span class="atlas-eof-divider__meta">// END OF SESSION // EOF</span>
-          <span class="atlas-eof-divider__line"></span>
-        </div>
-      </div>
-    </main>
+					<div class="atlas-eof-divider">
+						<span class="atlas-eof-divider__line"></span>
+						<span class="atlas-eof-divider__meta">// END OF SESSION // EOF</span>
+						<span class="atlas-eof-divider__line"></span>
+					</div>
+				</div>
+			</main>
 
-    <footer id="site-footer"></footer>
+			<footer id="site-footer"></footer>
 
-  </div>
+		</div>
 
-  <script>
-    /* ==========================================================================
-    ── КОНФИГУРАЦИЯ ПОСТА (Заполняется вручную для каждого лога)
-    ========================================================================== */
-    var CONFIG = {
-      user:       'pavelzosim',
-      path:       '~',
-      command:    'cat unity_shaderlab_cheatsheet.log',
+		<script>
+			/* ==========================================================================
+			── КОНФИГУРАЦИЯ ПОСТА (Заполняется вручную для каждого лога)
+			========================================================================== */
+			var CONFIG = {
+			user:       'pavelzosim',
+			path:       '~',
+			command:    'cat unity_shaderlab_cheatsheet.log',
 
-      prefix:     'SYSTEM_ATLAS // R&D_LOG',
-      project:    'UNITY_SHADERLAB',
-      module:     'shaders',
-      version:    '1.3.2',
-      logId:      '#042',
-      status:     'EDUCATIONAL',
+			prefix:     'SYSTEM_ATLAS // R&D_LOG',
+			project:    'UNITY_SHADERLAB',
+			module:     'shaders',
+			version:    '1.3.2',
+			logId:      '#042',
+			status:     'EDUCATIONAL',
 
-      slug:       'unity-shaderlab-cheatsheet',
+			slug:       'unity-shaderlab-cheatsheet',
 
-      author:     '...',
-      created:    '----.--.--',
-      modified:   null,
-      wordCount:  null,
-      title:      null,
-      tags:       [],
+			author:     '...',
+			created:    '----.--.--',
+			modified:   null,
+			wordCount:  null,
+			title:      null,
+			tags:       [],
 
-      tagBaseUrl: 'https://www.pavelzosim.com/blog/tags/'
-    };
+			tagBaseUrl: 'https://www.pavelzosim.com/blog/tags/'
+			};
 
-    // Эндпоинты данных
-    var BACKEND_URL = 'https://www.pavelzosim.com/_functions/getPostData';
-    var FOOTER_URL  = 'https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-site-footer-config.json?v=' + new Date().getTime();
+			// Эндпоинты данных
+			var BACKEND_URL = 'https://www.pavelzosim.com/_functions/getPostData';
+			var FOOTER_URL  = 'https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-site-footer-config.json?v=' + new Date().getTime();
 
-    /* ==========================================================================
-    ── СЛУЖЕБНАЯ ЛОГИКА WIX (Динамический расчёт высоты iFrame)
-    ========================================================================== */
-    function sendPostHeight() {
-      var height = document.documentElement.scrollHeight || document.body.scrollHeight;
-      window.parent.postMessage({
-        type: 'resize',
-        height: height
-      }, '*');
-    }
+			/* ==========================================================================
+			── СЛУЖЕБНАЯ ЛОГИКА WIX (Динамический расчёт высоты iFrame)
+			========================================================================== */
+			function sendPostHeight() {
+			var height = document.documentElement.scrollHeight || document.body.scrollHeight;
+			window.parent.postMessage({
+			type: 'resize',
+			height: height
+			}, '*');
+			}
 
-    window.addEventListener('load', sendPostHeight);
-    window.addEventListener('resize', sendPostHeight);
+			window.addEventListener('load', sendPostHeight);
+			window.addEventListener('resize', sendPostHeight);
 
-    /* ==========================================================================
-    ── РЕНДЕРИНГ КОМПОНЕНТА: ПАСПОРТ ПОСТА (ВЕРХНИЙ БЛОК)
-    ========================================================================== */
-    function renderPassport() {
-      var o = CONFIG;
-      var status = (o.status || 'DRAFT').toUpperCase();
-      var rt = o.readTime || (o.wordCount ? '~' + Math.ceil(Number(o.wordCount) / 200) + ' MIN' : null);
+			/* ==========================================================================
+			── РЕНДЕРИНГ КОМПОНЕНТА: ПАСПОРТ ПОСТА (ВЕРХНИЙ БЛОК)
+			========================================================================== */
+			function renderPassport() {
+			var o = CONFIG;
+			var status = (o.status || 'DRAFT').toUpperCase();
+			var rt = o.readTime || (o.wordCount ? '~' + Math.ceil(Number(o.wordCount) / 200) + ' MIN' : null);
 
-      var meta = [
-        { k: 'AUTH',    v: o.author  || '—' },
-        { k: 'CREATED', v: o.created || '—' }
-      ];
-      if (o.modified) meta.push({ k: 'LAST_MODIFIED', v: o.modified });
-      if (rt)         meta.push({ k: 'READ', v: rt });
+			var meta = [
+			{ k: 'AUTH',    v: o.author  || '—' },
+			{ k: 'CREATED', v: o.created || '—' }
+			];
+			if (o.modified) meta.push({ k: 'LAST_MODIFIED', v: o.modified });
+			if (rt)          meta.push({ k: 'READ', v: rt });
 
-      var metaHTML = meta.map(function (m) {
-        return '<span class="bp-meta-item"><b>' + m.k + '</b>: ' + m.v + '</span>';
-      }).join('');
+			var metaHTML = meta.map(function (m) {
+			return '<span class="bp-meta-item">
+				<b>' + m.k + '</b>: ' + m.v + '
+			</span>';
+			}).join('');
 
-      var tags = Array.isArray(o.tags) ? o.tags : [];
-      var baseUrl = o.tagBaseUrl || null;
-      function toSlug(s) { return s.toLowerCase().replace(/\s+/g, '-'); }
+			var tags = Array.isArray(o.tags) ? o.tags : [];
+			var baseUrl = o.tagBaseUrl || null;
+			function toSlug(s) { return s.toLowerCase().replace(/\s+/g, '-'); }
 
-      var tagsHTML = tags.length
-        ? '<div class="bp-tags" style="padding-bottom: 14px; padding-right: 14px;">' +
-            tags.map(function (tg) {
-              return baseUrl
-                ? '<a href="' + baseUrl + toSlug(tg) + '" class="atlas-blueprint-link" target="_top">#' + tg + '</a>'
-                : '<span class="atlas-blueprint-link" style="cursor:default">#' + tg + '</span>';
-            }).join('') +
-          '</div>'
-        : '';
+			var tagsHTML = tags.length
+			? '<div class="bp-tags" style="padding-bottom: 14px; padding-right: 14px;">
+				' +
+				tags.map(function (tg) {
+				return baseUrl
+				? '<a href="' + baseUrl + toSlug(tg) + '" class="atlas-blueprint-link" target="_top">#' + tg + '</a>'
+				: '<span class="atlas-blueprint-link" style="cursor:default">#' + tg + '</span>';
+				}).join('') +
+				'
+			</div>'
+			: '';
 
-      document.getElementById('site-passport').innerHTML =
-        '<div class="passport-bp">' +
-          '<div class="bp-title-bar">' +
-            '<div class="bp-title-bar__left">' +
-              '<span class="bp-user-prompt">' + (o.user || 'user') + '</span>' +
-              '<span style="opacity:.4">:</span>' +
-              '<span class="bp-path-prompt">' + (o.path || '~') + '</span>' +
-              '<span class="bp-root-char">#</span>' +
-              '<span class="bp-command-text">' + (o.command || 'cat log') + '</span>' +
-            '</div>' +
-            '<div class="bp-sys-status">[ SYS_STATUS: <b>' + status + '</b> ]</div>' +
-          '</div>' +
-          (o.title ? '<div class="bp-main-title">' + o.title + '</div>' : '') +
-          '<div class="bp-grid">' +
-            '<div class="bp-cell">' +
-              '<div><span class="bp-key">PROJECT</span><span class="bp-val">' + (o.project || '—') + '</span></div>' +
-              '<div><span class="bp-key">MODULE</span><span class="bp-val">'   + (o.module  || '—') + '</span></div>' +
-            '</div>' +
-            '<div class="bp-cell">' +
-              '<div><span class="bp-key">VERSION</span><span class="bp-val">' + (o.version || '—') + '</span></div>' +
-              '<div><span class="bp-key">LOG_ID</span><span class="bp-val">'  + (o.logId   || '—') + '</span></div>' +
-            '</div>' +
-          '</div>' +
-          '<div class="bp-meta">' + metaHTML + '</div>' +
-          tagsHTML +
-        '</div>';
-    }
+			document.getElementById('site-passport').innerHTML =
+			'<div class="passport-bp">
+				' +
+				'<div class="bp-title-bar">
+					' +
+					'<div class="bp-title-bar__left">
+						' +
+						'<span class="bp-user-prompt">' + (o.user || 'user') + '</span>' +
+						'<span style="opacity:.4">:</span>' +
+						'<span class="bp-path-prompt">' + (o.path || '~') + '</span>' +
+						'<span class="bp-root-char">#</span>' +
+						'<span class="bp-command-text">' + (o.command || 'cat log') + '</span>' +
+						'
+					</div>' +
+					'<div class="bp-sys-status">
+						[ SYS_STATUS: <b>' + status + '</b> ]
+					</div>' +
+					'
+				</div>' +
+				(o.title ? '<div class="bp-main-title">' + o.title + '</div>' : '') +
+				'<div class="bp-grid">
+					' +
+					'<div class="bp-cell">
+						' +
+						'<div>
+							<span class="bp-key">PROJECT</span>
+							<span class="bp-val">' + (o.project || '—') + '</span>
+						</div>' +
+						'<div>
+							<span class="bp-key">MODULE</span>
+							<span class="bp-val">'   + (o.module  || '—') + '</span>
+						</div>' +
+						'
+					</div>' +
+					'<div class="bp-cell">
+						' +
+						'<div>
+							<span class="bp-key">VERSION</span>
+							<span class="bp-val">' + (o.version || '—') + '</span>
+						</div>' +
+						'<div>
+							<span class="bp-key">LOG_ID</span>
+							<span class="bp-val">'  + (o.logId   || '—') + '</span>
+						</div>' +
+						'
+					</div>' +
+					'
+				</div>' +
+				'<div class="bp-meta">' + metaHTML + '</div>' +
+				tagsHTML +
+				'
+			</div>';
+			}
 
-    /* ==========================================================================
-    ── РЕНДЕРИНГ КОМПОНЕНТА: ФУТЕР САЙТА (НИЖНИЙ БЛОК)
-    ========================================================================== */
-    function renderFooter(c) {
-      var supportHTML = '';
-      if (c.support) {
-        var supportLinks = (c.support.links || []).map(function(l, idx, arr) {
-          var link = '<a href="' + l.url + '" class="atlas-blueprint-link" target="_blank">[ ' + l.text + ' ]</a>';
-          return idx < arr.length - 1
+			/* ==========================================================================
+			── РЕНДЕРИНГ КОМПОНЕНТА: ФУТЕР САЙТА (НИЖНИЙ БЛОК)
+			========================================================================== */
+			function renderFooter(c) {
+			var supportHTML = '';
+			if (c.support) {
+			var supportLinks = (c.support.links || []).map(function(l, idx, arr) {
+			var link = '<a href="' + l.url + '" class="atlas-blueprint-link" target="_blank">[ ' + l.text + ' ]</a>';
+			return idx < arr.length - 1
             ? link + '<span class="atlas-footer-block__support-divider">|</span>'
-            : link;
-        }).join('');
+			: link;
+			}).join('');
 
-        supportHTML =
-          '<div class="atlas-footer-block__support-content">' +
-            '<div class="atlas-footer-block__support-text">' + (c.support.text || '') + '</div>' +
-            '<div class="atlas-footer-block__support-links">' + supportLinks + '</div>' +
-          '</div>';
-      }
+			supportHTML =
+			'<div class="atlas-footer-block__support-content">
+				' +
+				'<div class="atlas-footer-block__support-text">' + (c.support.text || '') + '</div>' +
+				'<div class="atlas-footer-block__support-links">' + supportLinks + '</div>' +
+				'
+			</div>';
+			}
 
-      var matrixHTML = (c.links || []).map(function(group) {
-        var items = (group.items || []).map(function(item) {
-          return '<a href="' + item.url + '" class="atlas-blueprint-link" target="_blank">/ ' + item.text + '</a>';
-        }).join('');
+			var matrixHTML = (c.links || []).map(function(group) {
+			var items = (group.items || []).map(function(item) {
+			return '<a href="' + item.url + '" class="atlas-blueprint-link" target="_blank">/ ' + item.text + '</a>';
+			}).join('');
 
-        return '<div class="atlas-footer-block__matrix-column">' +
-          '<span class="atlas-footer-block__column-label">' + group.label + '</span>' +
-          '<div class="atlas-footer-block__column-items">' + items + '</div>' +
-        '</div>';
-      }).join('');
+			return '<div class="atlas-footer-block__matrix-column">
+				' +
+				'<span class="atlas-footer-block__column-label">' + group.label + '</span>' +
+				'<div class="atlas-footer-block__column-items">' + items + '</div>' +
+				'
+			</div>';
+			}).join('');
 
-      document.getElementById('site-footer').innerHTML =
-        '<div class="atlas-footer-wrapper">' +
-          '<div class="atlas-footer-block atlas-footer-block--main">' +
-            '<div class="atlas-footer-block__support-header">' +
-              '<div class="atlas-footer-block__kaomoji">' + (c.tagline || '') + '</div>' +
-              '<div class="atlas-footer-block__support-title">Let\'s stay in touch</div>' +
-            '</div>' +
-            supportHTML +
-            '<div class="atlas-footer-block__matrix-zone">' + matrixHTML + '</div>' +
-          '</div>' +
-        '</div>';
-    }
+			document.getElementById('site-footer').innerHTML =
+			'<div class="atlas-footer-wrapper">
+				' +
+				'<div class="atlas-footer-block atlas-footer-block--main">
+					' +
+					'<div class="atlas-footer-block__support-header">
+						' +
+						'<div class="atlas-footer-block__kaomoji">' + (c.tagline || '') + '</div>' +
+						'<div class="atlas-footer-block__support-title">Let\'s stay in touch</div>' +
+						'
+					</div>' +
+					supportHTML +
+					'<div class="atlas-footer-block__matrix-zone">' + matrixHTML + '</div>' +
+					'
+				</div>' +
+				'
+			</div>';
+			}
 
-    /* ==========================================================================
-    ── ИНИЦИАЛИЗАЦИЯ И СИНХРОНИЗАЦИЯ ДАННЫХ
-    ========================================================================== */
-    function applyData(d) {
-      if (d.author)                 CONFIG.author    = d.author;
-      if (d.title)                  CONFIG.title     = d.title;
-      if (d.created)                CONFIG.created   = d.created;
-      if (d.modified !== undefined) CONFIG.modified  = d.modified;
-      if (Array.isArray(d.tags) && d.tags.length) CONFIG.tags = d.tags;
+			/* ==========================================================================
+			── ИНИЦИАЛИЗАЦИЯ И СИНХРОНИЗАЦИЯ ДАННЫХ
+			========================================================================== */
+			function applyData(d) {
+			if (d.author)             CONFIG.author    = d.author;
+			if (d.title)              CONFIG.title     = d.title;
+			if (d.created)            CONFIG.created   = d.created;
+			if (d.modified !== undefined) CONFIG.modified  = d.modified;
+			if (Array.isArray(d.tags) && d.tags.length) CONFIG.tags = d.tags;
 
-      renderPassport();
-      setTimeout(sendPostHeight, 50);
-    }
+			renderPassport();
+			setTimeout(sendPostHeight, 50);
+			}
 
-    // 1. Отрисовка базового состояния паспорта
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', renderPassport);
-    } else {
-      renderPassport();
-    }
+			// 1. Отрисовка базового состояния паспорта
+			if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', renderPassport);
+			} else {
+			renderPassport();
+			}
 
-    // 2. Запрос метаданных из базы Wix
-    (function () {
-      var slug = CONFIG.slug || '';
-      if (!slug) return;
+			// 2. Запрос метаданных из базы Wix
+			(function () {
+			var slug = CONFIG.slug || '';
+			if (!slug) return;
 
-      fetch(BACKEND_URL + '?slug=' + encodeURIComponent(slug))
-        .then(function (r) { return r.ok ? r.json() : null; })
-        .then(function (data) {
-          if (data && !data.error) applyData(data);
-          else console.warn('[ATLAS] Backend returned:', JSON.stringify(data));
-        })
-        .catch(function (err) { console.warn('[ATLAS] Fetch failed:', err); });
-    })();
+			fetch(BACKEND_URL + '?slug=' + encodeURIComponent(slug))
+			.then(function (r) { return r.ok ? r.json() : null; })
+			.then(function (data) {
+			if (data && !data.error) applyData(data);
+			else console.warn('[ATLAS] Backend returned:', JSON.stringify(data));
+			})
+			.catch(function (err) { console.warn('[ATLAS] Fetch failed:', err); });
+			})();
 
-    // Резервный канал синхронизации через postMessage
-    window.addEventListener('message', function (e) {
-      var d = e.data;
-      if (!d || d.source !== 'atlas-backend') return;
-      applyData(d);
-    });
+			// Резервный канал синхронизации через postMessage
+			window.addEventListener('message', function (e) {
+			var d = e.data;
+			if (!d || d.source !== 'atlas-backend') return;
+			applyData(d);
+			});
 
-    // 3. Асинхронная загрузка структуры футера
-    fetch(FOOTER_URL)
-      .then(function(r) { return r.ok ? r.json() : null; })
-      .then(function(c) {
-        if (c) {
-          renderFooter(c);
-          setTimeout(sendPostHeight, 80); // Финальный замер высоты под весь шаблон
-        }
-      })
-      .catch(function(e) { console.error('[atlas-footer-fetch]', e); });
-  </script>
+			// 3. Асинхронная загрузка структуры футера
+			fetch(FOOTER_URL)
+			.then(function(r) { return r.ok ? r.json() : null; })
+			.then(function(c) {
+			if (c) {
+			renderFooter(c);
+			setTimeout(sendPostHeight, 80); // Финальный замер высоты под весь шаблон
+			}
+			})
+			.catch(function(e) { console.error('[atlas-footer-fetch]', e); });
+		</script>
 
-</body>
+	</body>
 </html>

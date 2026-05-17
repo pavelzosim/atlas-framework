@@ -1,89 +1,71 @@
-<head>
-	<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-			<link rel="preconnect" href="https://fonts.googleapis.com">
-				<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-					<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
-						<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css">
-							<style>
-								*, *::before, *::after {
-								box-sizing: border-box;
-								}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-								html, body {
-								margin: 0;
-								padding: 0;
-								/* ВРЕМЕННО включаем авто-скролл для дебага, чтобы увидеть, не уползла ли таблица вниз */
-								overflow-y: auto !important;
-								overflow-x: hidden;
-								background: transparent;
-								font-family: 'JetBrains Mono', 'Courier New', monospace !important;
-								}
+				<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@latest/cdn/atlas-framework.css">
 
-								h1, h2, h3, h4, h5, h6, p, span, div, li, td, th {
-								font-family: 'JetBrains Mono', 'Courier New', monospace !important;
-								}
+					<style>
+						html, body {
+						margin: 0;
+						padding: 20px;
+						
+						}
 
-								.atlas-container {
-								width: 100%;
-								max-width: 900px;
-								margin: 0 auto;
-								padding: 0 16px;
-								display: block !important; /* Гарантируем, что контейнер не схлопнулся */
-								height: auto !important;
-								}
+						/* ФИКС: убираем заливку фреймворка, чтобы проявить прозрачные линии бордера */
+						.content-block .atlas-table {
+					
+						}
+					</style>
+				</head>
+	<body>
 
-								/* Форсируем видимость для таблицы на случай жестких инъекций */
-								.atlas-table-responsive, .atlas-table {
-								display: block !important;
-								visibility: visible !important;
-								opacity: 1 !important;
-								}
-							</style>
-						</head>
-<div class="atlas-table-responsive">
-	<table class="atlas-table">
-		<thead>
-			<tr>
-				<th class="atlas-th">Instance / Pass Name</th>
-				<th class="atlas-th">Pipeline Module</th>
-				<th class="atlas-th atlas-table-num">Bandwidth / Frame Time</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td class="atlas-td">Compute Shader (Sun Surface Volume)</td>
-				<td class="atlas-td">VFX Runtime</td>
-				<td class="atlas-td atlas-table-num">
-					<span class="atlas-param" data-status="ok">1.8 ms</span>
-				</td>
-			</tr>
-			<tr>
-				<td class="atlas-td">Procedural Explosion Attribute Baking</td>
-				<td class="atlas-td">Houdini Core</td>
-				<td class="atlas-td atlas-table-num">
-					<span class="atlas-param" data-status="warn">84.2%</span>
-				</td>
-			</tr>
-			<tr>
-				<td class="atlas-td">Vertex Buffer Streaming (Max Load)</td>
-				<td class="atlas-td">Render Architecture</td>
-				<td class="atlas-td atlas-table-num">
-					<span class="atlas-param">180 GB/s</span>
-				</td>
-			</tr>
-			<tr>
-				<td class="atlas-td">Raymarching Depth Evaluation</td>
-				<td class="atlas-td">Post-Processing</td>
-				<td class="atlas-td atlas-table-num">
-					<span class="atlas-param" data-status="crit">4.1 ms</span>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-</div>
+		<div class="content-block">
 
-function sendPostHeight() {
-var height = document.documentElement.scrollHeight || document.body.scrollHeight;
-window.parent.postMessage({ type: 'resize', height: height }, '*');
-}
+			<div class="atlas-table-responsive">
+				<table class="atlas-table">
+					<thead>
+						<tr>
+							<th>Instance / Pass Name</th>
+							<th>Pipeline Module</th>
+							<th class="atlas-table-num">Bandwidth / Frame Time</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Compute Shader (Sun Surface Volume)</td>
+							<td>VFX Runtime</td>
+							<td class="atlas-table-num">
+								<span class="atlas-param" data-status="ok">1.8 ms</span>
+							</td>
+						</tr>
+						<tr>
+							<td>Procedural Explosion Attribute Baking</td>
+							<td>Houdini Core</td>
+							<td class="atlas-table-num">
+								<span class="atlas-param" data-status="warn">84.2%</span>
+							</td>
+						</tr>
+						<tr>
+							<td>Vertex Buffer Streaming (Max Load)</td>
+							<td>Render Architecture</td>
+							<td class="atlas-table-num">
+								<span class="atlas-param">180 GB/s</span>
+							</td>
+						</tr>
+						<tr>
+							<td>Raymarching Depth Evaluation</td>
+							<td>Post-Processing</td>
+							<td class="atlas-table-num">
+								<span class="atlas-param" data-status="crit">4.1 ms</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+
+	</body>
+</html>
