@@ -1,17 +1,29 @@
 # SYSTEM ATLAS FRAMEWORK — Руководство пользователя
-
+Invoke-RestMethod "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-site-footer-config.json" 
 ## ВАЖНО: Модульная архитектура CSS (2026)
+
 
 Atlas Framework теперь использует модульную структуру стилей:
 
 - **atlas-core.css** — глобальные переменные, шрифты, reset. Не изменяется LLM, подключается всегда.
-- **atlas-typography.css** — только типографика для `.content-block`. Можно редактировать LLM, не влияет на глобальные токены.
-- **atlas-framework.css** — точка входа, подключается через CDN и импортирует оба модуля абсолютными ссылками.
+- **atlas-typography.css** — только типографика для `.content-block`, включая таблицы. Можно редактировать LLM, не влияет на глобальные токены.
+- **components/** — отдельные CSS-файлы для сложных визуальных блоков (UML, таймлайны, сравнения, callout, схемы, layout, vfx, code-theme).
+- **atlas-framework.css** — точка входа, подключается через CDN и импортирует все модули и компоненты.
 
 **Пример содержимого `atlas-framework.css`:**
 ```css
-@import url('https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-core.css');
-@import url('https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-typography.css');
+@import url('./atlas-core.css');
+@import url('./atlas-typography.css');
+
+/* R&D компоненты и визуальные блоки */
+@import url('./components/atlas-uml.css');
+@import url('./components/atlas-timeline.css');
+@import url('./components/atlas-comparison.css');
+@import url('./components/atlas-callout.css');
+@import url('./components/atlas-schema.css');
+@import url('./components/atlas-layouts.css');
+@import url('./components/atlas-vfx-tools.css');
+@import url('./components/atlas-code-theme.css');
 ```
 
 **Как подключать CSS в шаблоне:**
