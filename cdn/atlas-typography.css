@@ -188,13 +188,13 @@
 
 
 /* ==========================================================================
-   ── SYSTEM ATLAS // PASSPORT BLUEPRINT HEADER COMPONENT
+   ── SYSTEM ATLAS // PASSPORT BLUEPRINT COMPONENT
    ========================================================================== */
 .passport-bp {
   display: flex !important;
   flex-direction: column !important;
   width: 100% !important;
-  border: 1px solid var(--atlas-ink, #000000) !important;
+  border: 2px solid var(--atlas-ink, #000000) !important;
   margin: 1.5rem 0 3.5rem 0 !important;
   padding: 0 !important;
   background: transparent !important;
@@ -205,7 +205,7 @@
   justify-content: space-between !important;
   align-items: center !important;
   padding: 8px 12px !important;
-  border-bottom: 1px solid var(--atlas-ink, #000000) !important;
+  border-bottom: 2px solid var(--atlas-ink, #000000) !important;
   background: var(--atlas-bg-alt, rgba(0,0,0,0.02)) !important;
   font-size: 11px !important;
 }
@@ -227,7 +227,7 @@
   font-weight: 700 !important;
   padding: 18px 12px !important;
   text-transform: uppercase !important;
-  border-bottom: 1px solid var(--atlas-ink, #000000) !important;
+  border-bottom: 2px solid var(--atlas-ink, #000000) !important;
   line-height: 1.2 !important;
   letter-spacing: 0.02em !important;
   color: var(--atlas-ink, #000000) !important;
@@ -240,6 +240,7 @@
   border-bottom: 2px solid var(--atlas-ink, #000000) !important;
 }
 
+/* Возвращаем обычное блочное поведение для ячейки */
 .bp-cell {
   padding: 10px 12px !important;
   font-size: 11px !important;
@@ -252,24 +253,26 @@
   border-right: 2px solid var(--atlas-ink, #000000) !important;
 }
 
-/* Изменено: распределяем ключ и значение по краям ячейки */
+/* Строка выравнивается по левому краю ячейки */
 .bp-cell > div {
   display: flex !important;
-  justify-content: space-between !important; /* Ключ — влево, значение — вправо */
   align-items: center !important;
+  justify-content: flex-start !important;
   width: 100% !important;
 }
 
+/* ИСПРАВЛЕНО: Текст внутри лейбла прижимается вправо, создавая ровную колонку */
 .bp-key {
   font-weight: 700 !important;
+  width: 65px !important; /* Фиксированная ширина контейнера под лейбл */
+  text-align: right !important; /* Сам текст внутри контейнера улетает вправо */
+  margin-right: 12px !important; /* Четкий отступ до начала значения */
   color: var(--atlas-ink-muted, rgba(0,0,0,0.5)) !important;
   display: inline-block !important;
 }
 
-/* Изменено: на всякий случай гарантируем выравнивание текста внутри значения */
 .bp-val { 
-  color: var(--atlas-ink, #000000) !important;
-  text-align: right !important; 
+  color: var(--atlas-ink, #000000) !important; 
 }
 
 .bp-meta {
@@ -278,7 +281,7 @@
   gap: 1.5rem !important;
   padding: 10px 12px !important;
   font-size: 11px !important;
-  border-bottom: 1px solid var(--atlas-ink, #000000) !important;
+  border-bottom: 2px solid var(--atlas-ink, #000000) !important;
   background: var(--atlas-bg-alt, rgba(0,0,0,0.01)) !important;
 }
 
@@ -287,11 +290,12 @@
   color: var(--atlas-ink-muted, rgba(0,0,0,0.5)) !important;
 }
 
+/* Кнопки и DOS-эффект при наведении (Volkov Commander) */
 .bp-tags {
   display: flex !important;
   flex-wrap: wrap !important;
-  gap: 8px !important;
-  padding: 10px 12px !important;
+  gap: 12px !important;
+  padding: 10px 12px 14px 12px !important;
   background: var(--atlas-bg-alt, rgba(0,0,0,0.02)) !important;
 }
 
@@ -301,16 +305,41 @@
   text-decoration: none !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
+  padding: 4px 8px !important;
+  border: 1px solid var(--atlas-ink, #000000) !important;
+  background: transparent !important;
+  position: relative !important;
+  display: inline-block !important;
+  transition: none !important;
 }
 
-.atlas-blueprint-link:hover { text-decoration: underline !important; }
+.atlas-blueprint-link:hover {
+  text-decoration: none !important;
+  color: #ffffff !important;
+  background: #0000aa !important;
+}
+
+.atlas-blueprint-link:hover::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 4px !important;
+  left: 4px !important;
+  right: -4px !important;
+  bottom: -4px !important;
+  z-index: -1 !important;
+  background-image: conic-gradient(
+    rgba(0, 0, 0, 1) 0.25turn, 
+    transparent 0.25turn
+  ) !important;
+  background-size: 2px 2px !important;
+}
 
 @media (max-width: 600px) {
   .bp-grid { grid-template-columns: 1fr !important; }
   .bp-cell:first-child { border-right: none !important; border-bottom: 2px solid var(--atlas-ink, #000000) !important; }
+  .bp-key { text-align: left !important; width: auto !important; margin-right: 8px !important; } /* Сброс на мобилках */
   .bp-title-bar { flex-direction: column !important; align-items: flex-start !important; gap: 6px !important; }
 }
-
 
 /* ==========================================================================
    ── SYSTEM ATLAS // BLUEPRINT BUTTONS & TAGS (VC HOVER EFFECT)
