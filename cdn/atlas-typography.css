@@ -18,17 +18,17 @@
    ATLAS TYPOGRAPHY EXTENSION: MULTI-LEVEL HEADINGS
    ───────────────────────────────────────────────────────────── */
 
-/* Уровень 1: Крупный ориентир */
+/* Уровень 1 (3. Shader Declaration) — Оставляем главным ориентиром */
 .content-block h2 {
   font-family: var(--atlas-font-mono) !important;
-  font-size: 14px !important;
+  font-size: 14px !important; /* Чуть крупнее, как глобальная веха */
   font-weight: 700 !important;
   text-transform: uppercase !important;
   letter-spacing: .08em !important;
   color: var(--atlas-ink) !important;
   margin: 36px 0 20px 0 !important;
   display: flex !important;
-  align-items: center !important;
+  align-items: center;
 }
 .content-block h2::before {
   content: "» " !important;
@@ -36,19 +36,19 @@
   margin-right: 8px !important;
 }
 
-/* Уровень 2: Граница логического блока */
+/* Уровень 2 (3.2 PROPERTIES SYNTAX) — Монолитный системный блок */
 .content-block h3 {
   font-family: var(--atlas-font-mono) !important;
-  font-size: 12.5px !important;
+  font-size: 12px !important; /* Унифицированный размер */
   font-weight: 700 !important;
-  text-transform: uppercase !important;
+  text-transform: uppercase !important; /* Жёсткий CAPS */
   letter-spacing: .06em !important;
   color: var(--atlas-ink) !important;
-  margin: 28px 0 16px 0 !important;
-  padding-bottom: 8px !important;
-  border-bottom: 1px dashed var(--atlas-border) !important; /* Удерживает структуру */
+  margin: 28px 0 14px 0 !important;
+  padding-bottom: 6px !important;
+  border-bottom: 1px dashed var(--atlas-border) !important; /* Удерживающая рамка */
   display: flex !important;
-  align-items: center !important;
+  align-items: center;
 }
 .content-block h3::before {
   content: "// " !important;
@@ -57,26 +57,25 @@
   font-weight: 400 !important;
 }
 
-/* Уровень 3: Атомарная сущность (Чистый, читаемый контраст) */
+/* Уровень 3 (3.2.1 Numeric Data Types) — Вложенная локальная сущность */
 .content-block h4 {
   font-family: var(--atlas-font-mono) !important;
-  font-size: 12px !important;
+  font-size: 12px !important; /* Точно такой же размер! */
   font-weight: 700 !important;
-  text-transform: none !important; /* Отменяем капс для облегчения веса */
+  text-transform: none !important; /* Облегчаем регистр (без Caps Lock) */
   letter-spacing: 0 !important;
-  color: var(--atlas-ink-soft) !important; /* Чуть мягче, чем основной черный */
-  margin: 22px 0 12px 0 !important;
+  color: var(--atlas-ink-soft) !important; /* Мягкий контраст */
+  margin: 20px 0 10px 0 !important;
   display: flex !important;
-  align-items: center !important;
+  align-items: center;
 }
-/* Элегантный низкоуровневый указатель вместо навязчивого // */
+/* Технический указатель вложенности */
 .content-block h4::before {
-  content: "— " !important; 
-  color: var(--atlas-crit) !important; /* Твой фирменный красный акцент, но аккуратный */
+  content: "— " !important;
+  color: var(--atlas-crit) !important; /* Акцентное тире */
   margin-right: 8px !important;
   font-weight: 400 !important;
 }
-
 /* ── Body text ──────────────────────────────────────────────── */
 .content-block p {
   font-family: var(--atlas-font-mono) !important;
