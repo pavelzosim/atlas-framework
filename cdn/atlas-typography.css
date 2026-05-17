@@ -240,7 +240,6 @@
   border-bottom: 2px solid var(--atlas-ink, #000000) !important;
 }
 
-/* Возвращаем обычное блочное поведение для ячейки */
 .bp-cell {
   padding: 10px 12px !important;
   font-size: 11px !important;
@@ -253,7 +252,6 @@
   border-right: 2px solid var(--atlas-ink, #000000) !important;
 }
 
-/* Строка выравнивается по левому краю ячейки */
 .bp-cell > div {
   display: flex !important;
   align-items: center !important;
@@ -261,12 +259,12 @@
   width: 100% !important;
 }
 
-/* ИСПРАВЛЕНО: Текст внутри лейбла прижимается вправо, создавая ровную колонку */
+/* Лейблы: выровнены по правому краю фиксированной колонки */
 .bp-key {
   font-weight: 700 !important;
-  width: 65px !important; /* Фиксированная ширина контейнера под лейбл */
-  text-align: right !important; /* Сам текст внутри контейнера улетает вправо */
-  margin-right: 12px !important; /* Четкий отступ до начала значения */
+  width: 68px !important; /* Оптимальная ширина, чтобы влезло 'VERSION' */
+  text-align: right !important;
+  margin-right: 12px !important;
   color: var(--atlas-ink-muted, rgba(0,0,0,0.5)) !important;
   display: inline-block !important;
 }
@@ -290,12 +288,12 @@
   color: var(--atlas-ink-muted, rgba(0,0,0,0.5)) !important;
 }
 
-/* Кнопки и DOS-эффект при наведении (Volkov Commander) */
+/* ── ТЕГИ: Ретро-кнопки в стиле Volkov Commander ───────────────── */
 .bp-tags {
   display: flex !important;
   flex-wrap: wrap !important;
   gap: 12px !important;
-  padding: 10px 12px 14px 12px !important;
+  padding: 12px 14px 16px 12px !important; /* Запас снизу и справа под вылет пиксельной тени */
   background: var(--atlas-bg-alt, rgba(0,0,0,0.02)) !important;
 }
 
@@ -310,15 +308,16 @@
   background: transparent !important;
   position: relative !important;
   display: inline-block !important;
-  transition: none !important;
+  transition: none !important; /* Никакого сглаживания, переключение мгновенное */
 }
 
 .atlas-blueprint-link:hover {
   text-decoration: none !important;
   color: #ffffff !important;
-  background: #0000aa !important;
+  background: #0000aa !important; /* Истинный DOS-овский синий */
 }
 
+/* Генерация шахматной тени 2х2 (Dithering) при ховере */
 .atlas-blueprint-link:hover::after {
   content: "" !important;
   position: absolute !important;
@@ -328,7 +327,7 @@
   bottom: -4px !important;
   z-index: -1 !important;
   background-image: conic-gradient(
-    rgba(0, 0, 0, 1) 0.25turn, 
+    #000000 0.25turn, 
     transparent 0.25turn
   ) !important;
   background-size: 2px 2px !important;
@@ -337,7 +336,7 @@
 @media (max-width: 600px) {
   .bp-grid { grid-template-columns: 1fr !important; }
   .bp-cell:first-child { border-right: none !important; border-bottom: 2px solid var(--atlas-ink, #000000) !important; }
-  .bp-key { text-align: left !important; width: auto !important; margin-right: 8px !important; } /* Сброс на мобилках */
+  .bp-key { text-align: left !important; width: auto !important; margin-right: 8px !important; }
   .bp-title-bar { flex-direction: column !important; align-items: flex-start !important; gap: 6px !important; }
 }
 
