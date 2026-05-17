@@ -14,23 +14,22 @@
     - #atlas-body first-child reset
 */
 
-/* ── Headings ───────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   ATLAS TYPOGRAPHY EXTENSION: MULTI-LEVEL HEADINGS
+   ───────────────────────────────────────────────────────────── */
+
+/* Уровень 1 (Пример: 3. Shader Declaration) — Твой оригинальный h2 */
 .content-block h2 {
   font-family: var(--atlas-font-mono) !important;
-  font-size: var(--fs-title) !important;
+  font-size: var(--fs-title, 14px) !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
   letter-spacing: .08em !important;
   color: var(--atlas-ink) !important;
-  margin: 0 0 20px 0 !important;
+  margin: 32px 0 20px 0 !important; /* Увеличили верхний отступ для отбивки от предыдущих блоков */
   display: flex !important;
   align-items: center !important;
-  border: none !important;
-  border-bottom: 0px solid transparent !important;
-  padding: 0 !important;
-  padding-bottom: 0 !important;
   line-height: 1.2 !important;
-  min-height: auto !important;
 }
 
 .content-block h2::before {
@@ -41,17 +40,40 @@
   flex-shrink: 0 !important;
 }
 
+/* Уровень 2 (Пример: 3.2 Properties Syntax & Data Types) */
 .content-block h3 {
   font-family: var(--atlas-font-mono) !important;
-  font-size: var(--fs-body) !important;
+  font-size: 13px !important; /* Чуть меньше главного */
   font-weight: 700 !important;
   text-transform: uppercase !important;
-  color: var(--atlas-ink-muted) !important;
-  margin: 30px 0 15px 0 !important;
   letter-spacing: .06em !important;
-  border: none !important;
-  padding: 0 !important;
-  line-height: 1.2 !important;
+  color: var(--atlas-ink) !important;
+  margin: 24px 0 14px 0 !important;
+  padding-bottom: 6px !important;
+  border-bottom: 1px dashed var(--atlas-border) !important; /* Строгий аккуратный разделитель подтемы */
+  line-height: 1.3 !important;
+}
+
+/* Уровень 3 (Пример: 3.2.1 Numeric Data Types) */
+.content-block h4 {
+  font-family: var(--atlas-font-mono) !important;
+  font-size: 12px !important; /* Размер как у основного текста, но выделен начертанием */
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: .04em !important;
+  color: var(--atlas-ink-soft) !important;
+  margin: 18px 0 10px 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  line-height: 1.4 !important;
+}
+
+/* Низкоуровневый системный маркер для h4 (тонкий monospace префикс) */
+.content-block h4::before {
+  content: "// " !important;
+  color: var(--atlas-ink-muted) !important;
+  margin-right: 6px !important;
+  font-weight: 400 !important;
 }
 
 /* ── Body text ──────────────────────────────────────────────── */
