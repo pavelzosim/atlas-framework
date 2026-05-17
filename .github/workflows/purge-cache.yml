@@ -13,5 +13,8 @@ jobs:
     steps:
       - name: Purge jsDelivr Cache
         run: |
-          curl -s https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-core.css
-          curl -s https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-typography.css
+          # Сброс главного файла фреймворка (автоматически обновляет импорты core и typography)
+          curl -s https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css
+          
+          # Сброс конфигурации футера для моментального обновления структуры ссылок
+          curl -s https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-site-footer-config.json
