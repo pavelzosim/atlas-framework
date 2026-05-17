@@ -1,0 +1,78 @@
+/* viz-codepen-style.css: Atlas Framework стили для CodePen CSS секции */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; }
+:root {
+  --atlas-bg:            rgb(230, 220, 210);
+  --atlas-bg-alt:        rgba(0,0,0,0.02);
+  --atlas-ink:           #000000;
+  --atlas-ink-muted:     rgba(0,0,0,0.5);
+  --atlas-ink-soft:      rgba(0,0,0,0.85);
+  --atlas-crit:          #8b0000;
+  --atlas-border:        rgba(0,0,0,0.15);
+  --atlas-font-mono:     'JetBrains Mono', monospace;
+}
+body {
+  margin: 0;
+  padding: 60px 20px;
+  background-color: var(--atlas-bg);
+  background-image: radial-gradient(rgba(0, 0, 0, 0.15) 1px, transparent 1px);
+  background-size: 20px 20px;
+  font-family: var(--atlas-font-mono);
+  -webkit-font-smoothing: antialiased;
+}
+.atlas-container {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 85vh;
+}
+.content-block {
+  margin: 32px 0;
+  padding: 0;
+}
+.content-block h2 {
+  font-family: var(--atlas-font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--atlas-ink);
+  margin: 0 0 12px 0;
+  display: flex;
+  align-items: center;
+}
+.content-block h2::before {
+  content: "» ";
+  color: var(--atlas-crit);
+  margin-right: 8px;
+  font-weight: 400;
+}
+.content-block p {
+  font-family: var(--atlas-font-mono);
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--atlas-ink-soft);
+  margin: 0 0 16px 0;
+  text-align: justify;
+}
+.atlas-section-break {
+  position: relative;
+  height: 1px;
+  background: var(--atlas-border);
+  margin: 4rem 0;
+}
+.atlas-section-break::before {
+  content: attr(data-index);
+  position: absolute;
+  top: -9px;
+  left: 6%;
+  background: var(--atlas-bg);
+  padding: 0 0.6rem;
+  font-family: var(--atlas-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--atlas-crit);
+  user-select: none;
+}

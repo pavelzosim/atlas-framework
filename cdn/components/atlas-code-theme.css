@@ -1,4 +1,5 @@
 /* atlas-code-theme.css — Стили для подсветки синтаксиса кода и оформления code-блоков. Используется для оформления вставок с программным кодом. */
+
 /* ==========================================================================
    ATLAS CODE THEME — Syntax Highlighting Engine (Prism.js Integration)
    ──────────────────────────────────────────────────────────────────────────
@@ -42,7 +43,7 @@
 
 /* 2. ВЕРХНЯЯ ПЛАШКА С НАЗВАНИЕМ ЯЗЫКА [ SOURCE_LANG: X ] */
 .content-block pre.atlas-code-block[data-lang] {
-  padding-top: 38px !important; /* Выделяем место под заголовок */
+  padding-top: 38px !important;
 }
 .content-block pre.atlas-code-block[data-lang]::before {
   content: "[ SOURCE_LANG: " attr(data-lang) " ]" !important;
@@ -62,72 +63,65 @@
   text-transform: uppercase !important;
 }
 
-/* 3. ТОКЕНЫ ПОДСВЕТКИ PRISM (Строгий монохром на дизайн-токенах) */
+/* 3. УСИЛЕННЫЕ ТОКЕНЫ ПОДСВЕТКИ (Пробивают любой сторонний !important) */
 
-/* Комментарии (Италик, блеклый цвет) */
-.token.comment,
-.token.prolog,
-.token.doctype,
-.token.cdata {
+.content-block pre.atlas-code-block code .token.comment,
+.content-block pre.atlas-code-block code .token.prolog,
+.content-block pre.atlas-code-block code .token.doctype,
+.content-block pre.atlas-code-block code .token.cdata {
   color: var(--atlas-ink-muted, rgba(0, 0, 0, 0.4)) !important;
-  font-style: italic;
+  font-style: italic !important;
 }
 
-/* Знаки препинания, скобки */
-.token.punctuation {
+.content-block pre.atlas-code-block code .token.punctuation {
   color: var(--atlas-ink-soft, rgba(0, 0, 0, 0.65)) !important;
 }
 
-/* Свойства, константы, теги */
-.token.property,
-.token.tag,
-.token.constant,
-.token.symbol,
-.token.deleted {
+.content-block pre.atlas-code-block code .token.property,
+.content-block pre.atlas-code-block code .token.tag,
+.content-block pre.atlas-code-block code .token.constant,
+.content-block pre.atlas-code-block code .token.symbol,
+.content-block pre.atlas-code-block code .token.deleted {
   color: var(--atlas-ink, #000000) !important;
-  font-weight: 700;
+  font-weight: 700 !important;
 }
 
-/* Числа и Булевы значения (Мягкий темный охристый тон из атласа) */
-.token.boolean,
-.token.number {
+.content-block pre.atlas-code-block code .token.boolean,
+.content-block pre.atlas-code-block code .token.number {
   color: var(--atlas-warn, #7a5200) !important;
+  font-weight: 400 !important;
 }
 
-/* Строки, селекторы, встроенные типы (Приглушенный зеленый лог-тон) */
-.token.selector,
-.token.attr-name,
-.token.string,
-.token.char,
-.token.builtin,
-.token.inserted {
+.content-block pre.atlas-code-block code .token.selector,
+.content-block pre.atlas-code-block code .token.attr-name,
+.content-block pre.atlas-code-block code .token.string,
+.content-block pre.atlas-code-block code .token.char,
+.content-block pre.atlas-code-block code .token.builtin,
+.content-block pre.atlas-code-block code .token.inserted {
   color: var(--atlas-ok, #1a4d1a) !important;
 }
 
-/* Операторы */
-.token.operator,
-.token.entity,
-.token.url {
+.content-block pre.atlas-code-block code .token.operator,
+.content-block pre.atlas-code-block code .token.entity,
+.content-block pre.atlas-code-block code .token.url {
   color: var(--atlas-ink, #000000) !important;
 }
 
-/* Ключевые слова (Выделяем жирным вместо яркого цвета) */
-.token.atrule,
-.token.attr-value,
-.token.keyword {
+.content-block pre.atlas-code-block code .token.atrule,
+.content-block pre.atlas-code-block code .token.attr-value,
+.content-block pre.atlas-code-block code .token.keyword {
   color: var(--atlas-ink, #000000) !important;
-  font-weight: 700;
+  font-weight: 700 !important;
 }
 
-/* Имена функций и классов (Глубокий красный тон) */
-.token.function,
-.token.class-name {
+.content-block pre.atlas-code-block code .token.function,
+.content-block pre.atlas-code-block code .token.class-name {
   color: var(--atlas-crit, #8b0000) !important;
+  font-weight: 700 !important;
 }
 
-/* Переменные и регулярки */
-.token.regex,
-.token.important,
-.token.variable {
+.content-block pre.atlas-code-block code .token.regex,
+.content-block pre.atlas-code-block code .token.important,
+.content-block pre.atlas-code-block code .token.variable {
   color: var(--atlas-ink, #000000) !important;
 }
