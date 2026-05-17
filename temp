@@ -1,306 +1,151 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>System Atlas // Production Template</title>
-  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css">
-  
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; overflow-x: hidden; background: transparent; font-family: 'JetBrains Mono', 'Courier New', monospace !important; }
     h1, h2, h3, h4, h5, h6, p, span, div, li, td, th { font-family: 'JetBrains Mono', 'Courier New', monospace !important; }
-
-    /* ── СТИЛИ ТЕРМИНАЛЬНОГО ПАСПОРТА (КОНТУРЫ И ЛИНrepeat-сетка) ─────── */
-    .passport-bp {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      border: 2px solid var(--atlas-ink, #000000);
-      margin: 1.5rem 0 3.5rem 0;
-      padding: 0;
-      background: transparent;
-    }
-    
-    .bp-title-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 12px;
-      border-bottom: 2px solid var(--atlas-ink, #000000);
-      background: var(--atlas-bg-alt, rgba(0,0,0,0.02));
-      font-size: 11px;
-    }
-
-    .bp-title-bar__left {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .bp-user-prompt { color: var(--atlas-ink, #000000); font-weight: 700; }
-    .bp-path-prompt { color: var(--atlas-ink-soft, rgba(0,0,0,0.85)); }
-    .bp-root-char { font-weight: 700; margin-right: 4px; }
-    .bp-command-text { color: var(--atlas-ink, #000000); }
-    .bp-sys-status { font-size: 10px; text-transform: uppercase; }
-
-    .bp-main-title {
-      font-size: 22px;
-      font-weight: 700;
-      padding: 18px 12px;
-      text-transform: uppercase;
-      border-bottom: 2px solid var(--atlas-ink, #000000);
-      line-height: 1.2;
-      letter-spacing: 0.02em;
-    }
-
-    .bp-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      width: 100%;
-      border-bottom: 2px solid var(--atlas-ink, #000000);
-    }
-
-    .bp-cell {
-      padding: 10px 12px;
-      font-size: 11px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .bp-cell:first-child {
-      border-right: 2px solid var(--atlas-ink, #000000);
-    }
-
-    .bp-cell > div {
-      display: flex;
-      align-items: center;
-    }
-
-    .bp-key {
-      font-weight: 700;
-      width: 75px;
-      color: var(--atlas-ink-muted, rgba(0,0,0,0.5));
-      display: inline-block;
-    }
-
-    .bp-val {
-      color: var(--atlas-ink, #000000);
-    }
-
-    .bp-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      padding: 10px 12px;
-      font-size: 11px;
-      border-bottom: 2px solid var(--atlas-ink, #000000);
-      background: var(--atlas-bg-alt, rgba(0,0,0,0.01));
-    }
-
-    .bp-meta-item b {
-      font-weight: 700;
-      color: var(--atlas-ink-muted, rgba(0,0,0,0.5));
-    }
-
-    .bp-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      padding: 10px 12px;
-      background: var(--atlas-bg-alt, rgba(0,0,0,0.02));
-    }
-
-    .atlas-blueprint-link {
-      font-size: 11px;
-      color: var(--atlas-ink, #000000);
-      text-decoration: none;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-    
-    .atlas-blueprint-link:hover {
-      text-decoration: underline;
-    }
-
-    @media (max-width: 600px) {
-      .bp-grid { grid-template-columns: 1fr; }
-      .bp-cell:first-child { border-right: none; border-bottom: 2px solid var(--atlas-ink, #000000); }
-      .bp-title-bar { flex-direction: column; align-items: flex-start; gap: 6px; }
-    }
   </style>
 </head>
 <body>
 
-  <div class="atlas-container">
-    <div id="site-passport"></div>
+<div class="atlas-container">
+  <div id="site-passport"></div>
+</div>
 
-    <main id="atlas-body">
-      <div class="content-block">
-        
-        <h2>01 // TITLE</h2>
-        <p>Content goes here...</p>
-        
-        <div class="atlas-section-break" data-index="x01"></div>
-         
-        <div class="atlas-eof-divider">
-          <span class="atlas-eof-divider__line"></span>
-          <span class="atlas-eof-divider__meta">// END OF SESSION // EOF</span>
-          <span class="atlas-eof-divider__line"></span>
-        </div>
+<script>
+var CONFIG = {
+  user:       'pavelzosim',
+  path:       '~',
+  command:    'cat unity_shaderlab_cheatsheet.log',
 
-      </div> 
-    </main> 
-  </div>
+  prefix:     'SYSTEM_ATLAS // R&D_LOG',
+  project:    'UNITY_SHADERLAB',
+  module:     'shaders',
+  version:    '1.3.2',
+  logId:      '#042',
+  status:     'EDUCATIONAL',
 
-  <script>
-    /* ═══════════════════════════════════════════════════════════════
-       CONFIG — Данные твоей исходной рабочей версии
-       ═══════════════════════════════════════════════════════════════ */
-    var CONFIG = {
-      user:        'pavelzosim',
-      path:        '~',
-      command:     'cat unity_shaderlab_cheatsheet.log',
+  slug:       'unity-shaderlab-cheatsheet',
 
-      prefix:      'SYSTEM_ATLAS // R&D_LOG',
-      project:     'UNITY_SHADERLAB',
-      module:      'shaders',
-      version:     '1.3.2',
-      logId:       '#042',
-      status:      'EDUCATIONAL',
+  author:     '...',
+  created:    '----.--.--',
+  modified:   null,
+  wordCount:  null,
+  title:      null,
+  tags:       [],
 
-      // Идентификатор для связи с базой данных Wix
-      slug:        'unity-shaderlab-cheatsheet',
+  tagBaseUrl: 'https://www.pavelzosim.com/blog/tags/'
+};
 
-      // Дефолтные значения до ответа бэкенда
-      author:      '...',
-      created:     '----.--.--',
-      modified:    null,
-      wordCount:   null,
-      title:       'LOADING SYSTEM LOG...',
-      tags:        [],
+var BACKEND_URL = 'https://www.pavelzosim.com/_functions/getPostData';
 
-      tagBaseUrl:  'https://www.pavelzosim.com/blog/tags/'
-    };
+function applyData(d) {
+  if (d.author)                CONFIG.author   = d.author;
+  if (d.title)                 CONFIG.title    = d.title;
+  if (d.created)               CONFIG.created  = d.created;
+  if (d.modified !== undefined) CONFIG.modified = d.modified;
+  if (Array.isArray(d.tags) && d.tags.length) CONFIG.tags = d.tags;
+  window.render && window.render();
+}
 
-    var BACKEND_URL = 'https://www.pavelzosim.com/_functions/getPostData';
+(function () {
+  var slug = CONFIG.slug || '';
+  if (!slug) {
+    console.warn('[ATLAS] No slug in CONFIG — showing fallback values.');
+    return;
+  }
+  fetch(BACKEND_URL + '?slug=' + encodeURIComponent(slug))
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (data) {
+      if (data && !data.error) applyData(data);
+      else console.warn('[ATLAS] Backend returned:', JSON.stringify(data));
+    })
+    .catch(function (err) { console.warn('[ATLAS] Fetch failed:', err); });
+})();
 
-    // Маппинг цветов статусов из твоих исходников
-    var scMap = {
-      'DRAFT': '#rgba(0,0,0,0.5)',
-      'EDUCATIONAL': '#1a4d1a',
-      'EXPERIMENTAL': '#7a5200',
-      'STABLE': '#1a4d1a',
-      'COMPLETED': '#1a4d1a',
-      'DEPRECATED': '#8b0000'
-    };
+window.addEventListener('message', function (e) {
+  var d = e.data;
+  if (!d || d.source !== 'atlas-backend') return;
+  applyData(d);
+});
 
-    // Функция обновления данных
-    function applyData(d) {
-      if (d.author)   CONFIG.author   = d.author;
-      if (d.title)    CONFIG.title    = d.title;
-      if (d.created)  CONFIG.created  = d.created;
-      if (d.modified !== undefined) CONFIG.modified = d.modified;
-      if (Array.isArray(d.tags) && d.tags.length) CONFIG.tags = d.tags;
-      
-      render();
-    }
+(function () {
+  var scMap = {
+    'DRAFT':'muted','IN_PROGRESS':'active','EXPERIMENTAL':'warn',
+    'STABLE':'ok','COMPLETED':'ok','DEPRECATED':'crit','EDUCATIONAL':'ok'
+  };
 
-    // 1. Асинхронный конвейер запроса к Wix DB
-    (function () {
-      var slug = CONFIG.slug || '';
-      if (!slug) {
-        console.warn('[ATLAS] No slug in CONFIG');
-        return;
-      }
-      fetch(BACKEND_URL + '?slug=' + encodeURIComponent(slug))
-        .then(function (r) { return r.ok ? r.json() : null; })
-        .then(function (data) {
-          if (data && !data.error) {
-            applyData(data);
-          } else {
-            console.warn('[ATLAS] Backend error:', JSON.stringify(data));
-          }
-        })
-        .catch(function (err) { 
-          console.warn('[ATLAS] Fetch failed:', err); 
-        });
-    })();
+  function render() {
+    var o      = CONFIG;
+    var status = (o.status || 'DRAFT').toUpperCase();
+    var rt     = o.readTime || (o.wordCount ? '~' + Math.ceil(Number(o.wordCount) / 200) + ' MIN' : null);
 
-    /* ═══════════════════════════════════════════════════════════════
-       RENDERER — Твоя оригинальная логика сборки интерфейса
-       ═══════════════════════════════════════════════════════════════ */
-    function render() {
-      var o = CONFIG;
-      var status = (o.status || 'DRAFT').toUpperCase();
-      var statusColor = scMap[status] || '#000000';
-      var rt = o.readTime || (o.wordCount ? '~' + Math.ceil(Number(o.wordCount) / 200) + ' MIN' : null);
+    var meta = [
+      { k: 'AUTH',    v: o.author  || '—' },
+      { k: 'CREATED', v: o.created || '—' }
+    ];
+    if (o.modified) meta.push({ k: 'LAST_MODIFIED', v: o.modified });
+    if (rt)         meta.push({ k: 'READ', v: rt });
+    var metaHTML = meta.map(function (m) {
+      return '<span class="bp-meta-item"><b>' + m.k + '</b>: ' + m.v + '</span>';
+    }).join('');
 
-      var meta = [
-        { k: 'AUTH',    v: o.author  || '—' },
-        { k: 'CREATED', v: o.created || '—' }
-      ];
-      if (o.modified) meta.push({ k: 'LAST_MODIFIED', v: o.modified });
-      if (rt)         meta.push({ k: 'READ', v: rt });
-      
-      var metaHTML = meta.map(function (m) {
-        return '<span class="bp-meta-item"><b>' + m.k + '</b>: ' + m.v + '</span>';
-      }).join('');
+    var tags    = Array.isArray(o.tags) ? o.tags : [];
+    var baseUrl = o.tagBaseUrl || null;
+    function toSlug(s) { return s.toLowerCase().replace(/\s+/g, '-'); }
+    var tagsHTML = tags.length
+  ? '<div class="bp-tags" style="padding-bottom: 14px; padding-right: 14px;">' +
+      tags.map(function (tg) {
+        return baseUrl
+          ? '<a href="' + baseUrl + toSlug(tg) + '" class="atlas-blueprint-link" target="_top">#' + tg + '</a>'
+          : '<span class="atlas-blueprint-link" style="cursor:default">#' + tg + '</span>';
+      }).join('') +
+    '</div>'
+  : '';
 
-      var tags = Array.isArray(o.tags) ? o.tags : [];
-      var baseUrl = o.tagBaseUrl || null;
-      function toSlug(s) { return s.toLowerCase().replace(/\s+/g, '-'); }
-      
-      var tagsHTML = tags.length
-        ? '<div class="bp-tags">' +
-            tags.map(function (tg) {
-              var cleanTag = tg.trim().toUpperCase();
-              return baseUrl
-                ? '<a href="' + baseUrl + toSlug(tg) + '" class="atlas-blueprint-link" target="_top">[ ' + cleanTag + ' ]</a>'
-                : '<span class="atlas-blueprint-link" style="cursor:default">[ ' + cleanTag + ' ]</span>';
-            }).join(' ') +
-          '</div>'
-        : '<div class="bp-tags"><span class="atlas-blueprint-link" style="opacity:0.4">[ NO_TAGS ]</span></div>';
-
-      document.getElementById('site-passport').innerHTML =
-        '<div class="passport-bp">' +
-          '<div class="bp-title-bar">' +
-            '<div class="bp-title-bar__left">' +
-              '<span class="bp-user-prompt">' + o.user + '</span>' +
-              '<span style="opacity:.4">:</span>' +
-              '<span class="bp-path-prompt">' + o.path + '</span>' +
-              '<span class="bp-root-char">#</span>' +
-              '<span class="bp-command-text">' + o.command + '</span>' +
-            '</div>' +
-            '<div class="bp-sys-status">SYS_STATUS: <b style="color:' + statusColor + '">' + status + '</b></div>' +
+    document.getElementById('site-passport').innerHTML =
+      '<div class="passport-bp">' +
+        '<div class="bp-title-bar">' +
+          '<div class="bp-title-bar__left">' +
+            '<span class="bp-user-prompt">' + (o.user || 'user') + '</span>' +
+            '<span style="opacity:.4">:</span>' +
+            '<span class="bp-path-prompt">' + (o.path || '~') + '</span>' +
+            '<span class="bp-root-char">#</span>' +
+            '<span class="bp-command-text">' + (o.command || 'cat log') + '</span>' +
           '</div>' +
-          '<div class="bp-main-title">' + o.title.toUpperCase() + '</div>' +
-          '<div class="bp-grid">' +
-            '<div class="bp-cell">' +
-              '<div><span class="bp-key">PROJECT</span><span class="bp-val">' + o.project + '</span></div>' +
-              '<div><span class="bp-key">MODULE</span><span class="bp-val">'   + o.module + '</span></div>' +
-            '</div>' +
-            '<div class="bp-cell">' +
-              '<div><span class="bp-key">VERSION</span><span class="bp-val">' + o.version + '</span></div>' +
-              '<div><span class="bp-key">LOG_ID</span><span class="bp-val">'  + o.logId + '</span></div>' +
-            '</div>' +
+          '<div class="bp-sys-status">[ SYS_STATUS: <b>' + status + '</b> ]</div>' +
+        '</div>' +
+        (o.title ? '<div class="bp-main-title">' + o.title + '</div>' : '') +
+        '<div class="bp-grid">' +
+          '<div class="bp-cell">' +
+            '<div><span class="bp-key">PROJECT</span><span class="bp-val">' + (o.project || '—') + '</span></div>' +
+            '<div><span class="bp-key">MODULE</span><span class="bp-val">'   + (o.module  || '—') + '</span></div>' +
           '</div>' +
-          '<div class="bp-meta">' + metaHTML + '</div>' +
-          tagsHTML +
-        '</div>';
-    }
+          '<div class="bp-cell">' +
+            '<div><span class="bp-key">VERSION</span><span class="bp-val">' + (o.version || '—') + '</span></div>' +
+            '<div><span class="bp-key">LOG_ID</span><span class="bp-val">'  + (o.logId   || '—') + '</span></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="bp-meta">' + metaHTML + '</div>' +
+        tagsHTML +
+      '</div>';
+  }
 
-    // Первичный рендер заглушки
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', render);
-    } else {
-      render();
-    }
-  </script>
+  window.render = render;
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', render);
+  } else {
+    render();
+  }
+}());
+</script>
 </body>
 </html>
