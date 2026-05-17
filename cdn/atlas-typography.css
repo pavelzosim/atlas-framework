@@ -557,57 +557,58 @@
    ATLAS TYPOGRAPHY — TABLES DATA BLOCKS
    ───────────────────────────────────────────────────────────── */
 
-/* Контейнер для предотвращения слома верстки на мобильных */
-.content-block .atlas-table-responsive {
+/* ─────────────────────────────────────────────────────────────
+   ATLAS TYPOGRAPHY — TABLES DATA BLOCKS (ISOLATED)
+   ───────────────────────────────────────────────────────────── */
+
+.atlas-table-responsive {
   width: 100%;
   overflow-x: auto;
   margin: 20px 0;
   border: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.15));
 }
 
-.content-block table {
+.atlas-table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  font-family: var(--atlas-font-mono) !important;
+  font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace) !important;
   font-size: 12px !important;
   line-height: 1.5;
   background: transparent;
 }
 
-/* Строка заголовков */
-.content-block th {
+.atlas-th {
   font-weight: 700;
   text-transform: uppercase;
-  color: var(--atlas-ink);
+  color: var(--atlas-ink, #000000);
   background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.02));
-  border-bottom: 2px solid var(--atlas-ink);
+  border-bottom: 2px solid var(--atlas-ink, #000000);
   padding: 8px 12px;
   letter-spacing: 0.5px;
 }
 
-/* Ячейки данных */
-.content-block td {
+.atlas-td {
   padding: 8px 12px;
   color: var(--atlas-ink-soft, rgba(0, 0, 0, 0.85));
   border-bottom: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.15));
   vertical-align: middle;
 }
 
-/* Подсветка строк при наведении для удобства чтения больших логов */
-.content-block tr:hover td {
-  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.01));
-  color: var(--atlas-ink);
+.atlas-table tr:nth-child(even) .atlas-td {
+  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.02));
 }
 
-/* Выравнивание параметров и числовых данных по правому краю */
-.content-block th.atlas-table-num,
-.content-block td.atlas-table-num {
-  text-align: right;
+.atlas-table tr:hover .atlas-td {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--atlas-ink, #000000);
 }
 
-/* Интеграция с существующим инлайн-параметром */
-.content-block td .atlas-param {
+.atlas-table-num {
+  text-align: right !important;
+}
+
+.atlas-td .atlas-param {
   display: inline-block;
-  margin: 0; /* Сбрасываем внешние отступы внутри ячеек */
+  margin: 0;
 }
