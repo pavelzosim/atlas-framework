@@ -26,7 +26,7 @@
   text-transform: uppercase !important;
   letter-spacing: .08em !important;
   color: var(--atlas-ink) !important;
-  margin: 36px 0 20px 0 !important;
+  margin: 16px 0 20px 0 !important;
   display: flex !important;
   align-items: center;
 }
@@ -66,6 +66,8 @@
   letter-spacing: 0 !important;
   color: var(--atlas-ink-soft) !important; /* Мягкий контраст */
   margin: 20px 0 10px 0 !important;
+  padding-bottom: 6px !important;
+  border-bottom: 1px dashed var(--atlas-border) !important; /* Удерживающая рамка */
   display: flex !important;
   align-items: center;
 }
