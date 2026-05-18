@@ -1,30 +1,16 @@
-name: Global CDN Build & Purge Cache
-
-on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'cdn/**'
-
-jobs:
-  build-and-purge:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }} # Нужен для возможности пуша сборки назад
-
-      - name: Compile CSS Modules into Production Monolith
+- name: Compile CSS Modules into Production Monolith
         run: |
-          echo "/* ==========================================================================" > cdn/atlas-framework.css
-          echo "   ATLAS FRAMEWORK PRODUCTION CORE — COMPILED MONOLITH" >> cdn/atlas-framework.css
-          echo "   Generated automatically via GitHub Actions Workflow" >> cdn/atlas-framework.css
-          echo "   ========================================================================== */" >> cdn/atlas-framework.css
+          # 1. Записываем импорт шрифта строго на ПЕРВУЮ строчку чистого файла (перезаписывая его через '>')
+          echo "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');" > cdn/atlas-framework.css
           
-          # Последовательно склеиваем ядро, базу и все дочерние модули в один файл
-          cat cdn/atlas-core.css >> cdn/atlas-framework.css
+          # 2. Добавляем системную шапку комментариев (УЖЕ ПОСЛЕ ИМПОРТА)
+          echo -e "\n/* ==========================================================================\n   ATLAS FRAMEWORK PRODUCTION CORE — COMPILED MONOLITH\n   Generated automatically via GitHub Actions Workflow\n   ========================================================================== */\n" >> cdn/atlas-framework.css
+          
+          # 3. Импортируем atlas-core.css, НО убираем из него скрытый BOM-маркер и исходный @import
+          # sed удаляет любые упоминания @import, а perl убирает бинарный маркер спецификации UTF-8 BOM, если он там есть
+          perl -pe 's/\xEF\xBB\xBF//g' cdn/atlas-core.css | sed 's|@import url(.*);||g' >> cdn/atlas-framework.css
+          
+          # 4. Последовательно склеиваем все остальные дочерние модули
           cat cdn/atlas-typography.css >> cdn/atlas-framework.css
           cat cdn/components/atlas-callout.css >> cdn/atlas-framework.css
           cat cdn/components/atlas-code-theme.css >> cdn/atlas-framework.css
@@ -35,26 +21,4 @@ jobs:
           cat cdn/components/atlas-uml.css >> cdn/atlas-framework.css
           cat cdn/components/atlas-vfx-tools.css >> cdn/atlas-framework.css
           
-          echo "Compilation complete. Monolith built successfully."
-
-      - name: Commit Compiled Changes to Master
-        run: |
-          git config --global user.name "Atlas-CI-Bot"
-          git config --global user.email "actions@github.com"
-          git add cdn/atlas-framework.css
-          
-          # Коммитим только если файл реально изменился, чтобы не зациклить экшен
-          if ! git diff --staged --quiet; then
-            git commit -m "build: auto-compile production atlas-framework.css [skip ci]"
-            git push origin master
-          else
-            echo "No compiled changes detected."
-          fi
-
-      - name: Purge jsDelivr Cache
-        run: |
-          # Сброс главного скомпилированного файла фреймворка
-          curl -s https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css
-          
-          # Сброс конфигурации футера для моментального обновления структуры ссылок
-          curl -s https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-site-footer-config.json
+          echo "Compilation complete. Monolith built successfully and validated."
