@@ -43,58 +43,74 @@
   white-space: nowrap !important;
 }
 
-
 /* ==========================================================================
-   MODULE 2: HARDWARE MEDIA NODES
+   MODULE 2: INTEGRATED MEDIA NODES & INSPECTOR FRAMES
    ─────────────────────────────────────────────────────────────
-   Scope: .content-block .atlas-media-node and all underlying subnodes.
-   Responsibility: Sandboxing engine inspector screenshots (Unity/Unreal), 
-   forcing dark backdrops for pro-tools UI, and rendering terminal logging captions.
+   Scope: .content-block .atlas-media-node and child nodes.
+   Responsibility: Technical engine screenshots, diagram framing,
+   proportional safe fitting (contain), and zero-bleed alignment.
    ========================================================================== */
 
-/* ── 2.1 Внешний каркас медиа-блока (Media Shell Container) ────────────── */
+/* ── 2.1 Главный контейнер блока (Outer Structural Frame) ──────────────── */
 .content-block .atlas-media-node {
   margin: 28px 0 !important;
+  width: 100% !important;
   border: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
-  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.01)) !important;
-  padding: 10px !important; /* Внутренний защитный зазор вокруг темной подложки */
-  display: block !important;
+  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.02)) !important; /* Родной светлый тинт Атласа */
+  padding: 12px !important; /* Внутренний отступ-паспарту до рамки */
   box-sizing: border-box !important;
+  display: block !important;
 }
 
-/* ── 2.2 Профессиональный инвертированный холст (Dark Engine Canvas) ───── */
+/* ── 2.2 Внутренний холст с центрированием (Safe Render Canvas) ────────── */
 .content-block .atlas-media-node__wrapper {
   width: 100% !important;
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  background: #1a1a1a !important; /* Темный графитовый фон — родной для темных тем Unity / Unreal / Houdini */
-  border-bottom: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important; /* Граница между картинкой и подписью */
-  padding: 8px 0 !important;
-  box-sizing: border-box !important;
-}
-
-/* ── 2.3 Адаптивное изображение (Fidelity Image Node) ──────────────────── */
-.content-block .atlas-media-node img {
-  max-width: 100% !important; /* Запрет на выход картинки за пределы контейнера */
-  height: auto !important;
+  max-height: 520px !important; /* Защита от гигантских вертикальных простыней */
   display: block !important;
+  text-align: center !important; /* Центрирование инлайн-элементов (img) */
+  background: #1a1a1a !important; /* Фирменный темный IDE-фон по умолчанию */
+  border: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.15)) !important; /* Внутренняя рамка холста */
+  padding: 16px !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
 }
 
-/* ── 2.4 Лог-подпись под скриншотом (Terminal Inspector Caption) ──────── */
+/* Модификатор для светлых схем/диаграмм (если темный фон IDE не нужен) */
+.content-block .atlas-media-node[data-theme="light"] .atlas-media-node__wrapper {
+  background: #ffffff !important;
+}
+
+/* ── 2.3 Пропорциональное адаптивное изображение (Fidelity Fit Image) ───── */
+.content-block .atlas-media-node img {
+  max-width: 100% !important;
+  max-height: 480px !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important; /* Изображение масштабируется пропорционально, без кропа */
+  object-position: center !important; /* Строго по центру */
+  display: inline-block !important; /* Чтобы работало выравнивание text-align: center */
+  vertical-align: middle !important;
+}
+
+/* ── 2.4 Инспектор-подпись под скриншотом (Terminal Inspector Caption) ─── */
 .content-block .atlas-media-node__caption {
   display: block !important;
-  margin-top: 10px !important;
-  padding: 0 4px !important;
-  font-family: var(--atlas-font-mono), monospace !important;
+  margin-top: 12px !important;
+  padding: 6px 4px 0 4px !important;
+  font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace) !important;
   font-size: 10.5px !important;
-  line-height: 1.4 !important;
-  color: var(--atlas-ink-soft, rgba(0, 0, 0, 0.65)) !important;
+  font-weight: 700 !important;
+  line-height: 1.5 !important;
+  color: var(--atlas-ink-soft, rgba(0, 0, 0, 0.7)) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  border-top: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important; /* Отбивка подписи точками */
+  text-align: left !important; /* Подпись выравнивается по левому краю фрейма */
 }
 
-/* Системный префикс перед текстом подписи, имитирующий консольный вывод */
+/* Навигационный маркер-префикс перед текстом подписи */
 .content-block .atlas-media-node__caption::before {
-  content: "[ INSPECTOR LOG ]: " !important;
-  font-weight: 700 !important;
-  color: var(--atlas-ink-muted, rgba(0, 0, 0, 0.42)) !important;
+  content: "[ INSPECTOR_LOG ]: " !important;
+  color: var(--atlas-crit, #8b0000) !important; /* Системный акцент */
+  margin-right: 6px !important;
 }
