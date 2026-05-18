@@ -1,77 +1,91 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    ATLAS TYPOGRAPHY — Content Block Text Styles [v1.1.6_production]
    ─────────────────────────────────────────────────────────────
    Scope: .content-block only (Safe for Wix context isolation)
    Requires: atlas-core.css (for CSS custom properties)
    ========================================================================== */
 
+/* ==========================================================================
+   MODULE 1: HEADINGS, VERTICAL RHYTHM & BODY TYPOGRAPHY [v1.1.7_bugfix]
+   ─────────────────────────────────────────────────────────────
+   Scope: .content-block typography nodes
+   Provides: Strict vertical spacing and clear hierarchy indentation
+   ========================================================================== */
+
 /* ─────────────────────────────────────────────────────────────
    MODULE 1.1: MULTI-LEVEL HEADINGS (SYSTEM HIERARCHY)
    ───────────────────────────────────────────────────────────── */
 
-/* Уровень 1 (Пример: 3. SHADER DECLARATION) — Главный глобальный ориентир */
+/* Уровень 1 (Пример: 3. SHADER DECLARATION) — Глобальный маркер верхнего уровня */
 .content-block h2 {
   font-family: var(--atlas-font-mono), monospace !important;
-  font-size: 14px !important;            /* Чуть крупнее для обозначения вехи */
+  font-size: 14px !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
   letter-spacing: .08em !important;
   color: var(--atlas-ink) !important;
-  margin: 16px 0 10px 0 !important;
-  display: flex !important;
-  align-items: center !important;        /* Выравниваем шеврон строго по центру */
+  
+  /* Увеличиваем верхний отступ до 36px, чтобы отбить блок от предыдущего параграфа/таблицы */
+  margin: 36px 0 14px 0 !important;
+  
+  display: block !important; /* Возвращаем блочный тип, чтобы длинные заголовки корректно переносились */
+  line-height: 1.4 !important;
 }
 
 /* Акцентный красный шеврон перед H2 */
 .content-block h2::before {
   content: "» " !important;
   color: var(--atlas-crit) !important;
-  margin-right: 8px !important;
+  font-weight: 700 !important;
 }
 
-/* Уровень 2 (Пример: // 3.2 PROPERTIES SYNTAX) — Монолитный системный блок */
+/* Уровень 2 (Пример: // 3.2 PROPERTIES SYNTAX) — Монолитный системный подблок */
 .content-block h3 {
   font-family: var(--atlas-font-mono), monospace !important;
-  font-size: 12px !important;            /* Унифицированный базовый размер */
+  font-size: 12px !important;
   font-weight: 700 !important;
-  text-transform: uppercase !important;  /* Жёсткий CAPS в стиле логов */
+  text-transform: uppercase !important;
   letter-spacing: .06em !important;
   color: var(--atlas-ink) !important;
-  margin: 28px 0 14px 0 !important;
+  
+  /* Ритм: 28px сверху до контента, 12px снизу до подчёркивания */
+  margin: 28px 0 12px 0 !important;
   padding-bottom: 6px !important;
-  border-bottom: 1px dashed var(--atlas-border) !important; /* Удерживающая рамка */
-  display: flex !important;
-  align-items: center !important;
+  border-bottom: 1px dashed var(--atlas-border, rgba(0,0,0,0.15)) !important;
+  
+  display: block !important;
+  line-height: 1.4 !important;
 }
 
 /* Приглушенные слэши в стиле комментариев кода перед H3 */
 .content-block h3::before {
   content: "// " !important;
   color: var(--atlas-ink-muted) !important;
-  margin-right: 6px !important;
   font-weight: 400 !important;
 }
 
-/* Уровень 3 (Пример: — 3.2.1 Numeric Data Types) — Вложенная локальная сущность */
+/* Уровень 3 (Пример: — 3.2.1 Numeric Data Types) — Вложенная локальная спецификация */
 .content-block h4 {
   font-family: var(--atlas-font-mono), monospace !important;
-  font-size: 12px !important;            /* Точно такой же размер, как H3, для плотности */
+  font-size: 12px !important;
   font-weight: 700 !important;
-  text-transform: none !important;       /* Облегчаем регистр (без Caps Lock) для читаемости */
+  text-transform: none !important; /* Облегченный регистр без CAPS для читаемости */
   letter-spacing: 0 !important;
   color: var(--atlas-ink-soft) !important; /* Мягкий контраст, уводящий вглубь */
-  margin: 20px 0 10px 0 !important;
-  padding-bottom: 6px !important;
-  border-bottom: 1px dashed var(--atlas-border) !important; /* Удерживающая рамка */
-  display: flex !important;
-  align-items: center !important;
+  
+  /* Плотный отступ: поджимаемся ближе к родителю (H3) и убираем border, чтобы не спорить с ним */
+  margin: 22px 0 10px 0 !important;
+  padding-bottom: 0 !important;
+  border-bottom: none !important; /* Фикс: убираем лишнюю линию, разгружаем интерфейс */
+  
+  display: block !important;
+  line-height: 1.4 !important;
 }
 
 /* Технический указатель вложенности (акцентное тире) перед H4 */
 .content-block h4::before {
   content: "— " !important;
   color: var(--atlas-crit) !important;
-  margin-right: 8px !important;
   font-weight: 400 !important;
 }
 
@@ -84,82 +98,83 @@
   font-family: var(--atlas-font-mono), monospace !important;
   font-size: var(--fs-body, 12.5px) !important;
   line-height: 1.7 !important;
-  margin: 0 0 16px 0 !important;
+  margin: 0 0 16px 0 !important; /* Стабильный шаг между параграфами */
   color: var(--atlas-ink-soft) !important;
   text-align: left !important;
 }
 
-/* Жирный текст — максимальный контраст */
+/* Максимальный контраст для ключевых токенов */
 .content-block strong { 
   font-weight: 700 !important; 
   color: var(--atlas-ink) !important; 
 }
 
-/* Курсив — приглушенный технический комментарий */
+/* Курсив — имитация системного комментария */
 .content-block em { 
   font-style: italic !important; 
   color: var(--atlas-ink-muted) !important; 
 }
+
 /* ==========================================================================
-   MODULE 2: PRODUCTION TERMINAL LISTS & INLINE CODE [v1.1.6_production]
+   MODULE 2: PRODUCTION TERMINAL LISTS & INLINE CODE [v1.1.7_bugfix]
    ─────────────────────────────────────────────────────────────
    Scope: .content-block only
-   Provides: High-precision layout for terminal-style lists and tokens
+   Provides: Fixed-geometry terminal-style lists and inline code tokens
    ========================================================================== */
 
 /* ─────────────────────────────────────────────────────────────
    MODULE 2.1: CORE LIST CONTAINERS (GRID & RESET)
    ───────────────────────────────────────────────────────────── */
 
-/* Общие контейнеры списков */
 .content-block ul,
 .content-block ol {
-  margin: 16px 0 20px 0 !important;
-  padding-left: 0 !important;   /* Обнуляем дефолтные отступы, строим сетку сами */
-  list-style: none !important;  /* Намертво убиваем стандартные маркеры браузера */
+  margin: 18px 0 22px 0 !important;
+  padding-left: 0 !important;   /* Обнуляем дефолтные отступы */
+  list-style: none !important;  /* Намертво убиваем стандартные маркеры */
 }
 
-/* Общий стиль для элементов списка */
 .content-block li {
   font-family: var(--atlas-font-mono), monospace !important;
   font-size: var(--fs-body, 12.5px) !important;
-  line-height: 1.65 !important;
+  line-height: 1.6 !important;   /* Жесткий контролируемый шаг строки */
   color: var(--atlas-ink-soft) !important;
-  margin-bottom: 8px !important;
+  margin-bottom: 10px !important;
   position: relative !important;
-  /* Освобождаем фиксированное пространство слева под моноширинные маркеры */
-  padding-left: 44px !important; 
+  padding-left: 48px !important; /* Запас увеличен, чтобы текст не наползал при любом масштабе */
 }
 
 /* ─────────────────────────────────────────────────────────────
    MODULE 2.2: BULLET LISTS (UL) — DUAL-LAYER CHEVRON [ > ]
    ───────────────────────────────────────────────────────────── */
 
-/* 1. Отрисовка приглушенных квадратных скобок */
+/* Отрисовка стабильного бокса скобок без внутренних пробелов */
 .content-block ul li::before {
-  content: "[   ]" !important; /* Точные пробелы внутри под стрелку */
+  content: "[ ]" !important;    /* Чистый контейнер без пробелов, которые может перенести парсер */
   position: absolute !important;
   left: 0 !important;
   top: 0 !important;
   font-family: var(--atlas-font-mono), monospace !important;
-  font-size: 11px !important;
+  font-size: 12px !important;
   font-weight: 700 !important;
+  line-height: 1.6 !important;   /* Строго равен line-height родительского LI */
   letter-spacing: 0 !important;
-  color: var(--atlas-ink-muted) !important; /* Скобки затенены */
-  width: 36px !important;
+  white-space: nowrap !important; /* Запрещаем любой перенос символов внутри маркера */
+  color: var(--atlas-ink-muted) !important;
+  width: 38px !important;
   display: inline-block !important;
 }
 
-/* 2. Позиционирование акцентной красной стрелки строго по центру скобок */
+/* Точечное позиционирование стрелки строго по центру скобок */
 .content-block ul li::after {
   content: ">" !important;
   position: absolute !important;
-  left: 14px !important; /* Сдвиг для идеального центрирования в JetBrains Mono */
+  left: 7px !important;          /* Идеальный сдвиг внутрь "[ ]" для JetBrains Mono */
   top: 0 !important;
   font-family: var(--atlas-font-mono), monospace !important;
-  font-size: 11px !important;
+  font-size: 12px !important;
   font-weight: 700 !important;
-  color: var(--atlas-crit) !important; /* Фирменный красный акцент */
+  line-height: 1.6 !important;   /* Синхронизация по высоте */
+  color: var(--atlas-crit) !important;
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -167,43 +182,42 @@
    ───────────────────────────────────────────────────────────── */
 
 .content-block ol {
-  counter-reset: atlas-list-counter !important; /* Инициализируем чистый счетчик */
+  counter-reset: atlas-list-counter !important;
 }
 
 .content-block ol li {
-  counter-increment: atlas-list-counter !important; /* Шаг счетчика для каждого li */
+  counter-increment: atlas-list-counter !important;
 }
 
 .content-block ol li::before {
-  /* Форматируем значение счетчика с ведущим нулем (decimal-leading-zero) */
   content: "[ " counter(atlas-list-counter, decimal-leading-zero) " ]" !important;
   position: absolute !important;
   left: 0 !important;
   top: 0 !important;
   font-family: var(--atlas-font-mono), monospace !important;
-  font-size: 11px !important;
+  font-size: 12px !important;
   font-weight: 700 !important;
-  color: var(--atlas-ink) !important; /* Индексы лога остаются четкими */
-  width: 36px !important;
+  line-height: 1.6 !important;   /* Синхронизация вертикали */
+  color: var(--atlas-ink) !important;
+  width: 38px !important;
   display: inline-block !important;
   letter-spacing: 0 !important;
+  white-space: nowrap !important; /* Фиксация строки от излома */
 }
 
 /* ─────────────────────────────────────────────────────────────
    MODULE 2.4: INLINE CODE TOKENS & SYSTEM RESET
    ───────────────────────────────────────────────────────────── */
 
-/* Теги разметки inline-кода (Исключаем блоки кода pre code) */
 .content-block code:not(pre code) {
   font-family: var(--atlas-font-mono), monospace !important;
   font-size: var(--fs-code, 11.5px) !important;
-  background: var(--atlas-bg-alt) !important;
+  background: var(--atlas-bg-alt, rgba(0,0,0,0.02)) !important;
   color: var(--atlas-ink) !important;
   padding: 1px 5px !important;
-  border: 1px solid var(--atlas-border) !important;
+  border: 1px solid var(--atlas-border, rgba(0,0,0,0.15)) !important;
 }
 
-/* Первичный сброс верхнего маржина у самого первого элемента внутри тела */
 #atlas-body > *:first-child { 
   margin-top: 0 !important; 
 }
