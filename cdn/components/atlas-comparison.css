@@ -1,2 +1,27 @@
 /* atlas-comparison.css — Стили для блоков сравнения (A/B, таблицы различий, сравнительные списки и т.д.). Используется для оформления визуальных сравнений. */
 
+/* ==========================================================================
+   ATLAS COMPARISON ENGINE — Side-by-Side Blocks & Cross-Tech Matrix
+   Module: components/atlas-comparison.css
+   ========================================================================== */
+
+.content-block .atlas-compare {
+  display: flex !important;
+  gap: 16px !important;
+  margin: 24px 0 !important;
+  position: relative !important;
+}
+
+/* Пример мобильной адаптации для Wix-контейнера */
+@media (max-width: 680px) {
+  .content-block .atlas-compare {
+    flex-direction: column !important;
+  }
+}
+
+.content-block .atlas-compare__column {
+  flex: 1 !important;
+  padding: 14px !important;
+  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.01)) !important;
+  border: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.12)) !important;
+}

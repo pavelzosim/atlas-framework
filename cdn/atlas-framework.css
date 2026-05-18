@@ -17,15 +17,16 @@
 */
 
 
-@import url('./atlas-core.css');
-@import url('./atlas-typography.css');
+/* Базовые зависимости и переменные окружения */
+@import url("atlas-core.css");
+@import url("atlas-typography.css");
 
-/* R&D компоненты и визуальные блоки */
-@import url('./components/atlas-uml.css');
-@import url('./components/atlas-timeline.css');
-@import url('./components/atlas-comparison.css');
-@import url('./components/atlas-callout.css');
-@import url('./components/atlas-schema.css');
-@import url('./components/atlas-layouts.css');
-@import url('./components/atlas-vfx-tools.css');
-@import url('./components/atlas-code-theme.css');
+/* Модульные компоненты ядра */
+@import url("components/atlas-callout.css");
+@import url("components/atlas-code-theme.css");
+@import url("components/atlas-comparison.css");
+@import url("components/atlas-layouts.css");
+@import url("components/atlas-schema.css");
+@import url("components/atlas-timeline.css");
+@import url("components/atlas-uml.css");
+@import url("components/atlas-vfx-tools.css");

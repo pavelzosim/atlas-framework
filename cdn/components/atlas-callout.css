@@ -1,2 +1,37 @@
 /* atlas-callout.css — Стили для callout-блоков: заметки, предупреждения, советы, выделенные рамки и т.д. Используется для оформления акцентных вставок в тексте. */
 
+/* ==========================================================================
+   ATLAS CALLOUT SYSTEM — System Notice Plates & Critical Alerts
+   Module: components/atlas-callout.css
+   ========================================================================== */
+
+.content-block .atlas-notice {
+  margin: 24px 0 !important;
+  padding: 16px 18px !important;
+  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.02)) !important;
+  border: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.12)) !important;
+  border-left: 4px solid var(--atlas-crit, #8b0000) !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+}
+
+.content-block .atlas-notice__header {
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  color: var(--atlas-crit, #8b0000) !important;
+  letter-spacing: 0.08em !important;
+  margin-bottom: 12px !important;
+  display: block !important;
+}
+
+.content-block .atlas-notice p {
+  font-size: 12px !important;
+  line-height: 1.6 !important;
+  margin-bottom: 8px !important;
+}
+
+.content-block .atlas-notice p:last-child {
+  margin-bottom: 0 !important;
+}

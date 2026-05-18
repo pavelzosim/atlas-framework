@@ -223,110 +223,7 @@
 }
 
 
-/* ==========================================================================
-   ATLAS COMPONENT: COMPARISON SYSTEM (PRODUCTION)
-   ========================================================================== */
 
-.atlas-compare {
-  display: flex !important;
-  width: 100% !important;
-  margin: 28px 0 !important;
-  background-color: var(--atlas-bg-alt, rgba(0,0,0,0.02)) !important;
-  border: 1px solid var(--atlas-border, rgba(0,0,0,0.15)) !important;
-  position: relative !important;
-  box-sizing: border-box !important;
-}
-
-/* Терминальные маркеры-плюсы по углам блока */
-.atlas-compare::before,
-.atlas-compare::after {
-  content: '+' !important;
-  position: absolute !important;
-  font-family: var(--atlas-font-mono), monospace !important;
-  font-size: 14px !important;
-  font-weight: 300 !important;
-  color: var(--atlas-ink-muted) !important;
-  width: 10px !important;
-  height: 10px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  user-select: none !important;
-}
-.atlas-compare::before { top: -6px; left: -5px; }
-.atlas-compare::after { bottom: -5px; right: -5px; }
-
-/* Две колонки 50/50 */
-.atlas-compare__column {
-  flex: 1 !important;
-  width: 50% !important;
-  display: flex !important;
-  flex-direction: column !important;
-  position: relative !important;
-  box-sizing: border-box !important;
-}
-
-/* Центральная ось-разделитель в стиле IDE */
-.atlas-compare__divider {
-  width: 1px !important;
-  background: var(--atlas-border, rgba(0,0,0,0.15)) !important;
-  flex-shrink: 0 !important;
-}
-
-/* Верхние технические плашки-паспорта блоков */
-.atlas-compare__badge {
-  font-family: var(--atlas-font-mono), monospace !important;
-  font-size: 10px !important;
-  font-weight: 700 !important;
-  padding: 6px 12px !important;
-  letter-spacing: 0.05em !important;
-  background-color: var(--atlas-border, rgba(0,0,0,0.04)) !important;
-  color: var(--atlas-ink-muted) !important;
-  border-bottom: 1px solid var(--atlas-border, rgba(0,0,0,0.15)) !important;
-  text-transform: uppercase !important;
-}
-
-/* Внутренний контейнер с текстом */
-.atlas-compare__content {
-  padding: 16px !important;
-  flex-grow: 1 !important;
-}
-
-/* Название концепта (Крупный моноширинный заголовок) */
-.atlas-compare__concept {
-  display: block !important;
-  font-family: var(--atlas-font-mono), monospace !important;
-  font-size: 13px !important;
-  font-weight: 700 !important;
-  color: var(--atlas-ink) !important;
-  text-transform: uppercase !important;
-  margin-bottom: 10px !important;
-  letter-spacing: 0.02em !important;
-}
-
-/* Сброс и адаптация параграфов внутри колонок */
-.atlas-compare__content p {
-  font-family: var(--atlas-font-mono), monospace !important;
-  font-size: 12px !important;
-  line-height: 1.6 !important;
-  margin: 0 !important;
-  color: var(--atlas-ink-soft) !important;
-  text-align: left !important;
-}
-
-/* Адаптивный брейкпоинт под мобильные девайсы */
-@media (max-width: 680px) {
-  .atlas-compare {
-    flex-direction: column !important;
-  }
-  .atlas-compare__column {
-    width: 100% !important;
-  }
-  .atlas-compare__divider {
-    height: 1px !important;
-    width: 100% !important;
-  }
-}
 
 /* ==========================================================================
    MODULE 4: CONTEXT DIVIDERS & STRUCTURAL BREAKS [v1.1.6_production]
@@ -406,7 +303,6 @@
   flex-shrink: 0 !important;
   white-space: nowrap !important;
 }
-
 
 /* ==========================================================================
    MODULE 5: SYSTEM ATLAS // PASSPORT BLUEPRINT COMPONENT [v1.1.6_production]
@@ -957,3 +853,4 @@
   color: var(--atlas-crit, #8b0000) !important; 
   font-weight: 700 !important; 
 }
+
