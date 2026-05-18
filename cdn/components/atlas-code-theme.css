@@ -95,8 +95,9 @@
 .content-block pre.atlas-code-block code .token.string,
 .content-block pre.atlas-code-block code .token.char,
 .content-block pre.atlas-code-block code .token.builtin,
+.content-block pre.atlas-code-block code .token.built-in, /* Фикс под ShaderLab встроенные типы */
 .content-block pre.atlas-code-block code .token.inserted {
-  color: var(--atlas-ok, #1a4d1a) !important; /* Глубокий зеленый для строковых констант */
+  color: var(--atlas-ok, #1a4d1a) !important;
 }
 
 /* ── 2.6 Операторы и Ссылки (Operators & Entity Links) ─────────────────── */
@@ -110,9 +111,10 @@
 /* ── 2.7 Ключевые слова компилятора (Keywords & Control Statements) ────── */
 .content-block pre.atlas-code-block code .token.atrule,
 .content-block pre.atlas-code-block code .token.attr-value,
+.content-block pre.atlas-code-block code .token.attribute, /* Фикс под свойства ShaderLab (Properties) */
 .content-block pre.atlas-code-block code .token.keyword {
   color: var(--atlas-ink, #000000) !important;
-  font-weight: 700 !important; /* Ключевые слова типа return, cbuffer, void — полужирные */
+  font-weight: 700 !important;
 }
 
 /* ── 2.8 Функции, Методы и Классы (Functions & Class Names) ────────────── */
