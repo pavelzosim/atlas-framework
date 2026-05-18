@@ -76,3 +76,56 @@
 .content-block .atlas-param[data-status="crit"] {
   color: var(--atlas-crit, #8b0000) !important;
 }
+
+
+/* ==========================================================================
+   ATLAS SCHEMA ENGINE — Pipeline Flow & Architecture Blocks
+   Module: components/atlas-schema.css
+   ========================================================================== */
+
+/* Контейнер для вертикального конвейера */
+.content-block .atlas-pipeline-stack {
+  margin: 24px 0 !important;
+  border: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.01)) !important;
+  padding: 16px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+}
+
+/* Элемент (шаг) конвейера */
+.content-block .atlas-pipeline-step {
+  display: flex !important;
+  align-items: center !important;
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 11.5px !important;
+  padding: 8px 12px !important;
+  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.02)) !important;
+  border-left: 3px solid var(--atlas-ink-muted, rgba(0, 0, 0, 0.3)) !important;
+}
+
+/* Акцентный маркер фазы (например, [Vertex Shader]) */
+.content-block .atlas-pipeline-step strong {
+  color: var(--atlas-ink, #000000) !important;
+  min-width: 240px !important; /* Выравнивание по сетке */
+  display: inline-block !important;
+}
+
+/* Описание шага внутри конвейера */
+.content-block .atlas-pipeline-step span {
+  color: var(--atlas-ink-soft, rgba(0, 0, 0, 0.7)) !important;
+  padding-left: 16px !important;
+  border-left: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+}
+
+/* Направляющий системный коннектор (стрелочка вниз) */
+.content-block .atlas-pipeline-arrow {
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 14px !important;
+  color: var(--atlas-crit, #8b0000) !important;
+  padding-left: 24px !important;
+  line-height: 1 !important;
+  margin: 2px 0 !important;
+}
+

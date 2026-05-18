@@ -1,2 +1,61 @@
 /* atlas-uml.css — Стили для UML-диаграмм и связанных визуальных блоков. Используется для оформления блоков с диаграммами, стрелками, подписью и т.д. */
 
+/* ==========================================================================
+   ATLAS UML ENGINE — Horizontal Data Flow & Node Systems
+   Module: components/atlas-uml.css
+   ========================================================================== */
+
+/* Общая обертка графа */
+.content-block .atlas-data-flow {
+  margin: 28px 0 !important;
+  padding: 20px 16px !important;
+  border: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.02)) !important;
+  overflow-x: auto !important; /* Защита от излома на мобилках */
+}
+
+/* Строка с нодами */
+.content-block .atlas-flow-row {
+  display: flex !important;
+  align-items: center !important;
+  white-space: nowrap !important;
+  margin-bottom: 12px !important;
+}
+.content-block .atlas-flow-row:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Системный узел (Нода) */
+.content-block .atlas-flow-node {
+  padding: 6px 12px !important;
+  background: var(--atlas-bg, #ffffff) !important;
+  border: 1px solid var(--atlas-ink, #000000) !important;
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  box-shadow: 2px 2px 0px var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+}
+
+/* Ноды специального статуса (Вход/Выход) */
+.content-block .atlas-flow-node[data-type="io"] {
+  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.05)) !important;
+  border-style: dashed !important;
+}
+
+/* Горизонтальный коннектор (Линия связи) */
+.content-block .atlas-flow-connector {
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 12px !important;
+  color: var(--atlas-crit, #8b0000) !important;
+  padding: 0 8px !important;
+  letter-spacing: -2px !important; /* Сжимаем символы стрелки */
+}
+
+/* Дочернее ответвление (Параллельные батчи / Интерполяция) */
+.content-block .atlas-flow-sub-info {
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 10.5px !important;
+  color: var(--atlas-ink-muted, rgba(0, 0, 0, 0.5)) !important;
+  padding-left: 78px !important; /* Выравнивание под стрелку */
+}
