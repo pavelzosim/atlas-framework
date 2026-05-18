@@ -1,2 +1,78 @@
 /* atlas-schema.css — Стили для блоков-схем, структур данных, таблиц соответствия и других визуальных представлений структур. */
 
+/* ==========================================================================
+   ATLAS MATRIX ENGINE — Data Tables & Capability Proximity
+   Module: components/atlas-schema.css
+   ========================================================================== */
+
+/* Контейнер скролла для мобилок */
+.content-block .atlas-table-responsive {
+  width: 100% !important;
+  overflow-x: auto !important;
+  margin: 24px 0 !important;
+  border: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+}
+
+/* Нативная таблица */
+.content-block .atlas-table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 11.5px !important;
+  line-height: 1.5 !important;
+  text-align: left !important;
+}
+
+/* Шапка таблицы */
+.content-block .atlas-table th {
+  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.03)) !important;
+  color: var(--atlas-ink) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  padding: 10px 12px !important;
+  border-bottom: 2px solid var(--atlas-border, rgba(0, 0, 0, 0.2)) !important;
+  border-right: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+}
+
+/* Ячейки данных */
+.content-block .atlas-table td {
+  padding: 10px 12px !important;
+  border-bottom: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+  border-right: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+  color: var(--atlas-ink-soft) !important;
+  vertical-align: top !important;
+}
+
+/* Убираем правый бордюр у крайних ячеек */
+.content-block .atlas-table th:last-child,
+.content-block .atlas-table td:last-child {
+  border-right: none !important;
+}
+
+/* Подсветка первой колонки (Capability) как ключевых токенов */
+.content-block .atlas-table tbody tr td:first-child {
+  color: var(--atlas-ink) !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important; /* Названия фич не должны разрываться на две строки */
+}
+
+/* Зебра-эффект для облегчения чтения больших матриц */
+.content-block .atlas-table tbody tr:nth-child(even) {
+  background: rgba(0, 0, 0, 0.01) !important;
+}
+
+/* --- СИСТЕМНЫЕ СТАТУСЫ / ТОКЕНЫ (data-status) --- */
+.content-block .atlas-param {
+  font-weight: 700 !important;
+  display: inline-block !important;
+}
+.content-block .atlas-param[data-status="ok"] {
+  color: var(--atlas-ok, #1a4d1a) !important;
+}
+.content-block .atlas-param[data-status="warn"] {
+  color: var(--atlas-warn, #7a5200) !important;
+}
+.content-block .atlas-param[data-status="crit"] {
+  color: var(--atlas-crit, #8b0000) !important;
+}
