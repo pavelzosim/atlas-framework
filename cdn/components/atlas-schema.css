@@ -1,131 +1,103 @@
-/* atlas-schema.css — Стили для блоков-схем, структур данных, таблиц соответствия и других визуальных представлений структур. */
-
 /* ==========================================================================
-   ATLAS MATRIX ENGINE — Data Tables & Capability Proximity
-   Module: components/atlas-schema.css
+   ATLAS MATRIX ENGINE — Data Tables & Capability Proximity [v1.2.0_cleaned]
+   ─────────────────────────────────────────────────────────────
+   Scope: .content-block tables (.atlas-table) and pipeline chains (.atlas-pipeline-step).
+   Responsibility: Structuring registers, performance metrics, memory footprints,
+   and linear hardware pipeline stages with strict layout isolation.
+   Dependencies: Requires atlas-core.css (for system variable mappings).
    ========================================================================== */
 
-/* Контейнер скролла для мобилок */
+/* ==========================================================================
+   MODULE 1: DATA TABLES & MATRIX REGISTERS
+   ─────────────────────────────────────────────────────────────
+   Scope: .atlas-table-responsive wrapper, table node, th, td, and modifiers.
+   Responsibility: Dense, terminal-inspired reporting grids, tabular alignment 
+   for numerical data, and embedded param status tokens.
+   ========================================================================== */
+
+/* ── 1.1 Защищенный контейнер скролла (Mobile Overflow Wrapper) ────────── */
 .content-block .atlas-table-responsive {
   width: 100% !important;
-  overflow-x: auto !important;
+  overflow-x: auto !important; /* Включение горизонтального скролла на мобильных Wix */
   margin: 24px 0 !important;
   border: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+  background: var(--atlas-bg, #ffffff) !important;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Нативная таблица */
+/* ── 1.2 Базовая нативная таблица (Core Grid Node) ───────────────────────── */
 .content-block .atlas-table {
   width: 100% !important;
-  border-collapse: collapse !important;
-  font-family: var(--atlas-font-mono), monospace !important;
-  font-size: 11.5px !important;
+  border-collapse: collapse !important; /* Схлопывание двойных рамок на стыках ячеек */
+  font-family: var(--atlas-font-mono, "JetBrains Mono", monospace) !important;
+  font-size: var(--fs-code, 11.5px) !important;
   line-height: 1.5 !important;
   text-align: left !important;
 }
 
-/* Шапка таблицы */
+/* ── 1.3 Шапка таблицы / Регистры (Profiler Report Headers) ───────────────── */
 .content-block .atlas-table th {
-  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.03)) !important;
-  color: var(--atlas-ink) !important;
+  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.04)) !important; /* Контрастная подложка шапки */
+  color: var(--atlas-ink, #000000) !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.04em !important;
-  padding: 10px 12px !important;
-  border-bottom: 2px solid var(--atlas-border, rgba(0, 0, 0, 0.2)) !important;
-  border-right: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+  letter-spacing: 0.06em !important;
+  padding: 10px 12px !important; /* Плотные технические отступы */
+  border-bottom: 2px solid var(--atlas-ink, #000000) !important; /* Акцентное отделение шапки */
+  box-sizing: border-box !important;
 }
 
-/* Ячейки данных */
+/* ── 1.4 Информационные ячейки (Data Cells) ──────────────────────────────── */
 .content-block .atlas-table td {
-  padding: 10px 12px !important;
-  border-bottom: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
-  border-right: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
-  color: var(--atlas-ink-soft) !important;
-  vertical-align: top !important;
+  padding: 8px 12px !important;
+  border-bottom: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.1)) !important;
+  color: var(--atlas-ink-soft, rgba(0, 0, 0, 0.78)) !important;
+  box-sizing: border-box !important;
+  vertical-align: middle !important;
 }
 
-/* Убираем правый бордюр у крайних ячеек */
-.content-block .atlas-table th:last-child,
-.content-block .atlas-table td:last-child {
-  border-right: none !important;
+/* Подсветка строки при наведении для удобства сканирования матриц */
+.content-block .atlas-table tr:hover td {
+  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.01)) !important;
 }
 
-/* Подсветка первой колонки (Capability) как ключевых токенов */
-.content-block .atlas-table tbody tr td:first-child {
-  color: var(--atlas-ink) !important;
-  font-weight: 700 !important;
-  white-space: nowrap !important; /* Названия фич не должны разрываться на две строки */
+/* ── 1.5 Моноширинное выравнивание чисел (Tabular Numeric Fix) ───────────── */
+.content-block .atlas-table-num {
+  text-align: right !important; /* Числовые регистры всегда жмутся вправо */
+  font-variant-numeric: tabular-nums !important; /* Отсекает дрожание цифр при изменении значений */
 }
 
-/* Зебра-эффект для облегчения чтения больших матриц */
-.content-block .atlas-table tbody tr:nth-child(even) {
-  background: rgba(0, 0, 0, 0.01) !important;
-}
-
-/* --- СИСТЕМНЫЕ СТАТУСЫ / ТОКЕНЫ (data-status) --- */
-.content-block .atlas-param {
-  font-weight: 700 !important;
+/* ── 1.6 Внутритабличные микро-статусы параметров (Metric Badges) ────────── */
+.content-block .atlas-table td .atlas-param-status {
   display: inline-block !important;
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  padding: 2px 6px !important;
+  border: 1px solid currentColor !important; /* Рамка автоматически красится в цвет текста */
 }
-.content-block .atlas-param[data-status="ok"] {
-  color: var(--atlas-ok, #1a4d1a) !important;
-}
-.content-block .atlas-param[data-status="warn"] {
-  color: var(--atlas-warn, #7a5200) !important;
-}
-.content-block .atlas-param[data-status="crit"] {
-  color: var(--atlas-crit, #8b0000) !important;
-}
+
+/* Цветовые вариации микро-статусов */
+.content-block .atlas-table td .atlas-param-status[data-state="ok"]   { color: var(--atlas-ok, #1a4d1a) !important; }
+.content-block .atlas-table td .atlas-param-status[data-state="warn"] { color: var(--atlas-warn, #7a5200) !important; }
+.content-block .atlas-table td .atlas-param-status[data-state="crit"] { color: var(--atlas-crit, #8b0000) !important; }
 
 
 /* ==========================================================================
-   ATLAS SCHEMA ENGINE — Pipeline Flow & Architecture Blocks
-   Module: components/atlas-schema.css
+   MODULE 2: PIPELINE STEPPERS
+   ─────────────────────────────────────────────────────────────
+   Scope: .atlas-pipeline-container and .atlas-pipeline-step nodes.
+   Responsibility: Visual representation of execution flows (e.g. Render Pass 
+   or Compute dispatch sequences) with alignment tools.
    ========================================================================== */
 
-/* Контейнер для вертикального конвейера */
-.content-block .atlas-pipeline-stack {
-  margin: 24px 0 !important;
+/* Контейнер цепочки конвейера */
+.content-block .atlas-pipeline-container {
   border: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
   background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.01)) !important;
   padding: 16px !important;
   display: flex !important;
   flex-direction: column !important;
   gap: 6px !important;
-}
-
-/* Элемент (шаг) конвейера */
-.content-block .atlas-pipeline-step {
-  display: flex !important;
-  align-items: center !important;
-  font-family: var(--atlas-font-mono), monospace !important;
-  font-size: 11.5px !important;
-  padding: 8px 12px !important;
-  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.02)) !important;
-  border-left: 3px solid var(--atlas-ink-muted, rgba(0, 0, 0, 0.3)) !important;
-}
-
-/* Акцентный маркер фазы (например, [Vertex Shader]) */
-.content-block .atlas-pipeline-step strong {
-  color: var(--atlas-ink, #000000) !important;
-  min-width: 240px !important; /* Выравнивание по сетке */
-  display: inline-block !important;
-}
-
-/* Описание шага внутри конвейера */
-.content-block .atlas-pipeline-step span {
-  color: var(--atlas-ink-soft, rgba(0, 0, 0, 0.7)) !important;
-  padding-left: 16px !important;
-  border-left: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
-}
-
-/* Направляющий системный коннектор (стрелочка вниз) */
-.content-block .atlas-pipeline-arrow {
-  font-family: var(--atlas-font-mono), monospace !important;
-  font-size: 14px !important;
-  color: var(--atlas-crit, #8b0000) !important;
-  padding-left: 24px !important;
-  line-height: 1 !important;
-  margin: 2px 0 !important;
-}
-
+  box-sizing: border-box !important;

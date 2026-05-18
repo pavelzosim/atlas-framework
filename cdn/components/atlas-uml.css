@@ -1,61 +1,84 @@
-/* atlas-uml.css — Стили для UML-диаграмм и связанных визуальных блоков. Используется для оформления блоков с диаграммами, стрелками, подписью и т.д. */
-
 /* ==========================================================================
-   ATLAS UML ENGINE — Horizontal Data Flow & Node Systems
-   Module: components/atlas-uml.css
+   ATLAS UML ENGINE — Horizontal Data Flow & Node Systems [v1.2.0_cleaned]
+   ─────────────────────────────────────────────────────────────
+   Scope: .content-block graph containers (.atlas-data-flow) and node rows.
+   Responsibility: Low-level visualization of render-pass graphs, data flow
+   pipelines, and compute dispatch node connections with retro-terminal syntax.
+   Dependencies: Requires atlas-core.css (for system variable mappings).
    ========================================================================== */
 
-/* Общая обертка графа */
+/* ==========================================================================
+   MODULE 1: GRAPH CANVAS & ROW GEOMETRY
+   ─────────────────────────────────────────────────────────────
+   Scope: Main graph containers and alignment rows.
+   Responsibility: Handling sandbox overflow scrolling, preventing layouts 
+   from collapsing on mobile viewports, and managing vertical grid steps.
+   ========================================================================== */
+
+/* ── 1.1 Общая изолированная обертка графа (Graph Canvas Sandbox) ──────── */
 .content-block .atlas-data-flow {
   margin: 28px 0 !important;
   padding: 20px 16px !important;
   border: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
   background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.02)) !important;
-  overflow-x: auto !important; /* Защита от излома на мобилках */
+  overflow-x: auto !important; /* Критично: включает горизонтальный скролл при развертывании тяжелых графов на мобильных */
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important; /* Четкий вертикальный зазор между параллельными рядами нод */
+  box-sizing: border-box !important;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Строка с нодами */
+/* ── 1.2 Горизонтальный ряд нод и связей (Data Flow Flex Row) ───────────── */
 .content-block .atlas-flow-row {
   display: flex !important;
-  align-items: center !important;
-  white-space: nowrap !important;
-  margin-bottom: 12px !important;
-}
-.content-block .atlas-flow-row:last-child {
-  margin-bottom: 0 !important;
+  align-items: center !important; /* Идеальное центрирование нод и стрелок по оси Y */
+  justify-content: flex-start !important;
+  white-space: nowrap !important; /* Полный запрет на излом или перенос элементов ряда */
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-/* Системный узел (Нода) */
+
+/* ==========================================================================
+   MODULE 2: FLOW NODES & HARDWARE CONNECTORS
+   ─────────────────────────────────────────────────────────────
+   Scope: Individual nodes (.atlas-flow-node) and vector links (.atlas-flow-connector).
+   Responsibility: Hard-edged terminal block designs, contextual node states, 
+   and stretch-free alphanumeric connection vector strings.
+   ========================================================================== */
+
+/* ── 2.1 Системный узел / Токен графа (Core Flow Node) ─────────────────── */
 .content-block .atlas-flow-node {
   padding: 6px 12px !important;
   background: var(--atlas-bg, #ffffff) !important;
-  border: 1px solid var(--atlas-ink, #000000) !important;
-  font-family: var(--atlas-font-mono), monospace !important;
+  border: 1px solid var(--atlas-ink, #000000) !important; /* Жесткая сплошная рамка */
+  font-family: var(--atlas-font-mono, "JetBrains Mono", monospace) !important;
   font-size: 11px !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
-  box-shadow: 2px 2px 0px var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+  letter-spacing: 0.04em !important;
+  display: inline-block !important;
+  flex-shrink: 0 !important; /* Защита ноды от сжатия при горизонтальном скролле */
+  box-sizing: border-box !important;
+  box-shadow: 2px 2px 0px var(--atlas-border, rgba(0, 0, 0, 0.15)) !important; /* Фирменная жесткая ретро-тень */
 }
 
-/* Ноды специального статуса (Вход/Выход) */
+/* ── 2.2 Ноды ввода-вывода / Ресурсы [data-type="io"] ──────────────────── */
 .content-block .atlas-flow-node[data-type="io"] {
   background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.05)) !important;
-  border-style: dashed !important;
+  border-style: dashed !important; /* Пунктирный борт для текстур, буферов или сырых файлов */
 }
 
-/* Горизонтальный коннектор (Линия связи) */
+/* ── 2.3 Горизонтальный векторный коннектор (Link Arrow Component) ─────── */
 .content-block .atlas-flow-connector {
-  font-family: var(--atlas-font-mono), monospace !important;
+  font-family: var(--atlas-font-mono, "JetBrains Mono", monospace) !important;
   font-size: 12px !important;
-  color: var(--atlas-crit, #8b0000) !important;
-  padding: 0 8px !important;
-  letter-spacing: -2px !important; /* Сжимаем символы стрелки */
-}
-
-/* Дочернее ответвление (Параллельные батчи / Интерполяция) */
-.content-block .atlas-flow-sub-info {
-  font-family: var(--atlas-font-mono), monospace !important;
-  font-size: 10.5px !important;
-  color: var(--atlas-ink-muted, rgba(0, 0, 0, 0.5)) !important;
-  padding-left: 78px !important; /* Выравнивание под стрелку */
+  font-weight: 700 !important;
+  color: var(--atlas-ink-muted, rgba(0, 0, 0, 0.35)) !important;
+  padding: 0 8px !important; /* Зазор между стрелкой и текстовым бортом ноды */
+  letter-spacing: -0.05em !important; /* Плотная склейка символов "──>" в единый вектор */
+  white-space: nowrap !important;
+  flex-shrink: 0 !important; /* Запрет на искажение длины стрелки */
+  user-select: none !important; /* Отсекаем выделение стрелок при копировании кода */
 }

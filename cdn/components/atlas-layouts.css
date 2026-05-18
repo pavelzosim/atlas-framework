@@ -1,77 +1,100 @@
-/* atlas-layouts.css — Стили для layout-компонентов: сетки, сложные структуры размещения, A/B сравнения, визуальные схемы. Используется для оформления макетов и структурных блоков. */
-
 /* ==========================================================================
-   ATLAS HARDWARE GRAPHICS — Section Breaks & Navigation Indices
-   Module: components/atlas-layouts.css
+   ATLAS LAYOUTS — Structural Layouts & Hardware Media Nodes [v1.2.0_cleaned]
+   ─────────────────────────────────────────────────────────────
+   Scope: .content-block structural breaks (hr) and media frames (.atlas-media-node).
+   Responsibility: Managing macro document layout dividers with auto-indexing
+   and embedding high-fidelity IDE/Engine profiler screenshots safely.
+   Dependencies: Requires atlas-core.css (for system variable mappings).
    ========================================================================== */
 
+/* ==========================================================================
+   MODULE 1: INDEXED SECTION BREAKS
+   ─────────────────────────────────────────────────────────────
+   Scope: .content-block hr.atlas-section-break.
+   Responsibility: Horizontal phase dividers that extract and display 
+   the technical stage index directly from HTML data-attributes.
+   ========================================================================== */
+
+/* ── 1.1 Базовая геометрия разделителя (Horizontal Rule Reset) ─────────── */
 .content-block hr.atlas-section-break {
   border: none !important;
   height: 1px !important;
-  background: var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
-  margin: 48px 0 32px 0 !important; /* Большие отступы для разделения крупных блоков */
+  background: transparent !important;
+  border-bottom: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.15)) !important; /* Тонкая сплошная базовая линия */
+  margin: 48px 0 32px 0 !important; /* Глубокие макро-отступы для разделения тем */
   position: relative !important;
-  overflow: visible !important; /* Критично: позволяет псевдоэлементу выйти за пределы 1px высоты */
+  overflow: visible !important; /* Критично: позволяет абсолютному баджу выходить за пределы 1px высоты */
 }
 
-/* Автоматический вывод индекса секции из дата-атрибута */
+/* ── 1.2 Автоматический вывод индекса фазы (Data-Attribute Extraction) ─── */
 .content-block hr.atlas-section-break[data-index]::after {
-  content: "[ SECTION_INDEX // " attr(data-index) " ]" !important;
+  content: "[ SECTION_INDEX // " attr(data-index) " ]" !important; /* Динамическая сборка строки метаданных */
   position: absolute !important;
-  right: 0 !important;
-  top: -9px !important; /* Смещение вверх, чтобы текст сел ровно на линию */
-  background: var(--atlas-bg, #ffffff) !important; /* Перекрывает линию непрозрачной подложкой */
-  padding-left: 12px !important;
+  right: 0 !important; /* Выравнивание по правому краю документа */
+  top: -9px !important; /* Смещение вверх для идеальной посадки шрифта ровно на ось линии */
+  background: var(--atlas-bg, #ffffff) !important; /* Непрозрачный фон перекрывает линию под текстом */
+  padding-left: 12px !important; /* Отбивка линии слева от текста */
   font-family: var(--atlas-font-mono), monospace !important;
-  font-size: 9px !important;
+  font-size: 9.5px !important;
   font-weight: 700 !important;
-  letter-spacing: 0.08em !important;
+  letter-spacing: 0.06em !important;
   color: var(--atlas-ink-muted, rgba(0, 0, 0, 0.4)) !important;
   text-transform: uppercase !important;
+  white-space: nowrap !important;
 }
+
 
 /* ==========================================================================
-   ATLAS HARDWARE GRAPHICS — Media Nodes & Screen Captures
-   Module: components/atlas-layouts.css
+   MODULE 2: HARDWARE MEDIA NODES
+   ─────────────────────────────────────────────────────────────
+   Scope: .content-block .atlas-media-node and all underlying subnodes.
+   Responsibility: Sandboxing engine inspector screenshots (Unity/Unreal), 
+   forcing dark backdrops for pro-tools UI, and rendering terminal logging captions.
    ========================================================================== */
 
-/* Изолированный контейнер для скриншотов и графиков */
+/* ── 2.1 Внешний каркас медиа-блока (Media Shell Container) ────────────── */
 .content-block .atlas-media-node {
-  margin: 24px 0 !important;
+  margin: 28px 0 !important;
   border: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
   background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.01)) !important;
-  padding: 10px !important;
+  padding: 10px !important; /* Внутренний защитный зазор вокруг темной подложки */
   display: block !important;
+  box-sizing: border-box !important;
 }
 
-/* Обертка для самого изображения */
+/* ── 2.2 Профессиональный инвертированный холст (Dark Engine Canvas) ───── */
 .content-block .atlas-media-node__wrapper {
   width: 100% !important;
   display: flex !important;
   justify-content: center !important;
-  background: #1a1a1a !important; /* Темная подложка, так как инспектор Unity темный */
-  border-bottom: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+  align-items: center !important;
+  background: #1a1a1a !important; /* Темный графитовый фон — родной для темных тем Unity / Unreal / Houdini */
+  border-bottom: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important; /* Граница между картинкой и подписью */
   padding: 8px 0 !important;
+  box-sizing: border-box !important;
 }
 
-/* Стилизация картинки */
+/* ── 2.3 Адаптивное изображение (Fidelity Image Node) ──────────────────── */
 .content-block .atlas-media-node img {
-  max-width: 100% !important;
+  max-width: 100% !important; /* Запрет на выход картинки за пределы контейнера */
   height: auto !important;
   display: block !important;
 }
 
-/* Техническая подпись под изображением в стиле лога */
+/* ── 2.4 Лог-подпись под скриншотом (Terminal Inspector Caption) ──────── */
 .content-block .atlas-media-node__caption {
   display: block !important;
-  padding: 8px 6px 0 6px !important;
+  margin-top: 10px !important;
+  padding: 0 4px !important;
   font-family: var(--atlas-font-mono), monospace !important;
   font-size: 10.5px !important;
   line-height: 1.4 !important;
-  color: var(--atlas-ink-soft, rgba(0, 0, 0, 0.7)) !important;
+  color: var(--atlas-ink-soft, rgba(0, 0, 0, 0.65)) !important;
 }
 
-.content-block .atlas-media-node__caption strong {
-  color: var(--atlas-ink, #000000) !important;
-  text-transform: uppercase !important;
+/* Системный префикс перед текстом подписи, имитирующий консольный вывод */
+.content-block .atlas-media-node__caption::before {
+  content: "[ INSPECTOR LOG ]: " !important;
+  font-weight: 700 !important;
+  color: var(--atlas-ink-muted, rgba(0, 0, 0, 0.42)) !important;
 }
