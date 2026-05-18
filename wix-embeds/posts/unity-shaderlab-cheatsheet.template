@@ -8,8 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&amp;display=swap">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.1.8/cdn/atlas-framework.css"><!--<link rel="stylesheet" href="https://rawcdn.githack.com/pavelzosim/atlas-framework/master/cdn/atlas-framework.css">  -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.2.1/cdn/atlas-framework.css"><!--<link rel="stylesheet" href="https://rawcdn.githack.com/pavelzosim/atlas-framework/master/cdn/atlas-framework.css">  -->
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-glsl.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-hlsl.min.js"></script>
@@ -368,7 +369,7 @@
         </div>
         <h3>Code Example: Basic Color Shader</h3>
         <p>Below is a production-ready blueprint of a basic unlit color shader. It demonstrates how properties declared in the ShaderLab interface are bound to uniform variables within the programmable HLSL stages to output a solid color fragment.</p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">Shader "Custom/Pipeline/BasicColor"
+        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-glsl">Shader "Custom/Pipeline/BasicColor"
     {
         Properties
         {

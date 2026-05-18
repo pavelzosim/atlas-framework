@@ -2,11 +2,6 @@
    ATLAS CODE THEME — Syntax Highlighting Engine [v1.2.5_bulletproof]
    ─────────────────────────────────────────────────────────────
    Scope: pre.atlas-code-block and underlying Prism.js tokens.
-   Responsibility: Low-level syntax parsing layout for production shaders.
-   ========================================================================== */
-
-/* ==========================================================================
-   MODULE 1: CORE CONTAINER & BLOCK GEOMETRY
    ========================================================================== */
 
 /* ── 1.1 Главная оболочка листинга кода (Preformatted Wrapper) ─────────── */
@@ -66,11 +61,7 @@ pre.atlas-code-block[data-lang]::before {
   text-transform: uppercase !important;
 }
 
-/* ==========================================================================
-   MODULE 2: PRISM.JS TOKEN COMPILER MAPPING (Autonomous)
-   ========================================================================== */
-
-/* ── 2.1 Комментарии и Спецификации (Comments & Structural Notes) ──────── */
+/* ── 2.1 Комментарии и Спецификации (Comments) ─────────────────────────── */
 pre.atlas-code-block .token.comment,
 pre.atlas-code-block .token.prolog,
 pre.atlas-code-block .token.doctype,
@@ -79,12 +70,12 @@ pre.atlas-code-block .token.cdata {
   font-style: italic !important;
 }
 
-/* ── 2.2 Пунктуация (Punctuation & Brackets) ───────────────────────────── */
+/* ── 2.2 Пунктуация (Punctuation) ──────────────────────────────────────── */
 pre.atlas-code-block .token.punctuation {
   color: var(--atlas-ink-soft, rgba(0, 0, 0, 0.65)) !important;
 }
 
-/* ── 2.3 Свойства, Теги и Константы (Properties, Tags & Constants) ─────── */
+/* ── 2.3 Свойства, Теги и Константы (Properties & Constants) ───────────── */
 pre.atlas-code-block .token.property,
 pre.atlas-code-block .token.tag,
 pre.atlas-code-block .token.constant,
@@ -94,14 +85,14 @@ pre.atlas-code-block .token.deleted {
   font-weight: 700 !important;
 }
 
-/* ── 2.4 Логика и Счётчики (Booleans & Numeric Literals) ───────────────── */
+/* ── 2.4 Логика и Счётчики (Booleans & Numbers) ────────────────────────── */
 pre.atlas-code-block .token.boolean,
 pre.atlas-code-block .token.number {
   color: var(--atlas-warn, #7a5200) !important;
   font-weight: 400 !important;
 }
 
-/* ── 2.5 Строковые литералы и Встроенные типы (Strings & Builtins) ─────── */
+/* ── 2.5 Строки и Встроенные типы (Strings & Builtins) ─────────────────── */
 pre.atlas-code-block .token.selector,
 pre.atlas-code-block .token.attr-name,
 pre.atlas-code-block .token.string,
@@ -112,15 +103,14 @@ pre.atlas-code-block .token.inserted {
   color: var(--atlas-ok, #1a4d1a) !important;
 }
 
-/* ── 2.6 Операторы и Ссылки (Operators & Entity Links) ─────────────────── */
+/* ── 2.6 Операторы (Operators) ─────────────────────────────────────────── */
 pre.atlas-code-block .token.operator,
 pre.atlas-code-block .token.entity,
 pre.atlas-code-block .token.url {
   color: var(--atlas-ink, #000000) !important;
-  font-weight: 400 !important;
 }
 
-/* ── 2.7 Ключевые слова компилятора (Keywords & Control Statements) ────── */
+/* ── 2.7 Ключевые слова компилятора (Keywords) ─────────────────────────── */
 pre.atlas-code-block .token.atrule,
 pre.atlas-code-block .token.attr-value,
 pre.atlas-code-block .token.attribute,
@@ -129,14 +119,14 @@ pre.atlas-code-block .token.keyword {
   font-weight: 700 !important;
 }
 
-/* ── 2.8 Функции, Методы и Классы (Functions & Class Names) ────────────── */
+/* ── 2.8 Функции и Классы (Functions & Classes) ────────────────────────── */
 pre.atlas-code-block .token.function,
 pre.atlas-code-block .token.class-name {
   color: var(--atlas-crit, #8b0000) !important;
   font-weight: 700 !important;
 }
 
-/* ── 2.9 Регулярные выражения и Переменные (Regex & Variables) ─────────── */
+/* ── 2.9 Регулярные выражения (Regex) ──────────────────────────────────── */
 pre.atlas-code-block .token.regex,
 pre.atlas-code-block .token.important,
 pre.atlas-code-block .token.variable {
