@@ -8,12 +8,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&amp;display=swap">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.1.8/cdn/atlas-framework.css"><!--<link rel="stylesheet" href="https://rawcdn.githack.com/pavelzosim/atlas-framework/master/cdn/atlas-framework.css">  -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.2.0/cdn/atlas-framework.css"><!--<link rel="stylesheet" href="https://rawcdn.githack.com/pavelzosim/atlas-framework/master/cdn/atlas-framework.css">  -->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-glsl.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-hlsl.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-shaderlab.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.2.0/cdn/atlas-framework.css">
+
   <style>
         *, *::before, *::after {
             box-sizing: border-box;
@@ -368,7 +369,7 @@
         </div>
         <h3>Code Example: Basic Color Shader</h3>
         <p>Below is a production-ready blueprint of a basic unlit color shader. It demonstrates how properties declared in the ShaderLab interface are bound to uniform variables within the programmable HLSL stages to output a solid color fragment.</p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">Shader "Custom/Pipeline/BasicColor"
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">Shader "Custom/Pipeline/BasicColor"
     {
         Properties
         {
@@ -453,7 +454,7 @@
           <p><strong>Initialization Rule:</strong> Define the immutable shader namespace path and initialize the inspector-visible memory properties. Semicolons are strictly prohibited at the end of ShaderLab block declarations.</p>
         </div>
         <p>First Step: Define shader name and inspector-visible properties. Syntax rule declaration:</p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">Shader "Custom/Pipeline/ExampleFlow"
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">Shader "Custom/Pipeline/ExampleFlow"
                     {
                         Properties
                         {
@@ -474,9 +475,9 @@
         <p>The root string identifier of any ShaderLab file determines its unique hierarchical token and location within the Unity material shader dropdown selection menus. This organizational path controls how the engine's internal asset database parses, references, and presents the compiled binary compile target to technical users.</p>
         <ul>
           <li><strong>Default Compiler Path:</strong> Standard global registration without custom grouping (e.g., automatically placing the compiled state under hidden or system-defined directories).</li>
-          <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">Shader "CustomPath/ShaderName_simpleColor"</code></pre>
+          <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">Shader "CustomPath/ShaderName_simpleColor"</code></pre>
           <li><strong>Custom Namespace Path:</strong> Utilizing a forward-slash syntax to declare explicit sub-folders and maintain strict organization within production pipelines:</li>
-          <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">Shader "CustomPath/ShaderName_simpleColor" PropertyName("Display Name", DataType) = DefaultValue</code></pre>
+          <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">Shader "CustomPath/ShaderName_simpleColor" PropertyName("Display Name", DataType) = DefaultValue</code></pre>
         </ul>
         <div class="atlas-media-node">
           <div class="atlas-media-node__wrapper"><img src="https://static.wixstatic.com/media/ace175_a0fd78d807f54af38d76b99ad735c4cc~mv2.png/v1/fill/w_524,h_195,al_c,lg_1,q_85,enc_avif,quality_auto/ace175_a0fd78d807f54af38d76b99ad735c4cc~mv2.png" alt="Unity Shader Dropdown Hierarchy Menu Mapping"></div>
@@ -486,7 +487,7 @@
         </div><!--- H2 SECTION START --->
         <h2>3.2 Properties Syntax & Data Types</h2>
         <p>Within the shader declaration, the Properties block allows you to expose parameters to the user. The basic syntax for each property is:</p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">PropertyName("Display Name", DataType) = DefaultValue</code></pre>
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">PropertyName("Display Name", DataType) = DefaultValue</code></pre>
         <ul>
           <li><strong><code>PropertyName</code>:</strong><br>
           This is the internal identifier (e.g., _MainTex), which the shader code uses to reference the property.</li>
@@ -507,7 +508,7 @@
           <li><strong><code>Range</code>:</strong><br>
           A float that’s constrained between a minimum and maximum value and is displayed as a slider in the Inspector. Ideal for values where you want to restrict input to a specific range.</li>
         </ul>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">_Factor ("Factor", Float) = 0.1                // Float property
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">_Factor ("Factor", Float) = 0.1                // Float property
                         _Name ("Name", Int) = 1                        // Integer property
                         _Specular ("Specularity", Range(0,1)) = 0.0   // Range property
                         _VPos ("Position", Vector) = (0, 0, 0, 1)</code></pre>
@@ -544,7 +545,7 @@
           <li><strong><code>[Header] & [Space]</code>:</strong><br>
           Organize properties with headers and spacing.</li>
         </ul>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">// Example implementation of Organization Drawers
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">// Example implementation of Organization Drawers
                             [NoScaleOffset] _MainTex ("Main Texture", 2D) = "white" {}
 
                             [Header(Specular Properties)]
@@ -567,7 +568,7 @@
           <li><strong><code>[IntRange]</code>:</strong><br>
           Generates a slider for integer values.</li>
         </ul>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">[PowerSlider(3.0)] _Brightness ("Brightness", Range(0.01, 1)) = 0.08
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">[PowerSlider(3.0)] _Brightness ("Brightness", Range(0.01, 1)) = 0.08
                                 [IntRange] _Samples ("Samples", Range(0, 255)) = 100</code></pre>
         <h3>3.3.3 Shader Variant Drawers</h3>
         <p>These drawers enable the creation of shader variants and toggle features without needing multiple materials. Since ShaderLab doesn’t support booleans directly, these attributes simulate boolean toggles using float properties.</p>
@@ -575,7 +576,7 @@
           <li><strong><code>[Toggle]</code>:</strong><br>
           Simulates a boolean toggle (0 = Off, 1 = On) and auto-generates a corresponding shader keyword (e.g., ENABLEFANCY_ON).</li>
         </ul>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">[Toggle(ENABLE_FANCY)] _Fancy ("Fancy?", Float) = 0
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">[Toggle(ENABLE_FANCY)] _Fancy ("Fancy?", Float) = 0
 
                             // Then in your shader code:
                             #pragma shader_feature _ENABLE_FANCY_ON
@@ -589,7 +590,7 @@
           <li><strong><code>[KeywordEnum]</code>:</strong><br>
           Creates a dropdown with multiple options that generate keywords, such as for blend modes or other multi-option settings.</li>
         </ul>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">[KeywordEnum(None, Add, Multiply)] _Overlay ("Overlay Mode", Float) = 0
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">[KeywordEnum(None, Add, Multiply)] _Overlay ("Overlay Mode", Float) = 0
 
                             // Then in your shader code:
                             #pragma multi_compile _OVERLAY_NONE _OVERLAY_ADD _OVERLAY_MULTIPLY</code></pre>
@@ -597,7 +598,7 @@
           <li><strong><code>[Enum]</code>:</strong><br>
           Generates dropdown menus for selecting from a list of options like blend modes, depth testing functions, or culling modes.</li>
         </ul>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">[Enum(UnityEngine.Rendering.BlendMode)] _Blend ("Blend Mode", Float) = 1
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">[Enum(UnityEngine.Rendering.BlendMode)] _Blend ("Blend Mode", Float) = 1
                             [Enum(UnityEngine.Rendering.CompareFunction)] _ZTest ("ZTest", Float) = 0
                             [Enum(UnityEngine.Rendering.CullMode)] _CullMode ("Cull Mode", Int) = 0</code></pre>
         <div class="atlas-notice">
@@ -623,7 +624,7 @@
           Signals that the property may be overridden per renderer, for example using a MaterialPropertyBlock, allowing for instance-specific data.</li>
         </ul>
         <p>Syntax specification mapping:</p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">
                         [Normal] _BumpMap ("Normal Map", 2D) = "bump" {}
                         [HDR] _Emission ("Emission Color", Color) = (1, 1, 1, 1)
                         [Gamma] _Tint ("Tint Color", Color) = (1, 1, 1, 1)
@@ -633,7 +634,7 @@
         <h2>4. SubShader Setup in ShaderLab</h2>
         <p>Every shader must include at least one SubShader. In the SubShader, you define one or more passes (each of which contains your actual shader code) and specify metadata that informs Unity how and when to use that SubShader. This setup is crucial because Unity selects the most compatible SubShader based on your target hardware and active render pipeline.</p>
         <p>Basic Structure Example:</p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">SubShader {
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">SubShader {
     Tags { "RenderType" = "Opaque" }
     LOD 100
 
@@ -649,7 +650,7 @@
         <p>Tags are key–value pairs that provide essential metadata for a SubShader. They affect shader behavior, drawing order, and how the shader interacts with replacement systems or post-processing. Below is an overview of the main tags and their pipeline-specific nuances.</p>
         <h3>4.1.1 ShaderLab Queue Tags</h3>
         <p>Queue tags determine the order in which objects are drawn by the GPU. The render queue affects layering, transparency, and masking. The GPU sorts draw calls by these numerical values:</p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">Tags { "Queue" = "Geometry" }</code></pre>
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">Tags { "Queue" = "Geometry" }</code></pre>
         <ul>
           <li><strong><code>Background</code>:</strong><br>
           This render queue is rendered before any others. You’d typically use this for things that really need to be in the background.<br>
@@ -675,7 +676,7 @@
         </div>
         <h3>4.1.2 ShaderLab RenderType Tags</h3>
         <p>The RenderType tag categorizes shaders into logical groups for global replacements or post-processing. This tag helps Unity identify which shaders can be replaced at runtime (e.g., via Camera.RenderWithShader).</p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">Tags { "RenderType"="Opaque" }</code></pre>
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">Tags { "RenderType"="Opaque" }</code></pre>
         <p>Common RenderType Values:</p>
         <ul>
           <li><strong><code>Opaque</code>:</strong><br>
@@ -713,7 +714,7 @@
           <li>
             <strong><code>ForceNoShadowCasting</code>:</strong><br>
             Prevents the shader from casting shadows. <i>(Note: In HDRP, this does not prevent contact shadows.)</i>
-            <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">Tags { "ForceNoShadowCasting" = "True" }</code></pre>
+            <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">Tags { "ForceNoShadowCasting" = "True" }</code></pre>
           </li>
           <li><strong><code>IgnoreProjector</code>:</strong><br>
           Excludes the shader from being affected by projectors. <i>(Built-in only)</i> Tells Unity to ignore projectors when rendering this geometry.</li>
@@ -724,12 +725,12 @@
           <li>
             <strong><code>GrabPass</code>:</strong><br>
             Captures current screen contents into a texture will grab current screen contents into a texture. The texture can be accessed in further passes by _GrabTexture name. Note: this form of grab pass will do the expensive screen grabbing operation for each object that uses it! GrabPass { "TextureName" } will grab screen contents into a texture, but will only do that once per frame for the first object that uses the given texture name. The texture can be accessed in further passes by the given texture name. This is a more performant way when you have multiple objects using grab pass in the scene. Additionally, GrabPass can use Name and Tags commands.
-            <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">GrabPass { "TextureName" }</code></pre>
+            <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">GrabPass { "TextureName" }</code></pre>
           </li>
           <li>
             <strong><code>UsePass</code>:</strong><br>
             Reuses passes from another shade. Inserts all passes with a given name from a given shader. Shader/Name contains the name of the shader and the name of the pass, separated by a slash character. Note that only first supported subshader is taken into account.
-            <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">UsePass "Shader/PassName"</code></pre>
+            <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">UsePass "Shader/PassName"</code></pre>
           </li>
         </ul>
         <p>Usage: RenderType tags help with shader replacement systems (e.g., using Camera.RenderWithShader) and enable filtering when applying post-processing effects.</p>
@@ -878,7 +879,7 @@
           <strong>HDRP:</strong> Blending is often managed indirectly via material settings—especially for transparency. In HDRP, you might not see explicit Blend commands in the shader code because transparency is handled through the Surface Type setting (Opaque vs. Transparent) in the material Inspector.</p>
         </div>
         <p>Common Blend Presets quick reference:</p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">// 1. Traditional Alpha Blending (Transparent Materials)  
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">// 1. Traditional Alpha Blending (Transparent Materials)  
 Blend SrcAlpha OneMinusSrcAlpha  
 
 // 2. Additive Blending (Fire, Lasers)  
@@ -887,7 +888,7 @@ Blend One One
 // 3. Multiplicative Blending (Projectors, Shadows)  
 Blend DstColor Zero</code></pre>
         <p><strong>Option 1: Hardcode in the shader</strong></p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">SubShader {
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">SubShader {
     Tags { "Queue" = "Transparent" }
     Blend SrcAlpha OneMinusSrcAlpha
     ZWrite Off // Disable depth writes for proper transparency
@@ -896,7 +897,7 @@ Blend DstColor Zero</code></pre>
     }
 }</code></pre>
         <p><strong>Option 2: Let artists control blending via the Material Inspector</strong></p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">Properties {
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">Properties {
     [Enum(UnityEngine.Rendering.BlendMode)] _SrcBlend ("Src Factor", Float) = 1
     [Enum(UnityEngine.Rendering.BlendMode)] _DstBlend ("Dst Factor", Float) = 0
 }
@@ -908,13 +909,13 @@ SubShader {
 }</code></pre>
         <p>Pipeline-specific architectural blocks comparison:</p>
         <p><strong>Built-in Render Pipeline</strong></p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">SubShader {  
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">SubShader {  
     Tags { "Queue"="Transparent" }  
     Blend SrcAlpha OneMinusSrcAlpha  
     ZWrite Off  // Disable depth writes for correct transparency  
 }</code></pre>
         <p><strong>URP (2024)</strong></p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">SubShader {  
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">SubShader {  
     Tags { "RenderPipeline"="UniversalPipeline" "Queue"="Transparent" }  
     Blend [_SrcBlend] [_DstBlend]  
     ZWrite Off  
@@ -951,7 +952,7 @@ SubShader {
           <li><strong>Usage:</strong> This technique is particularly useful when you need crisp, hard-edged transparency (for example, for foliage or portal effects) that blending cannot provide.</li>
           <li><strong>Declaration:</strong> The command accepts only two values: On or Off (with the default being Off). It can be declared at either the SubShader or Pass level. When enabled, the shader automatically converts the alpha output to a binary mask.</li>
         </ul>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">Shader "Custom/AlphaToMaskExample" {
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">Shader "Custom/AlphaToMaskExample" {
     Properties {
         // Define your texture and other properties here
         _MainTex ("Texture", 2D) = "white" {}
@@ -997,7 +998,7 @@ SubShader {
           <li><strong><code>ColorMask A</code>:</strong> Only the alpha channel is written, which can be used to debug transparency.</li>
           <li><strong><code>ColorMask RG</code>:</strong> Writes both red and green channels, allowing for channel mixing.</li>
         </ul>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">Shader "Custom/ColorMaskExample" {
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">Shader "Custom/ColorMaskExample" {
     Properties {
         _MainTex ("Texture", 2D) = "white" {}
     }
@@ -1088,7 +1089,7 @@ SubShader {
           <li><strong><code>Cull Off</code>:</strong> Both faces are rendered. This can be useful when you need to display double-sided materials, such as thin cloth or foliage.</li>
         </ul>
         <p><strong>Static Implementation Example:</strong></p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">Shader "Custom/CullExample" {
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">Shader "Custom/CullExample" {
     Properties { /* ... */ }
     SubShader {
         // Render only the front faces (default behavior)
@@ -1101,7 +1102,7 @@ SubShader {
     }
 }</code></pre>
         <p><strong>Dynamic Implementation via Material Inspector Enum:</strong></p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">Shader "Custom/DynamicCullExample" {
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">Shader "Custom/DynamicCullExample" {
     Properties {
         [Enum(UnityEngine.Rendering.CullMode)] _Cull ("Cull Mode", Float) = 0
     }
@@ -1116,7 +1117,7 @@ SubShader {
     }
 }</code></pre>
         <p>Another helpful option occurs through the semantics <code>SV_IsFrontFace</code>, which allows us to project different colors and textures on both mesh faces. To do so, we simply declare a boolean variable and assign such semantics as an argument in the fragment shader stage.</p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">fixed4 frag (v2f i, bool face : SV_IsFrontFace) : SV_Target
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">fixed4 frag (v2f i, bool face : SV_IsFrontFace) : SV_Target
 {
     fixed4 colFront = tex2D(_FrontTexture, i.uv);
     fixed4 colBack = tex2D(_BackTexture, i.uv);
@@ -1129,7 +1130,7 @@ SubShader {
           <li><strong><code>ZWrite On</code> (default):</strong> The shader writes depth information. This is typical for opaque materials.</li>
           <li><strong><code>ZWrite Off</code>:</strong> Depth values are not written. This is usually used for transparent materials to prevent issues like Z-fighting (flickering when objects overlap).</li>
         </ul>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">Shader "InspectorPath/shaderName"
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">Shader "InspectorPath/shaderName"
 {
     Properties { /* ... */ }
     SubShader
@@ -1173,7 +1174,7 @@ SubShader {
           <img src="https://static.wixstatic.com/media/ace175_98de10737455418a8dd9979889f81010~mv2.png/v1/fill/w_925,h_319,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/ace175_98de10737455418a8dd9979889f81010~mv2.png" alt="ZTest Always execution override"> <span class="atlas-media-caption">[ Diagram: Depth Buffer Evaluation Overridden via ZTest Always Command ]</span>
         </div>
         <p>Example implementation:</p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">Shader "Custom/ZTestExample" {
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">Shader "Custom/ZTestExample" {
     Properties { /* ... */ }
     SubShader {
         Tags { "Queue"="Transparent" "RenderType"="Transparent" }
@@ -1225,7 +1226,7 @@ SubShader {
         <p>Suppose you have three objects in your scene—a Cube, a Sphere, and a Square—and you want to use the Square as a mask so that only the Sphere inside the Cube is visible.</p>
         <p><strong>1. Mask Shader (USB_stencil_ref)</strong></p>
         <p>This shader writes a reference value (for example, 2) into the Stencil Buffer for all pixels covered by the mask (the Square). Since we only need to mark the pixels without drawing any color, we disable color output and depth writing.</p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">Shader "Custom/USB_stencil_ref" {
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">Shader "Custom/USB_stencil_ref" {
     Properties { /* No visible properties needed */ }
     SubShader {
         Tags { "Queue" = "Geometry-1" }  // Process before default geometry (default Geometry=2000, so here it's 1999)
@@ -1246,7 +1247,7 @@ SubShader {
 }</code></pre>
         <p><strong>2. Masked Object Shader (USB_stencil_value)</strong></p>
         <p>This shader renders the object (e.g., the Cube) but only where the Stencil Test indicates it is not part of the mask. It compares the current Stencil Buffer value with the reference value (2) and uses a comparison function to decide whether to draw a pixel.</p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">Shader "Custom/USB_stencil_value" {
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">Shader "Custom/USB_stencil_value" {
     Properties {
         _Color ("Color", Color) = (1, 1, 1, 1)
     }
@@ -1297,7 +1298,7 @@ SubShader {
         <p>A Pass in ShaderLab represents a single render pass—a discrete set of rendering instructions executed by the GPU for an object. By default, Unity adds one pass inside the SubShader. However, you can define multiple passes if needed. Each pass is equivalent to one draw call, which means that an object with multiple passes is rendered multiple times. This can be useful for creating layered visual effects (such as separate passes for base color, lighting, and occlusion) but can also significantly increase the rendering workload.</p>
         <p>Since each pass equals a draw call, increasing the number of passes can lead to a heavier GPU load. It's best to use the minimum number of passes necessary for your effect.</p>
         <p>Below is an example of a simple shader with a single pass, similar to a basic color shader:</p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">Shader "InspectorPath/USB_simple_color" {
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">Shader "InspectorPath/USB_simple_color" {
     Properties {
         _MainTex ("Texture", 2D) = "white" {}
         _Color ("Color", Color) = (1,1,1,1)
@@ -1345,7 +1346,7 @@ SubShader {
     FallBack "Diffuse"
 }</code></pre>
         <p>If you want to create a shader with two passes (for example, one pass for the base color and another for an additional effect), you would structure your shader like this:</p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">Shader "InspectorPath/DoublePassShader" {
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">Shader "InspectorPath/DoublePassShader" {
     Properties { /* ... */ }
     SubShader {
         Tags { "RenderType"="Opaque" }
@@ -1372,7 +1373,7 @@ SubShader {
         <!--- H2 SECTION START --->
         <h2>5. CGPROGRAM Section</h2>
         <p>The sections we have examined earlier are composed in the ShaderLab declarative language. The true challenge in graphics programming begins here with the CGPROGRAM or HLSLPROGRAM declaration.</p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">Shader "CustomPath/ShaderName_simpleColor"
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">Shader "CustomPath/ShaderName_simpleColor"
 {
     // ====================================================
     // 1. MATERIAL PROPERTIES - Inspector Interface
@@ -1853,7 +1854,7 @@ float lerpFactor = saturate(distance / threshold);
 return lerp(a, b, lerpFactor);</code></pre>
         <h3>SRP Batcher Compatibility</h3>
         <p>To leverage the Scriptable Render Pipeline (SRP) Batcher and eliminate CPU-side draw call overhead, all material properties must be grouped within a standardized constant buffer block named <code>UnityPerMaterial</code>.</p>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">// Proper constant buffer declaration for SRP Batcher compliance
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">// Proper constant buffer declaration for SRP Batcher compliance
 CBUFFER_START(UnityPerMaterial)
     float4 _MainTex_ST;
     half4 _Color;
@@ -1907,7 +1908,7 @@ bool isInvalid = isnan(value);</code></pre>
         <h2>7. Cross-Pipeline Shader Adaptation (Built-in, URP, HDRP)</h2>
         <p>Porting legacy shaders into Scriptable Render Pipelines (SRP) requires rewriting architectural layout blocks. Modern pipelines abandon old Cg compiler abstractions in favor of direct, cross-platform HLSL structures.</p>
         <h3>URP Shader Implementation Example</h3>
-        <pre class="atlas-code-block" data-lang="shaderlab"><code class="language-shaderlab">Shader "URPExamples/SimpleColor"
+        <pre class="atlas-code-block" data-lang="glsl"><code class="language-glsl">Shader "URPExamples/SimpleColor"
 {
     Properties 
     {
@@ -2329,5 +2330,12 @@ bool isInvalid = isnan(value);</code></pre>
         console.log("===================================");
     });
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-glsl.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-hlsl.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-shaderlab.min.js"></script>
+  
 </body>
 </html>
