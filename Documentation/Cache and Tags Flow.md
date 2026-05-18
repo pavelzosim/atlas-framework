@@ -9,16 +9,16 @@
 git add .
 
 # 2. Фиксируем коммит
-git commit -m "feat: added comparison component and terminal list styles"
+git commit -m "feat:"
 
 # 3. Отправляем изменения в ветку master
 git push origin master
 
 # 4. Вешаем релизный тег (инкрементируй версию: v1.0.1, v1.0.2 и т.д.)
-git tag v1.0.1
+git tag v1.1.2
 
 # 5. Пушим конкретный тег на GitHub
-git push origin v1.0.1
+git push origin v1.1.2
 
 ```
 
@@ -44,4 +44,4 @@ git push origin v1.0.1
 
 ```
 
-Флоу железобетонный. Теперь ты можешь спокойно наполнять `.atlas-compare` и списки контентом, не отвлекаясь на баги отображения. 
+Флоу железобетонный. Теперь ты можешь спокойно наполнять `.atlas-compare` и списки контентом, не отвлекаясь на баги отображения.
