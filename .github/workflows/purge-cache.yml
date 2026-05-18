@@ -1,19 +1,20 @@
 - name: Compile CSS Modules into Production Monolith
         run: |
-          # 1. Создаем чистый файл и жестко пишем импорт шрифта на самую первую строку
+          # 1. Записываем импорт строго на первую строку
           echo "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght=300;400;700&display=swap');" > cdn/atlas-framework.css
           
-          # 2. Добавляем системную шапку (она идет ниже импорта, как требует W3C)
+          # 2. Системная шапка
           echo -e "\n/* ==========================================================================\n   ATLAS FRAMEWORK PRODUCTION CORE — COMPILED MONOLITH\n   Generated automatically via GitHub Actions Workflow\n   ========================================================================== */\n" >> cdn/atlas-framework.css
           
-          # Функция для очистки файлов от BOM-маркеров и удаления дублирующих @import строк
-          # Это защитит бандл, если в atlas-core.css или других файлах остался старый @import
+          # Функция очистки BOM, удаления старых импортов и ЖЕСТКОГО фикса синтаксиса шрифта
           process_file() {
-            perl -pe 's/\xEF\xBB\xBF//g' "$1" | sed 's|@import url(.*);||g' >> cdn/atlas-framework.css
+            perl -pe 's/\xEF\xBB\xBF//g' "$1" | \
+            sed 's|@import url(.*);||g' | \
+            sed 's|var(--atlas-font-mono), monospace|var(--atlas-font-mono)|g' >> cdn/atlas-framework.css
             echo -e "\n" >> cdn/atlas-framework.css
           }
           
-          # 3. Последовательно очищаем и склеиваем все модули фреймворка
+          # 3. Сборка модулей
           process_file "cdn/atlas-core.css"
           process_file "cdn/atlas-typography.css"
           process_file "cdn/components/atlas-callout.css"
@@ -25,4 +26,4 @@
           process_file "cdn/components/atlas-uml.css"
           process_file "cdn/components/atlas-vfx-tools.css"
           
-          echo "Compilation complete. All modules sanitized and merged into monolith."
+          echo "Compilation complete. Syntax errors fixed."
