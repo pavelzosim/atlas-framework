@@ -29,3 +29,49 @@
   color: var(--atlas-ink-muted, rgba(0, 0, 0, 0.4)) !important;
   text-transform: uppercase !important;
 }
+
+/* ==========================================================================
+   ATLAS HARDWARE GRAPHICS — Media Nodes & Screen Captures
+   Module: components/atlas-layouts.css
+   ========================================================================== */
+
+/* Изолированный контейнер для скриншотов и графиков */
+.content-block .atlas-media-node {
+  margin: 24px 0 !important;
+  border: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.01)) !important;
+  padding: 10px !important;
+  display: block !important;
+}
+
+/* Обертка для самого изображения */
+.content-block .atlas-media-node__wrapper {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  background: #1a1a1a !important; /* Темная подложка, так как инспектор Unity темный */
+  border-bottom: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+  padding: 8px 0 !important;
+}
+
+/* Стилизация картинки */
+.content-block .atlas-media-node img {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block !important;
+}
+
+/* Техническая подпись под изображением в стиле лога */
+.content-block .atlas-media-node__caption {
+  display: block !important;
+  padding: 8px 6px 0 6px !important;
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 10.5px !important;
+  line-height: 1.4 !important;
+  color: var(--atlas-ink-soft, rgba(0, 0, 0, 0.7)) !important;
+}
+
+.content-block .atlas-media-node__caption strong {
+  color: var(--atlas-ink, #000000) !important;
+  text-transform: uppercase !important;
+}
