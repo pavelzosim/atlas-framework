@@ -1,24 +1,28 @@
 - name: Compile CSS Modules into Production Monolith
         run: |
-          # 1. Записываем импорт шрифта строго на ПЕРВУЮ строчку чистого файла (перезаписывая его через '>')
-          echo "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');" > cdn/atlas-framework.css
+          # 1. Создаем чистый файл и жестко пишем импорт шрифта на самую первую строку
+          echo "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght=300;400;700&display=swap');" > cdn/atlas-framework.css
           
-          # 2. Добавляем системную шапку комментариев (УЖЕ ПОСЛЕ ИМПОРТА)
+          # 2. Добавляем системную шапку (она идет ниже импорта, как требует W3C)
           echo -e "\n/* ==========================================================================\n   ATLAS FRAMEWORK PRODUCTION CORE — COMPILED MONOLITH\n   Generated automatically via GitHub Actions Workflow\n   ========================================================================== */\n" >> cdn/atlas-framework.css
           
-          # 3. Импортируем atlas-core.css, НО убираем из него скрытый BOM-маркер и исходный @import
-          # sed удаляет любые упоминания @import, а perl убирает бинарный маркер спецификации UTF-8 BOM, если он там есть
-          perl -pe 's/\xEF\xBB\xBF//g' cdn/atlas-core.css | sed 's|@import url(.*);||g' >> cdn/atlas-framework.css
+          # Функция для очистки файлов от BOM-маркеров и удаления дублирующих @import строк
+          # Это защитит бандл, если в atlas-core.css или других файлах остался старый @import
+          process_file() {
+            perl -pe 's/\xEF\xBB\xBF//g' "$1" | sed 's|@import url(.*);||g' >> cdn/atlas-framework.css
+            echo -e "\n" >> cdn/atlas-framework.css
+          }
           
-          # 4. Последовательно склеиваем все остальные дочерние модули
-          cat cdn/atlas-typography.css >> cdn/atlas-framework.css
-          cat cdn/components/atlas-callout.css >> cdn/atlas-framework.css
-          cat cdn/components/atlas-code-theme.css >> cdn/atlas-framework.css
-          cat cdn/components/atlas-comparison.css >> cdn/atlas-framework.css
-          cat cdn/components/atlas-layouts.css >> cdn/atlas-framework.css
-          cat cdn/components/atlas-schema.css >> cdn/atlas-framework.css
-          cat cdn/components/atlas-timeline.css >> cdn/atlas-framework.css
-          cat cdn/components/atlas-uml.css >> cdn/atlas-framework.css
-          cat cdn/components/atlas-vfx-tools.css >> cdn/atlas-framework.css
+          # 3. Последовательно очищаем и склеиваем все модули фреймворка
+          process_file "cdn/atlas-core.css"
+          process_file "cdn/atlas-typography.css"
+          process_file "cdn/components/atlas-callout.css"
+          process_file "cdn/components/atlas-code-theme.css"
+          process_file "cdn/components/atlas-comparison.css"
+          process_file "cdn/components/atlas-layouts.css"
+          process_file "cdn/components/atlas-schema.css"
+          process_file "cdn/components/atlas-timeline.css"
+          process_file "cdn/components/atlas-uml.css"
+          process_file "cdn/components/atlas-vfx-tools.css"
           
-          echo "Compilation complete. Monolith built successfully and validated."
+          echo "Compilation complete. All modules sanitized and merged into monolith."
