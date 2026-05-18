@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&amp;display=swap">
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.2.3/cdn/atlas-framework.css"><!--<link rel="stylesheet" href="https://rawcdn.githack.com/pavelzosim/atlas-framework/master/cdn/atlas-framework.css">  -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.2.4/cdn/atlas-framework.css"><!--<link rel="stylesheet" href="https://rawcdn.githack.com/pavelzosim/atlas-framework/master/cdn/atlas-framework.css">  -->
 
   <style>
         *, *::before, *::after {
@@ -462,6 +462,8 @@
                         
                         // Low-level graphics pipeline execution blocks follow here...
                     }</code></pre>
+
+
         <div class="atlas-media-node">
           <div class="atlas-media-node__wrapper"><img src="https://static.wixstatic.com/media/ace175_17119243e76545398ebbd5abde114bd7~mv2.png/v1/fill/w_530,h_311,al_c,lg_1,q_85,enc_avif,quality_auto/ace175_17119243e76545398ebbd5abde114bd7~mv2.png" alt="Unity Material Inspector Property Binding Mapping"></div>
           <div class="atlas-media-node__caption">
