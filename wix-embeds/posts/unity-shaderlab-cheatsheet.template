@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&amp;display=swap">
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.2.3/cdn/atlas-framework.css"><!--<link rel="stylesheet" href="https://rawcdn.githack.com/pavelzosim/atlas-framework/master/cdn/atlas-framework.css">  -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.2.7/cdn/atlas-framework.css"><!--<link rel="stylesheet" href="https://rawcdn.githack.com/pavelzosim/atlas-framework/master/cdn/atlas-framework.css">  -->
 
   <style>
         *, *::before, *::after {
@@ -61,7 +61,7 @@
   </div>
 </div>
 
-        
+
         <!--- H2 SECTION START --->
         <h2>1. Unity ShaderLab Cheatsheet – Introduction</h2>
         <p>This Unity ShaderLab cheatsheet provides a structured, production-oriented reference for technical artists working with hand-written shaders in Unity. Whether you’re transitioning from ShaderGraph or diving into hand-written shaders, this guide provides you with an in-depth look at shader code structure, property declaration, and how the GPU processes shader code. We’ll also explore special ShaderLab features such as drawer attributes, tags, and SubShaders, and discuss how these concepts vary across render pipelines (Built-in, URP, HDRP).</p>
