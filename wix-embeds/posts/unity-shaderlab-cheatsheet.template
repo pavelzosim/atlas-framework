@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&amp;display=swap">
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.2.4/cdn/atlas-framework.css"><!--<link rel="stylesheet" href="https://rawcdn.githack.com/pavelzosim/atlas-framework/master/cdn/atlas-framework.css">  -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.2.3/cdn/atlas-framework.css"><!--<link rel="stylesheet" href="https://rawcdn.githack.com/pavelzosim/atlas-framework/master/cdn/atlas-framework.css">  -->
 
   <style>
         *, *::before, *::after {
@@ -41,6 +41,27 @@
     <header id="site-passport"></header>
     <main id="atlas-body">
       <div class="content-block">
+<div class="atlas-compare">
+  <div class="atlas-compare-blueprint-nodes"></div>
+
+  <div class="atlas-compare__block" data-state="legacy">
+    <div class="atlas-compare__tag">// SYSTEM_CORE: CG_HLSL_PROGRAM</div>
+    <h4 class="atlas-compare__concept">CG Shader</h4>
+    <div class="atlas-compare__description">
+      Uses the Cg/HLSL language to write low-level shader programs. A shader file typically contains execution sections enclosed by <code>CGPROGRAM</code> and <code>ENDCG</code>.
+    </div>
+  </div>
+
+  <div class="atlas-compare__block" data-state="modern">
+    <div class="atlas-compare__tag">// SYSTEM_WRAPPER: SHADERLAB_PIPELINE</div>
+    <h4 class="atlas-compare__concept">ShaderLab</h4>
+    <div class="atlas-compare__description">
+      A Unity-specific declarative wrapper that defines properties, SubShaders, passes, and fallback states. It orchestrates how your low-level program interacts with the UI.
+    </div>
+  </div>
+</div>
+
+        
         <!--- H2 SECTION START --->
         <h2>1. Unity ShaderLab Cheatsheet – Introduction</h2>
         <p>This Unity ShaderLab cheatsheet provides a structured, production-oriented reference for technical artists working with hand-written shaders in Unity. Whether you’re transitioning from ShaderGraph or diving into hand-written shaders, this guide provides you with an in-depth look at shader code structure, property declaration, and how the GPU processes shader code. We’ll also explore special ShaderLab features such as drawer attributes, tags, and SubShaders, and discuss how these concepts vary across render pipelines (Built-in, URP, HDRP).</p>

@@ -1,65 +1,50 @@
 /* ==========================================================================
-   ATLAS COMPARISON ENGINE — Technical Blueprint Split Matrix [v1.3.1]
+   ATLAS COMPARISON ENGINE — Technical Blueprint Split Matrix [v1.3.5]
    ─────────────────────────────────────────────────────────────
-   Scope: .content-block .atlas-compare and underlying blueprint subcomponents.
-   Responsibility: Technical side-by-side analysis, rendering layout split
-   for "Before/After" profile data, or deprecation comparison matrices.
-   Supports backward compatibility for v1.2.0 class naming convention.
-   Dependencies: Requires atlas-core.css (for system variable mappings).
+   Scope: .content-block .atlas-compare and underlying subcomponents.
+   Responsibility: Isolated Side-by-Side Blueprint Matrix.
+   Dependencies: Fully autonomous, zero interference with core scripts/buttons.
    ========================================================================== */
 
-/* ==========================================================================
-   MODULE 1: BLUEPRINT GRID LAYOUT & INTERLOCKING
-   ─────────────────────────────────────────────────────────────
-   Scope: Main layout wrappers, zero-gap framing, and hardware cross-brackets.
-   Responsibility: Controlling horizontal grid alignment, forcing explicit
-   split layout constraints, and fluid stacking on narrow viewports.
-   ========================================================================== */
-
-/* ── 1.1 Общий контейнер двух колонок (Blueprint Matrix Shell) ─────────── */
-html body .content-block div.atlas-compare {
+/* ── НАДСТРОЙКА: НОВЫЙ ЧЕРТЕЖНЫЙ GRID-ДИЗАЙН ─────────────────────────────── */
+/* Включается только если внутри контейнера есть новые блоки .atlas-compare__block */
+html body .content-block div.atlas-compare:has(.atlas-compare__block) {
   display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important; /* Ровно две абсолютно равные половины */
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   margin: 32px 0 !important;
   width: 100% !important;
-  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.01)) !important;
+  background: rgba(0, 0, 0, 0.01) !important;
   border: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
   position: relative !important;
   box-sizing: border-box !important;
+  gap: 0 !important; /* Убираем зазоры, ломавшие центровку */
 }
 
-/* Избавляемся от влияния старого тега-разделителя, если он присутствует в разметке */
-html body .content-block div.atlas-compare .atlas-compare__divider {
-  display: none !important;
-  width: 0 !important;
-  height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* ── 1.2 Чертёжные интерфейсные узлы (Hardware Junction Brackets) ──────── */
-/* Upper-left bracket ┌ */
-html body .content-block div.atlas-compare::before {
-  content: "┌" !important;
+/* Изолированный сервисный слой для отрисовки узлов ┬ и ┐ */
+html body .content-block div.atlas-compare:has(.atlas-compare__block) .atlas-compare-blueprint-nodes {
   position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 20px !important;
+  pointer-events: none !important;
+  z-index: 10 !important;
+}
+
+/* Отрисовка засечек угла ┌ и ┐ */
+html body .content-block div.atlas-compare:has(.atlas-compare__block)::before,
+html body .content-block div.atlas-compare .atlas-compare-blueprint-nodes::before {
+  font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace) !important;
+  font-size: 11px !important;
+  color: var(--atlas-ink-muted, rgba(0, 0, 0, 0.3)) !important;
+  position: absolute !important;
+  line-height: 1 !important;
+}
+
+html body .content-block div.atlas-compare:has(.atlas-compare__block)::before {
+  content: "┌" !important;
   left: 4px !important;
   top: 4px !important;
-  font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace) !important;
-  font-size: 11px !important;
-  color: var(--atlas-border, rgba(0, 0, 0, 0.3)) !important;
-  line-height: 1 !important;
-  z-index: 10 !important;
-}
-
-/* Вспомогательный узел для верхнего правого угла ┐ и центральной оси ┬ */
-html body .content-block div.atlas-compare .atlas-compare-blueprint-nodes::before,
-html body .content-block div.atlas-compare .atlas-compare-blueprint-nodes::after {
-  font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace) !important;
-  font-size: 11px !important;
-  color: var(--atlas-border, rgba(0, 0, 0, 0.3)) !important;
-  position: absolute !important;
-  line-height: 1 !important;
-  z-index: 10 !important;
 }
 
 html body .content-block div.atlas-compare .atlas-compare-blueprint-nodes::before {
@@ -68,26 +53,136 @@ html body .content-block div.atlas-compare .atlas-compare-blueprint-nodes::befor
   top: 4px !important;
 }
 
+/* Центральный стык осей ┬ ровно по центру (50%) */
 html body .content-block div.atlas-compare .atlas-compare-blueprint-nodes::after {
   content: "┬" !important;
+  font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace) !important;
+  font-size: 11px !important;
+  color: var(--atlas-ink-muted, rgba(0, 0, 0, 0.3)) !important;
+  position: absolute !important;
   left: 50% !important;
   top: 4px !important;
   transform: translateX(-50%) !important;
+  line-height: 1 !important;
 }
 
-/* ── 1.3 Нативная мобильная адаптация для интерфейсов Wix ──────────────── */
+/* ── 2.1 Новая модульная панель-блок (Zero-Gap Data Block) ──────────────── */
+html body .content-block div.atlas-compare div.atlas-compare__block {
+  padding: 24px 24px 24px 44px !important; /* Левый отступ увеличен, чтобы текст не прижимался к оси */
+  position: relative !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+}
+
+/* Штриховая разделительная ось между колонками */
+html body .content-block div.atlas-compare div.atlas-compare__block:first-child {
+  border-right: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+}
+
+/* Рендеринг математических дельта-маркеров (Δ1 / Δ2) */
+html body .content-block div.atlas-compare div.atlas-compare__block::before {
+  font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  position: absolute !important;
+  left: 14px !important;
+  top: 26px !important;
+  color: var(--atlas-ink-soft, rgba(0, 0, 0, 0.4)) !important;
+  line-height: 1 !important;
+}
+
+html body .content-block div.atlas-compare div.atlas-compare__block[data-state="legacy"]::before { content: "Δ1" !important; }
+html body .content-block div.atlas-compare div.atlas-compare__block[data-state="modern"]::before { content: "Δ2" !important; }
+
+/* Тонкая внутренняя координатная линия для выравнивания дельт */
+html body .content-block div.atlas-compare div.atlas-compare__block::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 30px !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  width: 1px !important;
+  border-left: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.08)) !important;
+}
+
+
+/* ── БЕЗОПАСНОСТЬ: ИЗОЛИРОВАННАЯ СТАРАЯ ФЛЕКС-МОДЕЛЬ ───────────────────── */
+/* Включается на старых постах, где нет блока .atlas-compare__block */
+html body .content-block div.atlas-compare:not(:has(.atlas-compare__block)) {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 16px !important;
+  width: 100% !important;
+  background: transparent !important;
+  border: none !important;
+}
+html body .content-block div.atlas-compare:not(:has(.atlas-compare__block))::before {
+  content: none !important;
+}
+html body .content-block div.atlas-compare:not(:has(.atlas-compare__block)) .atlas-compare__column {
+  flex: 1 !important;
+  padding: 16px !important;
+  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.02)) !important;
+  border-left: 3px solid var(--atlas-ink, #000000) !important;
+}
+
+
+/* ── ОБЩАЯ СЕМАНТИКА ТЕКСТА ─────────────────────────────────────────────── */
+.content-block .atlas-compare__tag {
+  font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace) !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  color: var(--atlas-ink-muted, rgba(0, 0, 0, 0.4)) !important;
+  text-transform: uppercase !important;
+  margin-bottom: 10px !important;
+  display: block !important;
+  line-height: 1 !important;
+}
+
+.content-block .atlas-compare__concept {
+  font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: var(--atlas-ink, #000000) !important;
+  text-transform: uppercase !important;
+  margin: 0 0 8px 0 !important;
+  padding: 0 !important;
+  line-height: 1.4 !important;
+  letter-spacing: 0.02em !important;
+}
+
+.content-block .atlas-compare__description {
+  font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace) !important; /* Строгий моноширинный интерфейс */
+  font-size: 12px !important;
+  line-height: 1.6 !important;
+  color: var(--atlas-ink-soft, rgba(0, 0, 0, 0.75)) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.content-block .atlas-compare__block code:not(pre code) {
+  font-size: 11px !important;
+  padding: 1px 4px !important;
+  background: rgba(0, 0, 0, 0.04) !important;
+}
+
+/* ── АДАПТИВНОСТЬ (Mobile Collapse Sequence) ────────────────────────────── */
 @media (max-width: 768px) {
-  html body .content-block div.atlas-compare {
-    grid-template-columns: 1fr !important; /* Сброс в один вертикальный поток на мобильных */
+  html body .content-block div.atlas-compare:has(.atlas-compare__block) {
+    grid-template-columns: 1fr !important;
   }
-  /* Поддержка обоих классов для первой колонки при падении в мобильный стек */
-  html body .content-block div.atlas-compare div.atlas-compare__block:first-child,
-  html body .content-block div.atlas-compare div.atlas-compare__column:first-child {
+  html body .content-block div.atlas-compare div.atlas-compare__block:first-child {
     border-right: none !important;
     border-bottom: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
   }
   html body .content-block div.atlas-compare .atlas-compare-blueprint-nodes::after {
     display: none !important;
+  }
+  html body .content-block div.atlas-compare:not(:has(.atlas-compare__block)) {
+    flex-direction: column !important;
   }
 }
 
