@@ -1,94 +1,171 @@
 /* ==========================================================================
-   ATLAS COMPARISON ENGINE — Side-by-Side Blocks & Cross-Tech Matrix [v1.2.0]
+   ATLAS COMPARISON ENGINE — Technical Blueprint Split Matrix [v1.3.0]
    ─────────────────────────────────────────────────────────────
-   Scope: .content-block .atlas-compare and underlying subcomponents.
+   Scope: .content-block .atlas-compare and underlying blueprint subcomponents.
    Responsibility: Technical side-by-side analysis, rendering layout split
    for "Before/After" profile data, or deprecation comparison matrices.
    Dependencies: Requires atlas-core.css (for system variable mappings).
    ========================================================================== */
 
 /* ==========================================================================
-   MODULE 1: CORE GRID & FLEX LAYOUT
+   MODULE 1: BLUEPRINT GRID LAYOUT & INTERLOCKING
    ─────────────────────────────────────────────────────────────
-   Scope: Main layout wrappers and responsiveness.
-   Responsibility: Controlling horizontal grid alignment, custom gap handling,
-   and fluid, crash-free stacking on narrow mobile screen breakpoints.
+   Scope: Main layout wrappers, zero-gap framing, and hardware cross-brackets.
+   Responsibility: Controlling horizontal grid alignment, forcing explicit
+   split layout constraints, and fluid stacking on narrow viewports.
    ========================================================================== */
 
-/* ── 1.1 Общий контейнер двух колонок (A/B Flex Shell) ─────────────────── */
-.content-block .atlas-compare {
-  display: flex !important;
-  gap: 16px !important; /* Строгий зазор между сравниваемыми сущностями */
-  margin: 28px 0 !important;
+/* ── 1.1 Общий контейнер двух колонок (Blueprint Matrix Shell) ─────────── */
+html body .content-block div.atlas-compare {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important; /* Ровно две абсолютно равные половины */
+  margin: 32px 0 !important;
   width: 100% !important;
+  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.01)) !important;
+  border: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
   position: relative !important;
   box-sizing: border-box !important;
 }
 
-/* ── 1.2 Нативная мобильная адаптация для интерфейсов Wix ──────────────── */
-@media (max-width: 680px) {
-  .content-block .atlas-compare {
-    flex-direction: column !important; /* Перевод колонок в вертикальный стек */
-    gap: 24px !important; /* Увеличенный зазор при вертикальном стекинге */
-  }
+/* ── 1.2 Чертёжные интерфейсные узлы (Hardware Junction Brackets) ──────── */
+/* Верхний левый угол монолита ┌ */
+html body .content-block div.atlas-compare::before {
+  content: "┌" !important;
+  position: absolute !important;
+  left: 4px !important;
+  top: 4px !important;
+  font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace) !important;
+  font-size: 11px !important;
+  color: var(--atlas-border, rgba(0, 0, 0, 0.3)) !important;
+  line-height: 1 !important;
+  z-index: 10 !important;
 }
 
-/* ── 1.3 Монолитный блок-колонка (Data Column Shell) ───────────────────── */
-.content-block .atlas-compare__column {
-  flex: 1 !important;
-  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.02)) !important;
-  border: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
-  position: relative !important; /* Фикс: контекст под абсолютное позиционирование бэджа */
-  
-  /* Верхний паддинг (42px) гарантирует, что текст не налезет на верхний бэдж (28px) */
-  padding: 42px 16px 16px 16px !important; 
-  box-sizing: border-box !important;
+/* Вспомогательный класс-обертка для отрисовки правого угла и центральной оси */
+html body .content-block div.atlas-compare .atlas-compare-blueprint-nodes::before,
+html body .content-block div.atlas-compare .atlas-compare-blueprint-nodes::after {
+  font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace) !important;
+  font-size: 11px !important;
+  color: var(--atlas-border, rgba(0, 0, 0, 0.3)) !important;
+  position: absolute !important;
+  line-height: 1 !important;
+  z-index: 10 !important;
+}
+
+/* Верхний правый угол ┐ */
+html body .content-block div.atlas-compare .atlas-compare-blueprint-nodes::before {
+  content: "┐" !important;
+  right: 4px !important;
+  top: 4px !important;
+}
+
+/* Верхний центральный Т-образный стык осей ┬ */
+html body .content-block div.atlas-compare .atlas-compare-blueprint-nodes::after {
+  content: "┬" !important;
+  left: 50% !important;
+  top: 4px !important;
+  transform: translateX(-50%) !important;
+}
+
+/* ── 1.3 Нативная мобильная адаптация для интерфейсов Wix ──────────────── */
+@media (max-width: 768px) {
+  html body .content-block div.atlas-compare {
+    grid-template-columns: 1fr !important; /* Сброс в один вертикальный поток на мобильных */
+  }
+  html body .content-block div.atlas-compare div.atlas-compare__block:first-child {
+    border-right: none !important;
+    border-bottom: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important; /* Пунктир падает в горизонт */
+  }
+  html body .content-block div.atlas-compare .atlas-compare-blueprint-nodes::after {
+    display: none !important; /* Гасим Т-образный перекрестный маркер в мобильном стеке */
+  }
 }
 
 
 /* ==========================================================================
-   MODULE 2: INSPECTOR BADGES & INTERNAL SEMANTICS
+   MODULE 2: MATHEMATICAL AXES & INTERNAL SEMANTICS
    ─────────────────────────────────────────────────────────────
-   Scope: Headers, descriptions, inline status flags and code tokens.
-   Responsibility: Formatting meta headers as terminal lines, adjusting font 
-   sizes for dense text, and isolating nested paragraph metrics.
+   Scope: Delta phase index markers, specs tags, concepts headers.
+   Responsibility: Direct plotting of monochrome phase indicators, drawing
+   internal guideline coordinates, and adjusting densities.
    ========================================================================== */
 
-/* ── 2.1 Аппаратный бэдж-заголовок (Top System Badge) ───────────────────── */
-.content-block .atlas-compare__badge {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  height: 28px !important;
-  line-height: 28px !important;
-  padding: 0 14px !important;
-  font-family: var(--atlas-font-mono), monospace !important;
-  font-size: 10px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.06em !important;
-  color: var(--atlas-ink-muted, rgba(0, 0, 0, 0.5)) !important;
-  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.03)) !important;
-  border-bottom: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
-  text-transform: uppercase !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
+/* ── 2.1 Чертежная панель-блок (Zero-Gap Data Block) ──────────────────── */
+html body .content-block div.atlas-compare div.atlas-compare__block {
+  padding: 22px 24px 22px 38px !important; /* Увеличенный левый отступ под координатную ось */
+  position: relative !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
 }
 
-/* ── 2.2 Название исследуемого концепта (Concept Header) ────────────────── */
+/* Центральная вертикальная штрих-пунктирная ось на стыке колонок */
+html body .content-block div.atlas-compare div.atlas-compare__block:first-child {
+  border-right: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+}
+
+/* ── 2.2 Математические дельта-индексы фаз (Phase Index Marks) ────────── */
+html body .content-block div.atlas-compare div.atlas-compare__block::before {
+  font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  position: absolute !important;
+  left: 14px !important;
+  top: 24px !important;
+  color: var(--atlas-ink-soft, rgba(0, 0, 0, 0.6)) !important;
+  line-height: 1 !important;
+}
+
+/* Левое исходное состояние (Δ1) */
+html body .content-block div.atlas-compare div.atlas-compare__block[data-state="legacy"]::before,
+html body .content-block div.atlas-compare div.atlas-compare__block[data-state="crit"]::before {
+  content: "Δ1" !important;
+}
+
+/* Правое целевое состояние (Δ2) */
+html body .content-block div.atlas-compare div.atlas-compare__block[data-state="modern"]::before,
+html body .content-block div.atlas-compare div.atlas-compare__block[data-state="ok"]::before {
+  content: "Δ2" !important;
+}
+
+/* Вертикальная направляющая ось-координата для привязки дельта-символов */
+html body .content-block div.atlas-compare div.atlas-compare__block::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 28px !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  width: 1px !important;
+  border-left: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.12)) !important;
+}
+
+/* ── 2.3 Спецификация чертежа / Системный тег (Top Specs Tag) ─────────── */
+.content-block .atlas-compare__tag {
+  font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace) !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  color: var(--atlas-ink-muted, rgba(0, 0, 0, 0.4)) !important;
+  text-transform: uppercase !important;
+  margin-bottom: 8px !important;
+  display: block !important;
+}
+
+/* ── 2.4 Название концепта (Blueprint Concept Header) ─────────────────── */
 .content-block .atlas-compare__concept {
-  font-family: var(--atlas-font-mono), monospace !important;
+  font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace) !important;
   font-size: 13px !important;
   font-weight: 700 !important;
   color: var(--atlas-ink, #000000) !important;
   text-transform: uppercase !important;
-  margin: 0 0 10px 0 !important;
+  margin: 0 0 6px 0 !important;
   padding: 0 !important;
   line-height: 1.4 !important;
+  letter-spacing: 0.02em !important;
 }
 
-/* ── 2.3 Описание технической разницы (Dense Description) ──────────────── */
+/* ── 2.5 Описание технической разницы (Dense Description) ──────────────── */
 .content-block .atlas-compare__description {
   font-family: var(--atlas-font-body, "Crimson Pro", Georgia, serif) !important;
   font-size: 13px !important;
@@ -98,8 +175,8 @@
   padding: 0 !important;
 }
 
-/* ── 2.4 Фиксы вложенного кода для сохранения плотности ─────────────────── */
-.content-block .atlas-compare__column code:not(pre code) {
-  font-size: 11px !important; /* Слегка уменьшаем инлайн-код внутри узких колонок */
+/* ── 2.6 Фиксы вложенного кода для сохранения плотности ─────────────────── */
+.content-block .atlas-compare__block code:not(pre code) {
+  font-size: 11px !important;
   padding: 1px 4px !important;
 }
