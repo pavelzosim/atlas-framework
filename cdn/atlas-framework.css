@@ -1176,7 +1176,35 @@ html, body {
 }
 /* atlas-layouts.css — Стили для layout-компонентов: сетки, сложные структуры размещения, A/B сравнения, визуальные схемы. Используется для оформления макетов и структурных блоков. */
 
-/* atlas-schema.css — Стили для блоков-схем, структур данных, таблиц соответствия и других визуальных представлений структур. */
+/* ==========================================================================
+   ATLAS HARDWARE GRAPHICS — Section Breaks & Navigation Indices
+   Module: components/atlas-layouts.css
+   ========================================================================== */
+
+.content-block hr.atlas-section-break {
+  border: none !important;
+  height: 1px !important;
+  background: var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+  margin: 48px 0 32px 0 !important; /* Большие отступы для разделения крупных блоков */
+  position: relative !important;
+  overflow: visible !important; /* Критично: позволяет псевдоэлементу выйти за пределы 1px высоты */
+}
+
+/* Автоматический вывод индекса секции из дата-атрибута */
+.content-block hr.atlas-section-break[data-index]::after {
+  content: "[ SECTION_INDEX // " attr(data-index) " ]" !important;
+  position: absolute !important;
+  right: 0 !important;
+  top: -9px !important; /* Смещение вверх, чтобы текст сел ровно на линию */
+  background: var(--atlas-bg, #ffffff) !important; /* Перекрывает линию непрозрачной подложкой */
+  padding-left: 12px !important;
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  color: var(--atlas-ink-muted, rgba(0, 0, 0, 0.4)) !important;
+  text-transform: uppercase !important;
+}/* atlas-schema.css — Стили для блоков-схем, структур данных, таблиц соответствия и других визуальных представлений структур. */
 
 /* ==========================================================================
    ATLAS MATRIX ENGINE — Data Tables & Capability Proximity
