@@ -1,27 +1,81 @@
-/* atlas-comparison.css — Стили для блоков сравнения (A/B, таблицы различий, сравнительные списки и т.д.). Используется для оформления визуальных сравнений. */
-
 /* ==========================================================================
    ATLAS COMPARISON ENGINE — Side-by-Side Blocks & Cross-Tech Matrix
    Module: components/atlas-comparison.css
+   Scope: .content-block .atlas-compare
    ========================================================================== */
 
+/* Общий контейнер для двух колонок */
 .content-block .atlas-compare {
   display: flex !important;
   gap: 16px !important;
-  margin: 24px 0 !important;
+  margin: 28px 0 !important;
+  width: 100% !important;
   position: relative !important;
 }
 
-/* Пример мобильной адаптации для Wix-контейнера */
+/* Нативная адаптация под мобильный интерфейс Wix */
 @media (max-width: 680px) {
   .content-block .atlas-compare {
     flex-direction: column !important;
+    gap: 24px !important; /* Зазор между колонками при стекинге */
   }
 }
 
+/* Монолитная колонка-контейнер */
 .content-block .atlas-compare__column {
   flex: 1 !important;
-  padding: 14px !important;
-  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.01)) !important;
-  border: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.12)) !important;
+  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.02)) !important;
+  border: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+  
+  /* Фикс 1: Форсируем контекст для абсолютного позиционирования бэджа внутри */
+  position: relative !important; 
+  
+  /* Фикс 2: Увеличиваем верхний padding (42px), чтобы текст не залезал под бэдж */
+  padding: 42px 16px 16px 16px !important; 
+  box-sizing: border-box !important;
+}
+
+/* Технический бэдж-заголовок в шапке колонки (// SYSTEM_CORE...) */
+.content-block .atlas-compare__badge {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 28px !important;
+  line-height: 28px !important;
+  padding: 0 14px !important;
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  color: var(--atlas-ink-muted, rgba(0, 0, 0, 0.5)) !important;
+  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.03)) !important;
+  border-bottom: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+  text-transform: uppercase !important;
+}
+
+/* Концепт/Заголовок фичи внутри (.atlas-compare__concept) */
+.content-block .atlas-compare__concept {
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  color: var(--atlas-ink, #000000) !important;
+  display: block !important;
+  margin-bottom: 10px !important;
+}
+
+/* Безопасные отступы для параграфов внутри карточки сравнения */
+.content-block .atlas-compare__column p {
+  margin: 0 0 8px 0 !important;
+  font-size: 12px !important;
+  line-height: 1.6 !important;
+}
+
+.content-block .atlas-compare__column p:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Технический разделитель (если присутствует в разметке — аккуратно его скрываем/гасим) */
+.content-block .atlas-compare__divider {
+  display: none !important;
 }
