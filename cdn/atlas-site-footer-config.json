@@ -5,7 +5,7 @@
         "links": [
             {
                 "text": "TELEGRAM",
-                "url": "https://t.me/YOUR_USERNAME"
+                "url": "https://t.me/tlon_exz"
             },
             {
                 "text": "LINKEDIN",
@@ -13,7 +13,7 @@
             },
             {
                 "text": "EMAIL",
-                "url": "mailto:YOUR_EMAIL@example.com"
+                "url": "mailto:pavel.zosim@protonmail.com"
             }
         ]
     },
@@ -56,13 +56,9 @@
             "label": "SYSTEM_ROOT",
             "items": [
                 {
-                    "text": "About Me",
-                    "url": "https://www.pavelzosim.com/about"
-                },
-                {
-                    "text": "Master Bio",
-                    "url": "https://www.pavelzosim.com/bio"
-                },
+                    "text": "Curiculum Vitae",
+                    "url": "https://www.pavelzosim.com/cv"
+                },                
                 {
                     "text": "GitHub Profile",
                     "url": "https://github.com/pavelzosim"
