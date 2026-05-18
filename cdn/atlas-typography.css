@@ -1,55 +1,50 @@
-﻿/*
-  ATLAS TYPOGRAPHY — Content Block Text Styles
-  ─────────────────────────────────────────────────────────────
-  Scope: .content-block only.
-  Safe for LLM to edit — changes here cannot affect site chrome.
-
-  Requires: atlas-core.css (for CSS custom properties)
-
-  Provides:
-    - h2, h3 inside .content-block
-    - p, strong, em
-    - ul / ol / li
-    - inline code
-    - #atlas-body first-child reset
-*/
+﻿/* ==========================================================================
+   ATLAS TYPOGRAPHY — Content Block Text Styles [v1.1.6_production]
+   ─────────────────────────────────────────────────────────────
+   Scope: .content-block only (Safe for Wix context isolation)
+   Requires: atlas-core.css (for CSS custom properties)
+   ========================================================================== */
 
 /* ─────────────────────────────────────────────────────────────
-   ATLAS TYPOGRAPHY EXTENSION: MULTI-LEVEL HEADINGS
+   MODULE 1.1: MULTI-LEVEL HEADINGS (SYSTEM HIERARCHY)
    ───────────────────────────────────────────────────────────── */
 
-/* Уровень 1 (3. Shader Declaration) — Оставляем главным ориентиром */
+/* Уровень 1 (Пример: 3. SHADER DECLARATION) — Главный глобальный ориентир */
 .content-block h2 {
-  font-family: var(--atlas-font-mono) !important;
-  font-size: 14px !important; /* Чуть крупнее, как глобальная веха */
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 14px !important;            /* Чуть крупнее для обозначения вехи */
   font-weight: 700 !important;
   text-transform: uppercase !important;
   letter-spacing: .08em !important;
   color: var(--atlas-ink) !important;
   margin: 16px 0 10px 0 !important;
   display: flex !important;
-  align-items: center;
+  align-items: center !important;        /* Выравниваем шеврон строго по центру */
 }
+
+/* Акцентный красный шеврон перед H2 */
 .content-block h2::before {
   content: "» " !important;
   color: var(--atlas-crit) !important;
   margin-right: 8px !important;
 }
 
-/* Уровень 2 (3.2 PROPERTIES SYNTAX) — Монолитный системный блок */
+/* Уровень 2 (Пример: // 3.2 PROPERTIES SYNTAX) — Монолитный системный блок */
 .content-block h3 {
-  font-family: var(--atlas-font-mono) !important;
-  font-size: 12px !important; /* Унифицированный размер */
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 12px !important;            /* Унифицированный базовый размер */
   font-weight: 700 !important;
-  text-transform: uppercase !important; /* Жёсткий CAPS */
+  text-transform: uppercase !important;  /* Жёсткий CAPS в стиле логов */
   letter-spacing: .06em !important;
   color: var(--atlas-ink) !important;
   margin: 28px 0 14px 0 !important;
   padding-bottom: 6px !important;
   border-bottom: 1px dashed var(--atlas-border) !important; /* Удерживающая рамка */
   display: flex !important;
-  align-items: center;
+  align-items: center !important;
 }
+
+/* Приглушенные слэши в стиле комментариев кода перед H3 */
 .content-block h3::before {
   content: "// " !important;
   color: var(--atlas-ink-muted) !important;
@@ -57,54 +52,76 @@
   font-weight: 400 !important;
 }
 
-/* Уровень 3 (3.2.1 Numeric Data Types) — Вложенная локальная сущность */
+/* Уровень 3 (Пример: — 3.2.1 Numeric Data Types) — Вложенная локальная сущность */
 .content-block h4 {
-  font-family: var(--atlas-font-mono) !important;
-  font-size: 12px !important; /* Точно такой же размер! */
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 12px !important;            /* Точно такой же размер, как H3, для плотности */
   font-weight: 700 !important;
-  text-transform: none !important; /* Облегчаем регистр (без Caps Lock) */
+  text-transform: none !important;       /* Облегчаем регистр (без Caps Lock) для читаемости */
   letter-spacing: 0 !important;
-  color: var(--atlas-ink-soft) !important; /* Мягкий контраст */
+  color: var(--atlas-ink-soft) !important; /* Мягкий контраст, уводящий вглубь */
   margin: 20px 0 10px 0 !important;
   padding-bottom: 6px !important;
   border-bottom: 1px dashed var(--atlas-border) !important; /* Удерживающая рамка */
   display: flex !important;
-  align-items: center;
+  align-items: center !important;
 }
-/* Технический указатель вложенности */
+
+/* Технический указатель вложенности (акцентное тире) перед H4 */
 .content-block h4::before {
   content: "— " !important;
-  color: var(--atlas-crit) !important; /* Акцентное тире */
+  color: var(--atlas-crit) !important;
   margin-right: 8px !important;
   font-weight: 400 !important;
 }
-/* ── Body text ──────────────────────────────────────────────── */
+
+/* ─────────────────────────────────────────────────────────────
+   MODULE 1.2: BODY TEXT & INLINE TEXT STYLES
+   ───────────────────────────────────────────────────────────── */
+
+/* Основной абзац текста */
 .content-block p {
-  font-family: var(--atlas-font-mono) !important;
-  font-size: var(--fs-body) !important;
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: var(--fs-body, 12.5px) !important;
   line-height: 1.7 !important;
   margin: 0 0 16px 0 !important;
   color: var(--atlas-ink-soft) !important;
+  text-align: left !important;
 }
 
-.content-block strong { font-weight: 700 !important; color: var(--atlas-ink) !important; }
-.content-block em     { font-style: italic !important; color: var(--atlas-ink-muted) !important; }
+/* Жирный текст — максимальный контраст */
+.content-block strong { 
+  font-weight: 700 !important; 
+  color: var(--atlas-ink) !important; 
+}
 
+/* Курсив — приглушенный технический комментарий */
+.content-block em { 
+  font-style: italic !important; 
+  color: var(--atlas-ink-muted) !important; 
+}
 /* ==========================================================================
-   ATLAS TYPOGRAPHY EXTENSION: PRODUCTION TERMINAL LISTS
+   MODULE 2: PRODUCTION TERMINAL LISTS & INLINE CODE [v1.1.6_production]
+   ─────────────────────────────────────────────────────────────
+   Scope: .content-block only
+   Provides: High-precision layout for terminal-style lists and tokens
    ========================================================================== */
+
+/* ─────────────────────────────────────────────────────────────
+   MODULE 2.1: CORE LIST CONTAINERS (GRID & RESET)
+   ───────────────────────────────────────────────────────────── */
 
 /* Общие контейнеры списков */
 .content-block ul,
 .content-block ol {
   margin: 16px 0 20px 0 !important;
   padding-left: 0 !important;   /* Обнуляем дефолтные отступы, строим сетку сами */
-  list-style: none !important;  /* Убиваем стандартные маркеры браузера */
+  list-style: none !important;  /* Намертво убиваем стандартные маркеры браузера */
 }
 
 /* Общий стиль для элементов списка */
 .content-block li {
-  font-family: var(--atlas-font-mono) !important;
+  font-family: var(--atlas-font-mono), monospace !important;
   font-size: var(--fs-body, 12.5px) !important;
   line-height: 1.65 !important;
   color: var(--atlas-ink-soft) !important;
@@ -114,11 +131,13 @@
   padding-left: 44px !important; 
 }
 
-/* ── МАРКИРОВАННЫЙ СПИСОК (UL) — Двухслойный шеврон со скетча [ > ] ── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 2.2: BULLET LISTS (UL) — DUAL-LAYER CHEVRON [ > ]
+   ───────────────────────────────────────────────────────────── */
 
 /* 1. Отрисовка приглушенных квадратных скобок */
 .content-block ul li::before {
-  content: "[   ]" !important; /* Оставляем точные пробелы внутри под стрелку */
+  content: "[   ]" !important; /* Точные пробелы внутри под стрелку */
   position: absolute !important;
   left: 0 !important;
   top: 0 !important;
@@ -135,7 +154,7 @@
 .content-block ul li::after {
   content: ">" !important;
   position: absolute !important;
-  left: 14px !important; /* Сдвиг в пикселях для идеального центрирования в JetBrains Mono */
+  left: 14px !important; /* Сдвиг для идеального центрирования в JetBrains Mono */
   top: 0 !important;
   font-family: var(--atlas-font-mono), monospace !important;
   font-size: 11px !important;
@@ -143,7 +162,10 @@
   color: var(--atlas-crit) !important; /* Фирменный красный акцент */
 }
 
-/* ── НУМЕРОВАННЫЙ СПИСОК (OL) — Системный счетчик [ 01 ] ── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 2.3: NUMBERED LISTS (OL) — LOG COUNTER [ 01 ]
+   ───────────────────────────────────────────────────────────── */
+
 .content-block ol {
   counter-reset: atlas-list-counter !important; /* Инициализируем чистый счетчик */
 }
@@ -167,9 +189,13 @@
   letter-spacing: 0 !important;
 }
 
-/* ── Inline code (Модифицировано: исключаем блоки кода) ─────── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 2.4: INLINE CODE TOKENS & SYSTEM RESET
+   ───────────────────────────────────────────────────────────── */
+
+/* Теги разметки inline-кода (Исключаем блоки кода pre code) */
 .content-block code:not(pre code) {
-  font-family: var(--atlas-font-mono) !important;
+  font-family: var(--atlas-font-mono), monospace !important;
   font-size: var(--fs-code, 11.5px) !important;
   background: var(--atlas-bg-alt) !important;
   color: var(--atlas-ink) !important;
@@ -177,8 +203,11 @@
   border: 1px solid var(--atlas-border) !important;
 }
 
-/* ── First child margin reset ───────────────────────────────── */
-#atlas-body > *:first-child { margin-top: 0 !important; }
+/* Первичный сброс верхнего маржина у самого первого элемента внутри тела */
+#atlas-body > *:first-child { 
+  margin-top: 0 !important; 
+}
+
 
 /* ==========================================================================
    ATLAS COMPONENT: COMPARISON SYSTEM (PRODUCTION)
@@ -285,33 +314,40 @@
   }
 }
 
-
 /* ==========================================================================
-   SYSTEM ATLAS v3.0 — DEVIDERS
+   MODULE 4: CONTEXT DIVIDERS & STRUCTURAL BREAKS [v1.1.6_production]
+   ─────────────────────────────────────────────────────────────
+   Scope: .content-block structural breaks
+   Provides: Technical indexed lines and terminal EOF (End of File) signatures
    ========================================================================== */
 
-/* ── Внутренний разделитель страниц ─────────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 4.1: INDEXED SECTION BREAK (ЛОКАЛЬНЫЙ РАЗДЕЛИТЕЛЬ)
+   ───────────────────────────────────────────────────────────── */
+
+/* Базовая горизонтальная линия разделителя */
 .content-block .atlas-section-break {
   position: relative !important;
   display: block !important;
   width: 100% !important;
   height: 1px !important;
   min-height: 1px !important;
-  background: rgba(0, 0, 0, 0.15) !important; 
+  background: var(--atlas-border, rgba(0, 0, 0, 0.15)) !important; 
   margin: 4rem 0 !important;
   padding: 0 !important;
   border: none !important;
   clear: both !important;
 }
 
+/* Накатываем текстовый бадж с индексом (берётся из HTML: data-index="01") */
 .content-block .atlas-section-break::before {
   content: attr(data-index) !important;
   position: absolute !important;
   top: 50% !important;
   left: 24px !important;
   transform: translateY(-50%) !important;
-  background: var(--atlas-bg) !important; 
-  color: var(--atlas-crit) !important; 
+  background: var(--atlas-bg, #ffffff) !important; /* Перекрывает линию подложкой */
+  color: var(--atlas-crit) !important;             /* Акцентный красный номер */
   padding: 0 0.6rem !important;
   font-family: var(--atlas-font-mono), monospace !important;
   font-size: 11px !important;
@@ -320,7 +356,11 @@
   z-index: 10 !important;
 }
 
-/* ── Финальный разделитель контента (EOF Divider) ────────────── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 4.2: FINAL CONTENT BREAK (EOF DIVIDER)
+   ───────────────────────────────────────────────────────────── */
+
+/* Флекс-контейнер для концевого разделителя всей статьи */
 .content-block .atlas-eof-divider {
   display: flex !important;
   flex-direction: row !important;
@@ -335,14 +375,16 @@
   width: 100% !important;
 }
 
+/* Пунктирная линия, заполняющая свободное пространство по бокам мета-данных */
 .content-block .atlas-eof-divider__line {
   display: block !important;
   flex: 1 1 auto !important;
   height: 1px !important;
   border: none !important;
-  border-bottom: 1px dashed rgba(0, 0, 0, 0.15) !important;
+  border-bottom: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
 }
 
+/* Центральный текстовый маркер (обычно содержит [ EOF ] или [ END OF TRANSMISSION ]) */
 .content-block .atlas-eof-divider__meta {
   display: inline-block !important;
   padding: 0 1.2rem !important;
@@ -353,18 +395,29 @@
 
 
 /* ==========================================================================
-   ── SYSTEM ATLAS // PASSPORT BLUEPRINT COMPONENT
+   MODULE 5: SYSTEM ATLAS // PASSPORT BLUEPRINT COMPONENT [v1.1.6_production]
+   ─────────────────────────────────────────────────────────────
+   Scope: .passport-bp and internal grid infrastructure
+   Style: Retro DOS-inspired data sheets (Volkov/Norton Commander tribute)
    ========================================================================== */
+
+/* Главная монолитная рамка паспорта */
 .passport-bp {
   display: flex !important;
   flex-direction: column !important;
   width: 100% !important;
-  border: 2px solid var(--atlas-ink, #000000) !important;
+  border: 2px solid var(--atlas-ink, #000000) !important; /* Жесткий инк-контур 2px */
   margin: 1.5rem 0 3.5rem 0 !important;
   padding: 0 !important;
   background: transparent !important;
+  box-sizing: border-box !important;
 }
 
+/* ─────────────────────────────────────────────────────────────
+   MODULE 5.1: TERMINAL TITLE BAR & SYSTEM PROMPTS
+   ───────────────────────────────────────────────────────────── */
+
+/* Верхняя служебная плашка в стиле командной строки */
 .bp-title-bar {
   display: flex !important;
   justify-content: space-between !important;
@@ -372,7 +425,9 @@
   padding: 8px 12px !important;
   border-bottom: 2px solid var(--atlas-ink, #000000) !important;
   background: var(--atlas-bg-alt, rgba(0,0,0,0.02)) !important;
+  font-family: var(--atlas-font-mono), monospace !important;
   font-size: 11px !important;
+  box-sizing: border-box !important;
 }
 
 .bp-title-bar__left {
@@ -381,13 +436,16 @@
   gap: 4px !important;
 }
 
+/* Элементы командного приглашения (User @ Machine: /path$) */
 .bp-user-prompt { color: var(--atlas-ink, #000000) !important; font-weight: 700 !important; }
 .bp-path-prompt { color: var(--atlas-ink-soft, rgba(0,0,0,0.85)) !important; }
-.bp-root-char { font-weight: 700 !important; margin-right: 4px !important; }
+.bp-root-char   { font-weight: 700 !important; margin-right: 4px !important; }
 .bp-command-text { color: var(--atlas-ink, #000000) !important; }
-.bp-sys-status { font-size: 10px !important; text-transform: uppercase !important; }
+.bp-sys-status   { font-size: 10px !important; text-transform: uppercase !important; }
 
+/* Крупный заголовок паспорта (Название сущности/справочника) */
 .bp-main-title {
+  font-family: var(--atlas-font-mono), monospace !important;
   font-size: 22px !important;
   font-weight: 700 !important;
   padding: 18px 12px !important;
@@ -396,23 +454,34 @@
   line-height: 1.2 !important;
   letter-spacing: 0.02em !important;
   color: var(--atlas-ink, #000000) !important;
+  box-sizing: border-box !important;
 }
 
+/* ─────────────────────────────────────────────────────────────
+   MODULE 5.2: METADATA GRID (KEY-VALUE PAIRS)
+   ───────────────────────────────────────────────────────────── */
+
+/* Двухколоночная информационная сетка */
 .bp-grid {
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
   width: 100% !important;
   border-bottom: 2px solid var(--atlas-ink, #000000) !important;
+  box-sizing: border-box !important;
 }
 
+/* Внутренние ячейки сетки */
 .bp-cell {
   padding: 10px 12px !important;
+  font-family: var(--atlas-font-mono), monospace !important;
   font-size: 11px !important;
   display: flex !important;
   flex-direction: column !important;
   gap: 6px !important;
+  box-sizing: border-box !important;
 }
 
+/* Разделение левой и правой колонки жесткой линией */
 .bp-cell:first-child {
   border-right: 2px solid var(--atlas-ink, #000000) !important;
 }
@@ -424,28 +493,32 @@
   width: 100% !important;
 }
 
-/* Лейблы: выровнены по правому краю фиксированной колонки */
+/* Ключи параметров: выровнены по правому краю фиксированной колонки */
 .bp-key {
   font-weight: 700 !important;
-  width: 68px !important; /* Оптимальная ширина, чтобы влезло 'VERSION' */
+  width: 68px !important; /* Оптимальный габарит под моноширинное слово 'VERSION' */
   text-align: right !important;
   margin-right: 12px !important;
   color: var(--atlas-ink-muted, rgba(0,0,0,0.5)) !important;
   display: inline-block !important;
 }
 
+/* Значения параметров */
 .bp-val { 
   color: var(--atlas-ink, #000000) !important; 
 }
 
+/* Нижняя строка системных мета-данных */
 .bp-meta {
   display: flex !important;
   flex-wrap: wrap !important;
   gap: 1.5rem !important;
   padding: 10px 12px !important;
+  font-family: var(--atlas-font-mono), monospace !important;
   font-size: 11px !important;
   border-bottom: 2px solid var(--atlas-ink, #000000) !important;
   background: var(--atlas-bg-alt, rgba(0,0,0,0.01)) !important;
+  box-sizing: border-box !important;
 }
 
 .bp-meta-item b {
@@ -453,16 +526,23 @@
   color: var(--atlas-ink-muted, rgba(0,0,0,0.5)) !important;
 }
 
-/* ── ТЕГИ: Ретро-кнопки в стиле Volkov Commander ───────────────── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 5.3: TAGS & RETRO DOS INTERFACE LINKS
+   ───────────────────────────────────────────────────────────── */
+
+/* Секция тегов / кнопок действий */
 .bp-tags {
   display: flex !important;
   flex-wrap: wrap !important;
   gap: 12px !important;
-  padding: 12px 14px 16px 12px !important; /* Запас снизу и справа под вылет пиксельной тени */
+  padding: 12px 14px 16px 12px !important; /* Запас снизу/справа под вылет пиксельной тени */
   background: var(--atlas-bg-alt, rgba(0,0,0,0.02)) !important;
+  box-sizing: border-box !important;
 }
 
+/* Кнопки-теги в стиле Volkov Commander */
 .atlas-blueprint-link {
+  font-family: var(--atlas-font-mono), monospace !important;
   font-size: 11px !important;
   color: var(--atlas-ink, #000000) !important;
   text-decoration: none !important;
@@ -473,16 +553,17 @@
   background: transparent !important;
   position: relative !important;
   display: inline-block !important;
-  transition: none !important; /* Никакого сглаживания, переключение мгновенное */
+  transition: none !important; /* Никакого сглаживания — переключение жесткое, мгновенное */
 }
 
+/* Ховер-эффект: Синий экран DOS-окна */
 .atlas-blueprint-link:hover {
   text-decoration: none !important;
   color: #ffffff !important;
-  background: #0000aa !important; /* Истинный DOS-овский синий */
+  background: #0000aa !important; /* Истинный синий классический DOS */
 }
 
-/* Генерация шахматной тени 2х2 (Dithering) при ховере */
+/* Генерация шахматной тени 2х2 (Dithering эффект) при наведении */
 .atlas-blueprint-link:hover::after {
   content: "" !important;
   position: absolute !important;
@@ -498,25 +579,50 @@
   background-size: 2px 2px !important;
 }
 
+/* ─────────────────────────────────────────────────────────────
+   MODULE 5.4: MEDIA BREAKPOINTS (MOBILE REFLOW)
+   ───────────────────────────────────────────────────────────── */
+
 @media (max-width: 600px) {
-  .bp-grid { grid-template-columns: 1fr !important; }
-  .bp-cell:first-child { border-right: none !important; border-bottom: 2px solid var(--atlas-ink, #000000) !important; }
-  .bp-key { text-align: left !important; width: auto !important; margin-right: 8px !important; }
-  .bp-title-bar { flex-direction: column !important; align-items: flex-start !important; gap: 6px !important; }
+  .bp-grid { 
+    grid-template-columns: 1fr !important; 
+  }
+  .bp-cell:first-child { 
+    border-right: none !important; 
+    border-bottom: 2px solid var(--atlas-ink, #000000) !important; 
+  }
+  .bp-key { 
+    text-align: left !important; 
+    width: auto !important; 
+    margin-right: 8px !important; 
+  }
+  .bp-title-bar { 
+    flex-direction: column !important; 
+    align-items: flex-start !important; 
+    gap: 6px !important; 
+  }
 }
 
 /* ==========================================================================
-   ── SYSTEM ATLAS // BLUEPRINT BUTTONS & TAGS (VC HOVER EFFECT)
+   MODULE 6: BLUEPRINT BUTTONS & TAGS (VC HOVER EFFECT) [v1.1.6_production]
+   ─────────────────────────────────────────────────────────────
+   Scope: .bp-tags and .atlas-blueprint-link elements
+   Effect: Instant DOS Volkov Commander style state switcher with 2x2 dithering
    ========================================================================== */
+
+/* Контейнер для группы тегов/кнопок */
 .bp-tags {
   display: flex !important;
   flex-wrap: wrap !important;
-  gap: 12px !important; /* Немного увеличим зазор для объема кнопок */
+  gap: 12px !important;            /* Увеличенный зазор под вылет пиксельной тени */
   padding: 10px 12px !important;
   background: var(--atlas-bg-alt, rgba(0,0,0,0.02)) !important;
+  box-sizing: border-box !important;
 }
 
+/* Базовое состояние ретро-кнопки */
 .atlas-blueprint-link {
+  font-family: var(--atlas-font-mono), monospace !important;
   font-size: 11px !important;
   color: var(--atlas-ink, #000000) !important;
   text-decoration: none !important;
@@ -527,28 +633,28 @@
   background: transparent !important;
   position: relative !important;
   display: inline-block !important;
-  transition: none !important; /* В DOS интерфейсах анимаций не было, переключаем мгновенно */
+  transition: none !important;     /* В DOS-интерфейсах анимаций не было, переключение мгновенное */
 }
 
-/* Эффект наведения в стиле Volkov Commander */
+/* Эффект наведения в стиле Volkov Commander (Классический текстовый режим) */
 .atlas-blueprint-link:hover {
   text-decoration: none !important;
-  color: #ffffff !important; /* Текст становится белым на синем фоне */
-  background: #0000aa !important; /* Тот самый синий цвет из VC/NC */
+  color: #ffffff !important;       /* Инверсия текста в чистый белый */
+  background: #0000aa !important;  /* Истинный каноничный синий фон DOS ($0000AA) */
 }
 
-/* Создаем пиксельную DOS-тень через псевдоэлемент */
+/* Создание жесткой пиксельной DOS-тени (Dithering) через псевдоэлемент */
 .atlas-blueprint-link:hover::after {
   content: "" !important;
   position: absolute !important;
-  /* Сдвиг тени вниз и вправо на 4px */
+  /* Сдвиг тени вниз и вправо строго на 4 пикселя */
   top: 4px !important;
   left: 4px !important;
   right: -4px !important;
   bottom: -4px !important;
   z-index: -1 !important;
   
-  /* Шахматная сетка 2х2 (1 пиксель черный, 3 прозрачных) */
+  /* Шахматная сетка 2х2 (1 пиксель черный, 3 прозрачных) для имитации старых ЭЛТ-мониторов */
   background-image: conic-gradient(
     rgba(0, 0, 0, 1) 0.25turn, 
     transparent 0.25turn
@@ -557,8 +663,13 @@
 }
 
 /* ==========================================================================
-   ── SYSTEM ATLAS // SITE FOOTER COMPONENT
+   MODULE 7: SYSTEM ATLAS // SITE FOOTER COMPONENT [v1.1.6_production]
+   ─────────────────────────────────────────────────────────────
+   Scope: .atlas-footer-wrapper and internal matrix infrastructure
+   Style: Heavy border box layout with a 3-column navigation matrix
    ========================================================================== */
+
+/* Глобальный внешний контейнер футера */
 .atlas-footer-wrapper {
   width: 100% !important;
   max-width: 900px !important;
@@ -566,17 +677,22 @@
   box-sizing: border-box !important;
 }
 
-/* Основной блок футера в виде рамки */
+/* Основной блок футера в виде брутальной рамки */
 .atlas-footer-block--main {
   display: flex !important;
   flex-direction: column !important;
   width: 100% !important;
-  border: 2px solid var(--atlas-ink, #000000) !important;
+  border: 2px solid var(--atlas-ink, #000000) !important; /* Толстый инк-контур */
   padding: 0 !important;
   background: transparent !important;
+  box-sizing: border-box !important;
 }
 
-/* Верхняя строка футера с Каомодзи и заголовком */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 7.1: FOOTER HEADER (KAOMOJI ZONE)
+   ───────────────────────────────────────────────────────────── */
+
+/* Верхняя строка футера с Каомодзи и служебным заголовком */
 .atlas-footer-block__support-header {
   display: flex !important;
   justify-content: space-between !important;
@@ -584,7 +700,9 @@
   padding: 8px 12px !important;
   border-bottom: 2px solid var(--atlas-ink, #000000) !important;
   background: var(--atlas-bg-alt, rgba(0,0,0,0.02)) !important;
+  font-family: var(--atlas-font-mono), monospace !important;
   font-size: 11px !important;
+  box-sizing: border-box !important;
 }
 
 .atlas-footer-block__kaomoji {
@@ -599,6 +717,10 @@
   font-weight: 700 !important;
 }
 
+/* ─────────────────────────────────────────────────────────────
+   MODULE 7.2: MIDDLE CONTENT & RAPID CONTACTS
+   ───────────────────────────────────────────────────────────── */
+
 /* Средняя зона: Текст поддержки и быстрые контакты */
 .atlas-footer-block__support-content {
   padding: 16px 12px !important;
@@ -606,9 +728,11 @@
   display: flex !important;
   flex-direction: column !important;
   gap: 14px !important;
+  box-sizing: border-box !important;
 }
 
 .atlas-footer-block__support-text {
+  font-family: var(--atlas-font-mono), monospace !important;
   font-size: 13px !important;
   line-height: 1.6 !important;
   color: var(--atlas-ink-soft, rgba(0,0,0,0.85)) !important;
@@ -619,19 +743,25 @@
   align-items: center !important;
   flex-wrap: wrap !important;
   gap: 12px !important;
-  padding-bottom: 4px !important; /* Запас под пиксельную тень кнопок контактов */
+  padding-bottom: 4px !important; /* Предотвращает обрезание пиксельной тени кнопок */
 }
 
 .atlas-footer-block__support-divider {
+  font-family: var(--atlas-font-mono), monospace !important;
   color: var(--atlas-ink-muted, rgba(0,0,0,0.25)) !important;
   user-select: none !important;
 }
 
-/* Нижняя зона: 3-колончатая матрица ссылок */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 7.3: 3-COLUMN NAVIGATION MATRIX
+   ───────────────────────────────────────────────────────────── */
+
+/* Нижняя зона: 3-колончатая жесткая матрица перекрестных ссылок */
 .atlas-footer-block__matrix-zone {
   display: grid !important;
   grid-template-columns: 1fr 1fr 1fr !important;
   width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .atlas-footer-block__matrix-column {
@@ -639,15 +769,17 @@
   display: flex !important;
   flex-direction: column !important;
   gap: 10px !important;
+  box-sizing: border-box !important;
 }
 
-/* Вертикальный разделитель между колонками матрицы */
+/* Вертикальный внутренний разделитель между колонками матрицы */
 .atlas-footer-block__matrix-column:not(:last-child) {
   border-right: 2px solid var(--atlas-ink, #000000) !important;
 }
 
-/* Метки категорий в матрице (выровнены по левому краю своей колонки) */
+/* Метки категорий в матрице (Заголовки колонок) */
 .atlas-footer-block__column-label {
+  font-family: var(--atlas-font-mono), monospace !important;
   font-size: 11px !important;
   font-weight: 700 !important;
   color: var(--atlas-ink-muted, rgba(0,0,0,0.5)) !important;
@@ -658,13 +790,18 @@
 .atlas-footer-block__column-items {
   display: flex !important;
   flex-direction: column !important;
-  align-items: flex-start !important; /* Чтобы кнопки занимали только ширину текста */
+  align-items: flex-start !important; /* Кнопки прижимаются влево и занимают только ширину своего текста */
   gap: 8px !important;
-  padding-bottom: 4px !important; /* Запас под пиксельную тень внутренних ссылок */
+  padding-bottom: 4px !important;    /* Запас под вылет пиксельной тени ссылок */
 }
 
-/* Универсальный DOS-эффект при наведении на любые ссылки футера */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 7.4: FOOTER INTERNAL LINK SWITCHERS
+   ───────────────────────────────────────────────────────────── */
+
+/* Универсальный DOS-эффект при наведении на любые ссылки внутри футера */
 .atlas-footer-block .atlas-blueprint-link {
+  font-family: var(--atlas-font-mono), monospace !important;
   font-size: 12px !important;
   color: var(--atlas-ink, #000000) !important;
   text-decoration: none !important;
@@ -674,17 +811,17 @@
   background: transparent !important;
   position: relative !important;
   display: inline-block !important;
-  transition: none !important; /* Мгновенный отклик */
+  transition: none !important;        /* Мгновенный отклик без CSS-размытия */
 }
 
 .atlas-footer-block .atlas-blueprint-link:hover {
   text-decoration: none !important;
   color: #ffffff !important;
-  background: #0000aa !important; /* Синий фон Volkov Commander */
+  background: #0000aa !important;     /* Классический синий DOS ($0000AA) */
   border-color: var(--atlas-ink, #000000) !important;
 }
 
-/* Генерация шахматной тени 2х2 при ховере */
+/* Генерация шахматной тени 2х2 (Dithering) при ховере */
 .atlas-footer-block .atlas-blueprint-link:hover::after {
   content: "" !important;
   position: absolute !important;
@@ -700,7 +837,10 @@
   background-size: 2px 2px !important;
 }
 
-/* ── Адаптивность под мобильные устройства ────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   MODULE 7.5: MEDIA BREAKPOINTS (MOBILE REFLOW)
+   ───────────────────────────────────────────────────────────── */
+
 @media (max-width: 700px) {
   .atlas-footer-block__support-header {
     flex-direction: column !important;
@@ -708,47 +848,62 @@
     gap: 6px !important;
   }
   
+  /* Схлопываем 3-колонную матрицу ссылок в один вертикальный столбец */
   .atlas-footer-block__matrix-zone {
-    grid-template-columns: 1fr !important; /* Схлопываем матрицу в один столбец */
+    grid-template-columns: 1fr !important;
   }
   
+  /* Перестраиваем вертикальные разделители колонок в горизонтальные линии */
   .atlas-footer-block__matrix-column:not(:last-child) {
     border-right: none !important;
-    border-bottom: 2px solid var(--atlas-ink, #000000) !important; /* Разделитель становится горизонтальным */
+    border-bottom: 2px solid var(--atlas-ink, #000000) !important;
   }
 }
 
 /* ==========================================================================
-   ── SYSTEM ATLAS // MODULE: TABLES
+   MODULE 8: DATA TABLES (PRODUCTION METRICS) [v1.1.6_production]
+   ─────────────────────────────────────────────────────────────
+   Scope: .atlas-table-responsive and .atlas-table components
+   Style: Terminal data layout, strict borders, tabular numbers alignment
    ========================================================================== */
+
+/* Адаптивный контейнер с горизонтальным скроллом для мобильных устройств */
 .atlas-table-responsive {
   width: 100% !important;
   max-width: 100% !important;
   overflow-x: auto !important;
   margin: 24px 0 !important;
   display: block !important;
-  -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS устройствах */
+  box-sizing: border-box !important;
 }
 
+/* Базовый моноширинный каркас таблицы */
 .atlas-table {
-  display: table !important; /* Форсируем нативное поведение против resets */
+  display: table !important; /* Форсируем нативное поведение против агрессивных глобальных resets */
   width: 100% !important;
   border-collapse: collapse !important;
   border-spacing: 0 !important;
   border: 1px solid var(--atlas-border, rgba(0,0,0,0.15)) !important;
   background: var(--atlas-bg, transparent) !important;
+  font-family: var(--atlas-font-mono), monospace !important;
   font-size: var(--fs-body, 12px) !important;
   line-height: 1.5 !important;
+  box-sizing: border-box !important;
 }
 
+/* Общие правила для ячеек заголовков и тела */
 .atlas-table th,
 .atlas-table td {
   padding: 10px 14px !important;
   border: 1px solid var(--atlas-border, rgba(0,0,0,0.15)) !important;
   vertical-align: top !important;
   text-align: left !important;
+  font-family: var(--atlas-font-mono), monospace !important;
+  box-sizing: border-box !important;
 }
 
+/* Заголовки столбцов (Шапка таблицы в стиле отчетов профайлера) */
 .atlas-table th {
   background: var(--atlas-bg-alt, rgba(0,0,0,0.04)) !important;
   font-weight: 700 !important;
@@ -758,16 +913,33 @@
   letter-spacing: 0.06em !important;
 }
 
+/* Ячейки с данными */
 .atlas-table td {
   color: var(--atlas-ink-soft, rgba(0,0,0,0.75)) !important;
 }
 
+/* Выравнивание чисел по правому краю с фиксацией ширины глифов (Tabular Numbers) */
 .atlas-table-num {
   text-align: right !important;
-  font-variant-numeric: tabular-nums !important;
+  font-variant-numeric: tabular-nums !important; /* Предотвращает дергание цифр по горизонтали */
 }
 
-/* Изолированные статусы для конкретных метрик и параметров */
-.atlas-table td .atlas-param[data-status="ok"]   { color: var(--atlas-ok, #1a4d1a) !important; font-weight: 700 !important; }
-.atlas-table td .atlas-param[data-status="warn"] { color: var(--atlas-warn, #7a5200) !important; font-weight: 700 !important; }
-.atlas-table td .atlas-param[data-status="crit"] { color: var(--atlas-crit, #8b0000) !important; font-weight: 700 !important; }
+/* ─────────────────────────────────────────────────────────────
+   MODULE 8.2: METRIC PARAMETER STATUSES
+   ───────────────────────────────────────────────────────────── */
+
+/* Изолированные статусы для конкретных метрик и параметров в ячейках */
+.atlas-table td .atlas-param[data-status="ok"] { 
+  color: var(--atlas-ok, #1a4d1a) !important; 
+  font-weight: 700 !important; 
+}
+
+.atlas-table td .atlas-param[data-status="warn"] { 
+  color: var(--atlas-warn, #7a5200) !important; 
+  font-weight: 700 !important; 
+}
+
+.atlas-table td .atlas-param[data-status="crit"] { 
+  color: var(--atlas-crit, #8b0000) !important; 
+  font-weight: 700 !important; 
+}
