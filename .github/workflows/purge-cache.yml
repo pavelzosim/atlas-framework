@@ -1,36 +1,78 @@
-name: Atlas Framework CDN Cache Purge
+name: Atlas Framework Automated Production Compiler
 
 on:
   push:
-    tags:
-      - 'v*'
     branches:
       - master
 
-# Принудительно переводим окружение на Node.js 24, убирая предупреждение депрекации
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
-
+# Разрешаем раннеру делать пуши обратно в твой репозиторий
 permissions:
   contents: write
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 jobs:
-  purge:
+  build-and-purge:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Скачиваем всю историю для корректного push
+
+      - name: Compile CSS Modules into Production Monolith
+        run: |
+          # Создаем чистый файл и пишем импорт на первую строку
+          printf "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght=300;400;700&display=swap');\n" > cdn/atlas-framework.css
+          
+          # Системная шапка сборки
+          printf "\n/* ==========================================================================\n   ATLAS FRAMEWORK PRODUCTION CORE — COMPILED MONOLITH\n   Generated automatically via GitHub Actions Workflow\n   ========================================================================== */\n\n" >> cdn/atlas-framework.css
+          
+          # Функция очистки BOM, удаления импортов и фикса синтаксиса шрифта
+          process_file() {
+            if [ -f "$1" ]; then
+              printf "/* ── COMPILER_INJECT: %s ──────────────────────────────── */\n" "$1" >> cdn/atlas-framework.css
+              perl -pe 's/\xEF\xBB\xBF//g' "$1" | \
+              sed 's|@import url(.*);||g' | \
+              sed 's|var(--atlas-font-mono), monospace|var(--atlas-font-mono)|g' >> cdn/atlas-framework.css
+              printf "\n\n" >> cdn/atlas-framework.css
+              echo "[ATLAS_COMPILER] Compiled: $1"
+            else
+              echo "[ATLAS_COMPILER] WARNING: File not found: $1"
+            fi
+          }
+          
+          # КОНВЕЙЕР СБОРКИ МОДУЛЕЙ
+          process_file "cdn/atlas-core.css"
+          process_file "cdn/atlas-typography.css"
+          
+          echo "Compilation complete. Monolith is ready."
+
+      - name: Commit and Push Compiled Monolith back to Master
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          git add cdn/atlas-framework.css
+          
+          # Проверяем, изменился ли собранный файл, чтобы не зациклить сборку
+          if git diff-index --quiet HEAD -- cdn/atlas-framework.css; then
+            echo "[ATLAS_COMPILER] No structural changes in monolith. Skipping commit."
+          else
+            git commit -m "build: automated production monolith compilation [skip ci]"
+            git push origin HEAD:master
+          fi
 
       - name: Flush and Warm jsDelivr Cache
         run: |
-          echo "[ATLAS_CDN] Initiating register flush for: ${{ github.ref_name }}"
+          echo "[ATLAS_CDN] Dispatched purge token to master registry..."
+          # Даем GitHub 3 секунды обновить физический файл в репозитории
+          sleep 3
           
-          # Если пуш в ветку master — сбрасываем кэш через API
-          if [ "${{ github.ref_name }}" = "master" ]; then
-            curl -s "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css" > /dev/null
-            echo "[ATLAS_CDN] Purge signal dispatched to master chain."
-          fi
+          # Жестко сбрасываем кэш jsDelivr для ветки master через API
+          curl -s "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css" > /dev/null
           
-          # Холостой запрос заголовков для прогрева тега/ветки
-          curl -I "https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@${{ github.ref_name }}/cdn/atlas-framework.css"
-          echo "[ATLAS_CDN] Pipeline warming transaction complete."
+          # Прогреваем кэш свежим файлом
+          curl -I "https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css"
+          echo "[ATLAS_CDN] CDN Cache reset successfully completed."
