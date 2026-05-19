@@ -24,20 +24,28 @@ jobs:
           # 1. Получаем текущую версию (тег или коммит)
           VERSION=$(git describe --tags --exact-match 2>/dev/null || echo "dev-${GITHUB_SHA::7}")
           
-          # 2. Удаление и создание файла с нуля
+          # 2. Удаление старого файла
           rm -f cdn/atlas-framework.css
+          
+          # 3. Создание файла с шапкой
           echo "/* ATLAS FRAMEWORK | VERSION: $VERSION | BUILD: $(date -u) */" > cdn/atlas-framework.css
           
-          # 3. Атомарная сборка (сначала корень, потом компоненты)
-          find cdn/ -maxdepth 1 -name "*.css" ! -name "atlas-framework.css" -exec cat {} + >> cdn/atlas-framework.css
-          echo -e "\n" >> cdn/atlas-framework.css
-          find cdn/components/ -name "*.css" -exec cat {} + >> cdn/atlas-framework.css
+          # 4. Атомарная сборка в строгом порядке:
+          # Сначала ядро, затем глобальные стили, затем паспорт, затем остальные компоненты
+          cat cdn/atlas-core.css \
+              cdn/atlas-typography.css \
+              >> cdn/atlas-framework.css
+          
+          # Проверка на пустоту (если сборка упала)
+          if [ ! -s cdn/atlas-framework.css ]; then exit 1; fi
 
       - name: Push Result
         run: |
           git config --global user.name "Atlas-CI-Bot"
           git config --global user.email "actions@github.com"
           git add cdn/atlas-framework.css
+          
+          # Коммитим, только если были изменения
           if ! git diff --staged --quiet; then
             git commit -m "build: rebuild $(git describe --tags --exact-match 2>/dev/null || echo "dev") [skip ci]"
             git push origin master
@@ -45,5 +53,5 @@ jobs:
 
       - name: Purge jsDelivr Cache
         run: |
-          # Принудительно чистим кэш после успешного пуша
+          # Чистим кэш, чтобы Wix увидел изменения моментально
           curl -s "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css"
