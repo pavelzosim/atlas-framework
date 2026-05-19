@@ -21,25 +21,40 @@ jobs:
 
       - name: Hard Rebuild
         run: |
+          set -e
+          
           # 1. Получаем текущую версию (тег или коммит)
           VERSION=$(git describe --tags --exact-match 2>/dev/null || echo "dev-${GITHUB_SHA::7}")
           
           # 2. Удаление старого файла
           rm -f cdn/atlas-framework.css
           
-          # 3. Создание файла с шапкой
-          LC_ALL=C printf '/* ATLAS FRAMEWORK | VERSION: %s | BUILD: %s */\n' "$VERSION" "$(date -u)" > cdn/atlas-framework.css
-          sed -i '1s/^\xEF\xBB\xBF//' cdn/atlas-framework.css
-
-          # 4. Атомарная сборка в строгом порядке:
-          # Сначала ядро, затем глобальные стили, затем паспорт, затем остальные компоненты
-          cat cdn/atlas-core.css \
-              cdn/components/atlas-typography.css \
-              cdn/components/atlas-layout-global.css \
-              >> cdn/atlas-framework.css
+          # 3. Создание файла с шапкой (без BOM)
+          printf '/* ATLAS FRAMEWORK | VERSION: %s | BUILD: %s */\n' "$VERSION" "$(date -u)" > cdn/atlas-framework.css
           
-          # Проверка на пустоту (если сборка упала)
-          if [ ! -s cdn/atlas-framework.css ]; then exit 1; fi
+          # 4. Удаляем BOM, если вдруг появился
+          perl -pi -e 's/^\x{FEFF}//' cdn/atlas-framework.css
+          
+          # 5. Атомарная сборка в строгом порядке:
+          FILES=(
+            cdn/atlas-core.css
+            cdn/components/atlas-typography.css
+            cdn/components/atlas-layout-global.css
+          )
+          
+          for f in "${FILES[@]}"; do
+            if [ -f "$f" ]; then
+              cat "$f" >> cdn/atlas-framework.css
+            else
+              echo "/* WARNING: missing $f */" >> cdn/atlas-framework.css
+            fi
+          done
+          
+          # 6. Проверка на пустоту (если сборка упала)
+          if [ ! -s cdn/atlas-framework.css ]; then
+            echo "ERROR: atlas-framework.css пустой!"
+            exit 1
+          fi
 
       - name: Push Result
         run: |
