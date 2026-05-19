@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: dev-dd432c4 | BUILD: Tue May 19 18:00:07 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: dev-543a206 | BUILD: Tue May 19 18:11:09 UTC 2026 */
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
 /* ── Reset ──────────────────────────────────────────────────── */
@@ -71,6 +71,8 @@ html, body {
   font-size: var(--fs-body) !important;
   color: var(--atlas-ink) !important;
   box-sizing: border-box !important;
+  border-top: 1px solid var(--atlas-border) !important;
+  border-bottom: 1px solid var(--atlas-border) !important;
 } /* ==========================================================================
    MODULE: TYPOGRAPHY
    ========================================================================== */
