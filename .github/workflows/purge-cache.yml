@@ -1,45 +1,26 @@
-- name: Compile CSS Modules into Production Monolith
+name: Purge CDN Cache
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - 'cdn/**'
+
+jobs:
+  purge-jsdelivr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Flush jsDelivr Edge Nodes Cache
         run: |
-          # Создаем чистый файл и пишем импорт на первую строку
-          printf "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght=300;400;700&display=swap');\n" > cdn/atlas-framework.css
+          echo "[ATLAS_CDN] Sending purge requests to jsDelivr infrastructure..."
           
-          # Системная шапка сборки
-          printf "\n/* ==========================================================================\n   ATLAS FRAMEWORK PRODUCTION CORE — COMPILED MONOLITH\n   Generated automatically via GitHub Actions Workflow\n   ========================================================================== */\n\n" >> cdn/atlas-framework.css
+          # Очистка основного скомпилированного монолита
+          curl -s -i "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css"
           
-          # Функция очистки BOM, удаления импортов и фикса синтаксиса шрифта
-          process_file() {
-            if [ -f "$1" ]; then
-              printf "/* ── COMPILER_INJECT: %s ──────────────────────────────── */\n" "$1" >> cdn/atlas-framework.css
-              perl -pe 's/\xEF\xBB\xBF//g' "$1" | \
-              sed 's|@import url(.*);||g' | \
-              sed 's|var(--atlas-font-mono), monospace|var(--atlas-font-mono)|g' >> cdn/atlas-framework.css
-              printf "\n\n" >> cdn/atlas-framework.css
-              echo "[ATLAS_COMPILER] Compiled: $1"
-            else
-              echo "[ATLAS_COMPILER] WARNING: File not found: $1"
-            fi
-          }
+          # Очистка отдельных модулей ядра (на случай если полигон стучится в них напрямую)
+          curl -s -i "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-core.css"
+          curl -s -i "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-typography.css"
           
-          # ==========================================================================
-          # 🎛️ КОНВЕЙЕР ВКЛЮЧЕНИЯ МОДУЛЕЙ (ОТЛАДКА ИЗОЛЯЦИИ)
-          # ==========================================================================
-          
-          # ШАГ 1: Включаем Базовое Ядро и Токены (ОБЯЗАТЕЛЬНО)
-          process_file "cdn/atlas-core.css"
-          
-          # ШАГ 2: Включаем Типографику (Сюда входят Базовые Тексты и Паспорт/Хедер)
-          process_file "cdn/atlas-typography.css"
-          
-          # ВРЕМЕННО ОТКЛЮЧЕНЫ ДЛЯ ПОШАГОВОЙ ОТЛАДКИ КАСКАДА:
-          # ────────────────────────────────────────────────────────────────────────
-          # process_file "cdn/components/atlas-callout.css"
-          # process_file "cdn/components/atlas-code-theme.css"
-          # process_file "cdn/components/atlas-comparison.css"
-          # process_file "cdn/components/atlas-layouts.css"
-          # process_file "cdn/components/atlas-schema.css"
-          # process_file "cdn/components/atlas-timeline.css"
-          # process_file "cdn/components/atlas-uml.css"
-          # process_file "cdn/components/atlas-vfx-tools.css"
-          # ────────────────────────────────────────────────────────────────────────
-          
-          echo "Compilation complete. Stage 1 (Core + Typography) is online."
+          echo -e "\n[ATLAS_CDN] Cache invalidation tokens dispatched successfully."
