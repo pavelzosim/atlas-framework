@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Atlas // Production Isolation Test (DEBUGGED)</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.3.0/cdn/atlas-framework.css"><!--<link rel="stylesheet" href="https://rawcdn.githack.com/pavelzosim/atlas-framework/master/cdn/atlas-framework.css">  -->
+
+  <style>
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    html, body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden; 
+        background: transparent;
+        font-family: 'JetBrains Mono', 'Courier New', monospace !important;
+    }
+
+    h1, h2, h3, h4, h5, h6, p, span, div, li, td, th, a {
+        font-family: 'JetBrains Mono', 'Courier New', monospace !important;
+    }
+
+    .atlas-container {
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 24px 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="atlas-container">
+    
+    <header id="site-passport"></header>
+
+    <div id="atlas-body" class="content-block">
+      
+      <h2>01. Hardware Architecture Log</h2>
+      <p>Testing procedural pipeline core under Atlas Engine environment. This is a standard paragraph enforcing explicit monospace glyph constraints and verification of the line height rhythm.</p>
+      
+      <h3>Sub-System Level Diagnostics</h3>
+      <p>Evaluating low-level subroutines and VRAM allocation footprints.</p>
+
+      <hr class="atlas-section-break" data-index="01">
+
+      <h2>02. Shader Execution Model</h2>
+      <p>Low-level syntax parsing layout for production shaders (HLSL/GLSL):</p>
+      
+      <pre class="atlas-code-block"><code class="language-hlsl">/* Core Hardware Vertex Dispatch */
+float4 frag(v2f i) : SV_Target {
+    float3 normal = normalize(i.worldNormal);
+    float3 lightDir = normalize(_WorldSpaceLightPos0.xyz);
+    float NdotL = max(0.0, dot(normal, lightDir));
+    return float4(NdotL * _LightColor0.rgb, 1.0);
+}</code></pre>
+
+      <hr class="atlas-section-break" data-index="02">
+
+      <h2>03. Compiler & Profiler Status Notices</h2>
+      
+      <div class="atlas-notice" data-type="info">
+        <div class="atlas-notice__header">INFO_LOG: Pipeline Initialization</div>
+        <p>Core rendering context established successfully. Standard memory boundaries applied.</p>
+      </div>
+
+      <div class="atlas-notice" data-type="warn">
+        <div class="atlas-notice__header">WARN_LOG: Optimization Required</div>
+        <p>Detected non-aligned VRAM structure block. Temporary fallback pipeline enabled to prevent memory stalls.</p>
+      </div>
+
+      <div class="atlas-notice" data-type="crit">
+        <div class="atlas-notice__header">CRIT_LOG: Hardware VRAM Overflow</div>
+        <p>Out of video memory while allocating 4K Compute Shader Render Target. Allocation thread terminated prematurely.</p>
+      </div>
+
+      <hr class="atlas-section-break" data-index="03">
+
+      <h2>04. Architecture Blueprint Matrix</h2>
+      <p>Comparative analysis of data layout styles:</p>
+
+      <div class="atlas-compare">
+        <div class="atlas-compare__block">
+          <span class="atlas-compare__label">Method A</span>
+          <h4 class="atlas-compare__concept">Textureless Compute Derivation</h4>
+          <p>Procedural generation directly derived from mathematical constraints inside the GPU execution grid. Zero VRAM footprint, high ALU instructions block load.</p>
+        </div>
+        <div class="atlas-compare__block">
+          <span class="atlas-compare__label">Method B</span>
+          <h4 class="atlas-compare__concept">Traditional Rasterized LUTs</h4>
+          <p>Static pre-baked textures allocation inside discrete VRAM registers. Minimal ALU utilization, heavy dependency on memory bandwidth and cache residency.</p>
+        </div>
+      </div>
+
+      <hr class="atlas-section-break" data-index="04">
+
+      <h2>05. Performance Metrics & Registers</h2>
+      <p>Tabular data alignment validation under strict mobile overflow containment constraints:</p>
+
+      <div class="atlas-table-responsive">
+        <table class="atlas-table">
+          <thead>
+            <tr>
+              <th>Register ID</th>
+              <th>Hardware Module</th>
+              <th>Memory Footprint</th>
+              <th>Status Marker</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>0x7FFF8A2C</code></td>
+              <td>ComputeShader_SunSurface_Core</td>
+              <td>12.4 MB</td>
+              <td><span class="atlas-param-status" data-state="ok">READY</span></td>
+            </tr>
+            <tr>
+              <td><code>0x7FFF8B10</code></td>
+              <td>VRAM_Buffer_ProceduralNoise</td>
+              <td>128.0 MB</td>
+              <td><span class="atlas-param-status" data-state="warn">HEAVY</span></td>
+            </tr>
+            <tr>
+              <td><code>0x7FFF9C04</code></td>
+              <td>RenderTexture_Depth_Fallback</td>
+              <td>0.0 MB</td>
+              <td><span class="atlas-param-status" data-state="crit">STALLED</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <hr class="atlas-section-break" data-index="05">
+
+      <h2>06. Execution Flow Diagram</h2>
+      <p>Visual representation of procedural graph pipelines using retro-terminal syntax nodes:</p>
+
+      <div class="atlas-data-flow">
+        <div class="atlas-flow-row">
+          <div class="atlas-flow-node" data-type="process">Houdini HDA Engine</div>
+          <div class="atlas-flow-connector">───>></div>
+          <div class="atlas-flow-node" data-type="io">Raw Vertex Buffer</div>
+          <div class="atlas-flow-connector">───>></div>
+          <div class="atlas-flow-node" data-type="process">UE 5.7 Compute Dispatch</div>
+        </div>
+      </div>
+
+      <hr class="atlas-section-break" data-index="06">
+      
+      <h2>07. Hardware Profiler Inspection Capture</h2>
+      <p>High-fidelity frame time debugging rendering snapshot inside isolated sandbox block:</p>
+
+      <div class="atlas-media-node">
+        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" alt="Production Pipeline Profiler Target View">
+        <span class="atlas-media-node__caption">Fig 01 // GPU_PROFILER_INSIGHT: Frame time capture displaying compute thread execution waves layout.</span>
+      </div>
+
+    </div> <footer id="site-footer"></footer>
+
+  </div>
+
+  <script>
+    // Тестовая конфигурация метаданных (имитация Wix Backend Post Context)
+    var CONFIG = { 
+        slug: "unreal-engine-procedural-sun-surface", 
+        author: "Pavel Zosim", 
+        title: "Textureless PBR Sun Surface Architecture inside Unreal Engine 5.7",
+        created: "May 19, 2026",
+        modified: "May 19, 2026",
+        tags: ["Unreal Engine", "Compute Shaders", "HLSL", "R&D"]
+    };
+
+    // Фейковые данные для сборки структуры футера (Ссылки, Каомодзи)
+    var FOOTER_DATA = {
+        tagline: "⊂(========= 📥 CORE_READY =========)⊃",
+        support: {
+            text: "Production tools engineering support channel:",
+            links: [
+                { text: "Gumroad Tools", url: "https://gumroad.com" },
+                { text: "ArtStation Portfolio", url: "https://artstation.com" }
+            ]
+        },
+        links: [
+            {
+                label: "PIPELINES",
+                items: [
+                    { text: "Houdini HDA procedural", url: "#" },
+                    { text: "UE Compute Plugins", url: "#" }
+                ]
+            },
+            {
+                label: "RESOURCES",
+                items: [
+                    { text: "Atlas Core Framework", url: "#" },
+                    { text: "Hardware Dev Logs", url: "#" }
+                ]
+            }
+        ]
+    };
+
+    /* НАДСТРОЙКА: РЕНДЕРИНГ ПАСПОРТА ЧЕРТЕЖА (HEADER) */
+    function renderPassport() { 
+        var target = document.getElementById('site-passport');
+        if (!target) return;
+
+        var tagsHTML = (CONFIG.tags || []).map(function(t) {
+            return '<span class="bp-tag">#' + t + '</span>';
+        }).join(' ');
+
+        var dateLine = CONFIG.created;
+        if (CONFIG.modified && CONFIG.modified !== CONFIG.created) {
+            dateLine += ' (REV: ' + CONFIG.modified + ')';
+        }
+
+        target.innerHTML = 
+            '<div class="atlas-blueprint-passport">' +
+                '<div class="bp-header">' +
+                    '<span class="bp-logo">SYSTEM_ATLAS // DOCUMENTATION</span>' +
+                    '<span class="bp-status">COMPILED_OK</span>' +
+                '</div>' +
+                '<div class="bp-main-title">' + CONFIG.title + '</div>' +
+                '<div class="bp-grid">' +
+                    '<div class="bp-cell">' +
+                        '<div><span class="bp-key">AUTHOR:</span><span class="bp-val">' + CONFIG.author + '</span></div>' +
+                        '<div><span class="bp-key">STATION:</span><span class="bp-val">CHISINAU_UTC+3</span></div>' +
+                    '</div>' +
+                    '<div class="bp-cell">' +
+                        '<div><span class="bp-key">TIMESTAMP:</span><span class="bp-val">' + dateLine + '</span></div>' +
+                        '<div><span class="bp-key">LOG_SLUG:</span><span class="bp-val">' + CONFIG.slug + '.log</span></div>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="bp-meta">' + tagsHTML + '</div>' +
+            '</div>';
+        console.log("[ATLAS_COMPILER] Blueprint Passport rendered safely.");
+    }
+
+    /* НАДСТРОЙКА: РЕНДЕРИНГ ПОДВАЛА МАТРИЦЫ (FOOTER) */
+    function renderFooter(c) {
+        if (!c) return;
+        var supportHTML = '';
+        if (c.support) {
+            var supportLinks = (c.support.links || []).map(function(l, idx, arr) {
+                var link = '<a href="' + l.url + '" class="atlas-blueprint-link" target="_blank">[ ' + l.text + ' ]</a>';
+                return idx < arr.length - 1
+                    ? link + '<span class="atlas-footer-block__support-divider"> | </span>'
+                    : link;
+            }).join('');
+
+            supportHTML =
+                '<div class="atlas-footer-block__support-content">' +
+                    '<div class="atlas-footer-block__support-text">' + (c.support.text || '') + '</div>' +
+                    '<div class="atlas-footer-block__support-links">' + supportLinks + '</div>' +
+                '</div>';
+        }
+
+        var matrixHTML = (c.links || []).map(function(group) {
+            var items = (group.items || []).map(function(item) {
+                return '<a href="' + item.url + '" class="atlas-blueprint-link" target="_blank">/ ' + item.text + '</a>';
+            }).join('');
+
+            return '<div class="atlas-footer-block__matrix-column">' +
+                       '<span class="atlas-footer-block__column-label">' + group.label + '</span>' +
+                       '<div class="atlas-footer-block__column-items">' + items + '</div>' +
+                   '</div>';
+        }).join('');
+
+        var footerTarget = document.getElementById('site-footer');
+        if (footerTarget) {
+            footerTarget.innerHTML =
+                '<div class="atlas-footer-wrapper">' +
+                    '<div class="atlas-footer-block atlas-footer-block--main">' +
+                        '<div class="atlas-footer-block__support-header">' +
+                            '<div class="atlas-footer-block__kaomoji">' + (c.tagline || '') + '</div>' +
+                            '<div class="atlas-footer-block__support-title">SYSTEM CONNECTIVITY REGISTERS</div>' +
+                        '</div>' +
+                        supportHTML +
+                        '<div class="atlas-footer-block__matrix-zone">' + matrixHTML + '</div>' +
+                    '</div>' +
+                '</div>';
+            console.log("[ATLAS_COMPILER] Dynamic terminal matrix footer built successfully.");
+        }
+    }
+
+    // Принудительный вызов систем при готовности DOM холста
+    window.addEventListener('DOMContentLoaded', function() {
+        console.log("[ATLAS_DEBUG] Core layout engine online.");
+        renderPassport();
+        renderFooter(FOOTER_DATA);
+    });
+  </script> 
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-glsl.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-hlsl.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-shaderlab.min.js"></script>
+
+</body>
+</html>
