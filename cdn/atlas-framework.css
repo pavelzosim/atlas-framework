@@ -1,116 +1,88 @@
-/* ATLAS FRAMEWORK | VERSION: dev-2293e55 | BUILD: Tue May 19 15:31:07 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: dev-5113895 | BUILD: Tue May 19 15:42:56 UTC 2026 */
 ﻿/* ==========================================================================
-   ATLAS FRAMEWORK | PRODUCTION MONOLITH | v1.5.9
-   ========================================================================== */
+   ATLAS FRAMEWORK | PRODUCTION MONOLITH (WIX PAGE + IFRAME)
+   ========================================================================= */
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
 :root {
-  --atlas-bg:            #e6dcd2; /* 100% плотный непрозрачный бежевый инженерный фон */
-  --atlas-bg-alt:        #d9cfc5; /* Плотный темный бежевый для подложек */
-  --atlas-ink:           #000000; /* Абсолютно черная глухая тушь для всех линий */
-  --atlas-ink-muted:     #555555; /* Темно-серый для служебных меток (без rgba) */
-  --atlas-ink-soft:      #111111; /* Глубокий черный для чтения текста */
-  --atlas-crit:          #8b0000; /* Сигнальный красный маркер */
+  --atlas-bg:            #e6dcd2; /* 100% глухой инженерный картон */
+  --atlas-bg-alt:        #d9cfc5; /* Плотный темный бежевый */
+  --atlas-ink:           #000000; /* Чистая черная тушь для рамок и линий */
+  --atlas-ink-muted:     #555555; /* Темно-серый служебный */
+  --atlas-ink-soft:      #111111; /* Контрастный черный текст */
+  --atlas-crit:          #8b0000; /* Сигнальный маркер */
   --atlas-font-mono:     'JetBrains Mono', 'Courier New', monospace;
 }
 
-/* 1. ГЛОБАЛЬНЫЙ СБРОС И ИЗОЛЯЦИЯ ГЕОМЕТРИИ */
-*, *::before, *::after {
-  box-sizing: border-box !important;
-}
-
-html, body {
-  background-color: var(--atlas-bg) !important;
-  color: var(--atlas-ink) !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  font-family: var(--atlas-font-mono) !important;
-}
-
-/* 2. ТИПОГРАФИКА ТЕКСТА (.content-block) */
-.content-block h2 {
-  font-family: var(--atlas-font-mono) !important;
-  font-size: 14px !important;
-  text-transform: uppercase !important;
-  color: var(--atlas-ink) !important;
-  margin: 36px 0 14px 0 !important;
-}
-.content-block h2::before { content: "» "; color: var(--atlas-crit) !important; }
-
-.content-block h3 {
-  font-family: var(--atlas-font-mono) !important;
-  font-size: 12.5px !important;
-  text-transform: uppercase !important;
-  color: var(--atlas-ink) !important;
-  margin: 24px 0 10px 0 !important;
-}
-.content-block h3::before { content: "// "; color: var(--atlas-ink-muted) !important; }
-
-.content-block p {
-  font-family: var(--atlas-font-mono) !important;
-  font-size: 13.5px !important;
-  line-height: 1.7 !important;
-  color: var(--atlas-ink-soft) !important;
-}
-
-/* Индустриальный разделитель с выводом номера секции из HTML атрибута */
-.atlas-section-break {
-  border: none !important;
-  border-top: 1px solid var(--atlas-ink) !important;
-  margin: 40px 0 !important;
-  display: block !important;
-  height: 0 !important;
-  position: relative !important;
-  overflow: visible !important;
-}
-.atlas-section-break::after {
-  content: "[" attr(data-index) "]" !important;
-  position: absolute !important;
-  right: 0 !important;
-  top: -9px !important;
-  background-color: var(--atlas-bg) !important;
-  padding-left: 8px !important;
-  font-size: 10px !important;
-  font-weight: 700 !important;
-  color: var(--atlas-ink-muted) !important;
-}
-
 /* ==========================================================================
-   3. КОМПОНЕНТ: ЧЕРТЕЖНЫЙ ПАСПОРТ (HEADER) — ВСЕ ЛИНИИ АППАРАТНЫЕ
-   ========================================================================== */
-.atlas-blueprint-passport {
+   1. ГЛОБАЛЬНЫЙ МАКЕТ СТРАНИЦЫ (WIX LAYOUT)
+   ========================================================================= */
+
+/* Внешняя обертка на странице Wix, куда вставлен iframe */
+.content-block .atlas-blueprint-passport {
   display: block !important;
   width: 100% !important;
   margin: 24px 0 32px 0 !important;
-  border: 1px solid var(--atlas-ink) !important; /* Жесткая внешняя рамка коробки */
+  border: 1px solid var(--atlas-ink) !important; /* Наружная рамка */
   background-color: var(--atlas-bg) !important;
-  font-family: var(--atlas-font-mono) !important;
+  position: relative !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
   clear: both !important;
 }
 
-/* Верхняя залитая черная строка */
-.atlas-blueprint-passport .bp-header {
-  background: var(--atlas-ink) !important;
+/* Сам элемент iframe внутри разметки Wix */
+.content-block .atlas-blueprint-passport iframe {
+  width: 100% !important;
+  display: block !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+/* ==========================================================================
+   2. ВНУТРЕННЯЯ СТРУКТУРА ПАСПОРТА (ДЛЯ IFRAME И СТРАНИЦЫ)
+   ========================================================================= */
+
+/* Основной контейнер, генерируемый JS */
+.passport-bp {
+  display: block !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  background-color: var(--atlas-bg) !important;
+  font-family: var(--atlas-font-mono) !important;
+}
+
+/* Верхняя плашка командной строки (Title Bar) */
+.passport-bp .bp-title-bar {
+  background: var(--atlas-ink) !important; /* Полная заливка тушью */
+  color: var(--atlas-bg) !important;       /* Контрастный бежевый текст */
   padding: 8px 12px !important;
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
-}
-.atlas-blueprint-passport .bp-header span {
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  color: var(--atlas-bg) !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  border-bottom: 1px solid var(--atlas-ink) !important;
 }
 
-/* Центральный заголовок документа — отделяется нижней линией */
-.atlas-blueprint-passport .bp-main-title {
-  font-size: 15px !important;
+.passport-bp .bp-title-bar__left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  font-size: 12px !important;
+}
+.passport-bp .bp-user-prompt { font-weight: 700 !important; }
+.passport-bp .bp-path-prompt { color: var(--atlas-bg) !important; }
+.passport-bp .bp-root-char { font-weight: 700 !important; margin: 0 2px !important; }
+.passport-bp .bp-command-text { font-weight: 400 !important; }
+.passport-bp .bp-sys-status { font-size: 11px !important; text-transform: uppercase !important; }
+
+/* Центральный заголовок поста */
+.passport-bp .bp-main-title {
+  font-size: 16px !important;
   font-weight: 700 !important;
   color: var(--atlas-ink) !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.02em !important;
   padding: 16px 14px !important;
   margin: 0 !important;
   line-height: 1.3 !important;
@@ -118,235 +90,102 @@ html, body {
   border-bottom: 1px solid var(--atlas-ink) !important; /* Линия под названием */
 }
 
-/* Сетка таблицы метаданных */
-.atlas-blueprint-passport .bp-grid {
+/* Сетка параметров (PROJECT, MODULE...) */
+.passport-bp .bp-grid {
   display: flex !important;
   flex-wrap: wrap !important;
   width: 100% !important;
   background-color: var(--atlas-bg) !important;
+  border-bottom: 1px solid var(--atlas-ink) !important; /* Линия под таблицей */
 }
 
-/* Внутренние ячейки — жестко пилятся вертикальным бордером */
-.atlas-blueprint-passport .bp-cell {
+/* Ячейки параметров */
+.passport-bp .bp-cell {
   flex: 1 1 50% !important;
   max-width: 50% !important;
   padding: 10px 14px !important;
-  border-right: 1px solid var(--atlas-ink) !important; /* Линия между левой и правой колонкой */
+  border-right: 1px solid var(--atlas-ink) !important; /* Разделитель колонок */
   background-color: var(--atlas-bg) !important;
 }
-.atlas-blueprint-passport .bp-cell:nth-child(2n) {
-  border-right: none !important; /* Убираем крайний правый бордер, чтобы не удваивать рамку */
+.passport-bp .bp-cell:last-child {
+  border-right: none !important;
 }
-.atlas-blueprint-passport .bp-cell div {
+.passport-bp .bp-cell div {
   margin-bottom: 4px !important;
   font-size: 11.5px !important;
+  line-height: 1.4 !important;
+}
+.passport-bp .bp-cell div:last-child {
+  margin-bottom: 0 !important;
+}
+.passport-bp .bp-key {
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  color: var(--atlas-ink-muted) !important;
+  display: inline-block !important;
+  width: 75px !important;
+}
+.passport-bp .bp-val {
   font-weight: 700 !important;
   color: var(--atlas-ink) !important;
 }
-.atlas-blueprint-passport .bp-key {
-  font-size: 10px !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.04em !important;
-  color: var(--atlas-ink-muted) !important;
-  display: inline-block !important;
-  margin-right: 8px !important;
-}
 
-/* ==========================================================================
-   4. СТИЛИ ДЛЯ ОСТАЛЬНЫХ ТЕСТОВЫХ ЭЛЕМЕНТОВ СТЕНДА
-   ========================================================================== */
-
-/* Блоки кода (Prism) */
-.atlas-code-block {
-  background-color: #1a1a1a !important; /* Глухой темный терминал для кода */
-  border: 1px solid var(--atlas-ink) !important;
-  padding: 14px !important;
-  margin: 16px 0 !important;
-  overflow-x: auto !important;
-}
-.atlas-code-block code {
-  color: #ffffff !important;
-  font-size: 12px !important;
-}
-
-/* Нотисы/Логи */
-.atlas-notice {
-  margin: 16px 0 !important;
-  border: 1px solid var(--atlas-ink) !important;
-  background-color: var(--atlas-bg-alt) !important;
-  padding: 14px !important;
-}
-.atlas-notice__header {
-  font-weight: 700 !important;
-  font-size: 11px !important;
-  text-transform: uppercase !important;
-  margin-bottom: 6px !important;
-}
-.atlas-notice p { margin: 0 !important; font-size: 12.5px !important; }
-.atlas-notice[data-type="crit"] { border-left: 4px solid var(--atlas-crit) !important; }
-.atlas-notice[data-type="warn"] { border-left: 4px solid var(--atlas-ink) !important; }
-.atlas-notice[data-type="info"] { border-left: 4px solid var(--atlas-ink-muted) !important; }
-
-/* Сравнение архитектур (Side-by-Side) */
-.atlas-compare {
+/* Полоса метаданных (AUTH, CREATED...) */
+.passport-bp .bp-meta {
+  padding: 10px 14px !important;
   display: flex !important;
-  gap: 16px !important;
-  margin: 20px 0 !important;
-}
-.atlas-compare__block {
-  flex: 1 !important;
-  border: 1px solid var(--atlas-ink) !important;
-  padding: 14px !important;
-  background-color: var(--atlas-bg) !important;
-}
-.atlas-compare__label {
-  font-size: 9px !important;
-  font-weight: 700 !important;
-  background-color: var(--atlas-ink) !important;
-  color: var(--atlas-bg) !important;
-  padding: 2px 6px !important;
-  text-transform: uppercase !important;
-  display: inline-block !important;
-  margin-bottom: 10px !important;
-}
-.atlas-compare__concept { margin: 0 0 8px 0 !important; font-size: 13px !important; text-transform: uppercase !important; }
-
-/* Таблицы оборудования */
-.atlas-table-responsive { width: 100% !important; overflow-x: auto !important; }
-.atlas-table {
-  width: 100% !important;
-  border-collapse: collapse !important;
-  margin: 20px 0 !important;
-  border: 1px solid var(--atlas-ink) !important;
-}
-.atlas-table th {
-  background-color: var(--atlas-ink) !important;
-  color: var(--atlas-bg) !important;
-  padding: 8px 12px !important;
-  font-size: 11px !important;
-  text-transform: uppercase !important;
-  text-align: left !important;
-}
-.atlas-table td {
-  padding: 8px 12px !important;
-  border: 1px solid var(--atlas-ink) !important;
-  font-size: 12px !important;
-  background-color: var(--atlas-bg) !important;
-}
-.atlas-param-status {
-  font-weight: 700 !important;
-  font-size: 10px !important;
-  padding: 2px 6px !important;
-  border: 1px solid var(--atlas-ink) !important;
-  display: inline-block !important;
-}
-.atlas-param-status[data-state="ok"] { background-color: var(--atlas-ink) !important; color: var(--atlas-bg) !important; }
-.atlas-param-status[data-state="warn"] { background-color: #f0a500 !important; color: #000000 !important; }
-.atlas-param-status[data-state="crit"] { background-color: var(--atlas-crit) !important; color: #ffffff !important; }
-
-/* Схемы потоков данных (Flow diagram) */
-.atlas-data-flow {
-  border: 1px solid var(--atlas-ink) !important;
-  padding: 16px !important;
-  background-color: var(--atlas-bg-alt) !important;
-  margin: 20px 0 !important;
-}
-.atlas-flow-row { display: flex !important; align-items: center !important; gap: 12px !important; flex-wrap: wrap !important; }
-.atlas-flow-node {
-  border: 1px solid var(--atlas-ink) !important;
-  padding: 6px 12px !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  background-color: var(--atlas-bg) !important;
-}
-.atlas-flow-node[data-type="process"] { background-color: var(--atlas-ink) !important; color: var(--atlas-bg) !important; }
-.atlas-flow-connector { font-weight: 700 !important; color: var(--atlas-crit) !important; }
-
-/* Изображения / Скриншоты профайлера */
-.atlas-media-node {
-  border: 1px solid var(--atlas-ink) !important;
-  background-color: var(--atlas-bg) !important;
-  padding: 12px !important;
-  margin: 24px 0 !important;
-}
-.atlas-media-node img {
-  width: 100% !important;
-  height: auto !important;
-  display: block !important;
-  border: 1px solid var(--atlas-ink) !important;
-  filter: grayscale(100%) !important; /* Промышленный монохром */
-}
-.atlas-media-node__caption {
-  display: block !important;
-  font-size: 11px !important;
-  color: var(--atlas-ink-muted) !important;
-  margin-top: 8px !important;
-  line-height: 1.4 !important;
-}
-
-/* ==========================================================================
-   5. КОМПОНЕНТ: АВТОНОМНЫЙ ПОДВАЛ TERMINAL MATRIX
-   ========================================================================== */
-#site-footer {
-  width: 100% !important;
-  display: block !important;
-  clear: both !important;
-}
-.atlas-footer-wrapper {
-  margin-top: 64px !important;
-  border-top: 1px solid var(--atlas-ink) !important;
-  padding: 24px 0 32px 0 !important;
-}
-.atlas-footer-block--main { display: flex !important; flex-direction: column !important; gap: 20px !important; }
-.atlas-footer-block__support-header {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
-  flex-wrap: wrap !important;
-  gap: 12px !important;
-  border-bottom: 1px solid var(--atlas-ink) !important;
-  padding-bottom: 10px !important;
-}
-.atlas-footer-block__kaomoji { font-size: 11.5px !important; font-weight: 700 !important; color: var(--atlas-ink-muted) !important; }
-.atlas-footer-block__support-title { font-size: 10.5px !important; font-weight: 700 !important; text-transform: uppercase !important; color: var(--atlas-ink) !important; }
-.atlas-footer-block__support-content {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
   flex-wrap: wrap !important;
   gap: 16px !important;
+  border-bottom: 1px solid var(--atlas-ink) !important; /* Линия над тегами */
+  background-color: var(--atlas-bg) !important;
 }
-.atlas-footer-block__support-text { font-size: 12px !important; color: var(--atlas-ink-soft) !important; }
+.passport-bp .bp-meta-item {
+  font-size: 11px !important;
+  color: var(--atlas-ink-soft) !important;
+}
+.passport-bp .bp-meta-item b {
+  color: var(--atlas-ink-muted) !important;
+}
 
-.atlas-footer-block__matrix-zone {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
-  gap: 24px !important;
-  border-top: 1px solid var(--atlas-ink) !important;
-  padding-top: 16px !important;
+/* Блок тегов (самый низ) */
+.passport-bp .bp-tags {
+  padding: 10px 14px !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  background-color: var(--atlas-bg) !important;
 }
-.atlas-footer-block__matrix-column { display: flex !important; flex-direction: column !important; gap: 8px !important; }
-.atlas-footer-block__column-label { font-size: 10px !important; font-weight: 700 !important; color: var(--atlas-ink-muted) !important; text-transform: uppercase !important; }
-.atlas-footer-block__column-items { display: flex !important; flex-direction: column !important; gap: 6px !important; }
 
 .atlas-blueprint-link {
   font-size: 11.5px !important;
+  font-weight: 700 !important;
   color: var(--atlas-ink) !important;
   text-decoration: none !important;
   display: inline-block !important;
 }
-.atlas-blueprint-link:hover { color: var(--atlas-crit) !important; text-decoration: underline !important; }
+.atlas-blueprint-link:hover {
+  color: var(--atlas-crit) !important;
+  text-decoration: underline !important;
+}
 
-/* 6. МОБИЛЬНАЯ АДАПТИВНОСТЬ СЕТКИ */
+/* ==========================================================================
+   3. АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ ЭКРАНОВ
+   ========================================================================== */
 @media (max-width: 640px) {
-  .atlas-blueprint-passport .bp-grid .bp-cell {
+  .passport-bp .bp-grid .bp-cell {
     flex: 1 1 100% !important;
     max-width: 100% !important;
     border-right: none !important;
-    border-bottom: 1px solid var(--atlas-ink) !important;
+    border-bottom: 1px solid var(--atlas-ink) !important; /* Превращаем колонки в строки */
   }
-  .atlas-blueprint-passport .bp-grid .bp-cell:last-child { border-bottom: none !important; }
-  .atlas-compare { flex-direction: column !important; gap: 12px !important; }
+  .passport-bp .bp-grid .bp-cell:last-child {
+    border-bottom: none !important;
+  }
+  .passport-bp .bp-title-bar {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
 }/* Только контентные элементы */
 .content-block h2 {
   font-family: var(--atlas-font-mono);
@@ -359,27 +198,4 @@ html, body {
   font-size: 13.5px;
   line-height: 1.7;
   color: var(--atlas-ink-soft);
-}/* ПАСПОРТ (HEADER) — плоский селектор */
-.atlas-blueprint-passport {
-  display: block !important;
-  width: 100% !important;
-  margin: 24px 0 !important;
-  border: 1px solid var(--atlas-ink) !important;
-  background: var(--atlas-bg) !important;
-}
-
-.bp-header {
-  background: var(--atlas-ink) !important;
-  padding: 8px 12px !important;
-  display: flex !important;
-  justify-content: space-between !important;
-  color: var(--atlas-bg) !important;
-}
-
-/* ФУТЕР — независимый узел */
-#site-footer {
-  width: 100% !important;
-  margin-top: 64px !important;
-  border-top: 1px solid var(--atlas-ink) !important;
-  padding: 24px 0 !important;
 }
