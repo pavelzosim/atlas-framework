@@ -82,3 +82,23 @@
   display: block !important;
   margin-bottom: 6px !important;
 }
+
+/* Принудительная фиксация геометрии хедера */
+.passport-bp {
+  display: block !important;
+  width: 100% !important;
+  border: 1px solid var(--atlas-ink, #000000) !important;
+  background: var(--atlas-bg, #e6dcd2) !important;
+  box-sizing: border-box !important;
+  margin: 24px 0 !important;
+}
+
+/* Форсирование видимости дочерних элементов */
+.passport-bp .bp-title-bar {
+  background: var(--atlas-ink, #000000) !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  padding: 8px 12px !important;
+  color: var(--atlas-bg, #e6dcd2) !important;
+}
+
