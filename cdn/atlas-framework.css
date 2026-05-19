@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: dev-cdccfd6 | BUILD: Tue May 19 14:40:49 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: dev-50bc461 | BUILD: Tue May 19 14:44:17 UTC 2026 */
 ﻿@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
 :root {
@@ -12,7 +12,9 @@
   --atlas-font-mono: 'JetBrains Mono', 'Courier New', monospace;
 }
 
-*, *::before, *::after { box-sizing: border-box !important; }/* Только контентные элементы */
+*, *::before, *::after { box-sizing: border-box !important; }
+
+/* Только контентные элементы */
 .content-block h2 {
   font-family: var(--atlas-font-mono);
   font-size: 14px;
