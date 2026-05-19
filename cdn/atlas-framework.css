@@ -1,1 +1,74 @@
-f
+/* ATLAS FRAMEWORK | VERSION: dev-e06618e | BUILD: Tue May 19 16:32:32 UTC 2026 */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
+
+/* ── Reset ──────────────────────────────────────────────────── */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+  font-family: 'JetBrains Mono', 'Courier New', monospace !important;
+  background: transparent;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* ── Design tokens ──────────────────────────────────────────── */
+:root {
+  /* Color */
+  --atlas-bg:            rgb(230, 220, 210);
+  --atlas-bg-alt:        rgba(0,0,0,0.02);
+  --atlas-ink:           #000000;
+  --atlas-ink-muted:     rgba(0,0,0,0.5);
+  --atlas-ink-soft:      rgba(0,0,0,0.85);
+  --atlas-crit:          #8b0000;
+  --atlas-warn:          #7a5200;
+  --atlas-ok:            #1a4d1a;
+  --atlas-border:        rgba(0,0,0,0.15);
+  --atlas-border-strong: rgba(0,0,0,0.4);
+
+  /* Font */
+  --atlas-font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  /* Spacing */
+  --atlas-space-xs:  5px;
+  --atlas-space-sm: 15px;
+  --atlas-space-md: 25px;
+  --atlas-space-lg: 40px;
+  --atlas-space-xl: 60px;
+
+  /* Type scale */
+  --fs-h1:     20px;
+  --fs-title:  16px;
+  --fs-body:   13px;
+  --fs-code:   12px;
+  --fs-meta:   11px;
+  --fs-status: 10px;
+}
+
+/* ── Container ──────────────────────────────────────────────── */
+.atlas-container {
+  max-width: 900px;
+  width: 100%;
+  background: transparent;
+  padding: 0;
+  border: none;
+  box-sizing: border-box;
+  font-family: var(--atlas-font-mono);
+  color: var(--atlas-ink);
+  margin: 0;
+}/* Только контентные элементы */
+.content-block h2 {
+  font-family: var(--atlas-font-mono);
+  font-size: 14px;
+  text-transform: uppercase;
+  color: var(--atlas-ink);
+}
+
+.content-block p {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--atlas-ink-soft);
+}
