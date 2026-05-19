@@ -25,7 +25,7 @@ git add .
 git commit -m "feat: "
 git push origin master
 git tag v1.4.0
-git push origin v1.4.1
+git push origin v1.4.0
 ---
 
 ### 2. Этап релизного деплоя (Создание тега)
