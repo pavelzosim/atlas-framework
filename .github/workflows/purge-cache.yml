@@ -28,7 +28,7 @@ jobs:
           rm -f cdn/atlas-framework.css
           
           # 3. Создание файла с шапкой
-          printf '/* ATLAS FRAMEWORK | VERSION: %s | BUILD: %s */\n' "$VERSION" "$(date -u)" > cdn/atlas-framework.css
+          LC_ALL=C printf '/* ATLAS FRAMEWORK | VERSION: %s | BUILD: %s */\n' "$VERSION" "$(date -u)" > cdn/atlas-framework.css
           
           # 4. Атомарная сборка в строгом порядке:
           # Сначала ядро, затем глобальные стили, затем паспорт, затем остальные компоненты
