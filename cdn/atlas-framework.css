@@ -1,7 +1,5 @@
-/* ATLAS FRAMEWORK | VERSION: dev-27834eb | BUILD: Tue May 19 12:32:46 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v1.5.2 | BUILD: Tue May 19 12:47:44 UTC 2026 */
 ﻿/* ==========================================================================
-   ATLAS FRAMEWORK | VERSION: v1.5.0 | BUILD: 2026-05-19
-   ──────────────────────────────────────────────────────────────────────────
    ПРАВИЛА СБОРКИ И ЭКСПЛУАТАЦИИ:
    1. ИЕРАРХИЯ: atlas-core.css (этот блок) — всегда первый. Содержит шрифты 
       и переменные. Остальные модули подтягиваются ниже.
@@ -103,7 +101,15 @@
   color: var(--atlas-bg, #e6dcd2) !important;
 }
 
-/* ==========================================================================
+/* Добавь это в блок стилей или в свой atlas-framework.css */
+.atlas-blueprint-passport {
+  display: block !important;
+  width: 100% !important;
+  margin: 24px 0 32px 0 !important;
+  border: 1px solid var(--atlas-ink, #000000) !important;
+  background: var(--atlas-bg, rgb(230, 220, 210)) !important;
+  box-sizing: border-box !important;
+}/* ==========================================================================
    ATLAS TYPOGRAPHY — Core Text Engine [v1.2.0_cleaned]
    ─────────────────────────────────────────────────────────────
    Scope: Strict isolation under .content-block node only.
