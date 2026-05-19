@@ -21,33 +21,29 @@ jobs:
 
       - name: Hard Rebuild
         run: |
-          # 1. Получаем текущую версию (тег или коммит)
           VERSION=$(git describe --tags --exact-match 2>/dev/null || echo "dev-${GITHUB_SHA::7}")
-          
-          # 2. Удаление старого файла
-          rm -f cdn/atlas-framework.css
-          
-          # 3. Создание файла с шапкой
-          LC_ALL=C printf '/* ATLAS FRAMEWORK | VERSION: %s | BUILD: %s */\n' "$VERSION" "$(date -u)" > cdn/atlas-framework.css
-          sed -i '1s/^\xEF\xBB\xBF//' cdn/atlas-framework.css
 
-          # 4. Атомарная сборка в строгом порядке:
-          # Сначала ядро, затем глобальные стили, затем паспорт, затем остальные компоненты
-          cat cdn/atlas-core.css \
-              cdn/components/atlas-typography.css \
-              cdn/components/atlas-layout-global.css \
-              >> cdn/atlas-framework.css
-          
-          # Проверка на пустоту (если сборка упала)
-          if [ ! -s cdn/atlas-framework.css ]; then exit 1; fi
+          rm -f cdn/atlas-framework.css
+
+          LC_ALL=C printf '/* ATLAS FRAMEWORK | VERSION: %s | BUILD: %s */\n' "$VERSION" "$(date -u)" > cdn/atlas-framework.css
+
+          for f in cdn/atlas-core.css \
+                    cdn/components/atlas-typography.css \
+                    cdn/components/atlas-layout-global.css; do
+            sed 's/^\xEF\xBB\xBF//' "$f"
+          done >> cdn/atlas-framework.css
+
+          if [ ! -s cdn/atlas-framework.css ]; then
+            echo "ERROR: atlas-framework.css is empty after build"
+            exit 1
+          fi
 
       - name: Push Result
         run: |
           git config --global user.name "Atlas-CI-Bot"
           git config --global user.email "actions@github.com"
           git add cdn/atlas-framework.css
-          
-          # Коммитим, только если были изменения
+
           if ! git diff --staged --quiet; then
             git commit -m "build: rebuild $(git describe --tags --exact-match 2>/dev/null || echo "dev") [skip ci]"
             git push origin master
@@ -55,5 +51,4 @@ jobs:
 
       - name: Purge jsDelivr Cache
         run: |
-          # Чистим кэш, чтобы Wix увидел изменения моментально
           curl -s "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css"
