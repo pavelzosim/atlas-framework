@@ -1,29 +1,45 @@
 - name: Compile CSS Modules into Production Monolith
         run: |
-          # 1. Записываем импорт строго на первую строку
-          echo "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght=300;400;700&display=swap');" > cdn/atlas-framework.css
+          # Создаем чистый файл и пишем импорт на первую строку
+          printf "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght=300;400;700&display=swap');\n" > cdn/atlas-framework.css
           
-          # 2. Системная шапка
-          echo -e "\n/* ==========================================================================\n   ATLAS FRAMEWORK PRODUCTION CORE — COMPILED MONOLITH\n   Generated automatically via GitHub Actions Workflow\n   ========================================================================== */\n" >> cdn/atlas-framework.css
+          # Системная шапка сборки
+          printf "\n/* ==========================================================================\n   ATLAS FRAMEWORK PRODUCTION CORE — COMPILED MONOLITH\n   Generated automatically via GitHub Actions Workflow\n   ========================================================================== */\n\n" >> cdn/atlas-framework.css
           
-          # Функция очистки BOM, удаления старых импортов и ЖЕСТКОГО фикса синтаксиса шрифта
+          # Функция очистки BOM, удаления импортов и фикса синтаксиса шрифта
           process_file() {
-            perl -pe 's/\xEF\xBB\xBF//g' "$1" | \
-            sed 's|@import url(.*);||g' | \
-            sed 's|var(--atlas-font-mono), monospace|var(--atlas-font-mono)|g' >> cdn/atlas-framework.css
-            echo -e "\n" >> cdn/atlas-framework.css
+            if [ -f "$1" ]; then
+              printf "/* ── COMPILER_INJECT: %s ──────────────────────────────── */\n" "$1" >> cdn/atlas-framework.css
+              perl -pe 's/\xEF\xBB\xBF//g' "$1" | \
+              sed 's|@import url(.*);||g' | \
+              sed 's|var(--atlas-font-mono), monospace|var(--atlas-font-mono)|g' >> cdn/atlas-framework.css
+              printf "\n\n" >> cdn/atlas-framework.css
+              echo "[ATLAS_COMPILER] Compiled: $1"
+            else
+              echo "[ATLAS_COMPILER] WARNING: File not found: $1"
+            fi
           }
           
-          # 3. Сборка модулей
-          process_file "cdn/atlas-core.css"
-          process_file "cdn/atlas-typography.css"
-          process_file "cdn/components/atlas-callout.css"
-          process_file "cdn/components/atlas-code-theme.css"
-          process_file "cdn/components/atlas-comparison.css"
-          process_file "cdn/components/atlas-layouts.css"
-          process_file "cdn/components/atlas-schema.css"
-          process_file "cdn/components/atlas-timeline.css"
-          process_file "cdn/components/atlas-uml.css"
-          process_file "cdn/components/atlas-vfx-tools.css"
+          # ==========================================================================
+          # 🎛️ КОНВЕЙЕР ВКЛЮЧЕНИЯ МОДУЛЕЙ (ОТЛАДКА ИЗОЛЯЦИИ)
+          # ==========================================================================
           
-          echo "Compilation complete. Syntax errors fixed."
+          # ШАГ 1: Включаем Базовое Ядро и Токены (ОБЯЗАТЕЛЬНО)
+          process_file "cdn/atlas-core.css"
+          
+          # ШАГ 2: Включаем Типографику (Сюда входят Базовые Тексты и Паспорт/Хедер)
+          process_file "cdn/atlas-typography.css"
+          
+          # ВРЕМЕННО ОТКЛЮЧЕНЫ ДЛЯ ПОШАГОВОЙ ОТЛАДКИ КАСКАДА:
+          # ────────────────────────────────────────────────────────────────────────
+          # process_file "cdn/components/atlas-callout.css"
+          # process_file "cdn/components/atlas-code-theme.css"
+          # process_file "cdn/components/atlas-comparison.css"
+          # process_file "cdn/components/atlas-layouts.css"
+          # process_file "cdn/components/atlas-schema.css"
+          # process_file "cdn/components/atlas-timeline.css"
+          # process_file "cdn/components/atlas-uml.css"
+          # process_file "cdn/components/atlas-vfx-tools.css"
+          # ────────────────────────────────────────────────────────────────────────
+          
+          echo "Compilation complete. Stage 1 (Core + Typography) is online."
