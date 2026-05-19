@@ -1,14 +1,4 @@
-﻿/* ==========================================================================
-   ПРАВИЛА СБОРКИ И ЭКСПЛУАТАЦИИ:
-   1. ИЕРАРХИЯ: atlas-core.css (этот блок) — всегда первый. Содержит шрифты 
-      и переменные. Остальные модули подтягиваются ниже.
-   2. ИЗОЛЯЦИЯ: Контент -> .content-block, Паспорт -> .atlas-blueprint-passport, 
-      Футер -> .atlas-footer-container.
-   3. ВАЖНОСТЬ: !important обязателен для работы поверх стилей Wix.
-   ========================================================================== */
-
-/* 1. СИСТЕМНЫЙ УРОВЕНЬ: ШРИФТЫ И ТОКЕНЫ */
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
 :root {
   --atlas-bg:            rgb(230, 220, 210);
