@@ -1,26 +1,46 @@
-name: Purge CDN Cache
-
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - master
-    paths:
-      - 'cdn/**'
-
-jobs:
-  purge-jsdelivr:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Flush jsDelivr Edge Nodes Cache
+- name: Compile CSS Modules into Production Monolith
         run: |
-          echo "[ATLAS_CDN] Sending purge requests to jsDelivr infrastructure..."
+          # 1. Записываем импорт строго на первую строку (Чистый старт)
+          printf "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght=300;400;700&display=swap');\n" > cdn/atlas-framework.css
           
-          # Очистка основного скомпилированного монолита
-          curl -s -i "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css"
+          # 2. Системная шапка монолита [v1.4.0_isolated]
+          printf "\n/* ==========================================================================\n   ATLAS FRAMEWORK PRODUCTION CORE — COMPILED MONOLITH\n   Generated automatically via GitHub Actions Workflow\n   ========================================================================== */\n\n" >> cdn/atlas-framework.css
           
-          # Очистка отдельных модулей ядра (на случай если полигон стучится в них напрямую)
-          curl -s -i "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-core.css"
-          curl -s -i "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-typography.css"
+          # Функция очистки BOM, удаления старых импортов и фикса синтаксиса шрифта
+          process_file() {
+            if [ -f "$1" ]; then
+              printf "/* ── COMPILER_INJECT: %s ──────────────────────────────── */\n" "$1" >> cdn/atlas-framework.css
+              perl -pe 's/\xEF\xBB\xBF//g' "$1" | \
+              sed 's|@import url(.*);||g' | \
+              sed 's|var(--atlas-font-mono), monospace|var(--atlas-font-mono)|g' >> cdn/atlas-framework.css
+              printf "\n\n" >> cdn/atlas-framework.css
+              echo "[ATLAS_COMPILER] Successfully compiled: $1"
+            else
+              echo "[ATLAS_COMPILER] ERROR: File not found: $1"
+            fi
+          }
           
-          echo -e "\n[ATLAS_CDN] Cache invalidation tokens dispatched successfully."
+          # ==========================================================================
+          # 🎛️ СТЕРИЛЬНЫЙ КОНВЕЙЕР СБОРКИ (ПОДКЛЮЧАЕМ ПО ОДНОМУ)
+          # ==========================================================================
+          
+          # МОДУЛЬ 1: Базовое ядро, системный сброс и токены дизайна
+          process_file "cdn/atlas-core.css"
+          
+          # МОДУЛЬ 2: Типографика и Технический Паспорт (Хедер)
+          process_file "cdn/atlas-typography.css"
+          
+          # ────────────────────────────────────────────────────────────────────────
+          # ВСЕ ОСТАЛЬНЫЕ МОДУЛИ ВРЕМЕННО ОТКЛЮЧЕНЫ (Исключаем эхо и конфликты)
+          # ────────────────────────────────────────────────────────────────────────
+          # process_file "cdn/components/atlas-callout.css"
+          # process_file "cdn/components/atlas-code-theme.css"
+          # process_file "cdn/components/atlas-comparison.css"
+          # process_file "cdn/components/atlas-layouts.css"
+          # process_file "cdn/components/atlas-schema.css"
+          # process_file "cdn/components/atlas-timeline.css"
+          # process_file "cdn/components/atlas-uml.css"
+          # process_file "cdn/components/atlas-vfx-tools.css"
+          # ────────────────────────────────────────────────────────────────────────
+          
+          echo "Compilation complete. Monolith is rebuilt from scratch. Stage 1 Online."
