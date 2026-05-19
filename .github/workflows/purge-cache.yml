@@ -1,35 +1,44 @@
-name: Global CDN Build & Purge Cache
+name: Atomic Build & Purge
 
 on:
   push:
-    branches:
-      - master
-    paths:
-      - 'cdn/**' # Срабатывает только при изменениях в папке cdn
+    tags:
+      - 'v*' # Срабатывает только при создании тега
 
 permissions:
-  contents: write # Явно разрешаем запись в репозиторий
+  contents: write
 
 jobs:
-  build-and-purge:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
+      - name: Checkout Code
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0 # Нужно для корректного пуша
+          fetch-depth: 0
 
-      - name: Compile CSS Modules into Production Monolith
+      - name: Atomic Rebuild Monolith
         run: |
-          # Очищаем файл перед сборкой
-          echo "/* ==========================================================================" > cdn/atlas-framework.css
-          echo "   ATLAS FRAMEWORK PRODUCTION CORE — COMPILED MONOLITH" >> cdn/atlas-framework.css
-          echo "   Generated automatically via GitHub Actions Workflow" >> cdn/atlas-framework.css
-          echo "   ========================================================================== */" >> cdn/atlas-framework.css
+          # 1. Полная очистка перед сборкой
+          rm -f cdn/atlas-framework.css
           
-          # Склеиваем файлы (добавлена проверка на наличие файлов)
-          for file in cdn/atlas-core.css cdn/atlas-typography.css cdn/components/*.css; do
+          # 2. Создание файла с нуля и вшивание тега (Версии)
+          echo "/* ==========================================================================" > cdn/atlas-framework.css
+          echo "   ATLAS FRAMEWORK PRODUCTION CORE — ATOMIC BUILD" >> cdn/atlas-framework.css
+          echo "   VERSION_TAG: ${{ github.ref_name }}" >> cdn/atlas-framework.css
+          echo "   BUILD_TIMESTAMP: $(date -u)" >> cdn/atlas-framework.css
+          echo "   ========================================================================== */" >> cdn/atlas-framework.css
+          echo "" >> cdn/atlas-framework.css
+          
+          # 3. Чистая сборка модулей
+          cat cdn/atlas-core.css >> cdn/atlas-framework.css
+          echo -e "\n" >> cdn/atlas-framework.css
+          cat cdn/atlas-typography.css >> cdn/atlas-framework.css
+          echo -e "\n" >> cdn/atlas-framework.css
+          
+          # Сборка компонентов из папки (автоматически подхватит все .css файлы)
+          for file in cdn/components/*.css; do
             if [ -f "$file" ]; then
               echo "/* Source: $file */" >> cdn/atlas-framework.css
               cat "$file" >> cdn/atlas-framework.css
@@ -37,21 +46,17 @@ jobs:
             fi
           done
 
-      - name: Commit Compiled Changes to Master
+      - name: Push Atomic Result
         run: |
           git config --global user.name "Atlas-CI-Bot"
           git config --global user.email "actions@github.com"
           git add cdn/atlas-framework.css
           
-          if ! git diff-index --quiet HEAD -- cdn/atlas-framework.css; then
-            git commit -m "build: auto-compile production atlas-framework.css [skip ci]"
-            git push origin master
-          else
-            echo "No changes detected."
-          fi
+          # Коммитим с заменой
+          git commit -m "build: atomic rebuild for ${{ github.ref_name }} [skip ci]"
+          git push origin HEAD:${{ github.ref }}
 
       - name: Purge jsDelivr Cache
         run: |
-          # Пингуем CDN для сброса
-          curl -s "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css"
-          curl -s "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-site-footer-config.json"
+          # Принудительный сброс конкретного тега в CDN
+          curl -s "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@${{ github.ref_name }}/cdn/atlas-framework.css"
