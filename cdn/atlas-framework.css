@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: dev-860d5f4 | BUILD: Tue May 19 11:18:24 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: dev-9361cc0 | BUILD: Tue May 19 11:59:45 UTC 2026 */
 ﻿@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
 /* 2. Изоляция (Безопасный сброс) */
@@ -333,6 +333,298 @@
   white-space: nowrap !important;
 }
 
+/* ==========================================================================
+   MODULE 5: SYSTEM ATLAS // TECHNICAL PASSPORT (HEADER COMPONENT)
+   ─────────────────────────────────────────────────────────────
+   Scope: .content-block .atlas-blueprint-passport and internal nodes.
+   Responsibility: Renders metadata register, status tokens, and action links.
+   ========================================================================== */
+
+/* ── 5.1 Главный монолитный каркас (Outer Shell) ─────────────────────── */
+.content-block .atlas-blueprint-passport {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 24px 0 32px 0 !important;
+  border: 1px solid var(--atlas-ink, #000000) !important;
+  background: var(--atlas-bg, rgb(230, 220, 210)) !important;
+  position: relative !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  clear: both !important;
+}
+
+/* ── 5.2 Служебная черная панель (Top Console Bar) ──────────────────────── */
+.content-block .atlas-blueprint-passport .bp-header {
+  background: var(--atlas-ink, #000000) !important;
+  padding: 8px 12px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+}
+
+.content-block .atlas-blueprint-passport .bp-header .bp-logo {
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: var(--atlas-bg, rgb(230, 220, 210)) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+.content-block .atlas-blueprint-passport .bp-header .bp-status {
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  color: var(--atlas-ink, #000000) !important;
+  border: 1px solid var(--atlas-ink, #000000) !important;
+  padding: 1px 6px !important;
+  background: var(--atlas-bg, rgb(230, 220, 210)) !important;
+  text-transform: uppercase !important;
+}
+
+/* ── 5.3 Главный заголовок статьи ────────────────────────────────────────── */
+.content-block .atlas-blueprint-passport .bp-main-title {
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: var(--atlas-ink, #000000) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.02em !important;
+  margin: 16px 14px 12px 14px !important;
+  line-height: 1.3 !important;
+  display: block !important;
+}
+
+/* ── 5.4 Информационная матричная сетка (Data Grid Registers) ────────────── */
+.content-block .atlas-blueprint-passport .bp-grid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  border-top: 1px solid var(--atlas-ink, #000000) !important;
+  border-bottom: 1px solid var(--atlas-ink, #000000) !important;
+  box-sizing: border-box !important;
+}
+
+.content-block .atlas-blueprint-passport .bp-grid .bp-cell {
+  flex: 1 1 50% !important;
+  max-width: 50% !important;
+  box-sizing: border-box !important;
+  padding: 10px 14px !important;
+  border-right: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+}
+
+.content-block .atlas-blueprint-passport .bp-grid .bp-cell:nth-child(2n) {
+  border-right: none !important;
+}
+
+.content-block .atlas-blueprint-passport .bp-grid .bp-cell div {
+  margin-bottom: 4px !important;
+}
+.content-block .atlas-blueprint-passport .bp-grid .bp-cell div:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* ── 5.5 Пары Ключ / Значение (Data Links) ───────────────────────────────── */
+.content-block .atlas-blueprint-passport .bp-cell .bp-key {
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 10px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  color: var(--atlas-ink-muted, rgba(0, 0, 0, 0.5)) !important;
+  display: inline-block !important;
+  margin-right: 8px !important;
+}
+
+.content-block .atlas-blueprint-passport .bp-cell .bp-val {
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  color: var(--atlas-ink, #000000) !important;
+}
+
+/* ── 5.6 Нижняя панель действий и метаданных (Footer Actions) ───────────── */
+.content-block .atlas-blueprint-passport .bp-meta {
+  padding: 12px 14px !important;
+  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.02)) !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+}
+
+/* Системные кнопки-ссылки Атласа */
+.content-block .atlas-blueprint-link {
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  color: var(--atlas-ink, #000000) !important;
+  text-decoration: none !important;
+  border: 1px solid var(--atlas-ink, #000000) !important;
+  padding: 5px 10px !important;
+  display: inline-block !important;
+  background: #ffffff !important;
+  box-shadow: 2px 2px 0px var(--atlas-ink, #000000) !important;
+  transition: transform 0.1s ease, box-shadow 0.1s ease !important;
+}
+
+.content-block .atlas-blueprint-link:hover {
+  transform: translate(1px, 1px) !important;
+  box-shadow: 1px 1px 0px var(--atlas-ink, #000000) !important;
+}
+
+/* ── 5.7 Адаптивный сдвиг для мобильных экранов ────────────────────────── */
+@media (max-width: 640px) {
+  .content-block .atlas-blueprint-passport .bp-grid .bp-cell {
+    flex: 1 1 100% !important;
+    max-width: 100% !important;
+    border-right: none !important;
+    border-bottom: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+  }
+  .content-block .atlas-blueprint-passport .bp-grid .bp-cell:last-child {
+    border-bottom: none !important;
+  }
+}
+
+/* ==========================================================================
+   MODULE 3: ATLAS PRODUCTION TERMINAL FOOTER
+   ─────────────────────────────────────────────────────────────
+   Scope: #site-footer independent node (Outside .content-block constraint).
+   Responsibility: Handles grid data matrix channels and kaomoji shunts.
+   ========================================================================== */
+
+#site-footer {
+  width: 100% !important;
+  display: block !important;
+  clear: both !important;
+  box-sizing: border-box !important;
+}
+
+#site-footer .atlas-footer-wrapper {
+  margin-top: 64px !important;
+  border-top: 1px solid var(--atlas-ink, #000000) !important; /* Линия отсечения терминала */
+  padding: 24px 0 32px 0 !important;
+  background: transparent !important;
+}
+
+#site-footer .atlas-footer-block--main {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 20px !important;
+}
+
+/* Шапка футера с каомодзи и системным заголовком */
+#site-footer .atlas-footer-block__support-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+  border-bottom: 1px solid var(--atlas-border, rgba(0, 0, 0, 0.12)) !important;
+  padding-bottom: 10px !important;
+}
+
+#site-footer .atlas-footer-block__kaomoji {
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  color: var(--atlas-ink-muted, rgba(0, 0, 0, 0.42)) !important;
+}
+
+#site-footer .atlas-footer-block__support-title {
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  color: var(--atlas-ink, #000000) !important;
+}
+
+/* Контент поддержки и внешние линки-кнопки */
+#site-footer .atlas-footer-block__support-content {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 16px !important;
+}
+
+#site-footer .atlas-footer-block__support-text {
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 12px !important;
+  color: var(--atlas-ink-soft, rgba(0, 0, 0, 0.75)) !important;
+}
+
+#site-footer .atlas-footer-block__support-links {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+#site-footer .atlas-footer-block__support-divider {
+  color: var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+  font-size: 11px !important;
+}
+
+/* Сетка каналов линков (Total Commander Matrix Style) */
+#site-footer .atlas-footer-block__matrix-zone {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+  gap: 24px !important;
+  border-top: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
+  padding-top: 16px !important;
+}
+
+#site-footer .atlas-footer-block__matrix-column {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+}
+
+#site-footer .atlas-footer-block__column-label {
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  color: var(--atlas-ink-muted, rgba(0, 0, 0, 0.45)) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+}
+
+#site-footer .atlas-footer-block__column-items {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
+}
+
+/* Общий чертежный стиль ссылок Атласа внутри подвала */
+#site-footer .atlas-blueprint-link {
+  font-family: var(--atlas-font-mono), monospace !important;
+  font-size: 11.5px !important;
+  font-weight: 400 !important;
+  color: var(--atlas-ink, #000000) !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  width: max-content !important;
+}
+
+#site-footer .atlas-blueprint-link:hover {
+  color: var(--atlas-crit, #8b0000) !important;
+  text-decoration: underline !important;
+}
+
+@media (max-width: 600px) {
+  #site-footer .atlas-footer-block__support-header,
+  #site-footer .atlas-footer-block__support-content {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  #site-footer .atlas-footer-block__matrix-zone {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+}
 /* ==========================================================================
    MODULE 5: SYSTEM ATLAS // TECHNICAL PASSPORT (HEADER COMPONENT)
    ─────────────────────────────────────────────────────────────
