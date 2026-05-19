@@ -33,8 +33,7 @@ jobs:
           # 4. Атомарная сборка в строгом порядке:
           # Сначала ядро, затем глобальные стили, затем паспорт, затем остальные компоненты
           cat cdn/atlas-core.css \
-              cdn/atlas-typography.css \
-              cdn/components/atlas-layout-global.css \
+              cdn/components/atlas-typography.css \
               >> cdn/atlas-framework.css
           
           # Проверка на пустоту (если сборка упала)
