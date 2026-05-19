@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: dev-543a206 | BUILD: Tue May 19 18:11:09 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: dev-ee2629c | BUILD: Tue May 19 18:54:22 UTC 2026 */
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
 /* ── Reset ──────────────────────────────────────────────────── */
@@ -124,71 +124,68 @@ html, body {
   background: var(--atlas-bg-alt) !important;
   padding: 2px 4px !important;
   border: 1px solid var(--atlas-border) !important;
-}/* ==========================================================================
-   COMPONENT: ATOM HEADER
-   ========================================================================== */
+}/* ── MODULE: HEADER (Clean Version) ───────────────────────── */
 
-.atlas-header {
-  display: flex !important;
-  flex-direction: column !important;
-  width: 100% !important;
-  border-bottom: 2px solid var(--atlas-ink) !important;
-  padding-bottom: var(--atlas-space-sm) !important;
-  margin-bottom: var(--atlas-space-lg) !important;
-  box-sizing: border-box !important;
-  background: transparent !important;
+/* Используем родительский контейнер для иерархического веса */
+.atlas-container .atlas-header {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-bottom: 2px solid var(--atlas-ink);
+  padding-bottom: var(--atlas-space-sm);
+  margin-bottom: var(--atlas-space-lg);
+  box-sizing: border-box;
+  background: transparent;
 }
 
-/* Верхняя строка: Логотип слева, Метаданные справа */
-.atlas-header__main {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: flex-start !important;
-  width: 100% !important;
-  margin-bottom: var(--atlas-space-sm) !important;
-  flex-wrap: wrap !important;
-  gap: var(--atlas-space-sm) !important;
+/* Верхняя строка: Логотип и SysInfo */
+.atlas-container .atlas-header__main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: var(--atlas-space-sm);
+  flex-wrap: wrap;
+  gap: var(--atlas-space-sm);
 }
 
-.atlas-header__brand {
-  display: flex !important;
-  flex-direction: column !important;
+.atlas-container .atlas-header__brand {
+  display: flex;
+  flex-direction: column;
 }
 
-/* Блок системной информации (Версия, Локация, Время) */
-.atlas-header__sysinfo {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-end !important;
-  text-align: right !important;
-  gap: 2px !important;
+.atlas-container .atlas-header__sysinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  gap: 2px;
 }
 
 /* Нижняя строка: Командное меню (Навигация) */
-.atlas-header__nav {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: var(--atlas-space-xs) !important;
-  border-top: 1px solid var(--atlas-border) !important;
-  padding-top: var(--atlas-space-sm) !important;
-  width: 100% !important;
+.atlas-container .atlas-header__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--atlas-space-xs);
+  border-top: 1px solid var(--atlas-border);
+  padding-top: var(--atlas-space-sm);
+  width: 100%;
 }
 
-/* Элемент меню в стиле кнопок файловых менеджеров DOS */
-.atlas-nav-item {
-  font-family: var(--atlas-font-mono) !important;
-  font-size: var(--fs-meta) !important;
-  color: var(--atlas-ink) !important;
-  text-decoration: none !important;
-  text-transform: uppercase !important;
-  padding: 3px 8px !important;
-  border: 1px solid var(--atlas-border) !important;
-  transition: all 0.15s ease !important;
+.atlas-container .atlas-nav-item {
+  font-family: var(--atlas-font-mono);
+  font-size: var(--fs-meta);
+  color: var(--atlas-ink);
+  text-decoration: none;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border: 1px solid var(--atlas-border);
+  transition: all 0.15s ease;
 }
 
-.atlas-nav-item:hover, 
-.atlas-nav-item.active {
-  background: var(--atlas-ink) !important;
-  color: var(--atlas-bg) !important;
-  border-color: var(--atlas-ink) !important;
+.atlas-container .atlas-nav-item:hover, 
+.atlas-container .atlas-nav-item.active {
+  background: var(--atlas-ink);
+  color: var(--atlas-bg);
+  border-color: var(--atlas-ink);
 }
