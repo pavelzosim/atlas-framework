@@ -2,8 +2,10 @@ name: Atomic Build & Purge
 
 on:
   push:
-    tags:
-      - 'v*' # Срабатывает только при создании тега
+    branches:
+      - master # Сборка происходит при каждом пуше в мастер
+    paths:
+      - 'cdn/**' # Только если меняются исходники
 
 permissions:
   contents: write
@@ -20,29 +22,17 @@ jobs:
 
       - name: Atomic Rebuild Monolith
         run: |
-          # 1. Полная очистка перед сборкой
           rm -f cdn/atlas-framework.css
-          
-          # 2. Создание файла с нуля и вшивание тега (Версии)
           echo "/* ==========================================================================" > cdn/atlas-framework.css
           echo "   ATLAS FRAMEWORK PRODUCTION CORE — ATOMIC BUILD" >> cdn/atlas-framework.css
-          echo "   VERSION_TAG: ${{ github.ref_name }}" >> cdn/atlas-framework.css
           echo "   BUILD_TIMESTAMP: $(date -u)" >> cdn/atlas-framework.css
           echo "   ========================================================================== */" >> cdn/atlas-framework.css
-          echo "" >> cdn/atlas-framework.css
           
-          # 3. Чистая сборка модулей
           cat cdn/atlas-core.css >> cdn/atlas-framework.css
-          echo -e "\n" >> cdn/atlas-framework.css
           cat cdn/atlas-typography.css >> cdn/atlas-framework.css
-          echo -e "\n" >> cdn/atlas-framework.css
-          
-          # Сборка компонентов из папки (автоматически подхватит все .css файлы)
           for file in cdn/components/*.css; do
             if [ -f "$file" ]; then
-              echo "/* Source: $file */" >> cdn/atlas-framework.css
               cat "$file" >> cdn/atlas-framework.css
-              echo -e "\n" >> cdn/atlas-framework.css
             fi
           done
 
@@ -52,11 +42,13 @@ jobs:
           git config --global user.email "actions@github.com"
           git add cdn/atlas-framework.css
           
-          # Коммитим с заменой
-          git commit -m "build: atomic rebuild for ${{ github.ref_name }} [skip ci]"
-          git push origin HEAD:${{ github.ref }}
+          # Если есть изменения — коммитим и пушим в мастер
+          if ! git diff --staged --quiet; then
+            git commit -m "build: atomic rebuild [skip ci]"
+            git push origin master
+          fi
 
       - name: Purge jsDelivr Cache
         run: |
-          # Принудительный сброс конкретного тега в CDN
-          curl -s "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@${{ github.ref_name }}/cdn/atlas-framework.css"
+          # Сбрасываем кэш мастера
+          curl -s "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css"
