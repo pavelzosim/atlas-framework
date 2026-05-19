@@ -29,7 +29,8 @@ jobs:
           
           # 3. Создание файла с шапкой
           LC_ALL=C printf '/* ATLAS FRAMEWORK | VERSION: %s | BUILD: %s */\n' "$VERSION" "$(date -u)" > cdn/atlas-framework.css
-          
+          sed -i '1s/^\xEF\xBB\xBF//' cdn/atlas-framework.css
+
           # 4. Атомарная сборка в строгом порядке:
           # Сначала ядро, затем глобальные стили, затем паспорт, затем остальные компоненты
           cat cdn/atlas-core.css \
