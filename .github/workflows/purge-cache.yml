@@ -3,9 +3,9 @@ name: Atomic Build & Purge
 on:
   push:
     branches:
-      - master # Сборка происходит при каждом пуше в мастер
+      - master
     paths:
-      - 'cdn/**' # Только если меняются исходники
+      - 'cdn/**'
 
 permissions:
   contents: write
@@ -22,17 +22,27 @@ jobs:
 
       - name: Atomic Rebuild Monolith
         run: |
+          # 1. Полная очистка
           rm -f cdn/atlas-framework.css
+          
+          # 2. Создание файла с нуля с метаданными
           echo "/* ==========================================================================" > cdn/atlas-framework.css
           echo "   ATLAS FRAMEWORK PRODUCTION CORE — ATOMIC BUILD" >> cdn/atlas-framework.css
           echo "   BUILD_TIMESTAMP: $(date -u)" >> cdn/atlas-framework.css
           echo "   ========================================================================== */" >> cdn/atlas-framework.css
+          echo "" >> cdn/atlas-framework.css
           
+          # 3. Сборка из компонентов
           cat cdn/atlas-core.css >> cdn/atlas-framework.css
+          echo -e "\n" >> cdn/atlas-framework.css
           cat cdn/atlas-typography.css >> cdn/atlas-framework.css
+          echo -e "\n" >> cdn/atlas-framework.css
+          
           for file in cdn/components/*.css; do
             if [ -f "$file" ]; then
+              echo "/* Source: $file */" >> cdn/atlas-framework.css
               cat "$file" >> cdn/atlas-framework.css
+              echo -e "\n" >> cdn/atlas-framework.css
             fi
           done
 
@@ -42,13 +52,14 @@ jobs:
           git config --global user.email "actions@github.com"
           git add cdn/atlas-framework.css
           
-          # Если есть изменения — коммитим и пушим в мастер
+          # Коммит только если есть изменения
           if ! git diff --staged --quiet; then
             git commit -m "build: atomic rebuild [skip ci]"
             git push origin master
+          else
+            echo "No changes detected."
           fi
 
       - name: Purge jsDelivr Cache
         run: |
-          # Сбрасываем кэш мастера
           curl -s "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css"
