@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - master
-    paths:
-      - 'cdn/**'
+    paths-ignore:
+      - 'cdn/atlas-framework.css'
 
 permissions:
   contents: write
@@ -17,16 +17,18 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
-      - name: Atomic Build
+      - name: Hard Rebuild
         run: |
-          # 1. Удаляем старый монолит, чтобы он не засорял сборку
+          # 1. Получаем текущую версию (тег или коммит)
+          VERSION=$(git describe --tags --exact-match 2>/dev/null || echo "dev-${GITHUB_SHA::7}")
+          
+          # 2. Удаление и создание файла с нуля
           rm -f cdn/atlas-framework.css
+          echo "/* ATLAS FRAMEWORK | VERSION: $VERSION | BUILD: $(date -u) */" > cdn/atlas-framework.css
           
-          # 2. Создаем файл с нуля
-          echo "/* ATLAS FRAMEWORK — AUTO-GENERATED MONOLITH | BUILD: $(date -u) */" > cdn/atlas-framework.css
-          
-          # 3. Собираем всё подряд: сначала корень, потом компоненты
+          # 3. Атомарная сборка (сначала корень, потом компоненты)
           find cdn/ -maxdepth 1 -name "*.css" ! -name "atlas-framework.css" -exec cat {} + >> cdn/atlas-framework.css
           echo -e "\n" >> cdn/atlas-framework.css
           find cdn/components/ -name "*.css" -exec cat {} + >> cdn/atlas-framework.css
@@ -37,10 +39,11 @@ jobs:
           git config --global user.email "actions@github.com"
           git add cdn/atlas-framework.css
           if ! git diff --staged --quiet; then
-            git commit -m "build: atomic rebuild [skip ci]"
+            git commit -m "build: rebuild $(git describe --tags --exact-match 2>/dev/null || echo "dev") [skip ci]"
             git push origin master
           fi
 
-      - name: Purge Cache
+      - name: Purge jsDelivr Cache
         run: |
+          # Принудительно чистим кэш после успешного пуша
           curl -s "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css"
