@@ -1,49 +1,61 @@
 /* ==========================================================================
-   ATLAS LAYOUT GLOBAL — INTEGRATED PASSPORT & TERMINAL FOOTER
-   ──────────────────────────────────────────────────────────────────────────
-   Правило: Passport живет внутри .content-block, Footer — независимый узел.
+   ATLAS FRAMEWORK | LAYOUT GLOBAL | v1.5.2
+   Этот файл отвечает за геометрию блоков, сетки и позиционирование.
+   Использует плоские селекторы для максимальной автономности.
    ========================================================================== */
 
-/* 5. PASSPORT (HEADER COMPONENT) */
-.content-block .atlas-blueprint-passport {
+/* 1. Блок: ПАСПОРТ (HEADER) */
+.atlas-blueprint-passport {
   display: block !important;
   width: 100% !important;
   margin: 24px 0 32px 0 !important;
   border: 1px solid var(--atlas-ink, #000000) !important;
-  background: var(--atlas-bg, rgb(230, 220, 210)) !important;
-  position: relative !important;
-  padding: 0 !important;
+  background: var(--atlas-bg, #e6dcd2) !important;
   box-sizing: border-box !important;
-  clear: both !important;
 }
 
-.content-block .atlas-blueprint-passport .bp-header {
+.bp-header {
   background: var(--atlas-ink, #000000) !important;
   padding: 8px 12px !important;
   display: flex !important;
   justify-content: space-between !important;
-  align-items: center !important;
+  color: var(--atlas-bg, #e6dcd2) !important;
 }
 
-/* 6. PRODUCTION TERMINAL FOOTER (#site-footer) */
-#site-footer {
+.bp-main-title {
+  padding: 12px !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  text-transform: uppercase !important;
+  color: var(--atlas-ink, #000000) !important;
+  border-bottom: 1px solid var(--atlas-ink, #000000) !important;
+}
+
+.bp-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  padding: 12px !important;
+  gap: 12px !important;
+}
+
+/* 2. Блок: ТАБЛИЦЫ */
+.atlas-table-responsive {
   width: 100% !important;
-  display: block !important;
-  clear: both !important;
-  box-sizing: border-box !important;
+  overflow-x: auto !important;
+  margin: 24px 0 !important;
+  border: 1px solid var(--atlas-ink, #000000) !important;
 }
 
-#site-footer .atlas-footer-wrapper {
+/* 3. Блок: ФУТЕР (TERMINAL MATRIX) */
+.atlas-footer-wrapper {
+  width: 100% !important;
   margin-top: 64px !important;
   border-top: 1px solid var(--atlas-ink, #000000) !important;
   padding: 24px 0 32px 0 !important;
 }
 
-#site-footer .atlas-footer-block__matrix-zone {
+.atlas-footer-block__matrix-zone {
   display: grid !important;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
   gap: 24px !important;
-  border-top: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
-  padding-top: 16px !important;
 }
-
