@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: dev-3a0e9f6 | BUILD: Tue May 19 17:10:50 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: dev-415b060 | BUILD: Tue May 19 17:18:53 UTC 2026 */
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
 /* ── Reset ──────────────────────────────────────────────────── */
@@ -71,9 +71,7 @@ html, body {
   font-size: var(--fs-body) !important;
   color: var(--atlas-ink) !important;
   box-sizing: border-box !important;
-}
-
-/* Только контентные элементы */
+}/* Только контентные элементы */
 .content-block h2 {
   font-family: var(--atlas-font-mono);
   font-size: 14px;
