@@ -1,21 +1,4 @@
-﻿/* ==========================================================================
-   ATLAS FRAMEWORK PRODUCTION CORE — COMPILED MONOLITH
-   Generated automatically via GitHub Actions Workflow
-   ========================================================================== */
-/*
-  ATLAS CORE — Design Tokens + Reset
-  ─────────────────────────────────────────────────────────────
-  STATIC. Do not modify without cause.
-  Load once at site level (Wix > Settings > Custom Code > Head).
-
-  Provides:
-    - CSS custom properties (color, spacing, type scale)
-    - Font import (JetBrains Mono)
-    - Minimal html/body reset
-    - .atlas-container base
-*/
-
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
 /* ── Reset ──────────────────────────────────────────────────── */
 html, body {
