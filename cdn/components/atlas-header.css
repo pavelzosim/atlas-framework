@@ -1,65 +1,57 @@
-/* ── MODULE: HEADER (Clean Version) ───────────────────────── */
+/* ── MODULE: PASSPORT (Clean & Modular) ───────────────────── */
 
-/* Используем родительский контейнер для иерархического веса */
-.atlas-container .atlas-header {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  border-bottom: 2px solid var(--atlas-ink);
-  padding-bottom: var(--atlas-space-sm);
-  margin-bottom: var(--atlas-space-lg);
+.atlas-container .passport-bp {
+  border: 2px solid var(--atlas-ink);
+  padding: var(--atlas-space-sm);
+  background: var(--atlas-bg-alt);
   box-sizing: border-box;
-  background: transparent;
 }
 
-/* Верхняя строка: Логотип и SysInfo */
-.atlas-container .atlas-header__main {
+/* Верхняя полоса с системным промптом */
+.atlas-container .passport-title-bar {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  width: 100%;
+  border-bottom: 2px solid var(--atlas-ink);
+  padding-bottom: 2px;
   margin-bottom: var(--atlas-space-sm);
-  flex-wrap: wrap;
-  gap: var(--atlas-space-sm);
+  font-family: var(--atlas-font-mono);
+  font-size: var(--fs-meta);
 }
 
-.atlas-container .atlas-header__brand {
-  display: flex;
-  flex-direction: column;
-}
-
-.atlas-container .atlas-header__sysinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  text-align: right;
+/* Сетка параметров проекта (Project/Module/Version/LogID) */
+.atlas-container .passport-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 2px;
+  background: var(--atlas-ink); /* Цвет линий сетки */
+  border: 2px solid var(--atlas-ink);
+  margin-bottom: var(--atlas-space-sm);
 }
 
-/* Нижняя строка: Командное меню (Навигация) */
-.atlas-container .atlas-header__nav {
+.atlas-container .passport-cell {
+  background: var(--atlas-bg-alt);
+  padding: var(--atlas-space-xs) var(--atlas-space-sm);
+}
+
+.atlas-container .passport-key {
+  font-weight: 700;
+  margin-right: 8px;
+  text-transform: uppercase;
+  color: var(--atlas-ink-muted);
+}
+
+/* Блок тегов */
+.atlas-container .passport-tags {
   display: flex;
   flex-wrap: wrap;
   gap: var(--atlas-space-xs);
-  border-top: 1px solid var(--atlas-border);
   padding-top: var(--atlas-space-sm);
-  width: 100%;
+  border-top: 2px solid var(--atlas-ink);
 }
 
-.atlas-container .atlas-nav-item {
-  font-family: var(--atlas-font-mono);
+.atlas-container .passport-tag {
+  border: 1px solid var(--atlas-ink);
+  padding: 2px 6px;
   font-size: var(--fs-meta);
-  color: var(--atlas-ink);
-  text-decoration: none;
   text-transform: uppercase;
-  padding: 3px 8px;
-  border: 1px solid var(--atlas-border);
-  transition: all 0.15s ease;
-}
-
-.atlas-container .atlas-nav-item:hover, 
-.atlas-container .atlas-nav-item.active {
-  background: var(--atlas-ink);
-  color: var(--atlas-bg);
-  border-color: var(--atlas-ink);
 }
