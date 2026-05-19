@@ -70,4 +70,6 @@ html, body {
   font-size: var(--fs-body) !important;
   color: var(--atlas-ink) !important;
   box-sizing: border-box !important;
+  border-top: 1px solid var(--atlas-border) !important;
+  border-bottom: 1px solid var(--atlas-border) !important;
 } 
