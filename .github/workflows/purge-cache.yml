@@ -31,6 +31,7 @@ jobs:
           cat cdn/atlas-core.css \
               cdn/components/atlas-typography.css \
               cdn/components/atlas-layout-global.css \
+              cdn/components/atlas-header.css \
             | sed 's/\xEF\xBB\xBF//g' \
             >> cdn/atlas-framework.css
           
