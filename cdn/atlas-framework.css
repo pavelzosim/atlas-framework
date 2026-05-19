@@ -1,45 +1,63 @@
-/* ATLAS FRAMEWORK | VERSION: v1.6.0 | BUILD: Tue May 19 15:02:03 UTC 2026 */
-﻿/* ==========================================================================
-   ATLAS FRAMEWORK | HARD RECONSTRUCTION MONOLITH | v1.5.8
-   ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
+/* ATLAS FRAMEWORK | VERSION: dev-3717238 | BUILD: Tue May 19 15:11:13 UTC 2026 */
+﻿@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght=300;400;700&display=swap');
 
 :root {
-  --atlas-bg:            #e6dcd2; /* Плотный 100% непрозрачный бежевый холст */
-  --atlas-bg-alt:        #d9cfc5; /* Затемненный плотный бежевый для блоков */
-  --atlas-ink:           #000000; /* Абсолютно черная глухая тушь */
-  --atlas-ink-muted:     #555555; /* Темно-серый для второстепенных ключей */
-  --atlas-ink-soft:      #111111; /* Глубокий черный для текста статьи */
-  --atlas-crit:          #8b0000; /* Темно-красный сигнальный */
+  --atlas-bg:            #e6dcd2; /* 100% глухой, непрозрачный бежевый инженерный фон */
+  --atlas-bg-alt:        #d9cfc5; /* Плотный темный бежевый для блоков и таблиц */
+  --atlas-ink:           #000000; /* Чистая черная тушь для всех линий и рамок */
+  --atlas-ink-muted:     #555555; /* Темно-серый для служебных подписей */
+  --atlas-ink-soft:      #111111; /* Глубокий контрастный черный для текста */
+  --atlas-crit:          #8b0000; /* Сигнальный красный */
   --atlas-font-mono:     'JetBrains Mono', 'Courier New', monospace;
 }
 
-/* 1. ГЛОБАЛЬНАЯ ИЗОЛЯЦИЯ ГЕОМЕТРИИ */
-*, *::before, *::after {
-  box-sizing: border-box !important;
+/* ГЛОБАЛЬНЫЙ СБРОС */
+*, *::before, *::after { 
+  box-sizing: border-box !important; 
 }
 
-/* Принудительный сброс для тела iframe — жесткий фон без прозрачности */
-html, body {
-  background-color: var(--atlas-bg) !important;
+/* ТИПОГРАФИКА СТАТЬИ */
+.content-block h2 {
+  font-family: var(--atlas-font-mono) !important;
+  font-size: 14px !important;
+  text-transform: uppercase !important;
   color: var(--atlas-ink) !important;
-  margin: 0 !important;
-  padding: 0 !important;
+  margin: 36px 0 14px 0 !important;
+}
+.content-block h2::before { content: "» "; color: var(--atlas-crit) !important; }
+
+.content-block p {
+  font-family: var(--atlas-font-mono) !important;
+  font-size: 13.5px !important;
+  line-height: 1.7 !important;
+  color: var(--atlas-ink-soft) !important;
 }
 
-/* 2. АВТОНОМНЫЙ КОМПОНЕНТ: ПАСПОРТ (HEADER) — БЕЗ ПРОЗРАЧНОСТИ */
+/* Разделители сечений в статье */
+.atlas-section-break {
+  border: none !important;
+  border-top: 1px solid var(--atlas-ink) !important;
+  margin: 40px 0 !important;
+  display: block !important;
+  height: 0 !important;
+}
+
+/* ==========================================================================
+   ЖЕСТКИЙ АВТОНОМНЫЙ ПАСПОРТ (HEADER) — ВСЕ ЛИНИИ СКВОЗНЫЕ
+   ========================================================================== */
 .atlas-blueprint-passport {
   display: block !important;
   width: 100% !important;
   margin: 24px 0 32px 0 !important;
-  border: 1px solid var(--atlas-ink) !important; /* Жесткая сплошная рамка */
+  border: 1px solid var(--atlas-ink) !important; /* Наружная глухая рамка */
   background-color: var(--atlas-bg) !important;
   font-family: var(--atlas-font-mono) !important;
   clear: both !important;
 }
 
+/* Верхняя плашка */
 .atlas-blueprint-passport .bp-header {
-  background: var(--atlas-ink) !important; /* Глухой черный залив */
+  background: var(--atlas-ink) !important;
   padding: 8px 12px !important;
   display: flex !important;
   justify-content: space-between !important;
@@ -49,11 +67,12 @@ html, body {
 .atlas-blueprint-passport .bp-header span {
   font-size: 11px !important;
   font-weight: 700 !important;
-  color: var(--atlas-bg) !important; /* Текст цвета картона */
+  color: var(--atlas-bg) !important;
   text-transform: uppercase !important;
   letter-spacing: 0.05em !important;
 }
 
+/* Центральный заголовок документа */
 .atlas-blueprint-passport .bp-main-title {
   font-size: 15px !important;
   font-weight: 700 !important;
@@ -65,20 +84,23 @@ html, body {
   display: block !important;
 }
 
+/* Нижняя сетка метаданных */
 .atlas-blueprint-passport .bp-grid {
   display: flex !important;
   flex-wrap: wrap !important;
-  border-top: 1px solid var(--atlas-ink) !important; /* Жесткая линия деления */
+  border-top: 1px solid var(--atlas-ink) !important; /* Верхняя граница сетки */
 }
 
+/* Ячейки таблицы метаданных */
 .atlas-blueprint-passport .bp-cell {
   flex: 1 1 50% !important;
   max-width: 50% !important;
   padding: 10px 14px !important;
-  border-right: 1px solid var(--atlas-ink) !important; /* Жесткий разделитель ячеек */
+  border-right: 1px solid var(--atlas-ink) !important; /* Жесткий вертикальный разделитель */
   background-color: var(--atlas-bg) !important;
 }
 
+/* Убираем правый бордер у крайней правой ячейки */
 .atlas-blueprint-passport .bp-cell:nth-child(2n) {
   border-right: none !important;
 }
@@ -90,6 +112,7 @@ html, body {
   color: var(--atlas-ink) !important;
 }
 
+/* Ключи (Заголовки свойств) */
 .atlas-blueprint-passport .bp-key {
   font-size: 10px !important;
   text-transform: uppercase !important;
@@ -99,71 +122,10 @@ html, body {
   margin-right: 8px !important;
 }
 
-/* 3. КОНТЕНТНАЯ ТИПОГРАФИКА И ИНФО-БЛОКИ */
-.content-block h2 {
-  font-size: 14px !important;
-  text-transform: uppercase !important;
-  color: var(--atlas-ink) !important;
-  margin: 36px 0 14px 0 !important;
-}
-.content-block h2::before { content: "» "; color: var(--atlas-crit) !important; }
 
-.content-block p {
-  font-size: 13.5px !important;
-  line-height: 1.7 !important;
-  color: var(--atlas-ink-soft) !important;
-}
-
-/* Жесткие разделители сечений в статье */
-.atlas-section-break {
-  border: none !important;
-  border-top: 1px solid var(--atlas-ink) !important;
-  margin: 40px 0 !important;
-  display: block !important;
-  height: 0 !important;
-}
-
-/* Сообщения логов (Notice) — убираем прозрачность полностью */
-.atlas-notice {
-  margin: 16px 0 !important;
-  border: 1px solid var(--atlas-ink) !important;
-  background-color: var(--atlas-bg-alt) !important;
-  padding: 14px !important;
-}
-.atlas-notice__header {
-  font-weight: 700 !important;
-  font-size: 11px !important;
-  text-transform: uppercase !important;
-  margin-bottom: 6px !important;
-  color: var(--atlas-ink) !important;
-}
-.atlas-notice[data-type="crit"] { border-left: 4px solid var(--atlas-crit) !important; }
-.atlas-notice[data-type="warn"] { border-left: 4px solid var(--atlas-ink) !important; }
-.atlas-notice[data-type="info"] { border-left: 4px solid var(--atlas-ink-muted) !important; }
-
-/* Таблицы — только чистая тушь */
-.atlas-table {
-  width: 100% !important;
-  border-collapse: collapse !important;
-  margin: 20px 0 !important;
-  border: 1px solid var(--atlas-ink) !important;
-}
-.atlas-table th {
-  background-color: var(--atlas-ink) !important;
-  color: var(--atlas-bg) !important;
-  padding: 8px 12px !important;
-  font-size: 11px !important;
-  text-transform: uppercase !important;
-  text-align: left !important;
-}
-.atlas-table td {
-  padding: 8px 12px !important;
-  border: 1px solid var(--atlas-ink) !important;
-  font-size: 12px !important;
-  background-color: var(--atlas-bg) !important;
-}
-
-/* 4. АВТОНОМНЫЙ КОМПОНЕНТ: ФУТЕР TERMINAL MATRIX */
+/* ==========================================================================
+   ЖЕСТКИЙ АВТОНОМНЫЙ ПОДВАЛ TERMINAL MATRIX
+   ========================================================================== */
 #site-footer {
   width: 100% !important;
   display: block !important;
@@ -172,7 +134,7 @@ html, body {
 
 .atlas-footer-wrapper {
   margin-top: 64px !important;
-  border-top: 1px solid var(--atlas-ink) !important; /* Глухая черная линия */
+  border-top: 1px solid var(--atlas-ink) !important; /* Верхняя сплошная линия */
   padding: 24px 0 32px 0 !important;
 }
 
@@ -188,7 +150,7 @@ html, body {
   align-items: center !important;
   flex-wrap: wrap !important;
   gap: 12px !important;
-  border-bottom: 1px solid var(--atlas-ink) !important; /* Сплошная линия */
+  border-bottom: 1px solid var(--atlas-ink) !important; /* Линия под каомодзи */
   padding-bottom: 10px !important;
 }
 
@@ -219,11 +181,12 @@ html, body {
   color: var(--atlas-ink-soft) !important;
 }
 
+/* Зона матрицы линков */
 .atlas-footer-block__matrix-zone {
   display: grid !important;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
   gap: 24px !important;
-  border-top: 1px solid var(--atlas-ink) !important; /* Сплошная линия */
+  border-top: 1px solid var(--atlas-ink) !important; /* Разделительная черная линия */
   padding-top: 16px !important;
 }
 
@@ -239,13 +202,13 @@ html, body {
 }
 .atlas-blueprint-link:hover { color: var(--atlas-crit) !important; text-decoration: underline !important; }
 
-/* 5. АДАПТИВНОСТЬ СЕТКИ ПАСПОРТА */
+/* АДАПТИВНОСТЬ ДЛЯ ДИСКРЕТНЫХ ПАНЕЛЕЙ */
 @media (max-width: 640px) {
   .atlas-blueprint-passport .bp-grid .bp-cell {
     flex: 1 1 100% !important;
     max-width: 100% !important;
     border-right: none !important;
-    border-bottom: 1px solid var(--atlas-ink) !important; /* Сплошной бордер на мобильных */
+    border-bottom: 1px solid var(--atlas-ink) !important;
   }
   .atlas-blueprint-passport .bp-grid .bp-cell:last-child { border-bottom: none !important; }
 }/* Только контентные элементы */
