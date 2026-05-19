@@ -1,105 +1,70 @@
-/* ATLAS FRAMEWORK | VERSION: dev-82cfce2 | BUILD: Tue May 19 13:29:06 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: dev-dd95c75 | BUILD: Tue May 19 14:14:44 UTC 2026 */
 ﻿@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
 :root {
-  --atlas-bg:            rgb(230, 220, 210);
-  --atlas-bg-alt:        rgba(0, 0, 0, 0.05);
-  --atlas-ink:           #000000;
-  --atlas-ink-muted:     rgba(0, 0, 0, 0.45);
-  --atlas-ink-soft:      rgba(0, 0, 0, 0.8);
-  --atlas-crit:          #8b0000;
-  --atlas-border:        rgba(0, 0, 0, 0.15);
-  --atlas-font-mono:     'JetBrains Mono', 'Courier New', monospace;
+  --atlas-bg:        rgb(230, 220, 210);
+  --atlas-bg-alt:    rgba(0, 0, 0, 0.05);
+  --atlas-ink:       #000000;
+  --atlas-ink-muted: rgba(0, 0, 0, 0.45);
+  --atlas-ink-soft:  rgba(0, 0, 0, 0.8);
+  --atlas-crit:      #8b0000;
+  --atlas-border:    rgba(0, 0, 0, 0.15);
+  --atlas-font-mono: 'JetBrains Mono', 'Courier New', monospace;
 }
 
-/* 2. БАЗОВЫЙ СБРОС (ИЗОЛЯЦИЯ КОНТЕЙНЕРОВ) */
-.content-block, .atlas-blueprint-passport, .atlas-footer-container {
-  box-sizing: border-box !important;
-  font-family: var(--atlas-font-mono) !important;
-}
+*, *::before, *::after { box-sizing: border-box !important; }
 
-/* 3. МОДУЛЬ: PASSPORT (HEADER) */
+/* АВТОНОМНЫЙ ПАСПОРТ (HEADER) */
 .atlas-blueprint-passport {
   display: block !important;
   width: 100% !important;
   margin: 24px 0 32px 0 !important;
   border: 1px solid var(--atlas-ink) !important;
   background: var(--atlas-bg) !important;
+  font-family: var(--atlas-font-mono) !important;
 }
-.atlas-blueprint-passport .bp-header {
+
+.bp-header {
   background: var(--atlas-ink) !important;
   padding: 8px 12px !important;
   display: flex !important;
   justify-content: space-between !important;
-}
-.atlas-blueprint-passport .bp-logo {
-  font-size: 11px !important;
   color: var(--atlas-bg) !important;
-  text-transform: uppercase !important;
+  font-size: 11px !important;
 }
 
-/* 4. МОДУЛЬ: CONTENT (BODY) */
-.content-block h2 {
+.bp-main-title {
+  padding: 12px !important;
+  font-weight: 700 !important;
   font-size: 14px !important;
   text-transform: uppercase !important;
   color: var(--atlas-ink) !important;
-  margin: 36px 0 14px 0 !important;
-}
-.content-block h2::before { content: "» "; color: var(--atlas-crit); }
-.content-block p {
-  font-size: 13.5px !important;
-  line-height: 1.7 !important;
-  color: var(--atlas-ink-soft) !important;
+  border-bottom: 1px solid var(--atlas-ink) !important;
 }
 
-/* 5. МОДУЛЬ: FOOTER (TERMINAL MATRIX) */
-.atlas-footer-container {
-  width: 100% !important;
+.bp-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  padding: 12px !important;
+  gap: 12px !important;
+  font-size: 11px !important;
+}
+
+.bp-key { font-weight: 700 !important; margin-right: 4px !important; }
+.bp-meta { padding: 0 12px 12px 12px !important; font-size: 10px !important; color: var(--atlas-ink-muted) !important; }
+
+/* КОНТЕНТНЫЙ БЛОК */
+.content-block { font-family: var(--atlas-font-mono) !important; }
+.content-block h2 { font-size: 14px !important; color: var(--atlas-ink) !important; margin: 36px 0 14px 0 !important; }
+.content-block p { font-size: 13px !important; line-height: 1.6 !important; color: var(--atlas-ink-soft) !important; }
+
+/* АВТОНОМНЫЙ ФУТЕР */
+.atlas-footer-wrapper {
   margin-top: 64px !important;
   border-top: 1px solid var(--atlas-ink) !important;
-  padding: 24px 0 32px 0 !important;
+  padding: 24px 0 !important;
 }
-.atlas-footer-container .atlas-footer-block__matrix-zone {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
-  gap: 24px !important;
-}
-.atlas-footer-container .atlas-blueprint-link {
-  font-size: 11.5px !important;
-  color: var(--atlas-ink) !important;
-  text-decoration: none !important;
-  display: block !important;
-  margin-bottom: 6px !important;
-}
-
-/* Принудительная фиксация геометрии хедера */
-.passport-bp {
-  display: block !important;
-  width: 100% !important;
-  border: 1px solid var(--atlas-ink, #000000) !important;
-  background: var(--atlas-bg, #e6dcd2) !important;
-  box-sizing: border-box !important;
-  margin: 24px 0 !important;
-}
-
-/* Форсирование видимости дочерних элементов */
-.passport-bp .bp-title-bar {
-  background: var(--atlas-ink, #000000) !important;
-  display: flex !important;
-  justify-content: space-between !important;
-  padding: 8px 12px !important;
-  color: var(--atlas-bg, #e6dcd2) !important;
-}
-
-/* Добавь это в блок стилей или в свой atlas-framework.css */
-.atlas-blueprint-passport {
-  display: block !important;
-  width: 100% !important;
-  margin: 24px 0 32px 0 !important;
-  border: 1px solid var(--atlas-ink, #000000) !important;
-  background: var(--atlas-bg, rgb(230, 220, 210)) !important;
-  box-sizing: border-box !important;
-}/* ==========================================================================
+/* ==========================================================================
    ATLAS TYPOGRAPHY — Core Text Engine [v1.2.0_cleaned]
    ─────────────────────────────────────────────────────────────
    Scope: Strict isolation under .content-block node only.
@@ -684,51 +649,63 @@
 }
 
 /* ==========================================================================
-   ATLAS LAYOUT GLOBAL — INTEGRATED PASSPORT & TERMINAL FOOTER
-   ──────────────────────────────────────────────────────────────────────────
-   Правило: Passport живет внутри .content-block, Footer — независимый узел.
+   ATLAS FRAMEWORK | LAYOUT GLOBAL | v1.5.2
+   Этот файл отвечает за геометрию блоков, сетки и позиционирование.
+   Использует плоские селекторы для максимальной автономности.
    ========================================================================== */
 
-/* 5. PASSPORT (HEADER COMPONENT) */
-.content-block .atlas-blueprint-passport {
+/* 1. Блок: ПАСПОРТ (HEADER) */
+.atlas-blueprint-passport {
   display: block !important;
   width: 100% !important;
   margin: 24px 0 32px 0 !important;
   border: 1px solid var(--atlas-ink, #000000) !important;
-  background: var(--atlas-bg, rgb(230, 220, 210)) !important;
-  position: relative !important;
-  padding: 0 !important;
+  background: var(--atlas-bg, #e6dcd2) !important;
   box-sizing: border-box !important;
-  clear: both !important;
 }
 
-.content-block .atlas-blueprint-passport .bp-header {
+.bp-header {
   background: var(--atlas-ink, #000000) !important;
   padding: 8px 12px !important;
   display: flex !important;
   justify-content: space-between !important;
-  align-items: center !important;
+  color: var(--atlas-bg, #e6dcd2) !important;
 }
 
-/* 6. PRODUCTION TERMINAL FOOTER (#site-footer) */
-#site-footer {
+.bp-main-title {
+  padding: 12px !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  text-transform: uppercase !important;
+  color: var(--atlas-ink, #000000) !important;
+  border-bottom: 1px solid var(--atlas-ink, #000000) !important;
+}
+
+.bp-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  padding: 12px !important;
+  gap: 12px !important;
+}
+
+/* 2. Блок: ТАБЛИЦЫ */
+.atlas-table-responsive {
   width: 100% !important;
-  display: block !important;
-  clear: both !important;
-  box-sizing: border-box !important;
+  overflow-x: auto !important;
+  margin: 24px 0 !important;
+  border: 1px solid var(--atlas-ink, #000000) !important;
 }
 
-#site-footer .atlas-footer-wrapper {
+/* 3. Блок: ФУТЕР (TERMINAL MATRIX) */
+.atlas-footer-wrapper {
+  width: 100% !important;
   margin-top: 64px !important;
   border-top: 1px solid var(--atlas-ink, #000000) !important;
   padding: 24px 0 32px 0 !important;
 }
 
-#site-footer .atlas-footer-block__matrix-zone {
+.atlas-footer-block__matrix-zone {
   display: grid !important;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
   gap: 24px !important;
-  border-top: 1px dashed var(--atlas-border, rgba(0, 0, 0, 0.15)) !important;
-  padding-top: 16px !important;
 }
-
