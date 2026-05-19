@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: dev-bfede4b | BUILD: Tue May 19 12:21:29 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: dev-27834eb | BUILD: Tue May 19 12:32:46 UTC 2026 */
 ﻿/* ==========================================================================
    ATLAS FRAMEWORK | VERSION: v1.5.0 | BUILD: 2026-05-19
    ──────────────────────────────────────────────────────────────────────────
@@ -82,7 +82,28 @@
   text-decoration: none !important;
   display: block !important;
   margin-bottom: 6px !important;
-}/* ==========================================================================
+}
+
+/* Принудительная фиксация геометрии хедера */
+.passport-bp {
+  display: block !important;
+  width: 100% !important;
+  border: 1px solid var(--atlas-ink, #000000) !important;
+  background: var(--atlas-bg, #e6dcd2) !important;
+  box-sizing: border-box !important;
+  margin: 24px 0 !important;
+}
+
+/* Форсирование видимости дочерних элементов */
+.passport-bp .bp-title-bar {
+  background: var(--atlas-ink, #000000) !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  padding: 8px 12px !important;
+  color: var(--atlas-bg, #e6dcd2) !important;
+}
+
+/* ==========================================================================
    ATLAS TYPOGRAPHY — Core Text Engine [v1.2.0_cleaned]
    ─────────────────────────────────────────────────────────────
    Scope: Strict isolation under .content-block node only.
