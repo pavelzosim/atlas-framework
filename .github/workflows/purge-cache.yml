@@ -28,11 +28,11 @@ jobs:
           LC_ALL=C printf '/* ATLAS FRAMEWORK | VERSION: %s | BUILD: %s */\n' "$VERSION" "$(date -u)" > cdn/atlas-framework.css
           sed -i '1s/^\xEF\xBB\xBF//' cdn/atlas-framework.css
 
-          for f in cdn/atlas-core.css \
-                    cdn/components/atlas-typography.css \
-                    cdn/components/atlas-layout-global.css; do
-            sed 's/^\xEF\xBB\xBF//' "$f"
-          done >> cdn/atlas-framework.css
+          cat cdn/atlas-core.css \
+              cdn/components/atlas-typography.css \
+              cdn/components/atlas-layout-global.css \
+            | sed 's/\xEF\xBB\xBF//g' \
+            >> cdn/atlas-framework.css
           
           if [ ! -s cdn/atlas-framework.css ]; then exit 1; fi
 
