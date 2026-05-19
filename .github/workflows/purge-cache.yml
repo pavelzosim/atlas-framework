@@ -1,58 +1,32 @@
-- name: Compile CSS Modules into Production Monolith
-      run: |
-        # Твой текущий неизменяемый код сборки
-        printf "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght=300;400;700&display=swap');\n" > cdn/atlas-framework.css
-        printf "\n/* ==========================================================================\n   ATLAS FRAMEWORK PRODUCTION CORE — COMPILED MONOLITH\n   Generated automatically via GitHub Actions Workflow\n   ========================================================================== */\n\n" >> cdn/atlas-framework.css
-        
-        process_file() {
-          if [ -f "$1" ]; then
-            printf "/* ── COMPILER_INJECT: %s ──────────────────────────────── */\n" "$1" >> cdn/atlas-framework.css
-            perl -pe 's/\xEF\xBB\xBF//g' "$1" | \
-            sed 's|@import url(.*);||g' | \
-            sed 's|var(--atlas-font-mono), monospace|var(--atlas-font-mono)|g' >> cdn/atlas-framework.css
-            printf "\n\n" >> cdn/atlas-framework.css
-            echo "[ATLAS_COMPILER] Compiled: $1"
-          else
-            echo "[ATLAS_COMPILER] WARNING: File not found: $1"
+name: Atlas Framework CDN Cache Purge
+
+on:
+  push:
+    tags:
+      - 'v*'
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  purge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Flush and Warm jsDelivr Cache
+        run: |
+          echo "[ATLAS_CDN] Initiating register flush for: ${{ github.ref_name }}"
+          
+          # Если пуш в ветку master — сбрасываем кэш через API
+          if [ "${{ github.ref_name }}" = "master" ]; then
+            curl -s "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css" > /dev/null
+            echo "[ATLAS_CDN] Purge signal dispatched to master chain."
           fi
-        }
-        
-        process_file "cdn/atlas-core.css"
-        process_file "cdn/atlas-typography.css"
-        
-        echo "Compilation complete. Stage 1 (Core + Typography) is online."
-
-    # МОДИФИКАЦИЯ 1: Фиксация монолита в репозитории
-    - name: Commit and Push Compiled Monolith back to Git
-      run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        
-        git add cdn/atlas-framework.css
-        
-        # Проверяем, изменился ли файл, чтобы избежать пустых коммитов, ломающих пайплайн
-        if git diff-index --quiet HEAD --; then
-          echo "[ATLAS_COMPILER] No changes detected in monolith. Skipping commit."
-        else
-          git commit -m "build: automated production monolith compilation [skip ci]"
-          # Пушим изменения в ветку/тег, который вызвал триггер
-          git push origin HEAD:${{ github.ref }}
-        fi
-
-    # МОДИФИКАЦИЯ 2: Прогрев кэша jsDelivr (Защита от ложных 404)
-    - name: Warm Up jsDelivr Production Cache
-      run: |
-        echo "[ATLAS_CDN] Initiating cache warming for register: ${{ github.ref_name }}"
-        # Технологическая пауза 5 секунд, чтобы GitHub успел обновить индексы страниц
-        sleep 5
-        
-        # Если работаем через ветку master — отправляем запрос на очистку
-        if [ "${{ github.ref_name }}" = "master" ]; then
-          curl -s "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css" > /dev/null
-          echo "[ATLAS_CDN] Purge request sent for master branch cascade."
-        fi
-        
-        # Холостой запрос заголовков (Curl -I). Заставляет CDN сожрать готовый файл v1.3.x 
-        # до того, как Wix и браузер успеют зафиксировать случайную ошибку.
-        curl -I "https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@${{ github.ref_name }}/cdn/atlas-framework.css"
-        echo "[ATLAS_CDN] Cache warming container successfully deployed."
+          
+          # Холостой запрос заголовков для прогрева тега/ветки
+          curl -I "https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@${{ github.ref_name }}/cdn/atlas-framework.css"
+          echo "[ATLAS_CDN] Pipeline warming transaction complete."
