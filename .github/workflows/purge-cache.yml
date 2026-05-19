@@ -14,52 +14,33 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0
 
-      - name: Atomic Rebuild Monolith
+      - name: Atomic Build
         run: |
-          # 1. Полная очистка
+          # 1. Удаляем старый монолит, чтобы он не засорял сборку
           rm -f cdn/atlas-framework.css
           
-          # 2. Создание файла с нуля с метаданными
-          echo "/* ==========================================================================" > cdn/atlas-framework.css
-          echo "   ATLAS FRAMEWORK PRODUCTION CORE — ATOMIC BUILD" >> cdn/atlas-framework.css
-          echo "   BUILD_TIMESTAMP: $(date -u)" >> cdn/atlas-framework.css
-          echo "   ========================================================================== */" >> cdn/atlas-framework.css
-          echo "" >> cdn/atlas-framework.css
+          # 2. Создаем файл с нуля
+          echo "/* ATLAS FRAMEWORK — AUTO-GENERATED MONOLITH | BUILD: $(date -u) */" > cdn/atlas-framework.css
           
-          # 3. Сборка из компонентов
-          cat cdn/atlas-core.css >> cdn/atlas-framework.css
+          # 3. Собираем всё подряд: сначала корень, потом компоненты
+          find cdn/ -maxdepth 1 -name "*.css" ! -name "atlas-framework.css" -exec cat {} + >> cdn/atlas-framework.css
           echo -e "\n" >> cdn/atlas-framework.css
-          cat cdn/atlas-typography.css >> cdn/atlas-framework.css
-          echo -e "\n" >> cdn/atlas-framework.css
-          
-          for file in cdn/components/*.css; do
-            if [ -f "$file" ]; then
-              echo "/* Source: $file */" >> cdn/atlas-framework.css
-              cat "$file" >> cdn/atlas-framework.css
-              echo -e "\n" >> cdn/atlas-framework.css
-            fi
-          done
+          find cdn/components/ -name "*.css" -exec cat {} + >> cdn/atlas-framework.css
 
-      - name: Push Atomic Result
+      - name: Push Result
         run: |
           git config --global user.name "Atlas-CI-Bot"
           git config --global user.email "actions@github.com"
           git add cdn/atlas-framework.css
-          
-          # Коммит только если есть изменения
           if ! git diff --staged --quiet; then
             git commit -m "build: atomic rebuild [skip ci]"
             git push origin master
-          else
-            echo "No changes detected."
           fi
 
-      - name: Purge jsDelivr Cache
+      - name: Purge Cache
         run: |
           curl -s "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css"
