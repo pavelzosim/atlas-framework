@@ -36,7 +36,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2px;
-
   border: 2px solid var(--atlas-ink);
   margin-bottom: var(--atlas-space-sm);
 }
