@@ -135,10 +135,6 @@
   font-size: var(--fs-meta);
 }
 
-.atlas-container .atlas-footer-block__kaomoji {
-  color: var(--atlas-ink-muted);
-}
-
 .atlas-container .atlas-footer-block__support-content {
   margin-bottom: var(--atlas-space-lg);
 }
@@ -163,14 +159,8 @@
   gap: 4px;
 }
 
-/* Ссылки */
 .atlas-container .atlas-blueprint-link {
   text-decoration: none;
   color: var(--atlas-ink);
   font-size: var(--fs-body);
-  transition: opacity 0.2s;
-}
-
-.atlas-container .atlas-blueprint-link:hover {
-  opacity: 0.6;
 }

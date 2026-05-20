@@ -189,5 +189,37 @@ window.addEventListener('message', function (e) {
   }
 }());
 </script>
+
+<script>
+  // Ссылка с кэш-бастером
+  var FOOTER_CONFIG_URL = 'https://raw.githubusercontent.com/pavelzosim/atlas-framework/master/cdn/footer-config.json?t=' + Date.now();
+
+  fetch(FOOTER_CONFIG_URL)
+    .then(r => r.json())
+    .then(function(c) {
+      console.log('ATLAS: Config loaded', c); // Проверь консоль браузера!
+      
+      var matrixHTML = (c.links || []).map(function(group) {
+        return '<div style="margin-bottom: 10px;">' +
+               '<strong>' + group.label + '</strong><br>' +
+               group.items.map(function(i) { return '<a href="'+i.url+'" target="_blank">'+i.text+'</a> '; }).join(' | ') +
+               '</div>';
+      }).join('');
+
+      // Рендерим именно в #atlas-footer
+      var el = document.getElementById('atlas-footer');
+      if (el) {
+          el.innerHTML = '<div style="padding: 20px;">' + (c.tagline || '') + '<br>' + matrixHTML + '</div>';
+      } else {
+          console.error('ATLAS: Element #atlas-footer not found!');
+      }
+    })
+    .catch(e => {
+        console.error('ATLAS: Fetch failed', e);
+        document.getElementById('atlas-footer').innerHTML = 'Error loading data';
+    });
+</script
+
+
 </body>
 </html>
