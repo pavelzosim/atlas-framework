@@ -21,7 +21,8 @@ jobs:
 
       - name: Hard Rebuild
         run: |
-          VERSION=$(git describe --tags --exact-match 2>/dev/null || echo "dev-${GITHUB_SHA::7}")
+          # Авто-версия: формат v-YYYYMMDD-HHMMSS
+          VERSION="v-$(date -u +%Y%m%d-%H%M%S)"
           
           rm -f cdn/atlas-framework.css
           
@@ -44,10 +45,18 @@ jobs:
           git add cdn/atlas-framework.css
           
           if ! git diff --staged --quiet; then
-            git commit -m "build: rebuild $(git describe --tags --exact-match 2>/dev/null || echo "dev") [skip ci]"
+            git commit -m "build: auto-update to ${VERSION:-dev} [skip ci]"
             git push origin master
           fi
 
       - name: Purge jsDelivr Cache
         run: |
-          curl -s "https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css"
+          # Очистка кэша и проверка результата
+          URL="https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css"
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
+          
+          if [ "$RESPONSE" == "200" ]; then
+            echo "Cache purged successfully."
+          else
+            echo "::warning::Cache purge returned status: $RESPONSE. Manual purge might be needed."
+          fi
