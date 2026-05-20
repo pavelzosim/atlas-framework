@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260520-192640 | BUILD: Wed May 20 19:26:40 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260520-200243 | BUILD: Wed May 20 20:02:43 UTC 2026 */
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
 /* ── Reset: Критические стили для подавления Wix-настроек ── */
@@ -71,7 +71,7 @@ html, body {
 .atlas-container .atlas-cell--bordered {
   border-top: 1px solid var(--atlas-border);
   border-bottom: 1px solid var(--atlas-border);
-}/* ── MODULE: TYPOGRAPHY (Clean Version) ────────────────────── */
+} /* ── MODULE: TYPOGRAPHY (Clean Version) ────────────────────── */
 
 /* Мы используем вложенность. Если элемент находится внутри 
    .atlas-container, он автоматически получает эти стили. 
