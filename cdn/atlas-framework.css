@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260520-170816 | BUILD: Wed May 20 17:08:16 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260520-171506 | BUILD: Wed May 20 17:15:06 UTC 2026 */
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
 /* ── Reset: Критические стили для подавления Wix-настроек ── */
@@ -161,7 +161,6 @@ html, body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2px;
-
   border: 2px solid var(--atlas-ink);
   margin-bottom: var(--atlas-space-sm);
 }
