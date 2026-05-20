@@ -6,10 +6,41 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.8.4/cdn/atlas-framework.css">
+  
+  <style>
+    /* ПАТЧ: Перебиваем старый кэш jsDelivr */
+    .atlas-container .passport-cell {
+      background: var(--atlas-bg, rgb(230, 220, 210)) !important;
+    }
+    
+    .atlas-container .passport-cell-line::before {
+      font-weight: 700;
+      margin-right: 12px;
+      text-transform: uppercase;
+      color: var(--atlas-ink-muted, rgba(0,0,0,0.5));
+      min-width: 70px;
+    }
+    .atlas-container .passport-cell-line[data-key="project"]::before { content: "PROJECT"; }
+    .atlas-container .passport-cell-line[data-key="module"]::before  { content: "MODULE"; }
+    .atlas-container .passport-cell-line[data-key="version"]::before { content: "VERSION"; }
+    .atlas-container .passport-cell-line[data-key="log_id"]::before  { content: "LOG_ID"; }
+    
+    .atlas-container .passport-meta-item {
+      display: inline-block;
+    }
+    .atlas-container .passport-meta-item::before {
+      font-weight: 700;
+      color: var(--atlas-ink, #000000);
+    }
+    .atlas-container .passport-meta-item[data-meta="auth"]::before     { content: "AUTH: "; }
+    .atlas-container .passport-meta-item[data-meta="created"]::before  { content: "CREATED: "; }
+    .atlas-container .passport-meta-item[data-meta="modified"]::before { content: "LAST_MODIFIED: "; }
+    .atlas-container .passport-meta-item[data-meta="read"]::before     { content: "READ: "; }
+  </style>
 </head>
 <body>
- 
+
 <div class="atlas-container">
   <div id="site-passport"></div>
 </div>
@@ -27,12 +58,12 @@ var CONFIG = {
   // Базовые параметры сетки
   project:    '—',
   module:     '—',
-  version:    '—',
+  version:    '1.0',
   logId:      '—',
-  status:     'DRAFT',
+  status:     'PROD',
 
-  // Слаг текущего поста для автоматического fetch запроса
-  slug:       'unity-shaderlab-cheatsheet',
+  // Слаг текущего поста для автоматического fetch запроса ! Важно прописать руками!
+  slug:       'houdini-procedural-explosion-vfx',
 
   // Поля, наполняемые асинхронно через getPostData
   author:     '...',
@@ -48,8 +79,22 @@ var CONFIG = {
 var BACKEND_URL = 'https://www.pavelzosim.com/_functions/getPostData';
 
 function applyData(d) {
-  if (d.author)    CONFIG.author   = d.author;
-  if (d.title)     CONFIG.title    = d.title;
+  if (d.author)   CONFIG.author   = d.author;
+  
+  // Авто-генерация команды на основе заголовка
+  if (d.title) {
+    CONFIG.title = d.title;
+    // Превращаем заголовок в безопасное имя файла:
+    // 1. В нижний регистр
+    // 2. Все, что не буквы/цифры, меняем на '_'
+    // 3. Убираем лишние подчеркивания по краям
+    var cleanTitle = d.title.toLowerCase()
+      .replace(/[^a-z0-9]+/g, '_')
+      .replace(/(^_|_$)/g, '');
+    
+    CONFIG.command = 'cat ' + cleanTitle + '.log';
+  }
+
   if (d.created)   CONFIG.created  = d.created;
   if (d.modified)  CONFIG.modified = d.modified;
   if (d.project)   CONFIG.project  = d.project;
@@ -60,6 +105,7 @@ function applyData(d) {
   if (d.wordCount) CONFIG.wordCount = d.wordCount;
   if (Array.isArray(d.tags)) CONFIG.tags = d.tags;
   
+  // Перерисовываем UI с обновленной командой
   window.render && window.render();
 }
 

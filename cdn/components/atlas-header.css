@@ -43,7 +43,7 @@
 
 /* Ячейка сетки с принудительной заливкой базового фона */
 .atlas-container .passport-cell {
-  background: var(--atlas-bg) !important;
+
   padding: var(--atlas-space-xs) var(--atlas-space-sm);
 }
 
