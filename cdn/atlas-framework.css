@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260520-152814 | BUILD: Wed May 20 15:28:14 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260520-165732 | BUILD: Wed May 20 16:57:32 UTC 2026 */
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
 /* ── Reset: Критические стили для подавления Wix-настроек ── */
@@ -168,7 +168,7 @@ html, body {
 
 /* Ячейка сетки с принудительной заливкой базового фона */
 .atlas-container .passport-cell {
-  background: var(--atlas-bg) !important;
+
   padding: var(--atlas-space-xs) var(--atlas-space-sm);
 }
 
