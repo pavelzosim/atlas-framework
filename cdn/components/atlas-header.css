@@ -5,7 +5,7 @@
 .atlas-container .passport-bp {
   border: 2px solid var(--atlas-ink);
   padding: var(--atlas-space-sm);
-  background: var(--atlas-bg); /* Заменено с bg-alt для жесткого перекрытия внешних слоев */
+
   box-sizing: border-box;
   margin-bottom: var(--atlas-space-md);
 }
@@ -43,7 +43,6 @@
 
 /* Ячейка сетки с принудительной заливкой базового фона */
 .atlas-container .passport-cell {
-
   padding: var(--atlas-space-xs) var(--atlas-space-sm);
 }
 
