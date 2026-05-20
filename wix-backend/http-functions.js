@@ -63,13 +63,19 @@ function buildPayload(post, tags) {
   var created  = fmtDate(post.publishedDate);
   var modified = fmtDate(post.lastPublishedDate);
   if (created === modified) modified = null;
+
   return {
     source:   'atlas-backend',
     author:   'Pavel Zosim',
     title:    post.title || null,
     created:  created,
     modified: modified,
-    tags:     tags
+    tags:     tags,        
+    project:  post.project,
+    module:   post.module,
+    version:  post.version,
+    logId:    post.logId,
+    status:   post.status
   };
 }
 

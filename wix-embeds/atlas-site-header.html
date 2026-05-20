@@ -1,16 +1,4 @@
 <!DOCTYPE html>
-<!--
-  ╔══════════════════════════════════════════════════════════════╗
-  ║  ATLAS SITE HEADER — Engineering Passport Embed             ║
-  ║                                                              ║
-  ║  HOW TO USE:                                                 ║
-  ║  1. Edit CONFIG: prefix, project, module, version, logId,   ║
-  ║     status, slug (copy from post URL).                      ║
-  ║  2. Paste entire file into a Wix HTML iframe element.       ║
-  ║  3. Install wix-http-functions.js in Wix Backend (once).    ║
-  ║  4. Adjust iframe height to fit the passport block.         ║
-  ╚══════════════════════════════════════════════════════════════╝
--->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -18,11 +6,36 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework/cdn/atlas-framework.css">
+  
   <style>
-	*, *::before, *::after { box-sizing: border-box; }
-	html, body { margin: 0; padding: 0; overflow-x: hidden; background: transparent; font-family: 'JetBrains Mono', 'Courier New', monospace !important; }
-	h1, h2, h3, h4, h5, h6, p, span, div, li, td, th { font-family: 'JetBrains Mono', 'Courier New', monospace !important; }
+    /* ПАТЧ: Перебиваем старый кэш jsDelivr */
+    .atlas-container .passport-cell {
+    }
+    
+    .atlas-container .passport-cell-line::before {
+      font-weight: 700;
+      margin-right: 12px;
+      text-transform: uppercase;
+      color: var(--atlas-ink-muted, rgba(0,0,0,0.5));
+      min-width: 70px;
+    }
+    .atlas-container .passport-cell-line[data-key="project"]::before { content: "PROJECT"; }
+    .atlas-container .passport-cell-line[data-key="module"]::before  { content: "MODULE"; }
+    .atlas-container .passport-cell-line[data-key="version"]::before { content: "VERSION"; }
+    .atlas-container .passport-cell-line[data-key="log_id"]::before  { content: "LOG_ID"; }
+    
+    .atlas-container .passport-meta-item {
+      display: inline-block;
+    }
+    .atlas-container .passport-meta-item::before {
+      font-weight: 700;
+      color: var(--atlas-ink, #000000);
+    }
+    .atlas-container .passport-meta-item[data-meta="auth"]::before     { content: "AUTH: "; }
+    .atlas-container .passport-meta-item[data-meta="created"]::before  { content: "CREATED: "; }
+    .atlas-container .passport-meta-item[data-meta="modified"]::before { content: "LAST_MODIFIED: "; }
+    .atlas-container .passport-meta-item[data-meta="read"]::before     { content: "READ: "; }
   </style>
 </head>
 <body>
@@ -33,75 +46,81 @@
 
 <script>
 /* ═══════════════════════════════════════════════════════════════
-   CONFIG — edit for each page / post header
-   ───────────────────────────────────────────────────────────────
-   user     — CLI prompt username
-   path     — CLI prompt path
-   command  — CLI command shown in title bar
-   prefix   — kept for compatibility (not displayed in new style)
-   project / module / version / logId / status — passport grid
-   slug     — last part of post URL (pavelzosim.com/post/THIS-PART)
-   ── Auto-filled by backend: title, author, created, modified, tags
-═══════════════════════════════════════════════════════════════ */
+   CONFIG — Локальный стейт данных (динамически пишется бэкендом)
+   ─────────────────────────────────────────────────────────────── */
 var CONFIG = {
+  // Промпт-команда верхнего барельефа
   user:       'pavelzosim',
   path:       '~',
   command:    'cat unity_shaderlab_cheatsheet.log',
+  
+  // Базовые параметры сетки
+  project:    '—',
+  module:     '—',
+  version:    '1.0',
+  logId:      '—',
+  status:     'PROD',
 
-  prefix:     'SYSTEM_ATLAS // R&D_LOG',
-  project:    'UNITY_SHADERLAB',
-  module:     'shaders',
-  version:    '1.3.2',
-  logId:      '#042',
-  status:     'EDUCATIONAL',
+  // Слаг текущего поста для автоматического fetch запроса ! Важно прописать руками!
+  slug:       'houdini-procedural-explosion-vfx',
 
-  // ── Copy slug from post URL: pavelzosim.com/post/THIS-PART ───────
-  slug:       'unity-shaderlab-cheatsheet',
-
-  // ── Auto-filled by backend (shown as placeholders until response) ─
+  // Поля, наполняемые асинхронно через getPostData
   author:     '...',
   created:    '----.--.--',
   modified:   null,
   wordCount:  null,
   title:      null,
   tags:       [],
-
+  
   tagBaseUrl: 'https://www.pavelzosim.com/blog/tags/'
 };
 
-/* ═══════════════════════════════════════════════════════════════
-   AUTO-FETCH — uses CONFIG.slug to call the Wix backend HTTP
-   function and populate author, created, modified, tags.
-   Requires wix-http-functions.js installed in Wix Backend.
-═══════════════════════════════════════════════════════════════ */
 var BACKEND_URL = 'https://www.pavelzosim.com/_functions/getPostData';
 
 function applyData(d) {
-  if (d.author)                CONFIG.author   = d.author;
-  if (d.title)                 CONFIG.title    = d.title;
-  if (d.created)               CONFIG.created  = d.created;
-  if (d.modified !== undefined) CONFIG.modified = d.modified;
-  if (Array.isArray(d.tags) && d.tags.length) CONFIG.tags = d.tags;
+  if (d.author)   CONFIG.author   = d.author;
+  
+  // Авто-генерация команды на основе заголовка
+  if (d.title) {
+    CONFIG.title = d.title;
+    // Превращаем заголовок в безопасное имя файла:
+    // 1. В нижний регистр
+    // 2. Все, что не буквы/цифры, меняем на '_'
+    // 3. Убираем лишние подчеркивания по краям
+    var cleanTitle = d.title.toLowerCase()
+      .replace(/[^a-z0-9]+/g, '_')
+      .replace(/(^_|_$)/g, '');
+    
+    CONFIG.command = 'cat ' + cleanTitle + '.log';
+  }
+
+  if (d.created)   CONFIG.created  = d.created;
+  if (d.modified)  CONFIG.modified = d.modified;
+  if (d.project)   CONFIG.project  = d.project;
+  if (d.module)    CONFIG.module   = d.module;
+  if (d.version)   CONFIG.version  = d.version;
+  if (d.logId)     CONFIG.logId    = d.logId;
+  if (d.status)    CONFIG.status   = d.status;
+  if (d.wordCount) CONFIG.wordCount = d.wordCount;
+  if (Array.isArray(d.tags)) CONFIG.tags = d.tags;
+  
+  // Перерисовываем UI с обновленной командой
   window.render && window.render();
 }
 
-// 1. Fetch post data using slug from CONFIG
+// Асинхронный пайплайн запроса к Wix Backend
 (function () {
   var slug = CONFIG.slug || '';
-  if (!slug) {
-    console.warn('[ATLAS] No slug in CONFIG — showing fallback values.');
-    return;
-  }
+  if (!slug) return;
   fetch(BACKEND_URL + '?slug=' + encodeURIComponent(slug))
     .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (data) {
-      if (data && !data.error) applyData(data);
-      else console.warn('[ATLAS] Backend returned:', JSON.stringify(data));
+    .then(function (data) { 
+      if (data && !data.error) applyData(data); 
     })
-    .catch(function (err) { console.warn('[ATLAS] Fetch failed:', err); });
+    .catch(function (err) { console.warn('[ATLAS] Fetch failed', err); });
 })();
 
-// 2. Accept postMessage as fallback (e.g. from Velo if needed)
+// Дополнительный обработчик для Velo API (если данные посылаются через postMessage)
 window.addEventListener('message', function (e) {
   var d = e.data;
   if (!d || d.source !== 'atlas-backend') return;
@@ -109,76 +128,64 @@ window.addEventListener('message', function (e) {
 });
 
 /* ═══════════════════════════════════════════════════════════════
-   RENDERER — do not edit below this line
-═══════════════════════════════════════════════════════════════ */
+   RENDERER — Генерация чистого HTML-дерева без хардкод-текста
+   ═══════════════════════════════════════════════════════════════ */
 (function () {
-  var scMap = {
-	'DRAFT':'muted','IN_PROGRESS':'active','EXPERIMENTAL':'warn',
-	'STABLE':'ok','COMPLETED':'ok','DEPRECATED':'crit'
-  };
-
   function render() {
-	var o      = CONFIG;
-	var status = (o.status || 'DRAFT').toUpperCase();
-	var rt     = o.readTime || (o.wordCount ? '~' + Math.ceil(Number(o.wordCount) / 200) + ' MIN' : null);
+    var o = CONFIG;
+    var status = (o.status || 'DRAFT').toUpperCase();
+    var rt = o.readTime || (o.wordCount ? '~' + Math.ceil(Number(o.wordCount) / 200) + ' MIN' : null);
 
-	var meta = [
-	  { k: 'AUTH',    v: o.author  || '—' },
-	  { k: 'CREATED', v: o.created || '—' }
-	];
-	if (o.modified) meta.push({ k: 'LAST_MODIFIED', v: o.modified });
-	if (rt)         meta.push({ k: 'READ', v: rt });
-	var metaHTML = meta.map(function (m) {
-	  return '<span class="bp-meta-item"><b>' + m.k + '</b>: ' + m.v + '</span>';
-	}).join('');
+    // Сборка мета-строки (Текст подставит CSS через data-meta атрибуты)
+    var metaHTML = '';
+    metaHTML += '<div class="passport-meta-item" data-meta="auth">' + (o.author || '—') + '</div>';
+    metaHTML += '<div class="passport-meta-item" data-meta="created">' + (o.created || '—') + '</div>';
+    if (o.modified) {
+      metaHTML += '<div class="passport-meta-item" data-meta="modified">' + o.modified + '</div>';
+    }
+    if (rt) {
+      metaHTML += '<div class="passport-meta-item" data-meta="read">' + rt + '</div>';
+    }
 
-	var tags    = Array.isArray(o.tags) ? o.tags : [];
-	var baseUrl = o.tagBaseUrl || null;
-	function toSlug(s) { return s.toLowerCase().replace(/\s+/g, '-'); }
-	var tagsHTML = tags.length
-	  ? '<div class="bp-tags">' +
-		  tags.map(function (tg) {
-			return baseUrl
-			  ? '<a href="' + baseUrl + toSlug(tg) + '" class="atlas-blueprint-link" target="_top">#' + tg + '</a>'
-			  : '<span class="atlas-blueprint-link" style="cursor:default">#' + tg + '</span>';
-		  }).join('') +
-		'</div>'
-	  : '';
+    // Сборка тегов
+    var tagsHTML = '';
+    if (Array.isArray(o.tags) && o.tags.length) {
+      tagsHTML = '<div class="passport-tags">' +
+        o.tags.map(function (tg) {
+          var tagSlug = tg.toLowerCase().replace(/\s+/g, '-');
+          return '<a href="' + o.tagBaseUrl + tagSlug + '" class="passport-tag" target="_top">#' + tg.toUpperCase() + '</a>';
+        }).join('') +
+      '</div>';
+    }
 
-	document.getElementById('site-passport').innerHTML =
-	  '<div class="passport-bp">' +
-		'<div class="bp-title-bar">' +
-		  '<div class="bp-title-bar__left">' +
-			'<span class="bp-user-prompt">' + (o.user || 'user') + '</span>' +
-			'<span style="opacity:.4">:</span>' +
-			'<span class="bp-path-prompt">' + (o.path || '~') + '</span>' +
-			'<span class="bp-root-char">#</span>' +
-			'<span class="bp-command-text">' + (o.command || 'cat log') + '</span>' +
-		  '</div>' +
-		  '<div class="bp-sys-status">[ SYS_STATUS: <b>' + status + '</b> ]</div>' +
-		'</div>' +
-		(o.title ? '<div class="bp-main-title">' + o.title + '</div>' : '') +
-		'<div class="bp-grid">' +
-		  '<div class="bp-cell">' +
-			'<div><span class="bp-key">PROJECT</span><span class="bp-val">' + (o.project || '—') + '</span></div>' +
-			'<div><span class="bp-key">MODULE</span><span class="bp-val">'   + (o.module  || '—') + '</span></div>' +
-		  '</div>' +
-		  '<div class="bp-cell">' +
-			'<div><span class="bp-key">VERSION</span><span class="bp-val">' + (o.version || '—') + '</span></div>' +
-			'<div><span class="bp-key">LOG_ID</span><span class="bp-val">'  + (o.logId   || '—') + '</span></div>' +
-		  '</div>' +
-		'</div>' +
-		'<div class="bp-meta">' + metaHTML + '</div>' +
-		tagsHTML +
-	  '</div>';
+    // Рендеринг чистых контейнеров (Текстовые маркеры заменены на data-key для CSS)
+    document.getElementById('site-passport').innerHTML =
+      '<div class="passport-bp">' +
+        '<div class="passport-title-bar">' +
+          '<div>' + o.user + ' : ' + o.path + ' # ' + o.command + '</div>' +
+          '<div>[ SYS_STATUS: <b>' + status + '</b> ]</div>' +
+        '</div>' +
+        (o.title ? '<div class="passport-main-title">' + o.title.toUpperCase() + '</div>' : '') +
+        '<div class="passport-grid">' +
+          '<div class="passport-cell">' +
+            '<div class="passport-cell-line" data-key="project">' + o.project + '</div>' +
+            '<div class="passport-cell-line" data-key="module">' + o.module + '</div>' +
+          '</div>' +
+          '<div class="passport-cell">' +
+            '<div class="passport-cell-line" data-key="version">' + o.version + '</div>' +
+            '<div class="passport-cell-line" data-key="log_id">' + o.logId + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="passport-meta">' + metaHTML + '</div>' +
+        tagsHTML +
+      '</div>';
   }
 
   window.render = render;
-
   if (document.readyState === 'loading') {
-	document.addEventListener('DOMContentLoaded', render);
+    document.addEventListener('DOMContentLoaded', render);
   } else {
-	render();
+    render();
   }
 }());
 </script>
