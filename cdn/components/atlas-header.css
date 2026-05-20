@@ -1,29 +1,40 @@
-/* ── MODULE: PASSPORT (Clean & Modular) ───────────────────── */
+/* ── MODULE: PASSPORT (Full Implementation) ────────────────── */
 
 .atlas-container .passport-bp {
   border: 2px solid var(--atlas-ink);
   padding: var(--atlas-space-sm);
   background: var(--atlas-bg-alt);
   box-sizing: border-box;
+  margin-bottom: var(--atlas-space-md);
 }
 
-/* Верхняя полоса с системным промптом */
+/* Верхняя полоса: Промпт и Статус */
 .atlas-container .passport-title-bar {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   border-bottom: 2px solid var(--atlas-ink);
-  padding-bottom: 2px;
+  padding-bottom: 4px;
   margin-bottom: var(--atlas-space-sm);
   font-family: var(--atlas-font-mono);
   font-size: var(--fs-meta);
 }
 
-/* Сетка параметров проекта (Project/Module/Version/LogID) */
+/* Заголовок документа */
+.atlas-container .passport-main-title {
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: var(--atlas-space-sm);
+  line-height: 1.1;
+}
+
+/* Сетка параметров 2x2 */
 .atlas-container .passport-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2px;
-  background: var(--atlas-ink); /* Цвет линий сетки */
+  background: var(--atlas-ink); 
   border: 2px solid var(--atlas-ink);
   margin-bottom: var(--atlas-space-sm);
 }
@@ -33,11 +44,29 @@
   padding: var(--atlas-space-xs) var(--atlas-space-sm);
 }
 
+/* Ключ-значение внутри ячеек */
+.atlas-container .passport-cell-line {
+  display: flex;
+  font-size: 12px;
+  margin-bottom: 2px;
+}
+
 .atlas-container .passport-key {
   font-weight: 700;
-  margin-right: 8px;
+  margin-right: 12px;
   text-transform: uppercase;
   color: var(--atlas-ink-muted);
+  min-width: 70px;
+}
+
+/* Мета-строка (Author/Created) */
+.atlas-container .passport-meta {
+  display: flex;
+  gap: var(--atlas-space-md);
+  font-size: var(--fs-meta);
+  text-transform: uppercase;
+  margin-bottom: var(--atlas-space-sm);
+  color: var(--atlas-ink);
 }
 
 /* Блок тегов */
@@ -54,4 +83,12 @@
   padding: 2px 6px;
   font-size: var(--fs-meta);
   text-transform: uppercase;
+  text-decoration: none;
+  color: var(--atlas-ink);
+  background: transparent;
+}
+
+.atlas-container .passport-tag:hover {
+  background: var(--atlas-ink);
+  color: var(--atlas-bg);
 }
