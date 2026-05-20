@@ -32,7 +32,7 @@ git push origin v1.1.2
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.0.1/cdn/atlas-framework.css">
 
 ```
-
+ 
 ### 🔍 Что ты увидишь в Консоли (F12) при таком флоу:
 
 Твой дебаггер отработает идеально и сразу покажет, что код встал без подмешивания старых стилей:
