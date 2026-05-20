@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260520-165732 | BUILD: Wed May 20 16:57:32 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260520-170448 | BUILD: Wed May 20 17:04:48 UTC 2026 */
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
 /* ── Reset: Критические стили для подавления Wix-настроек ── */
@@ -130,7 +130,7 @@ html, body {
 .atlas-container .passport-bp {
   border: 2px solid var(--atlas-ink);
   padding: var(--atlas-space-sm);
-  background: var(--atlas-bg); /* Заменено с bg-alt для жесткого перекрытия внешних слоев */
+
   box-sizing: border-box;
   margin-bottom: var(--atlas-space-md);
 }
@@ -168,7 +168,6 @@ html, body {
 
 /* Ячейка сетки с принудительной заливкой базового фона */
 .atlas-container .passport-cell {
-
   padding: var(--atlas-space-xs) var(--atlas-space-sm);
 }
 
