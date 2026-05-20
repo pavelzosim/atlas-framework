@@ -1,9 +1,11 @@
-/* ── MODULE: PASSPORT (Full Implementation) ────────────────── */
+/* ==========================================================================
+   MODULE: PASSPORT (Clean-Data Implementation)
+   ========================================================================== */
 
 .atlas-container .passport-bp {
   border: 2px solid var(--atlas-ink);
   padding: var(--atlas-space-sm);
-  background: var(--atlas-bg-alt);
+  background: var(--atlas-bg); /* Заменено с bg-alt для жесткого перекрытия внешних слоев */
   box-sizing: border-box;
   margin-bottom: var(--atlas-space-md);
 }
@@ -39,35 +41,58 @@
   margin-bottom: var(--atlas-space-sm);
 }
 
+/* Ячейка сетки с принудительной заливкой базового фона */
 .atlas-container .passport-cell {
-  background: var(--atlas-bg-alt);
+  background: var(--atlas-bg) !important;
   padding: var(--atlas-space-xs) var(--atlas-space-sm);
 }
 
-/* Ключ-значение внутри ячеек */
+/* Строки внутри ячеек */
 .atlas-container .passport-cell-line {
   display: flex;
   font-size: 12px;
   margin-bottom: 2px;
 }
 
-.atlas-container .passport-key {
+/* ── Автоматическая генерация текстовых меток параметров ── */
+.atlas-container .passport-cell-line::before {
   font-weight: 700;
   margin-right: 12px;
   text-transform: uppercase;
   color: var(--atlas-ink-muted);
   min-width: 70px;
 }
+.atlas-container .passport-cell-line[data-key="project"]::before { content: "PROJECT"; }
+.atlas-container .passport-cell-line[data-key="module"]::before  { content: "MODULE"; }
+.atlas-container .passport-cell-line[data-key="version"]::before { content: "VERSION"; }
+.atlas-container .passport-cell-line[data-key="log_id"]::before  { content: "LOG_ID"; }
 
-/* Мета-строка (Author/Created) */
+
+/* Мета-строка */
 .atlas-container .passport-meta {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--atlas-space-md);
   font-size: var(--fs-meta);
   text-transform: uppercase;
   margin-bottom: var(--atlas-space-sm);
   color: var(--atlas-ink);
 }
+
+/* ── Автоматическая генерация меток для мета-информации ── */
+.atlas-container .passport-meta-item {
+  display: inline-block;
+  text-transform: uppercase;
+}
+.atlas-container .passport-meta-item::before {
+  font-weight: 700;
+  color: var(--atlas-ink);
+}
+.atlas-container .passport-meta-item[data-meta="auth"]::before          { content: "AUTH: "; }
+.atlas-container .passport-meta-item[data-meta="created"]::before       { content: "CREATED: "; }
+.atlas-container .passport-meta-item[data-meta="modified"]::before      { content: "LAST_MODIFIED: "; }
+.atlas-container .passport-meta-item[data-meta="read"]::before          { content: "READ: "; }
+
 
 /* Блок тегов */
 .atlas-container .passport-tags {
@@ -86,9 +111,10 @@
   text-decoration: none;
   color: var(--atlas-ink);
   background: transparent;
+  transition: background 0.1s ease, color 0.1s ease;
 }
 
 .atlas-container .passport-tag:hover {
   background: var(--atlas-ink);
   color: var(--atlas-bg);
-} 
+}
