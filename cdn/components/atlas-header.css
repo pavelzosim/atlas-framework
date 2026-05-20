@@ -121,46 +121,30 @@
 
 /* ── MODULE: FOOTER (ATLAS Namespace) ───────────────────────── */
 
+/* Внешняя рамка всего футера */
 .atlas-container .atlas-footer-wrapper {
-  padding: var(--atlas-space-lg) 0;
-  border-top: 2px solid var(--atlas-ink);
-  background: transparent;
-  color: var(--atlas-ink);
+  border: 2px solid var(--atlas-ink);
+  padding: var(--atlas-space-md);
+  border-top: 2px solid var(--atlas-ink); /* Перекрываем дефолтный border-top */
 }
 
-.atlas-container .atlas-footer-block__support-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: var(--atlas-space-sm);
-  font-size: var(--fs-meta);
-}
-
-.atlas-container .atlas-footer-block__support-content {
-  margin-bottom: var(--atlas-space-lg);
-}
-
+/* Создаем "табличную" сетку для матрицы */
 .atlas-container .atlas-footer-block__matrix-zone {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--atlas-space-md);
+  gap: 2px; /* Толщина внутренней "линии" сетки */
+  background: var(--atlas-ink); /* Этот цвет заполнит щели (gap), создавая рамки */
+  border-top: 2px solid var(--atlas-ink);
+  padding-top: var(--atlas-space-md);
 }
 
+.atlas-container .atlas-footer-block__matrix-column {
+  background: var(--atlas-bg); /* Цвет фона ячейки */
+  padding: var(--atlas-space-sm);
+}
+
+/* Убираем подчеркивание заголовков, чтобы не мешало рамкам */
 .atlas-container .atlas-footer-block__column-label {
-  display: block;
-  font-weight: 700;
-  margin-bottom: var(--atlas-space-sm);
-  border-bottom: 1px solid var(--atlas-ink);
-  padding-bottom: 4px;
-}
-
-.atlas-container .atlas-footer-block__column-items {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.atlas-container .atlas-blueprint-link {
-  text-decoration: none;
-  color: var(--atlas-ink);
-  font-size: var(--fs-body);
+  border-bottom: none;
+  color: var(--atlas-ink-muted);
 }
