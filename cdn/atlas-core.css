@@ -13,7 +13,7 @@ html, body {
 *, *::before, *::after {
   box-sizing: border-box;
 }
-
+ 
 /* ── Design tokens: Единая палитра и метрики ──────────────── */
 :root {
   --atlas-bg:            rgb(230, 220, 210);
