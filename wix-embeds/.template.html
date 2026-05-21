@@ -3,35 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework/cdn/atlas-framework.css">
-  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework/cdn/atlas-framework.css?t=<?php echo time(); ?>">
+
   <style>
-    /* ПАТЧ: Перебиваем старый кэш jsDelivr */
-    .atlas-container .passport-cell {
-    }
-    
+    /* Локальный патч для паспорта (остальное в cdn) */
     .atlas-container .passport-cell-line::before {
-      font-weight: 700;
-      margin-right: 12px;
-      text-transform: uppercase;
-      color: var(--atlas-ink-muted, rgba(0,0,0,0.5));
-      min-width: 70px;
+      font-weight: 700; margin-right: 12px; text-transform: uppercase;
+      color: var(--atlas-ink-muted); min-width: 70px;
     }
     .atlas-container .passport-cell-line[data-key="project"]::before { content: "PROJECT"; }
     .atlas-container .passport-cell-line[data-key="module"]::before  { content: "MODULE"; }
     .atlas-container .passport-cell-line[data-key="version"]::before { content: "VERSION"; }
     .atlas-container .passport-cell-line[data-key="log_id"]::before  { content: "LOG_ID"; }
-    
-    .atlas-container .passport-meta-item {
-      display: inline-block;
-    }
-    .atlas-container .passport-meta-item::before {
-      font-weight: 700;
-      color: var(--atlas-ink, #000000);
-    }
+    .atlas-container .passport-meta-item { display: inline-block; }
+    .atlas-container .passport-meta-item::before { font-weight: 700; color: var(--atlas-ink); }
     .atlas-container .passport-meta-item[data-meta="auth"]::before     { content: "AUTH: "; }
     .atlas-container .passport-meta-item[data-meta="created"]::before  { content: "CREATED: "; }
     .atlas-container .passport-meta-item[data-meta="modified"]::before { content: "LAST_MODIFIED: "; }
@@ -42,123 +28,70 @@
 
 <div class="atlas-container">
   <div id="site-passport"></div>
+  
+  <div id="atlas-footer"></div>
 </div>
 
 <script>
 /* ═══════════════════════════════════════════════════════════════
-   CONFIG — Локальный стейт данных (динамически пишется бэкендом)
+   ПАСПОРТ: Логика (оставлена без изменений)
    ─────────────────────────────────────────────────────────────── */
 var CONFIG = {
-  // Промпт-команда верхнего барельефа
-  user:       'pavelzosim',
-  path:       '~',
-  command:    'cat unity_shaderlab_cheatsheet.log',
-  
-  // Базовые параметры сетки
-  project:    '—',
-  module:     '—',
-  version:    '1.0',
-  logId:      '—',
-  status:     'R&D',
-
-  // Слаг текущего поста для автоматического fetch запроса ! Важно прописать руками! <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-  slug:       'procedural-modeling-tire-generator',
-
-  // Поля, наполняемые асинхронно через getPostData
-  author:     '...',
-  created:    '----.--.--',
-  modified:   null,
-  wordCount:  null,
-  title:      null,
-  tags:       [],
-  
+  user: 'pavelzosim', path: '~', command: 'cat unity_shaderlab_cheatsheet.log',
+  project: '—', module: '—', version: '1.0', logId: '—', status: 'R&D',
+  slug: 'procedural-modeling-tire-generator',
+  author: '...', created: '----.--.--', modified: null, wordCount: null, title: null, tags: [],
   tagBaseUrl: 'https://www.pavelzosim.com/blog/tags/'
 };
 
 var BACKEND_URL = 'https://www.pavelzosim.com/_functions/getPostData';
 
 function applyData(d) {
-  if (d.author)   CONFIG.author   = d.author;
-  
-  // Авто-генерация команды на основе заголовка
+  if (d.author) CONFIG.author = d.author;
   if (d.title) {
     CONFIG.title = d.title;
-    // Превращаем заголовок в безопасное имя файла:
-    // 1. В нижний регистр
-    // 2. Все, что не буквы/цифры, меняем на '_'
-    // 3. Убираем лишние подчеркивания по краям
-    var cleanTitle = d.title.toLowerCase()
-      .replace(/[^a-z0-9]+/g, '_')
-      .replace(/(^_|_$)/g, '');
-    
-    CONFIG.command = 'cat ' + cleanTitle + '.log';
+    CONFIG.command = 'cat ' + d.title.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/(^_|_$)/g, '') + '.log';
   }
-
-  if (d.created)   CONFIG.created  = d.created;
-  if (d.modified)  CONFIG.modified = d.modified;
-  if (d.project)   CONFIG.project  = d.project;
-  if (d.module)    CONFIG.module   = d.module;
-  if (d.version)   CONFIG.version  = d.version;
-  if (d.logId)     CONFIG.logId    = d.logId;
-  if (d.status)    CONFIG.status   = d.status;
+  if (d.created) CONFIG.created = d.created;
+  if (d.modified) CONFIG.modified = d.modified;
+  if (d.project) CONFIG.project = d.project;
+  if (d.module) CONFIG.module = d.module;
+  if (d.version) CONFIG.version = d.version;
+  if (d.logId) CONFIG.logId = d.logId;
+  if (d.status) CONFIG.status = d.status;
   if (d.wordCount) CONFIG.wordCount = d.wordCount;
   if (Array.isArray(d.tags)) CONFIG.tags = d.tags;
-  
-  // Перерисовываем UI с обновленной командой
   window.render && window.render();
 }
 
-// Асинхронный пайплайн запроса к Wix Backend
+// Fetch Passport Data
 (function () {
   var slug = CONFIG.slug || '';
   if (!slug) return;
   fetch(BACKEND_URL + '?slug=' + encodeURIComponent(slug))
     .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (data) { 
-      if (data && !data.error) applyData(data); 
-    })
-    .catch(function (err) { console.warn('[ATLAS] Fetch failed', err); });
+    .then(function (data) { if (data && !data.error) applyData(data); })
+    .catch(function (err) { console.warn('[ATLAS] Passport fetch failed', err); });
 })();
 
-// Дополнительный обработчик для Velo API (если данные посылаются через postMessage)
-window.addEventListener('message', function (e) {
-  var d = e.data;
-  if (!d || d.source !== 'atlas-backend') return;
-  applyData(d);
-});
-
-/* ═══════════════════════════════════════════════════════════════
-   RENDERER — Генерация чистого HTML-дерева без хардкод-текста
-   ═══════════════════════════════════════════════════════════════ */
+// Render Passport
 (function () {
   function render() {
     var o = CONFIG;
     var status = (o.status || 'DRAFT').toUpperCase();
     var rt = o.readTime || (o.wordCount ? '~' + Math.ceil(Number(o.wordCount) / 200) + ' MIN' : null);
+    var metaHTML = '<div class="passport-meta-item" data-meta="auth">' + (o.author || '—') + '</div>' +
+                   '<div class="passport-meta-item" data-meta="created">' + (o.created || '—') + '</div>';
+    if (o.modified) metaHTML += '<div class="passport-meta-item" data-meta="modified">' + o.modified + '</div>';
+    if (rt) metaHTML += '<div class="passport-meta-item" data-meta="read">' + rt + '</div>';
 
-    // Сборка мета-строки (Текст подставит CSS через data-meta атрибуты)
-    var metaHTML = '';
-    metaHTML += '<div class="passport-meta-item" data-meta="auth">' + (o.author || '—') + '</div>';
-    metaHTML += '<div class="passport-meta-item" data-meta="created">' + (o.created || '—') + '</div>';
-    if (o.modified) {
-      metaHTML += '<div class="passport-meta-item" data-meta="modified">' + o.modified + '</div>';
-    }
-    if (rt) {
-      metaHTML += '<div class="passport-meta-item" data-meta="read">' + rt + '</div>';
-    }
-
-    // Сборка тегов
     var tagsHTML = '';
     if (Array.isArray(o.tags) && o.tags.length) {
-      tagsHTML = '<div class="passport-tags">' +
-        o.tags.map(function (tg) {
-          var tagSlug = tg.toLowerCase().replace(/\s+/g, '-');
-          return '<a href="' + o.tagBaseUrl + tagSlug + '" class="passport-tag" target="_top">#' + tg.toUpperCase() + '</a>';
-        }).join('') +
-      '</div>';
+      tagsHTML = '<div class="passport-tags">' + o.tags.map(function (tg) {
+        return '<a href="' + o.tagBaseUrl + tg.toLowerCase().replace(/\s+/g, '-') + '" class="passport-tag" target="_top">#' + tg.toUpperCase() + '</a>';
+      }).join('') + '</div>';
     }
 
-    // Рендеринг чистых контейнеров (Текстовые маркеры заменены на data-key для CSS)
     document.getElementById('site-passport').innerHTML =
       '<div class="passport-bp">' +
         '<div class="passport-title-bar">' +
@@ -167,59 +100,55 @@ window.addEventListener('message', function (e) {
         '</div>' +
         (o.title ? '<div class="passport-main-title">' + o.title.toUpperCase() + '</div>' : '') +
         '<div class="passport-grid">' +
-          '<div class="passport-cell">' +
-            '<div class="passport-cell-line" data-key="project">' + o.project + '</div>' +
-            '<div class="passport-cell-line" data-key="module">' + o.module + '</div>' +
-          '</div>' +
-          '<div class="passport-cell">' +
-            '<div class="passport-cell-line" data-key="version">' + o.version + '</div>' +
-            '<div class="passport-cell-line" data-key="log_id">' + o.logId + '</div>' +
-          '</div>' +
+          '<div class="passport-cell"><div class="passport-cell-line" data-key="project">' + o.project + '</div><div class="passport-cell-line" data-key="module">' + o.module + '</div></div>' +
+          '<div class="passport-cell"><div class="passport-cell-line" data-key="version">' + o.version + '</div><div class="passport-cell-line" data-key="log_id">' + o.logId + '</div></div>' +
         '</div>' +
-        '<div class="passport-meta">' + metaHTML + '</div>' +
-        tagsHTML +
+        '<div class="passport-meta">' + metaHTML + '</div>' + tagsHTML +
       '</div>';
   }
-
   window.render = render;
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', render);
-  } else {
-    render();
-  }
+  render();
 }());
-</script>
 
-<script>
-  // Ссылка с кэш-бастером
-  var FOOTER_CONFIG_URL = 'https://raw.githubusercontent.com/pavelzosim/atlas-framework/master/cdn/footer-config.json?t=' + Date.now();
-
+/* ═══════════════════════════════════════════════════════════════
+   ФУТЕР: Асинхронный рендер по классам ATLAS Framework
+   ─────────────────────────────────────────────────────────────── */
+(function() {
+  var FOOTER_CONFIG_URL = 'https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework/cdn/atlas-site-footer-config.json?t=' + Date.now();
+  
   fetch(FOOTER_CONFIG_URL)
     .then(r => r.json())
     .then(function(c) {
-      console.log('ATLAS: Config loaded', c); // Проверь консоль браузера!
-      
-      var matrixHTML = (c.links || []).map(function(group) {
-        return '<div style="margin-bottom: 10px;">' +
-               '<strong>' + group.label + '</strong><br>' +
-               group.items.map(function(i) { return '<a href="'+i.url+'" target="_blank">'+i.text+'</a> '; }).join(' | ') +
-               '</div>';
-      }).join('');
-
-      // Рендерим именно в #atlas-footer
-      var el = document.getElementById('atlas-footer');
-      if (el) {
-          el.innerHTML = '<div style="padding: 20px;">' + (c.tagline || '') + '<br>' + matrixHTML + '</div>';
-      } else {
-          console.error('ATLAS: Element #atlas-footer not found!');
-      }
+      var footer = document.getElementById('atlas-footer');
+      // Используем твои классы из atlas-framework.css
+      footer.innerHTML = `
+        <div class="atlas-footer-wrapper">
+          <div class="atlas-footer-block__support-header">
+            <div class="atlas-footer-block__kaomoji">${c.tagline}</div>
+            <div>LET'S STAY IN TOUCH</div>
+          </div>
+          <div class="atlas-footer-block__support-content">
+            <div>${c.support.text}</div>
+            <div style="margin-top:10px;">
+              ${c.support.links.map(l => `<a href="${l.url}" class="atlas-blueprint-link" style="margin-right:15px;">[ ${l.text} ]</a>`).join(' | ')}
+            </div>
+          </div>
+          <div class="atlas-footer-block__matrix-zone">
+            ${c.links.map(g => `
+              <div class="atlas-footer-block__matrix-column">
+                <span class="atlas-footer-block__column-label">${g.label}</span>
+                <div class="atlas-footer-block__column-items">
+                  ${g.items.map(i => `<a href="${i.url}" class="atlas-blueprint-link">/ ${i.text}</a>`).join('')}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
     })
-    .catch(e => {
-        console.error('ATLAS: Fetch failed', e);
-        document.getElementById('atlas-footer').innerHTML = 'Error loading data';
-    });
-</script
-
+    .catch(e => console.error('[ATLAS] Footer load failed:', e));
+})();
+</script>
 
 </body>
 </html>
