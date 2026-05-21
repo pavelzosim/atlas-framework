@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@8542a91bebdb02e3d23c4a579f8455c7f092ba31/cdn/atlas-framework.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@c3fdecea1bdb01a45de25a7171c43cee5bc33001/cdn/atlas-framework.css">
 
 
   
@@ -19,8 +19,16 @@
     <h2>01 COMPONENT SPECIFICATION & CORE ROOT RULES</h2>
     <p>This structural paragraph defines how text tokens inside the canvas container inherit general rules from the main layout. Every element requires strict baseline alignment to eliminate vertical positioning noise.</p>
 
+    <h3>TYPOGRAPHY FLOW & INLINE ENGINE VARIABLES</h3>
+    <h4>HIERARCHY VALIDATION</h4>
+    <p>The boundary conditions for the system require strict separation of execution passes. The final rendering state vector can be evaluated using the following tensor decomposition pipeline, transfiguring mathematical constraints into execution logic:</p>
+    
+    <div class="atlas-math-block">
+      $$\mathbf{V}_{\text{state}} = \sum_{i=1}^{N} \alpha_i \cdot \int_{\Omega} f_i(x) \, d\Omega$$
+    </div>
+
     <pre class="atlas-code-block"><code class="language-c">/* fig 01.1: Core hardware pass declaration 
-   Responsibility: Low-level state vector assignment */
+       Responsibility: Low-level state vector assignment */
 void ExecuteForwardBasePass() {
     int zWriteState = 0; // ZWrite Off
     float4 blendMode = GetAlphaBlend();
@@ -32,24 +40,33 @@ void ExecuteForwardBasePass() {
     }
 }</code></pre>
 
-    <h3>TYPOGRAPHY FLOW & INLINE ENGINE VARIABLES</h3>
-    <h4>HIERARCHY VALIDATION</h4>
-    <p>The boundary conditions for the system require strict separation of execution passes. The final rendering state vector can be evaluated using the following tensor decomposition pipeline:</p>
+    <p>Primary rasterization constraints and geometry data blocks operate alongside secondary illumination evaluation parameters, including specular highlights lookup distribution metrics and diffuse ambient occlusion approximation factors to secure target frame execution bounds.</p>
     
-    <div class="atlas-math-block">
-  $$\mathbf{V}_{\text{state}} = \sum_{i=1}^{N} \alpha_i \cdot \int_{\Omega} f_i(x) \, d\Omega$$
+<div class="media-frame">
+  <div class="media-box">
+    <img src="path/to/image.png" alt="Engineering Diagram">
+  </div>
+  <div class="media-caption">Fig 02: Structural analysis of the data conduit.</div>
 </div>
 
-    <ul>
-      <li>Primary rasterization constraints and geometry data blocks</li>
-      <li>Secondary illumination evaluation parameters:
-        <ul>
-          <li>Specular highlights lookup distribution metrics</li>
-          <li>Diffuse ambient occlusion approximation factors</li>
-        </ul>
-      </li>
-    </ul>
-    
+<div class="media-frame">
+  <div class="media-box">
+    <video controls>
+      <source src="path/to/video.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="media-caption">Video 01: Dynamic load simulation.</div>
+</div>
+
+<div class="media-frame">
+  <div class="gallery-grid">
+    <div class="media-box"><img src="img1.png"></div>
+    <div class="media-box"><img src="img2.png"></div>
+    <div class="media-box"><img src="img3.png"></div>
+  </div>
+  <div class="media-caption">Gallery 01: Comparative test sequences.</div>
+</div>
+
   </div>
 
   <div class="atlas-section-break" data-index="// 01"></div>
@@ -59,6 +76,19 @@ void ExecuteForwardBasePass() {
     <span class="atlas-eof-divider__meta">// END OF SESSION // EOF</span>
     <span class="atlas-eof-divider__line"></span>
   </div>
+
+<div class="atlas-container">
+    <div class="comparison-matrix">
+        <div class="comp-col">
+            <div class="comp-label">Δ1 // LABEL_A</div>
+            <div class="comp-body">Текст для первой колонки.</div>
+        </div>
+        <div class="comp-col">
+            <div class="comp-label">Δ2 // LABEL_B</div>
+            <div class="comp-body">Текст для второй колонки.</div>
+        </div>
+    </div>
+</div>
 
   <div id="atlas-footer"></div>
 </div>
