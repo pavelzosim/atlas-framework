@@ -119,76 +119,120 @@
 }
 
 
-/* ── MODULE: FOOTER (ATLAS Namespace) ───────────────────────── */
+/* ==========================================================================
+   MODULE: FOOTER (Precise Blueprint Implementation)
+   ========================================================================== */
 
-/* ── MODULE: FOOTER (ATLAS Namespace) ───────────────────────── */
-
-.atlas-container .atlas-footer-wrapper {
-  border: 2px solid var(--atlas-ink);
-  background: var(--atlas-bg);
-  display: flex;
-  flex-direction: column;
+#site-footer {
+  margin-top: var(--atlas-space-xl);
 }
 
-/* Секция 1: Header */
+/* Внешний контейнер футера — точная копия структуры .passport-bp */
+.atlas-container .atlas-footer-wrapper {
+  border: 2px solid var(--atlas-ink);
+  padding: 0; /* Убираем падинг, чтобы внутренние разделители доходили до краев */
+  box-sizing: border-box;
+  background: transparent;
+}
+
+/* Верхняя служебная строка (Kaomoji + Статус) — один в один как .passport-title-bar */
 .atlas-container .atlas-footer-block__support-header {
   display: flex;
   justify-content: space-between;
-  padding: var(--atlas-space-sm) var(--atlas-space-md);
+  align-items: center;
   border-bottom: 2px solid var(--atlas-ink);
-  font-size: var(--fs-meta);
-  font-weight: 700;
+  padding: var(--atlas-space-xs) var(--atlas-space-sm);
+  font-family: var(--atlas-font-mono);
+  font-size: var(--fs-meta); /* 11px */
   text-transform: uppercase;
-  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.05em;
 }
+
 .atlas-container .atlas-footer-block__kaomoji {
-  color: var(--atlas-ink); /* В макете черный */
-}
-.atlas-container .atlas-footer-block__support-header > div:last-child {
-  color: var(--atlas-ink-muted); /* Надпись LET'S STAY IN TOUCH серая */
+  color: var(--atlas-ink);
 }
 
-/* Секция 2: Content */
+.atlas-container .atlas-footer-block__support-title {
+  color: var(--atlas-ink-muted);
+  font-weight: 400;
+}
+
+/* Средняя секция: Текст и базовые контакты */
 .atlas-container .atlas-footer-block__support-content {
-  padding: var(--atlas-space-md) var(--atlas-space-md);
+  padding: var(--atlas-space-sm);
+  margin-bottom: 0;
   border-bottom: 2px solid var(--atlas-ink);
-  margin: 0;
+  background: transparent;
 }
 
-/* Секция 3: Matrix Grid */
+.atlas-container .atlas-footer-block__support-text {
+  font-size: var(--fs-body); /* 13px */
+  line-height: 1.6;
+  color: var(--atlas-ink-soft);
+  margin-bottom: var(--atlas-space-sm);
+}
+
+/* Кнопки-ссылки (Telegram, Linkedin, Email) */
+.atlas-container .atlas-footer-block__support-links {
+  display: flex;
+  align-items: center;
+  font-size: var(--fs-body);
+}
+
+.atlas-container .atlas-footer-block__support-divider {
+  color: var(--atlas-ink-muted);
+  padding: 0 var(--atlas-space-sm);
+  user-select: none;
+}
+
+/* Нижестоящая матрица ссылок (Строгий трехколонный Grid) */
 .atlas-container .atlas-footer-block__matrix-zone {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2px; /* Эта щель между ячейками станет вертикальными линиями */
+  gap: 2px; /* Толщина внутренних разделительных линий */
   background: var(--atlas-ink); /* Цвет линий сетки */
+  border-top: none;
+  padding-top: 0;
 }
 
-/* Сами колонки */
+/* Ячейка матрицы — наследует логику и отступы .passport-cell */
 .atlas-container .atlas-footer-block__matrix-column {
-  background: var(--atlas-bg);
-  padding: var(--atlas-space-sm) var(--atlas-space-md) var(--atlas-space-md);
+  background: var(--atlas-bg); /* Принудительное перекрытие фона сетки */
+  padding: var(--atlas-space-sm);
+  box-sizing: border-box;
 }
 
+/* Метки категорий (PROD_PIPELINES, R&D_LOGS и т.д.) */
 .atlas-container .atlas-footer-block__column-label {
   display: block;
+  font-size: var(--fs-meta); /* 11px */
   font-weight: 700;
+  text-transform: uppercase;
   color: var(--atlas-ink-muted);
   margin-bottom: var(--atlas-space-sm);
   border-bottom: none;
+  padding-bottom: 0;
+  letter-spacing: 0.05em;
 }
 
+/* Списки ссылок внутри колонок */
 .atlas-container .atlas-footer-block__column-items {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--atlas-space-xs); /* Плотный вертикальный шаг */
 }
 
+/* Финальные blueprint-ссылки навигации */
 .atlas-container .atlas-blueprint-link {
   text-decoration: none;
   color: var(--atlas-ink);
-  font-size: var(--fs-body);
-  transition: opacity 0.2s;
+  font-size: var(--fs-body); /* 13px */
+  text-transform: uppercase; /* Принудительный технический регистр */
+  letter-spacing: -0.01em;
+  transition: opacity 0.15s ease;
 }
+
 .atlas-container .atlas-blueprint-link:hover {
-  opacity: 0.6;
+  opacity: 0.5;
 }
