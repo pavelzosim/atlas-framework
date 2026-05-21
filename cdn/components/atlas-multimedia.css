@@ -1,19 +1,25 @@
 /* ==========================================================================
-   ATLAS MEDIA MODULE — [v1.0.0_blueprint]
+   ATLAS FRAMEWORK: CODE, MATH & MEDIA MODULE — [v1.7.0_production]
    ────────────────────────────────────────────────────────────────────────── */
 
-/* ── MODULE 1: MEDIA FRAME (Базовая инженерная рамка) ──────────────────── */
-
+/* ── GLOBAL GEOMETRY: ОБЩИЕ ПРАВИЛА ОТСТУПОВ ───────────────────────────── */
+.atlas-container .content-block pre.atlas-code-block,
+.atlas-container .content-block .atlas-math-block,
 .atlas-container .content-block .media-frame {
-  position: relative;
-  border: 1px solid var(--atlas-border);
-  padding: 34px 16px 16px 16px;
-  margin: 24px 0 24px 24px;
+  margin: 24px 24px 24px 24px;
+  max-width: calc(100% - 48px);
   background: transparent !important;
+  border: 1px solid var(--atlas-border);
   box-sizing: border-box;
 }
 
-/* Системный маркер медиа-блока */
+/* ── MODULE 1: MEDIA FRAME (Инженерный визуальный контейнер) ───────────── */
+
+.atlas-container .content-block .media-frame {
+  position: relative;
+  padding: 34px 16px 16px 16px;
+}
+
 .atlas-container .content-block .media-frame::before {
   content: "[ MEDIA_ASSET // VISUAL_DATA ]";
   position: absolute;
@@ -24,12 +30,9 @@
   color: var(--atlas-ink-muted);
 }
 
-/* ── MODULE 2: MEDIA CONTAINER (Fit & Contain) ────────────────────────── */
-
 .atlas-container .content-block .media-box {
   width: 100%;
-  height: auto;
-  min-height: 200px; /* Базовая высота для сохранения пропорций */
+  min-height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -39,12 +42,10 @@
 .atlas-container .content-block .media-box img,
 .atlas-container .content-block .media-box video {
   max-width: 100%;
-  max-height: 80vh; /* Ограничение высоты, чтобы не ломать верстку */
-  object-fit: contain; /* Никакого кропа */
+  max-height: 70vh;
+  object-fit: contain;
   display: block;
 }
-
-/* ── MODULE 3: GALLERY & CAPTION ──────────────────────────────────────── */
 
 .atlas-container .content-block .media-caption {
   margin-top: 12px;
@@ -53,7 +54,7 @@
   color: var(--atlas-ink-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  border-top: 1px solid rgba(0,0,0,0.05);
+  border-top: 1px solid var(--atlas-border);
   padding-top: 8px;
 }
 
@@ -62,4 +63,51 @@
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
   margin-top: 8px;
+}
+
+/* ── MODULE 2: CODE BLOCK (Инженерный листинг) ─────────────────────────── */
+
+.atlas-container .content-block pre.atlas-code-block {
+  border-left: 3px solid var(--atlas-crit);
+  padding: 34px 16px 14px 16px;
+  overflow-x: auto;
+}
+
+.atlas-container .content-block pre.atlas-code-block::before {
+  content: "[ CODE_LISTING // TRANSPILED_ALGORITHM ]";
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 24px;
+  border-bottom: 1px solid var(--atlas-border);
+  font-family: var(--atlas-font-mono);
+  font-size: 9px; line-height: 24px; padding-left: 16px;
+  color: var(--atlas-ink-muted);
+}
+
+/* ── MODULE 3: MATH BLOCK (Математический аппарат) ────────────────────── */
+
+.atlas-container .content-block .atlas-math-block {
+  padding: 34px 16px 18px 16px;
+  border-style: dashed;
+}
+
+.atlas-container .content-block .atlas-math-block::before {
+  content: "[ MATH_MODEL // МАТЕМАТИЧЕСКИЙ АППАРАТ ]";
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 24px;
+  border-bottom: 1px dashed var(--atlas-border);
+  font-family: var(--atlas-font-mono);
+  font-size: 9px; line-height: 24px; padding-left: 16px;
+  color: var(--atlas-ink-muted);
+}
+
+/* ── MODULE 4: SMART COUPLING (Бесшовное слияние) ──────────────────────── */
+
+.atlas-container .content-block .atlas-math-block:has(+ pre.atlas-code-block) {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.atlas-container .content-block .atlas-math-block + pre.atlas-code-block {
+  margin-top: 0;
+  border-top: 1px dashed var(--atlas-border);
 }
