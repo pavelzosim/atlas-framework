@@ -1,0 +1,46 @@
+/* ── MODULE: ATLAS-NODE (ENGINEERING_TABLE_BLOCK) ─────────────────────── */
+
+.atlas-node {
+  border: 2px solid var(--atlas-ink);
+  margin-bottom: 24px;
+  background: transparent;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.atlas-node .header {
+  background: var(--atlas-ink);
+  color: var(--atlas-bg);
+  padding: 4px 10px;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+}
+
+.atlas-node .atlas-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Заголовок таблицы (Solid line) */
+.atlas-node .atlas-table thead th {
+  text-align: left;
+  padding: 8px 10px;
+  font-size: 10px;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--atlas-ink);
+}
+
+/* Строки таблицы (Dashed line) */
+.atlas-node .atlas-table tbody td {
+  padding: 8px 10px;
+  font-size: 12px;
+  border-bottom: 1px dashed var(--atlas-ink-muted);
+}
+
+/* Убираем лишнюю линию у последней строки */
+.atlas-node .atlas-table tbody tr:last-child td {
+  border-bottom: none;
+}
