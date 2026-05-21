@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260521-174550 | BUILD: Thu May 21 17:45:50 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260521-175416 | BUILD: Thu May 21 17:54:16 UTC 2026 */
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
@@ -73,6 +73,44 @@ html, body {
   border-top: 1px solid var(--atlas-border);
   border-bottom: 1px solid var(--atlas-border);
 } 
+
+/* ==========================================================================
+   ATLAS CORE: UNIFIED SYSTEM BLOCKS (ГЕОМЕТРИЯ КОНТЕЙНЕРОВ)
+   ========================================================================== */
+
+.atlas-container .comparison-matrix,
+.atlas-container .atlas-callout,
+.atlas-container .media-frame,
+.atlas-container pre.atlas-code-block,
+.atlas-container .atlas-math-block {
+  position: relative;
+  background: transparent !important;
+  border: 1px solid var(--atlas-border);
+  box-sizing: border-box;
+  margin: 24px 0 !important;   /* Жестко: ровно по сетке текста, никаких сдвигов влево/вправо */
+  width: 100% !important;       /* Всегда на всю ширину контента */
+  padding: 34px 16px 16px 16px; /* 24px под шапку + 10px внутренний отступ */
+}
+
+/* Единая системная плашка для всех блоков */
+.atlas-container .comparison-matrix::before,
+.atlas-container .atlas-callout::before,
+.atlas-container .media-frame::before,
+.atlas-container pre.atlas-code-block::before,
+.atlas-container .atlas-math-block::before {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 24px;
+  line-height: 24px;
+  padding-left: 16px;
+  font-family: var(--atlas-font-mono) !important;
+  font-size: 9px !important;
+  font-weight: 700;
+  color: var(--atlas-ink-muted);
+  letter-spacing: 0.05em;
+  background: rgba(0, 0, 0, 0.015);
+  border-bottom: 1px solid var(--atlas-border);
+}
 
 
 /* ── MODULE: ATLAS-NODE (ENGINEERING_BLOCK) ─────────────────────── */
@@ -334,204 +372,6 @@ p {
   font-size: 13px; 
   line-height: 1.6; 
   color: var(--atlas-ink-soft); 
-}
-
-
-/* ==========================================================================
-   ATLAS CODE & MATHEMATICS MODULE — [v1.6.0_transparent]
-   ────────────────────────────────────────────────────────────────────────── */
-
-/* ── MODULE 1: CONTAINER GEOMETRY (Transparent) ────────────────────────── */
-
-.atlas-container .content-block pre.atlas-code-block,
-.atlas-container .content-block .atlas-math-block {
-  position: relative;
-  background: transparent;
-  border: 1px solid var(--atlas-border);
-  box-sizing: border-box;
-}
-
-.atlas-container .content-block pre.atlas-code-block {
-  border-left: 3px solid var(--atlas-crit);
-  padding: 34px 16px 14px 16px;
-  margin: 24px 0 24px 24px;
-}
-
-.atlas-container .content-block .atlas-math-block {
-  padding: 34px 16px 18px 16px;
-  margin: 24px 0 24px 24px;
-  border-style: dashed;
-}
-
-/* ── MODULE 2: TRANSPARENT HEADERS ─────────────────────────────────────── */
-
-.atlas-container .content-block .atlas-math-block::before,
-.atlas-container .content-block pre.atlas-code-block::before {
-  background: transparent;
-  border-bottom: 1px solid var(--atlas-border);
-  padding-left: 16px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 24px;
-  font-family: var(--atlas-font-mono);
-  font-size: 9px;
-  font-weight: 700;
-  color: var(--atlas-ink-muted);
-  letter-spacing: 0.05em;
-  line-height: 24px;
-}
-
-/* Настройка текста плашек для прозрачности */
-.atlas-container .content-block .atlas-math-block::before { content: "[ MATH_MODEL // МАТЕМАТИЧЕСКИЙ АППАРАТ ]"; }
-.atlas-container .content-block pre.atlas-code-block::before { content: "[ CODE_LISTING // TRANSPILED_ALGORITHM ]"; }
-
-/* ── MODULE 3: SMART COUPLING (Сшивание) ───────────────────────────────── */
-
-/* Если блоки стоят друг под другом — убираем лишние границы */
-.atlas-container .content-block .atlas-math-block:has(+ pre.atlas-code-block) {
-  margin-bottom: 0;
-  border-bottom: none;
-}
-
-.atlas-container .content-block .atlas-math-block + pre.atlas-code-block {
-  margin-top: 0;
-  border-top: 1px dashed var(--atlas-border); /* Стык через пунктир */
-}
-
-/* ── MODULE 4: PRISM.JS TRANSPARENT MAPPING ────────────────────────────── */
-
-.atlas-container .content-block pre.atlas-code-block code {
-  color: var(--atlas-ink-soft);
-  background: transparent;
-}
-
-.atlas-container .content-block pre.atlas-code-block code .token.comment { color: var(--atlas-ink-muted); font-style: italic; }
-.atlas-container .content-block pre.atlas-code-block code .token.punctuation { color: rgba(0, 0, 0, 0.4); }
-.atlas-container .content-block pre.atlas-code-block code .token.number,
-.atlas-container .content-block pre.atlas-code-block code .token.boolean { color: var(--atlas-warn, #7a5200); }
-.atlas-container .content-block pre.atlas-code-block code .token.string { color: var(--atlas-ok, #1a4d1a); }
-.atlas-container .content-block pre.atlas-code-block code .token.keyword,
-.atlas-container .content-block pre.atlas-code-block code .token.class-name { color: var(--atlas-ink); font-weight: 700; }
-.atlas-container .content-block pre.atlas-code-block code .token.function { color: var(--atlas-crit); font-weight: 700; }
-.atlas-container .content-block pre.atlas-code-block code .token.operator { color: var(--atlas-ink); }
-
-
-/* ── MODULE 2: CAD PSEUDO-HEADERS (Автоматическая разметка) ────────────── */
-
-/* Системный маркер математического аппарата */
-.atlas-container .content-block .atlas-math-block::before {
-  content: "[ MATH_MODEL // МАТЕМАТИЧЕСКИЙ АППАРАТ ]";
-  position: absolute;
-  top: 10px;
-  left: 16px;
-  font-family: var(--atlas-font-mono);
-  font-size: 9px;
-  font-weight: 700;
-  color: var(--atlas-ink-muted);
-  letter-spacing: 0.05em;
-}
-
-/* Встроенная плашка консоли кода */
-.atlas-container .content-block pre.atlas-code-block::before {
-  content: "[ CODE_LISTING // TRANSPILED_ALGORITHM ]";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 24px;
-  background: rgba(0, 0, 0, 0.015);
-  border-bottom: 1px solid var(--atlas-border);
-  color: var(--atlas-ink-muted);
-  font-family: var(--atlas-font-mono);
-  font-size: 9px;
-  letter-spacing: 0.05em;
-  line-height: 24px;
-  padding-left: 16px;
-}
-
-
-/* ── MODULE 3: SMART COUPLING (Логика бесшовного слияния) ──────────────── */
-
-/* Если за математическим блоком СРАЗУ следует код */
-.atlas-container .content-block .atlas-math-block:has(+ pre.atlas-code-block) {
-  margin-bottom: 0;
-  border-bottom: none; /* Убираем дно у формулы */
-}
-
-.atlas-container .content-block .atlas-math-block + pre.atlas-code-block {
-  margin-top: 0;
-  border-top: 1px dashed var(--atlas-border); /* Превращаем стык в красивый внутренний пунктир */
-}
-
-
-/* ── MODULE 4: PRISM.JS LOW-CONTRAST MAPPING ───────────────────────────── */
-
-.atlas-container .content-block pre.atlas-code-block code .token.comment {
-  color: var(--atlas-ink-muted);
-  font-style: italic;
-}
-.atlas-container .content-block pre.atlas-code-block code .token.punctuation {
-  color: rgba(0, 0, 0, 0.4);
-}
-.atlas-container .content-block pre.atlas-code-block code .token.number,
-.atlas-container .content-block pre.atlas-code-block code .token.boolean {
-  color: var(--atlas-warn, #7a5200);
-}
-.atlas-container .content-block pre.atlas-code-block code .token.string,
-.atlas-container .content-block pre.atlas-code-block code .token.char {
-  color: var(--atlas-ok, #1a4d1a);
-}
-.atlas-container .content-block pre.atlas-code-block code .token.keyword,
-.atlas-container .content-block pre.atlas-code-block code .token.class-name {
-  color: var(--atlas-ink);
-  font-weight: 700;
-}
-.atlas-container .content-block pre.atlas-code-block code .token.function {
-  color: var(--atlas-crit); 
-  font-weight: 700;
-}
-.atlas-container .content-block pre.atlas-code-block code .token.operator {
-  color: var(--atlas-ink);
-}
-
-/* ==========================================================================
-   ATLAS CORE: UNIFIED SYSTEM BLOCKS
-   Унифицированный контейнер для всех модулей (Code, Math, Callout, Media, Data)
-   ========================================================================== */
-
-.atlas-container .comparison-matrix,
-.atlas-container .atlas-callout,
-.atlas-container .media-frame,
-.atlas-container pre.atlas-code-block,
-.atlas-container .atlas-math-block {
-  position: relative;
-  background: transparent;
-  border: 1px solid var(--atlas-border);
-  box-sizing: border-box;
-  margin: 24px 0;       /* Идеально ровные отступы сверху/снизу. По бокам — вровень с текстом */
-  width: 100%;          /* Блок всегда занимает 100% ширины контента */
-  padding: 34px 16px 16px 16px; /* Место под шапку (24px) + внутренний отступ (10px) */
-}
-
-/* Единая системная шапка (Pseudo-header) для всех блоков */
-.atlas-container .comparison-matrix::before,
-.atlas-container .atlas-callout::before,
-.atlas-container .media-frame::before,
-.atlas-container pre.atlas-code-block::before,
-.atlas-container .atlas-math-block::before {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 24px;
-  line-height: 24px;
-  padding-left: 16px;
-  font-family: var(--atlas-font-mono);
-  font-size: 9px;
-  color: var(--atlas-ink-muted);
-  letter-spacing: 0.05em;
-  background: rgba(0, 0, 0, 0.015);
-  border-bottom: 1px solid var(--atlas-border);
 }
 
 
