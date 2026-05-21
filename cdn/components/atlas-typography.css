@@ -54,31 +54,65 @@
 
 /* ── MODULE: TYPOGRAPHY EXTENDED (Headers & Dividers) ──────────────── */
 
-/* Контейнер контента */
 .atlas-container .content-block {
   margin: 32px 0;
 }
 
-/* Заголовки (H2-H4) */
-.atlas-container .content-block h2 {
+/* Общая база для всех заголовков в контенте */
+.atlas-container .content-block h2,
+.atlas-container .content-block h3,
+.atlas-container .content-block h4 {
   font-family: var(--atlas-font-mono);
-  font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--atlas-ink);
-  margin: 0 0 12px 0;
   display: flex;
   align-items: center;
+  margin: 0 0 12px 0;
+  line-height: 1.2;
 }
 
+/* = H2: Главный раздел = */
+.atlas-container .content-block h2 {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--atlas-ink);
+}
 .atlas-container .content-block h2::before {
   content: "» ";
-  color: var(--atlas-crit);
+  color: var(--atlas-crit); /* Красный акцент */
   margin-right: 8px;
   font-weight: 400;
 }
 
+/* = H3: Подраздел = */
+.atlas-container .content-block h3 {
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--atlas-ink-soft);
+  margin-top: 24px; /* Отбивка сверху для вложенных секций */
+}
+.atlas-container .content-block h3::before {
+  content: "> ";
+  color: var(--atlas-ink-muted);
+  margin-right: 8px;
+  font-weight: 400;
+}
+
+/* = H4: Микро-заголовок (Списки, параметры) = */
+.atlas-container .content-block h4 {
+  font-size: var(--fs-meta, 11px);
+  letter-spacing: 0.05em;
+  color: var(--atlas-ink-muted);
+  margin-top: 16px;
+}
+.atlas-container .content-block h4::before {
+  content: "+ ";
+  color: var(--atlas-ink-muted);
+  margin-right: 8px;
+  font-weight: 400;
+}
+
+/* Базовый текст */
 .atlas-container .content-block p {
   font-family: var(--atlas-font-mono);
   font-size: 12.5px;
@@ -96,7 +130,6 @@
   background: var(--atlas-border);
   margin: 4rem 0;
 }
-
 .atlas-container .atlas-section-break::before {
   content: attr(data-index);
   position: absolute;
@@ -104,7 +137,7 @@
   left: 24px;
   background: var(--atlas-bg);
   padding: 0 0.6rem;
-  font-size: 11px;
+  font-size: var(--fs-meta, 11px);
   font-weight: 700;
   color: var(--atlas-crit);
 }
@@ -114,17 +147,15 @@
   display: flex;
   align-items: center;
   margin: 5.5rem 0 2rem 0;
-  font-size: 11px;
+  font-size: var(--fs-meta, 11px);
   color: var(--atlas-ink-muted);
   letter-spacing: 0.12em;
   width: 100%;
 }
-
 .atlas-container .atlas-eof-divider__line {
   flex: 1;
   border-bottom: 1px dashed var(--atlas-border);
 }
-
 .atlas-container .atlas-eof-divider__meta {
   padding: 0 1.2rem;
   font-weight: 700;
