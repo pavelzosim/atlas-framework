@@ -1,6 +1,6 @@
 /* ── MODULE: ATLAS-NODE (ENGINEERING_TABLE_BLOCK) ─────────────────────── */
 
-.atlas-node {
+.atlas-container .atlas-node {
   border: 2px solid var(--atlas-ink);
   margin-bottom: 24px;
   background: transparent;
@@ -8,7 +8,7 @@
   box-sizing: border-box;
 }
 
-.atlas-node .header {
+.atlas-container .atlas-node .header {
   background: var(--atlas-ink);
   color: var(--atlas-bg);
   padding: 4px 10px;
@@ -19,13 +19,13 @@
   display: block;
 }
 
-.atlas-node .atlas-table {
+.atlas-container .atlas-node .atlas-table {
   width: 100%;
   border-collapse: collapse;
 }
 
 /* Заголовок таблицы (Solid line) */
-.atlas-node .atlas-table thead th {
+.atlas-container .atlas-node .atlas-table thead th {
   text-align: left;
   padding: 8px 10px;
   font-size: 10px;
@@ -34,13 +34,124 @@
 }
 
 /* Строки таблицы (Dashed line) */
-.atlas-node .atlas-table tbody td {
+.atlas-container .atlas-node .atlas-table tbody td {
   padding: 8px 10px;
   font-size: 12px;
   border-bottom: 1px dashed var(--atlas-ink-muted);
 }
 
 /* Убираем лишнюю линию у последней строки */
-.atlas-node .atlas-table tbody tr:last-child td {
+.atlas-container .atlas-node .atlas-table tbody tr:last-child td {
   border-bottom: none;
 }
+
+/* ── NAMESPACE: ATLAS-UML-DIAG ────────────────────────────────────── */
+
+.atlas-uml-diag {
+    --uml-bg: var(--atlas-bg, #e6dcd2);
+    --uml-ink: var(--atlas-ink, #000000);
+    --uml-crit: var(--atlas-crit, #8b0000);
+    --uml-muted: var(--atlas-ink-muted, rgba(0, 0, 0, 0.5));
+    font-family: var(--atlas-font-mono, 'JetBrains Mono', monospace);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Виджет */
+.atlas-uml-diag__widget {
+    border: 2px solid var(--uml-ink);
+    background: var(--uml-bg);
+}
+
+.atlas-uml-diag__header {
+    background: var(--uml-ink);
+    color: var(--uml-bg);
+    padding: 4px 10px;
+    font-size: 10px;
+    text-transform: uppercase;
+}
+
+/* Зоны (Scope) */
+.atlas-uml-diag__scope {
+    border: 1px dashed var(--uml-ink);
+    padding: 10px;
+    margin-bottom: 15px;
+}
+.atlas-uml-diag__scope-label {
+    font-size: 8px;
+    color: var(--uml-muted);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+/* Узлы (Nodes) */
+.atlas-uml-diag__node {
+    border: 1px solid var(--uml-ink);
+    background: var(--uml-bg);
+    min-width: 120px;
+    display: flex;
+    flex-direction: column;
+}
+.atlas-uml-diag__node--dashed { border-style: dashed; }
+
+.atlas-uml-diag__node-title {
+    padding: 6px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--uml-ink);
+    text-align: center;
+}
+
+.atlas-uml-diag__node-body {
+    padding: 6px 10px;
+    font-size: 9px;
+    line-height: 1.4;
+    text-align: left;
+}
+
+/* Логика (Decision) */
+.atlas-uml-diag__node--decision {
+    transform: rotate(45deg);
+    padding: 10px;
+    min-width: 50px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+.atlas-uml-diag__node--decision span {
+    transform: rotate(-45deg);
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* Стрелки */
+.atlas-uml-diag__arrow-wrapper {
+    display: flex;
+    align-items: center;
+    margin: 0 -2px;
+}
+.atlas-uml-diag__arrow-line {
+    flex: 1;
+    height: 1px;
+    background: var(--uml-crit);
+}
+.atlas-uml-diag__arrow-head {
+    width: 0;
+    height: 0;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 6px solid var(--uml-crit);
+}
+
+/* Легенда */
+.atlas-uml-diag__legend {
+    border-top: 1px solid var(--uml-ink);
+    padding: 8px;
+    font-size: 9px;
+    display: flex;
+    gap: 15px;
+    color: var(--uml-muted);
+}
+

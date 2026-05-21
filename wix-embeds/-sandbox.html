@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@ba02a92931c74a1a011ec4c73179f68e21c8c405/cdn/atlas-framework.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@af9d6c67ce18eaa8825001f9b8b5307d07822abf/cdn/atlas-framework.css">
 
 
   
@@ -92,17 +92,25 @@ void ExecuteForwardBasePass() {
     </div>
 
 
-<div class="atlas-node">
-    <div class="header">// SPECIFICATION_TABLE</div>
-    <table class="atlas-table">
-        <thead>
-            <tr><th>Component</th><th>Status</th><th>Value</th></tr>
-        </thead>
-        <tbody>
-            <tr><td>Vector_Engine</td><td>Active</td><td>0.4ms</td></tr>
-            <tr><td>Buffer_Core</td><td>Sync</td><td>1.2ms</td></tr>
-        </tbody>
-    </table>
+        <div class="header">// SPECIFICATION_TABLE</div>
+        <table class="atlas-table">
+            <thead>
+                <tr><th>Component</th><th>Status</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Vector_Engine</td><td>Active</td><td>0.4ms</td></tr>
+                <tr><td>Buffer_Core</td><td>Sync</td><td>1.2ms</td></tr>
+            </tbody>
+        </table>
+
+
+<div class="atlas-uml-diag">
+    <div class="atlas-uml-diag__widget">
+        <div class="atlas-uml-diag__header">// SYSTEM_FLOW</div>
+        <div class="atlas-uml-diag__node atlas-uml-diag__node--dashed">
+             <div class="atlas-uml-diag__node-title">CPU</div>
+        </div>
+        </div>
 </div>
 
 
