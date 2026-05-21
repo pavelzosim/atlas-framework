@@ -4,28 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@7322f5708917b0b047f52ca0b35fa84a5fb0ab9f/cdn/atlas-framework.css">  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@639513919528ea3b53498b357ad9694d90d6db69/cdn/atlas-framework.css">  
 </head>
 <body>
 
 <div class="atlas-container">
   <div id="site-passport"></div>
-
   <div class="content-block">
     
-    <h2>01 COMPONENT SPECIFICATION & CORE ROOT RULES</h2>
-    <p>This structural paragraph defines how text tokens inside the canvas container inherit general rules from the main layout. Every element requires strict baseline alignment to eliminate vertical positioning noise.</p>
+  <h2>01 COMPONENT SPECIFICATION & CORE ROOT RULES</h2>
+  <p>This structural paragraph defines how text tokens inside the canvas container inherit general rules from the main layout. Every element requires strict baseline alignment to eliminate vertical positioning noise.</p>
 
-    <h3>TYPOGRAPHY FLOW & INLINE ENGINE VARIABLES</h3>
-    <h4>HIERARCHY VALIDATION</h4>
-    <p>The boundary conditions for the system require strict separation of execution passes. The final rendering state vector can be evaluated using the following tensor decomposition pipeline, transfiguring mathematical constraints into execution logic:</p>
-    
-    <div class="atlas-math-block">
-      $$\mathbf{V}_{\text{state}} = \sum_{i=1}^{N} \alpha_i \cdot \int_{\Omega} f_i(x) \, d\Omega$$
-    </div>
+  <h3>TYPOGRAPHY FLOW & INLINE ENGINE VARIABLES</h3>
+  <h4>HIERARCHY VALIDATION</h4>
+  <p>The boundary conditions for the system require strict separation of execution passes. The final rendering state vector can be evaluated using the following tensor decomposition pipeline, transfiguring mathematical constraints into execution logic:</p>
+  
+  <div class="atlas-math-block">
+    $$\mathbf{V}_{\text{state}} = \sum_{i=1}^{N} \alpha_i \cdot \int_{\Omega} f_i(x) \, d\Omega$$
+  </div>
 
-    <pre class="atlas-code-block"><code class="language-c">/* fig 01.1: Core hardware pass declaration 
-       Responsibility: Low-level state vector assignment */
+  <pre class="atlas-code-block"><code class="language-c">/* fig 01.1: Core hardware pass declaration 
+     Responsibility: Low-level state vector assignment */
 void ExecuteForwardBasePass() {
     int zWriteState = 0; // ZWrite Off
     float4 blendMode = GetAlphaBlend();
@@ -37,9 +36,7 @@ void ExecuteForwardBasePass() {
     }
 }</code></pre>
 
-    <p>Primary rasterization constraints and geometry data blocks operate alongside secondary illumination evaluation parameters, including specular highlights lookup distribution metrics and diffuse ambient occlusion approximation factors to secure target frame execution bounds.</p>
-    
-    <div class="content-block">
+  <p>Primary rasterization constraints and geometry data blocks operate alongside secondary illumination evaluation parameters, including specular highlights lookup distribution metrics and diffuse ambient occlusion approximation factors to secure target frame execution bounds.</p>
 
   <div class="media-frame">
     <img src="path/to/image.png" alt="Engineering Diagram">
@@ -60,7 +57,9 @@ void ExecuteForwardBasePass() {
       <img src="img3.png" alt="Sequence 3">
     </div>
     <div class="media-caption">Gallery 01: Comparative test sequences.</div>
-  </div> <div class="comparison-matrix">
+  </div>
+
+  <div class="comparison-matrix">
     <div class="comp-col">
       <div class="comp-label">Δ1 // LABEL_A</div>
       <div class="comp-body">Текст для первой колонки.</div>
@@ -71,7 +70,6 @@ void ExecuteForwardBasePass() {
     </div>
   </div>
 
-
   <div class="atlas-callout atlas-callout--note">
     <p>The system maintains consistency by prioritizing atomic operations during state transitions. No manual intervention is required for standard sync sequences.</p>
   </div>
@@ -80,24 +78,14 @@ void ExecuteForwardBasePass() {
     <p>Architecture is the deliberate containment of complexity. It is not about adding features, but about ensuring the system remains legible under load.</p>
   </div>
 
-
   <div class="atlas-table-frame">
     <table class="atlas-table">
       <thead>
-        <tr>
-          <th>Параметр</th>
-          <th>Значение</th>
-        </tr>
+        <tr><th>Параметр</th><th>Значение</th></tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Специфичность</td>
-          <td>Естественная каскадная</td>
-        </tr>
-        <tr>
-          <td>Селекторы</td>
-          <td>Чистые без !important</td>
-        </tr>
+        <tr><td>Специфичность</td><td>Естественная каскадная</td></tr>
+        <tr><td>Селекторы</td><td>Чистые без !important</td></tr>
       </tbody>
     </table>
   </div>
@@ -105,57 +93,18 @@ void ExecuteForwardBasePass() {
   <div class="atlas-table-frame atlas-table-frame--solid">
     <div class="atlas-table-header-solid">[ SPECIFICATION // ТЕХНИЧЕСКИЕ ДАННЫЕ ]</div>
     <table class="atlas-table">
-      <thead>
-        <tr>
-          <th>Модуль</th>
-          <th>Статус</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Модуль</th><th>Статус</th></tr></thead>
       <tbody>
-        <tr>
-          <td>Core Geometry</td>
-          <td>Стабилен</td>
-        </tr>
-        <tr>
-          <td>Table System</td>
-          <td>Унифицирован</td>
-        </tr>
+        <tr><td>Core Geometry</td><td>Стабилен</td></tr>
+        <tr><td>Table System</td><td>Унифицирован</td></tr>
       </tbody>
     </table>
   </div>
-
-  <div class="atlas-table-frame atlas-table-frame--solid">
-    <div class="atlas-table-header-solid">// SPECIFICATION_TABLE</div>
-    <table class="atlas-table">
-      <thead>
-        <tr>
-          <th>Component</th>
-          <th>Status</th>
-          <th>Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Vector_Engine</td>
-          <td>Active</td>
-          <td>0.4ms</td>
-        </tr>
-        <tr>
-          <td>Buffer_Core</td>
-          <td>Sync</td>
-          <td>1.2ms</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
 
   <div class="atlas-uml-diag">
     <div class="atlas-uml-diag__widget">
       <div class="atlas-uml-diag__header">// UML_COMPONENT_REFERENCE</div>
-      
       <div class="atlas-uml-diag__content">
-        
         <div class="atlas-uml-diag__scope">
           <div class="atlas-uml-diag__scope-label">HOST_SPACE</div>
           <div class="atlas-uml-diag__node">
@@ -163,33 +112,20 @@ void ExecuteForwardBasePass() {
             <div class="atlas-uml-diag__node-body">Main thread execution logic.</div>
           </div>
         </div>
-
         <div class="atlas-uml-diag__arrow-wrapper">
           <div class="atlas-uml-diag__arrow-line"></div>
           <div class="atlas-uml-diag__arrow-head"></div>
         </div>
-
         <div class="atlas-uml-diag__node atlas-uml-diag__node--dashed">
           <div class="atlas-uml-diag__node-title">INPUT_BUFFER</div>
           <div class="atlas-uml-diag__node-body">Raw data stream</div>
         </div>
-
-        <div class="atlas-uml-diag__decision-wrapper">
-          <div class="atlas-uml-diag__node atlas-uml-diag__node--decision">
-            <span>IF_VALID</span>
-          </div>
-        </div>
-
       </div>
-
       <div class="atlas-uml-diag__legend">
-        <span>[---] MEMORY</span>
-        <span>[—>] FLOW</span>
-        <span>[#] CRITICAL</span>
+        <span>[---] MEMORY</span> <span>[—>] FLOW</span> <span>[#] CRITICAL</span>
       </div>
     </div>
   </div>
-
 
   <div class="atlas-section-break" data-index="// 01"></div>
 
@@ -198,8 +134,10 @@ void ExecuteForwardBasePass() {
     <span class="atlas-eof-divider__meta">// END OF SESSION // EOF</span>
     <span class="atlas-eof-divider__line"></span>
   </div>
-
 </div>
+  <div id="atlas-footer"></div>
+</div>
+
 
 <script>
 /* ═══════════════════════════════════════════════════════════════
