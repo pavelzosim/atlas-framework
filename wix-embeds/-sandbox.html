@@ -4,10 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@0dd9abe49fe4b1df2549d5dd41c0784e81b91b49/cdn/atlas-framework.css">
-
-
-  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@b27d3a07fab155dfee41542b03836511d1012950/cdn/atlas-framework.css">  
 </head>
 <body>
 
@@ -66,11 +63,7 @@ void ExecuteForwardBasePass() {
   </div>
   <div class="media-caption">Gallery 01: Comparative test sequences.</div>
 </div>
-
   </div>
-
-
-
 
     <div class="comparison-matrix">
         <div class="comp-col">
@@ -122,21 +115,41 @@ void ExecuteForwardBasePass() {
 
 <div class="atlas-uml-diag">
     <div class="atlas-uml-diag__widget">
-        <div class="atlas-uml-diag__header">// SYSTEM_RENDER_PIPELINE</div>
+        <div class="atlas-uml-diag__header">// UML_COMPONENT_REFERENCE</div>
         
         <div class="atlas-uml-diag__content" style="padding: 15px;">
+            
             <div class="atlas-uml-diag__scope">
                 <div class="atlas-uml-diag__scope-label">HOST_SPACE</div>
-                <div class="atlas-uml-diag__node atlas-uml-diag__node--dashed">
-                    <div class="atlas-uml-diag__node-title">CPU_CORE</div>
+                
+                <div class="atlas-uml-diag__node">
+                    <div class="atlas-uml-diag__node-title">PROCESSOR</div>
+                    <div class="atlas-uml-diag__node-body">Main thread execution logic.</div>
                 </div>
             </div>
-            
+
+            <div class="atlas-uml-diag__arrow-wrapper">
+                <div class="atlas-uml-diag__arrow-line"></div>
+                <div class="atlas-uml-diag__arrow-head"></div>
             </div>
+
+            <div class="atlas-uml-diag__node atlas-uml-diag__node--dashed">
+                <div class="atlas-uml-diag__node-title">INPUT_BUFFER</div>
+                <div class="atlas-uml-diag__node-body">Raw data stream</div>
+            </div>
+
+            <div style="margin: 20px 0; display: flex; justify-content: center;">
+                <div class="atlas-uml-diag__node atlas-uml-diag__node--decision">
+                    <span>IF_VALID</span>
+                </div>
+            </div>
+
+        </div>
 
         <div class="atlas-uml-diag__legend">
             <span>[---] MEMORY</span>
             <span>[—>] FLOW</span>
+            <span>[#] CRITICAL</span>
         </div>
     </div>
 </div>
