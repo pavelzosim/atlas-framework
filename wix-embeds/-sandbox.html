@@ -1,349 +1,197 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Atlas Engineering Document</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@8542a91bebdb02e3d23c4a579f8455c7f092ba31/cdn/atlas-framework.css">
+
+
   
-  <style>
-    /* ===========================================================================
-    ATLAS ENGINEERING DOCUMENT COMPONENT
-    ===========================================================================
-    
-    [ АНАТОМИЯ И ПРАВИЛА СЕТКИ FRAMEWORK ]:
-    
-    1. ИЕРАРХИЯ И ВЕРТИКАЛЬНЫЙ РИТМ ЗАГОЛОВКОВ:
-       - H2 (Уровень 01): Главные технические разделы. Кегль 13.5px. 
-         Нижний отступ (margin-bottom) жестко зафиксирован на уровне 10px 
-         (~1/2 высоты строки текста) для плотной инженерной сборки.
-       - H3 (Уровень 01.01) & H4 (Уровень 01.01.01): Суб-компоненты.
-         Имеют встроенные CSS-счетчики, автоматически генерирующие индексы 
-         вида [01.01] и [01.01.01], исключая ручную нумерацию.
-         
-    2. МОРФОЛОГИЯ ПРЕФИКСА H2:
-       - Элемент .h2-prefix (&gt;&gt;) физически сжат по горизонтали ровно 
-         в два раза через `transform: scaleX(0.5)`. 
-       - Точка трансформации зафиксирована слева (`transform-origin: left`).
-       - Чтобы избежать пустых областей, ширина контейнера принудительно 
-         выставлена в `1ch` (ширина одного символа).
-       - Визуальный отступ до цифр равен `0.4ch` (~1/3 ширины стандартного знака).
-       
-    3. ИНЖЕНЕРНЫЕ СПИСКИ (КОНЦЕПЦИЯ: CAD / BLUEPRINT):
-       - Вместо стандартных круглых веб-маркеров (dots) внедрена строгая 
-         чертежная логика из автокада.
-       - Level 1 (Первый уровень): Каждый пункт начинается с технического 
-         перекрестия "+". Контейнер имеет сплошную левую направляющую ось.
-       - Level 2 (Вложенный уровень): Пункты маркируются пиксельным 
-         квадратом "▪". Направляющая ось становится прерывистой (dashed).
-       - Шаг вложенности (горизонтальный сдвиг) строго синхронизирован — 24px.
-       
-    4. МИКРО-ТОКЕНЫ И КОД:
-       - Элементы <code> оформлены как компактные аппаратные чипы: 
-         легкий фон, внутренние паддинги и микро-бордер.
-       - Класс .crit-word используется для инверсивного выделения критических 
-         параметров (белый текст на фирменном бордовом фоне --atlas-crit).
-         
-    ===========================================================================
-    */
-
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
-
-    :root {
-      --atlas-ink:           #000000;
-      --atlas-ink-muted:     rgba(0,0,0,0.4);
-      --atlas-ink-soft:      rgba(0,0,0,0.83);
-      --atlas-crit:          #8b0000;
-      --atlas-border:        rgba(0,0,0,0.12);
-      --atlas-bg:            rgb(230, 220, 210);
-      --atlas-font-mono:     'JetBrains Mono', 'Courier New', monospace;
-    }
-
-    body {
-      margin: 0 !important;
-      padding: 30px 20px !important;
-      background: transparent !important;
-      font-family: var(--atlas-font-mono) !important;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .atlas-container {
-      max-width: 760px;
-      margin: 0 auto;
-      color: var(--atlas-ink);
-      counter-reset: h2-counter; /* Инициализация глобального счетчика секций */
-    }
-
-    /* --- ИЕРАРХИЯ ЗАГОЛОВКОВ --- */
-
-    .content-block {
-      margin: 32px 0;
-      position: relative;
-    }
-
-    /* H2: Уровень 01 */
-    .content-block h2 {
-      counter-increment: h2-counter;
-      counter-reset: h3-counter; /* Сброс счетчика H3 при рождении нового H2 */
-      
-      font-size: 13.5px !important;
-      font-weight: 700 !important;
-      text-transform: uppercase !important;
-      letter-spacing: 0.08em !important;
-      margin: 46px 0 10px 0 !important; 
-      display: flex !important;
-      align-items: center !important;
-      color: var(--atlas-ink) !important;
-      line-height: 1.2 !important;
-    }
-    
-    /* Сжатый в два раза глиф префикса */
-    .h2-prefix {
-      font-family: var(--atlas-font-mono) !important;
-      color: var(--atlas-crit) !important;
-      font-weight: 400 !important;
-      display: inline-block !important;
-      transform: scaleX(0.5) !important;       
-      transform-origin: left center !important; 
-      width: 1ch !important;                    
-      margin-right: 0.4ch !important;          
-    }
-
-    /* H3: Уровень 01.01 */
-    .content-block h3 {
-      counter-increment: h3-counter;
-      counter-reset: h4-counter; /* Сброс счетчика H4 при рождении нового H3 */
-
-      font-size: 12px !important;
-      font-weight: 700 !important;
-      text-transform: uppercase !important;
-      letter-spacing: 0.05em !important;
-      margin: 28px 0 8px 24px !important; 
-      color: var(--atlas-ink-soft) !important;
-      display: flex !important;
-      align-items: center !important;
-    }
-    /* Инженерный префикс-индекс на базе счетчиков */
-    .content-block h3::before {
-      content: "[" counter(h2-counter, decimal-leading-zero) "." counter(h3-counter, decimal-leading-zero) "]" !important;
-      color: var(--atlas-ink-muted) !important;
-      margin-right: 10px !important;
-      font-weight: 400 !important;
-      font-size: 11px !important;
-      letter-spacing: 0px !important;
-    }
-
-    /* H4: Уровень 01.01.01 */
-    .content-block h4 {
-      counter-increment: h4-counter;
-
-      font-size: 11px !important;
-      font-weight: 700 !important;
-      text-transform: uppercase !important;
-      letter-spacing: 0.05em !important;
-      margin: 24px 0 8px 48px !important; 
-      color: var(--atlas-ink-muted) !important;
-      display: flex !important;
-      align-items: center !important;
-    }
-    .content-block h4::before {
-      content: "[" counter(h2-counter, decimal-leading-zero) "." counter(h3-counter, decimal-leading-zero) "." counter(h4-counter, decimal-leading-zero) "]" !important;
-      color: var(--atlas-ink-muted) !important;
-      margin-right: 10px !important;
-      font-weight: 400 !important;
-      font-size: 10px !important;
-      letter-spacing: 0px !important;
-    }
-
-    /* Текстовый блок (Высота строки ~20px) */
-    .content-block p {
-      font-size: 12.5px !important;
-      line-height: 1.65 !important;
-      color: var(--atlas-ink-soft) !important;
-      margin: 0 0 16px 24px !important;
-      text-align: justify !important;
-    }
-
-    /* --- ИНЖЕНЕРНЫЕ СПИСКИ (CAD / BLUEPRINT) --- */
-
-    .content-block ul {
-      list-style-type: none !important;
-      padding: 0 !important;
-      margin: 0 0 16px 0 !important; 
-    }
-
-    /* Направляющая сплошная ось Level 1 */
-    .content-block > ul {
-      margin-left: 24px !important; 
-      padding-left: 14px !important;
-      border-left: 1px solid var(--atlas-border) !important;
-    }
-    .content-block > ul > li {
-      font-size: 12.5px !important;
-      line-height: 1.65 !important;
-      color: var(--atlas-ink-soft) !important;
-      position: relative !important;
-      padding-left: 18px !important; 
-      margin-bottom: 8px !important;  
-    }
-    /* Маркер: Инженерное перекрестие */
-    .content-block > ul > li::before {
-      content: "+" !important; 
-      position: absolute !important;
-      left: 0 !important;
-      top: 0 !important;
-      color: var(--atlas-crit) !important;
-      font-weight: 700 !important;
-    }
-
-    /* Прерывистая суб-ось Level 2 */
-    .content-block ul ul {
-      margin-left: 14px !important; 
-      margin-top: 8px !important;   
-      padding-left: 14px !important;
-      border-left: 1px dashed var(--atlas-border) !important;
-    }
-    .content-block ul ul > li {
-      font-size: 12px !important; 
-      line-height: 1.6 !important;
-      position: relative !important;
-      padding-left: 16px !important; 
-      margin-bottom: 6px !important;
-    }
-    /* Маркер: Чертежная точка-квадрат */
-    .content-block ul ul > li::before {
-      content: "▪" !important; 
-      position: absolute !important;
-      left: 0 !important;
-      color: var(--atlas-ink-muted) !important;
-      font-size: 9px !important;
-    }
-
-    /* --- МИКРО-ТОКЕНЫ И КОД --- */
-
-    /* Подписи к чертежам и медиа */
-    .content-block .atlas-caption {
-      font-size: 11px !important;
-      color: var(--atlas-ink-muted) !important;
-      margin: 12px 0 16px 24px !important;
-      text-transform: uppercase !important;
-      letter-spacing: 0.07em !important;
-    }
-
-    /* Инлайновый код (Стиль чипа/токена) */
-    .content-block code {
-      font-family: var(--atlas-font-mono) !important;
-      font-size: 11.5px !important;
-      color: var(--atlas-ink) !important;
-      background: rgba(0, 0, 0, 0.05) !important;
-      padding: 2px 5px !important;
-      border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    }
-
-    /* Инверсивное выделение критических ворнингов */
-    .content-block .crit-word {
-      color: #ffffff !important;
-      background: var(--atlas-crit) !important;
-      padding: 1px 4px !important;
-      font-weight: 700 !important;
-    }
-
-    /* --- РАЗДЕЛИТЕЛИ СЕКЦИЙ --- */
-
-    .atlas-section-break {
-      position: relative !important;
-      display: block !important;
-      height: 1px !important;
-      background: var(--atlas-border) !important;
-      margin: 4.5rem 0 !important;
-    }
-    .atlas-section-break::before {
-      content: attr(data-index) !important;
-      position: absolute !important;
-      top: -9px !important;
-      left: 24px !important;
-      background: var(--atlas-bg) !important;
-      padding: 0 0.6rem !important;
-      font-size: 11px !important;
-      font-weight: 700 !important;
-      color: var(--atlas-crit) !important;
-    }
-
-    .atlas-eof-divider {
-      display: flex !important;
-      align-items: center !important;
-      margin: 6rem 0 2rem 0 !important;
-      font-size: 11px !important;
-      color: var(--atlas-ink-muted) !important;
-      letter-spacing: 0.12em !important;
-      width: 100% !important;
-    }
-    .atlas-eof-divider__line {
-      flex: 1 !important;
-      border-bottom: 1px dashed var(--atlas-border) !important;
-    }
-    .atlas-eof-divider__meta {
-      padding: 0 1.2rem !important;
-      font-weight: 700 !important;
-    }
-
-  </style>
 </head>
 <body>
 
-  <div class="atlas-container">
+<div class="atlas-container">
+  <div id="site-passport"></div>
     
-    <div class="content-block">
-      
-      <h2><span class="h2-prefix">&gt;&gt;</span> 01 SHADER STRUCTURE</h2>
-      <p>ShaderLab structures the execution path inside Unity. Defining a clean pass layout ensures predictable state changes and efficient rendering loops. Use <code class="crit-word">ZWrite Off</code> for transparent passes to avoid depth occlusion bugs.</p>
-      
-      <h3>PASS LAYOUT</h3>
-      <p>The layout defines how the GPU interprets the vertex and fragment data streams.</p>
-      
-      <ul>
-        <li>Vertex Input Registers Configuration</li>
-        <li>Fragment Output Targets Matrix:
-          <ul>
-            <li>Specular highlights lookup distribution metrics</li>
-            <li>Diffuse ambient occlusion approximation factors</li>
-          </ul>
-        </li>
-        <li>Fixed-Function Hardware States</li>
-      </ul>
-      
-      <h4>BLEND MODES</h4>
-      <p>Defines how the source color output is blended with existing render target data.</p>
-      
-      <div class="atlas-caption">// fig 01.1: blend equation flow diagram</div>
-      
-    </div>
+  <div class="content-block">
+    
+    <h2>01 COMPONENT SPECIFICATION & CORE ROOT RULES</h2>
+    <p>This structural paragraph defines how text tokens inside the canvas container inherit general rules from the main layout. Every element requires strict baseline alignment to eliminate vertical positioning noise.</p>
 
-    <div class="atlas-section-break" data-index="// 01"></div>   
+    <pre class="atlas-code-block"><code class="language-c">/* fig 01.1: Core hardware pass declaration 
+   Responsibility: Low-level state vector assignment */
+void ExecuteForwardBasePass() {
+    int zWriteState = 0; // ZWrite Off
+    float4 blendMode = GetAlphaBlend();
+    
+    // Core state execution boundary validation
+    if (zWriteState == 0) {
+        float4 fragColor = float4(1.0, 0.0, 0.0, 1.0);
+        SubmitFrameBuffer(fragColor);
+    }
+}</code></pre>
 
-    <div class="content-block">
-      
-      <h2><span class="h2-prefix">&gt;&gt;</span> 02 MATHEMATICAL FORMULATION</h2>
-      <p>The boundary conditions for the system require strict separation of execution passes. The rendering state vector can be decomposed into primary and secondary execution streams without runtime allocations.</p>
-      
-      <ul>
-        <li>Primary rasterization constraints and geometry data blocks</li>
-        <li>Secondary illumination evaluation parameters:
-          <ul>
-            <li>Anisotropic microfacet reflection vectors</li>
-            <li>Subsurface scattering coefficients inside the fragment pass</li>
-          </ul>
-        </li>
-        <li>Depth testing procedures and stencil buffer operations</li>
-      </ul>
-      
-    </div>
+    <h3>TYPOGRAPHY FLOW & INLINE ENGINE VARIABLES</h3>
+    <h4>HIERARCHY VALIDATION</h4>
+    <p>The boundary conditions for the system require strict separation of execution passes. The final rendering state vector can be evaluated using the following tensor decomposition pipeline:</p>
+    
+    <div class="atlas-math-block">
+  $$\mathbf{V}_{\text{state}} = \sum_{i=1}^{N} \alpha_i \cdot \int_{\Omega} f_i(x) \, d\Omega$$
+</div>
 
-    <div class="atlas-eof-divider">
-      <span class="atlas-eof-divider__line"></span>
-      <span class="atlas-eof-divider__meta">// END OF SESSION // EOF</span>
-      <span class="atlas-eof-divider__line"></span>
-    </div>
+    <ul>
+      <li>Primary rasterization constraints and geometry data blocks</li>
+      <li>Secondary illumination evaluation parameters:
+        <ul>
+          <li>Specular highlights lookup distribution metrics</li>
+          <li>Diffuse ambient occlusion approximation factors</li>
+        </ul>
+      </li>
+    </ul>
     
   </div>
+
+  <div class="atlas-section-break" data-index="// 01"></div>
+
+  <div class="atlas-eof-divider">
+    <span class="atlas-eof-divider__line"></span>
+    <span class="atlas-eof-divider__meta">// END OF SESSION // EOF</span>
+    <span class="atlas-eof-divider__line"></span>
+  </div>
+
+  <div id="atlas-footer"></div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   ПАСПОРТ: Логика
+   ─────────────────────────────────────────────────────────────── */
+var CONFIG = {
+  user: 'pavelzosim', path: '~', command: 'cat unity_shaderlab_cheatsheet.log',
+  project: '—', module: '—', version: '1.0', logId: '—', status: 'R&D',
+  slug: 'procedural-modeling-tire-generator',
+  author: '...', created: '----.--.--', modified: null, wordCount: null, title: null, tags: [],
+  tagBaseUrl: 'https://www.pavelzosim.com/blog/tags/'
+};
+
+var BACKEND_URL = 'https://www.pavelzosim.com/_functions/getPostData';
+
+function applyData(d) {
+  if (d.author) CONFIG.author = d.author;
+  if (d.title) {
+    CONFIG.title = d.title;
+    CONFIG.command = 'cat ' + d.title.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/(^_|_$)/g, '') + '.log';
+  }
+  if (d.created) CONFIG.created = d.created;
+  if (d.modified) CONFIG.modified = d.modified;
+  if (d.project) CONFIG.project = d.project;
+  if (d.module) CONFIG.module = d.module;
+  if (d.version) CONFIG.version = d.version;
+  if (d.logId) CONFIG.logId = d.logId;
+  if (d.status) CONFIG.status = d.status;
+  if (d.wordCount) CONFIG.wordCount = d.wordCount;
+  if (Array.isArray(d.tags)) CONFIG.tags = d.tags;
+  window.render && window.render();
+}
+
+(function () {
+  var slug = CONFIG.slug || '';
+  if (!slug) return;
+  fetch(BACKEND_URL + '?slug=' + encodeURIComponent(slug))
+    .then(r => r.ok ? r.json() : null)
+    .then(data => { if (data && !data.error) applyData(data); })
+    .catch(err => console.warn('[ATLAS] Passport fetch failed', err));
+})();
+
+(function () {
+  function render() {
+    var o = CONFIG;
+    var status = (o.status || 'DRAFT').toUpperCase();
+    var rt = o.readTime || (o.wordCount ? '~' + Math.ceil(Number(o.wordCount) / 200) + ' MIN' : null);
+    var metaHTML = '<div class="passport-meta-item" data-meta="auth">' + (o.author || '—') + '</div>' +
+                   '<div class="passport-meta-item" data-meta="created">' + (o.created || '—') + '</div>';
+    if (o.modified) metaHTML += '<div class="passport-meta-item" data-meta="modified">' + o.modified + '</div>';
+    if (rt) metaHTML += '<div class="passport-meta-item" data-meta="read">' + rt + '</div>';
+
+    var tagsHTML = '';
+    if (Array.isArray(o.tags) && o.tags.length) {
+      tagsHTML = '<div class="passport-tags">' + o.tags.map(tg => 
+        '<a href="' + o.tagBaseUrl + tg.toLowerCase().replace(/\s+/g, '-') + '" class="passport-tag" target="_top">#' + tg.toUpperCase() + '</a>'
+      ).join('') + '</div>';
+    }
+
+    document.getElementById('site-passport').innerHTML =
+      '<div class="passport-bp">' +
+        '<div class="passport-title-bar">' +
+          '<div>' + o.user + ' : ' + o.path + ' # ' + o.command + '</div>' +
+          '<div>[ SYS_STATUS: <b>' + status + '</b> ]</div>' +
+        '</div>' +
+        (o.title ? '<div class="passport-main-title">' + o.title.toUpperCase() + '</div>' : '') +
+        '<div class="passport-grid">' +
+          '<div class="passport-cell"><div class="passport-cell-line" data-key="project">' + o.project + '</div><div class="passport-cell-line" data-key="module">' + o.module + '</div></div>' +
+          '<div class="passport-cell"><div class="passport-cell-line" data-key="version">' + o.version + '</div><div class="passport-cell-line" data-key="log_id">' + o.logId + '</div></div>' +
+        '</div>' +
+        '<div class="passport-meta">' + metaHTML + '</div>' + tagsHTML +
+      '</div>';
+  }
+  window.render = render;
+  render();
+}());
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ФУТЕР: Нативный рендер (без CSS-патчей)
+   ─────────────────────────────────────────────────────────────── */
+(function() {
+  var FOOTER_CONFIG_URL = 'https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework/cdn/atlas-site-footer-config.json?t=' + Date.now();
+  
+  fetch(FOOTER_CONFIG_URL)
+    .then(r => r.json())
+    .then(c => {
+      var footer = document.getElementById('atlas-footer');
+      // Создаем структуру, соответствующую atlas-framework.css
+      footer.innerHTML = `
+        <div class="atlas-footer-wrapper">
+          <div class="atlas-footer-block__support-header">
+            <span class="atlas-footer-block__kaomoji">${c.tagline}</span>
+            <span>LET'S STAY IN TOUCH</span>
+          </div>
+          
+          <div class="atlas-footer-block__support-content">
+            <div class="atlas-footer-block__support-text">${c.support.text}</div>
+            <div class="atlas-footer-block__support-links">
+              ${c.support.links.map((l, idx, arr) => `
+                <a href="${l.url}" class="atlas-blueprint-link">${l.text}</a>
+                ${idx < arr.length - 1 ? '<span class="atlas-footer-block__support-divider">|</span>' : ''}
+              `).join('')}
+            </div>
+          </div>
+
+          <div class="atlas-footer-block__matrix-zone">
+            ${c.links.map(g => `
+              <div class="atlas-footer-block__matrix-column">
+                <span class="atlas-footer-block__column-label">${g.label}</span>
+                <div class="atlas-footer-block__column-items">
+                  ${g.items.map(i => `<a href="${i.url}" class="atlas-blueprint-link">/ ${i.text}</a>`).join('')}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    })
+    .catch(e => console.error('[ATLAS] Footer component failed to render:', e));
+})();
+</script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+
 
 </body>
 </html>

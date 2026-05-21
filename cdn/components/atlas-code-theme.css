@@ -1,65 +1,82 @@
 /* ==========================================================================
-   ATLAS CODE & MATHEMATICS MODULE — [v1.5.0_blueprint]
+   ATLAS CODE & MATHEMATICS MODULE — [v1.6.0_transparent]
    ────────────────────────────────────────────────────────────────────────── */
 
-/* ── MODULE 1: CONTAINER GEOMETRY & BASICS ─────────────────────────────── */
+/* ── MODULE 1: CONTAINER GEOMETRY (Transparent) ────────────────────────── */
 
-/* Блок программного кода */
-.atlas-container .content-block pre.atlas-code-block {
-  position: relative;
-  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.03));
-  border: 1px solid var(--atlas-border);
-  border-left: 3px solid var(--atlas-crit); /* Фирменный инженерный маркер */
-  /* Точечно увеличен верхний padding (34px) для размещения системной плашки */
-  padding: 34px 16px 14px 16px; 
-  margin: 24px 0 24px 24px; 
-  overflow-x: auto;
-  display: block;
-  border-radius: 0;
-  box-sizing: border-box;
-  -webkit-overflow-scrolling: touch;
-}
-
-.atlas-container .content-block pre.atlas-code-block code {
-  font-family: var(--atlas-font-mono);
-  font-size: var(--fs-code, 11.5px); 
-  line-height: 1.6; 
-  color: var(--atlas-ink-soft);
-  background: transparent; 
-  border: none; 
-  padding: 0;
-  margin: 0;
-  display: block;
-  white-space: pre;
-  word-wrap: normal;
-  word-break: normal;
-}
-
-/* Блок математических формул */
+.atlas-container .content-block pre.atlas-code-block,
 .atlas-container .content-block .atlas-math-block {
   position: relative;
-  display: flex;
-  justify-content: center; 
-  align-items: center;
-  /* Точечно увеличен верхний padding (34px) под инженерный маркер */
-  padding: 34px 16px 18px 16px;
-  margin: 24px 0 24px 24px; 
-  background: rgba(0, 0, 0, 0.01); /* Едва заметная техническая подложка */
-  border: 1px dashed var(--atlas-border); /* Полная рамка по умолчанию для изоляции */
+  background: transparent;
+  border: 1px solid var(--atlas-border);
   box-sizing: border-box;
 }
 
-/* Наследование цвета внутри формул */
-.atlas-container .content-block .atlas-math-block * {
-  color: var(--atlas-ink) !important;
-  font-family: inherit;
+.atlas-container .content-block pre.atlas-code-block {
+  border-left: 3px solid var(--atlas-crit);
+  padding: 34px 16px 14px 16px;
+  margin: 24px 0 24px 24px;
 }
 
-.atlas-container .content-block .atlas-math-inline {
-  font-size: 12.5px;
-  color: var(--atlas-crit);
-  font-weight: 700;
+.atlas-container .content-block .atlas-math-block {
+  padding: 34px 16px 18px 16px;
+  margin: 24px 0 24px 24px;
+  border-style: dashed;
 }
+
+/* ── MODULE 2: TRANSPARENT HEADERS ─────────────────────────────────────── */
+
+.atlas-container .content-block .atlas-math-block::before,
+.atlas-container .content-block pre.atlas-code-block::before {
+  background: transparent;
+  border-bottom: 1px solid var(--atlas-border);
+  padding-left: 16px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  font-family: var(--atlas-font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--atlas-ink-muted);
+  letter-spacing: 0.05em;
+  line-height: 24px;
+}
+
+/* Настройка текста плашек для прозрачности */
+.atlas-container .content-block .atlas-math-block::before { content: "[ MATH_MODEL // МАТЕМАТИЧЕСКИЙ АППАРАТ ]"; }
+.atlas-container .content-block pre.atlas-code-block::before { content: "[ CODE_LISTING // TRANSPILED_ALGORITHM ]"; }
+
+/* ── MODULE 3: SMART COUPLING (Сшивание) ───────────────────────────────── */
+
+/* Если блоки стоят друг под другом — убираем лишние границы */
+.atlas-container .content-block .atlas-math-block:has(+ pre.atlas-code-block) {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.atlas-container .content-block .atlas-math-block + pre.atlas-code-block {
+  margin-top: 0;
+  border-top: 1px dashed var(--atlas-border); /* Стык через пунктир */
+}
+
+/* ── MODULE 4: PRISM.JS TRANSPARENT MAPPING ────────────────────────────── */
+
+.atlas-container .content-block pre.atlas-code-block code {
+  color: var(--atlas-ink-soft);
+  background: transparent;
+}
+
+.atlas-container .content-block pre.atlas-code-block code .token.comment { color: var(--atlas-ink-muted); font-style: italic; }
+.atlas-container .content-block pre.atlas-code-block code .token.punctuation { color: rgba(0, 0, 0, 0.4); }
+.atlas-container .content-block pre.atlas-code-block code .token.number,
+.atlas-container .content-block pre.atlas-code-block code .token.boolean { color: var(--atlas-warn, #7a5200); }
+.atlas-container .content-block pre.atlas-code-block code .token.string { color: var(--atlas-ok, #1a4d1a); }
+.atlas-container .content-block pre.atlas-code-block code .token.keyword,
+.atlas-container .content-block pre.atlas-code-block code .token.class-name { color: var(--atlas-ink); font-weight: 700; }
+.atlas-container .content-block pre.atlas-code-block code .token.function { color: var(--atlas-crit); font-weight: 700; }
+.atlas-container .content-block pre.atlas-code-block code .token.operator { color: var(--atlas-ink); }
 
 
 /* ── MODULE 2: CAD PSEUDO-HEADERS (Автоматическая разметка) ────────────── */

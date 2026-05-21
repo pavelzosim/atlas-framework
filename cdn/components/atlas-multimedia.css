@@ -1,0 +1,65 @@
+/* ==========================================================================
+   ATLAS MEDIA MODULE — [v1.0.0_blueprint]
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* ── MODULE 1: MEDIA FRAME (Базовая инженерная рамка) ──────────────────── */
+
+.atlas-container .content-block .media-frame {
+  position: relative;
+  border: 1px solid var(--atlas-border);
+  padding: 34px 16px 16px 16px;
+  margin: 24px 0 24px 24px;
+  background: transparent !important;
+  box-sizing: border-box;
+}
+
+/* Системный маркер медиа-блока */
+.atlas-container .content-block .media-frame::before {
+  content: "[ MEDIA_ASSET // VISUAL_DATA ]";
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 24px;
+  border-bottom: 1px solid var(--atlas-border);
+  font-family: var(--atlas-font-mono);
+  font-size: 9px; line-height: 24px; padding-left: 16px;
+  color: var(--atlas-ink-muted);
+}
+
+/* ── MODULE 2: MEDIA CONTAINER (Fit & Contain) ────────────────────────── */
+
+.atlas-container .content-block .media-box {
+  width: 100%;
+  height: auto;
+  min-height: 200px; /* Базовая высота для сохранения пропорций */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.atlas-container .content-block .media-box img,
+.atlas-container .content-block .media-box video {
+  max-width: 100%;
+  max-height: 80vh; /* Ограничение высоты, чтобы не ломать верстку */
+  object-fit: contain; /* Никакого кропа */
+  display: block;
+}
+
+/* ── MODULE 3: GALLERY & CAPTION ──────────────────────────────────────── */
+
+.atlas-container .content-block .media-caption {
+  margin-top: 12px;
+  font-family: var(--atlas-font-mono);
+  font-size: 10px;
+  color: var(--atlas-ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-top: 1px solid rgba(0,0,0,0.05);
+  padding-top: 8px;
+}
+
+.atlas-container .content-block .gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 8px;
+}
