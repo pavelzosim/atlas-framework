@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260521-063915 | BUILD: Thu May 21 06:39:15 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260521-101936 | BUILD: Thu May 21 10:19:36 UTC 2026 */
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
 /* ── Reset: Критические стили для подавления Wix-настроек ── */
@@ -232,6 +232,82 @@ html, body {
 .atlas-container .atlas-eof-divider__meta {
   padding: 0 1.2rem;
   font-weight: 700;
+}
+
+/* ── MODULE: TYPOGRAPHY EXTENDED (CAD / BLUEPRINT LISTS) ────────────── */
+
+/* Инициализация внутренних счетчиков для автоматической сквозной нумерации */
+.atlas-container .content-block {
+  counter-reset: l1-counter;
+}
+
+/* Базовый сброс блочных отступов списков */
+.atlas-container .content-block ul, 
+.atlas-container .content-block ol {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 16px 0; 
+}
+
+/* === LEVEL 1 (Первый уровень вложенности) === */
+.atlas-container .content-block > ul, 
+.atlas-container .content-block > ol {
+  margin-left: 24px;          /* Точное выравнивание по левой границе параграфа */
+  padding-left: 14px;
+  border-left: 1px solid var(--atlas-border); /* Сплошная направляющая ось */
+}
+
+.atlas-container .content-block > ul > li,
+.atlas-container .content-block > ol > li {
+  font-family: var(--atlas-font-mono);
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--atlas-ink-soft);
+  position: relative;
+  padding-left: 18px; 
+  margin-bottom: 8px;  
+}
+
+/* Маркер Level 1: Инженерное перекрестие */
+.atlas-container .content-block > ul > li::before,
+.atlas-container .content-block > ol > li::before {
+  content: "+"; 
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--atlas-crit); /* Фирменный бордовый акцент */
+  font-weight: 700;
+}
+
+/* === LEVEL 2 (Второй уровень вложенности) === */
+.atlas-container .content-block ul ul, 
+.atlas-container .content-block ol ul,
+.atlas-container .content-block ul ol,
+.atlas-container .content-block ol ol {
+  margin-left: 14px; 
+  margin-top: 8px;   
+  padding-left: 14px;
+  border-left: 1px dashed var(--atlas-border); /* Суб-ось становится прерывистой */
+}
+
+.atlas-container .content-block ul ul > li,
+.atlas-container .content-block ul ol > li {
+  font-size: 12px; /* Уменьшенный технический кегль */
+  line-height: 1.6;
+  color: var(--atlas-ink-soft);
+  position: relative;
+  padding-left: 16px; 
+  margin-bottom: 6px;
+}
+
+/* Маркер Level 2: Чертежная пиксельная точка-квадрат */
+.atlas-container .content-block ul ul > li::before,
+.atlas-container .content-block ul ol > li::before {
+  content: "▪"; 
+  position: absolute;
+  left: 0;
+  color: var(--atlas-ink-muted);
+  font-size: 9px;
 }/* ==========================================================================
    MODULE: PASSPORT (Clean-Data Implementation)
    ========================================================================== */
