@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260521-183844 | BUILD: Thu May 21 18:38:44 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260521-184703 | BUILD: Thu May 21 18:47:03 UTC 2026 */
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
@@ -82,29 +82,31 @@ html, body {
 .atlas-container .atlas-callout,
 .atlas-container .media-frame,
 .atlas-container pre.atlas-code-block,
-.atlas-container .atlas-math-block {
+.atlas-container .atlas-math-block,
+.atlas-container .atlas-table-frame { /* Добавили базовый фрейм для таблиц */
   position: relative;
-  background: transparent !important;
+  background: transparent;
   border: 1px solid var(--atlas-border);
   box-sizing: border-box;
-  margin: 24px 0 !important;   /* Жестко: ровно по сетке текста, никаких сдвигов влево/вправо */
-  width: 100% !important;       /* Всегда на всю ширину контента */
-  padding: 34px 16px 16px 16px; /* 24px под шапку + 10px внутренний отступ */
+  margin: 24px 0;   /* Четко по сетке текста */
+  width: 100%;       /* На всю ширину контента */
+  padding: 34px 16px 16px 16px; /* Место под шапку + внутренний отступ */
 }
 
-/* Единая системная плашка для всех блоков */
+/* Единая дефолтная системная шапка (Pseudo-header) для всех блоков */
 .atlas-container .comparison-matrix::before,
 .atlas-container .atlas-callout::before,
 .atlas-container .media-frame::before,
 .atlas-container pre.atlas-code-block::before,
-.atlas-container .atlas-math-block::before {
+.atlas-container .atlas-math-block::before,
+.atlas-container .atlas-table-frame::before { /* Шапка для таблиц */
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 24px;
   line-height: 24px;
   padding-left: 16px;
-  font-family: var(--atlas-font-mono) !important;
-  font-size: 9px !important;
+  font-family: var(--atlas-font-mono);
+  font-size: 9px;
   font-weight: 700;
   color: var(--atlas-ink-muted);
   letter-spacing: 0.05em;
@@ -114,53 +116,76 @@ html, body {
 
 
 /* ==========================================================================
-   atlas-callout-tables-schemes.css - Schemes and tables
+   atlas-callout-tables-schemes.css - Schemes and tables [v2.0.0]
    ────────────────────────────────────────────────────────────────────────── */
 
+/* ── MODULE: UNIVERSAL TABLES SYSTEM ───────────────────────────────────── */
 
-/* ── MODULE: ATLAS-NODE (ENGINEERING_BLOCK) ─────────────────────── */
-
-.atlas-container .atlas-node {
-    border: 2px solid var(--atlas-ink, #000);
-    margin-bottom: 24px;
-    background: transparent;
-    width: 100%;
-    box-sizing: border-box;
+/* Дефолтный контент для прозрачной системной шапки таблицы */
+.atlas-container .content-block .atlas-table-frame::before {
+  content: "[ DATA_TABLE // ДАННЫЕ И СПЕЦИФИКАЦИИ ]";
 }
 
-/* Теперь имя уникальное: atlas-node__header */
-.atlas-container .atlas-node__header {
-    background: var(--atlas-ink, #000);
-    color: var(--atlas-bg, #e6dcd2);
-    padding: 6px 10px;
-    font-size: 10px;
-    font-family: 'JetBrains Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    display: block;
+/* Сама таблица (чистый внутренний сброс и структура) */
+.atlas-container .content-block .atlas-table-frame .atlas-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-family: var(--atlas-font-mono);
+  font-size: var(--fs-code); /* 12px из core */
+  line-height: 1.5;
+  color: var(--atlas-ink-soft);
 }
 
-/* Стили таблицы остаются прежними, но теперь они защищены внутри .atlas-node */
-.atlas-container .atlas-node .atlas-table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
+/* Стили ячеек для прозрачного (дефолтного) стиля */
+.atlas-container .content-block .atlas-table-frame .atlas-table thead th {
+  text-align: left;
+  padding: 10px;
+  font-weight: 700;
+  color: var(--atlas-ink);
+  border-bottom: 2px solid var(--atlas-border-strong);
 }
 
-.atlas-container .atlas-node .atlas-table thead th {
-    text-align: left;
-    padding: 10px;
-    font-size: 10px;
-    text-transform: uppercase;
-    border-bottom: 2px solid var(--atlas-ink, #000);
-    color: var(--atlas-ink, #000);
+.atlas-container .content-block .atlas-table-frame .atlas-table tbody td {
+  padding: 10px;
+  border-bottom: 1px solid var(--atlas-border);
 }
 
-.atlas-container .atlas-node .atlas-table tbody td {
-    padding: 10px;
-    font-size: 11px;
-    border-bottom: 1px dashed var(--atlas-ink-muted, rgba(0,0,0,0.3));
-    color: var(--atlas-ink, #000);
+/* Зебра-эффект (опционально, очень легковесный) */
+.atlas-container .content-block .atlas-table-frame .atlas-table tbody tr:nth-child(even) {
+  background: var(--atlas-bg-alt);
+}
+
+
+/* ── МОДИФИКАТОР: `--solid` (ИНЖЕНЕРНЫЙ СТИЛЬ С ЧЕРНОЙ ШАПКОЙ) ─────────── */
+
+/* Перебиваем дефолтную прозрачную шапку core, сдвигая паддинг обратно наверх */
+.atlas-container .content-block .atlas-table-frame--solid {
+  padding-top: 16px; /* Возвращаем стандартный внутренний отступ сверху */
+}
+
+/* Скрываем авто-генерируемый текст, так как заголовок будет в HTML */
+.atlas-container .content-block .atlas-table-frame--solid::before {
+  display: none;
+}
+
+/* Компонент заголовка внутри HTML (строго по твоей любимой верстке) */
+.atlas-container .content-block .atlas-table-header-solid {
+  background: var(--atlas-ink);
+  color: var(--atlas-bg);
+  padding: 6px 10px;
+  font-size: 10px;
+  font-family: var(--atlas-font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin: -16px -16px 16px -16px; /* Растягиваем плашку вплотную к краям рамки */
+  border-bottom: 1px solid var(--atlas-ink);
+}
+
+/* Специфичные границы для таблицы внутри черного блока */
+.atlas-container .content-block .atlas-table-frame--solid .atlas-table {
+  border: 1px solid var(--atlas-border);
 }
 
 /* ── NAMESPACE: ATLAS-UML-DIAG ────────────────────────────────────── */
@@ -621,67 +646,6 @@ p {
 
 
 /* ==========================================================================
-   atlas-multimedia.css - MEDIA MODULE [v2.3.0_no_important]
-   ────────────────────────────────────────────────────────────────────────── */
-
-/* ── MODULE 1: MEDIA FRAME (Инженерный визуальный контейнер) ───────────── */
-
-.atlas-container .content-block .media-frame {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Наполнение уникальным текстом плашки для медиа */
-.atlas-container .content-block .media-frame::before {
-  content: "[ MEDIA_ASSET // VISUAL_DATA ]";
-}
-
-/* Внутреннее наполнение контейнера (картинки, видео, айфреймы) */
-.atlas-container .content-block .media-frame img,
-.atlas-container .content-block .media-frame video,
-.atlas-container .content-block .media-frame iframe {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  border: 1px solid var(--atlas-border);
-  margin: 0 auto;
-}
-
-/* Автоматическое удержание пропорций для YouTube/Vimeo iframe */
-.atlas-container .content-block .media-frame iframe {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-}
-
-.atlas-container .content-block .media-caption {
-  font-family: var(--atlas-font-mono);
-  font-size: var(--fs-status); /* 10px */
-  color: var(--atlas-ink-muted);
-  margin-top: 12px;
-  text-align: center;
-  width: 100%;
-}
-
-/* ── MODULE 2: GALLERY GRID (Инженерная сетка изображений) ─────────────── */
-
-.atlas-container .content-block .gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 равные колонки без избыточности */
-  gap: 16px;
-  margin: 24px 0;
-  width: 100%;
-}
-
-@media (max-width: 768px) {
-  .atlas-container .content-block .gallery-grid {
-    grid-template-columns: 1fr; /* На мобильных перестраиваем в один поток */
-  }
-}
-
-
-/* ==========================================================================
    atlas-typography.css - ATLAS FRAMEWORK: TYPOGRAPHY
    ────────────────────────────────────────────────────────────────────────── */
 
@@ -1000,5 +964,66 @@ p {
 .atlas-container .content-block pre.atlas-code-block code .token.class-name { color: var(--atlas-ink); font-weight: 700; }
 .atlas-container .content-block pre.atlas-code-block code .token.function { color: var(--atlas-crit); font-weight: 700; }
 .atlas-container .content-block pre.atlas-code-block code .token.operator { color: var(--atlas-ink); }
+
+
+/* ==========================================================================
+   atlas-multimedia.css - MEDIA MODULE [v2.3.0_no_important]
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* ── MODULE 1: MEDIA FRAME (Инженерный визуальный контейнер) ───────────── */
+
+.atlas-container .content-block .media-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Наполнение уникальным текстом плашки для медиа */
+.atlas-container .content-block .media-frame::before {
+  content: "[ MEDIA_ASSET // VISUAL_DATA ]";
+}
+
+/* Внутреннее наполнение контейнера (картинки, видео, айфреймы) */
+.atlas-container .content-block .media-frame img,
+.atlas-container .content-block .media-frame video,
+.atlas-container .content-block .media-frame iframe {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--atlas-border);
+  margin: 0 auto;
+}
+
+/* Автоматическое удержание пропорций для YouTube/Vimeo iframe */
+.atlas-container .content-block .media-frame iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.atlas-container .content-block .media-caption {
+  font-family: var(--atlas-font-mono);
+  font-size: var(--fs-status); /* 10px */
+  color: var(--atlas-ink-muted);
+  margin-top: 12px;
+  text-align: center;
+  width: 100%;
+}
+
+/* ── MODULE 2: GALLERY GRID (Инженерная сетка изображений) ─────────────── */
+
+.atlas-container .content-block .gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 равные колонки без избыточности */
+  gap: 16px;
+  margin: 24px 0;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .atlas-container .content-block .gallery-grid {
+    grid-template-columns: 1fr; /* На мобильных перестраиваем в один поток */
+  }
+}
 
 
