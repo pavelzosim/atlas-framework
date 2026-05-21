@@ -1,51 +1,74 @@
 /* ==========================================================================
-   atlas-callout-tables-schemes.css - Schemes and tables
+   atlas-callout-tables-schemes.css - Schemes and tables [v2.0.0]
    ────────────────────────────────────────────────────────────────────────── */
 
+/* ── MODULE: UNIVERSAL TABLES SYSTEM ───────────────────────────────────── */
 
-/* ── MODULE: ATLAS-NODE (ENGINEERING_BLOCK) ─────────────────────── */
-
-.atlas-container .atlas-node {
-    border: 2px solid var(--atlas-ink, #000);
-    margin-bottom: 24px;
-    background: transparent;
-    width: 100%;
-    box-sizing: border-box;
+/* Дефолтный контент для прозрачной системной шапки таблицы */
+.atlas-container .content-block .atlas-table-frame::before {
+  content: "[ DATA_TABLE // ДАННЫЕ И СПЕЦИФИКАЦИИ ]";
 }
 
-/* Теперь имя уникальное: atlas-node__header */
-.atlas-container .atlas-node__header {
-    background: var(--atlas-ink, #000);
-    color: var(--atlas-bg, #e6dcd2);
-    padding: 6px 10px;
-    font-size: 10px;
-    font-family: 'JetBrains Mono', monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    display: block;
+/* Сама таблица (чистый внутренний сброс и структура) */
+.atlas-container .content-block .atlas-table-frame .atlas-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-family: var(--atlas-font-mono);
+  font-size: var(--fs-code); /* 12px из core */
+  line-height: 1.5;
+  color: var(--atlas-ink-soft);
 }
 
-/* Стили таблицы остаются прежними, но теперь они защищены внутри .atlas-node */
-.atlas-container .atlas-node .atlas-table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
+/* Стили ячеек для прозрачного (дефолтного) стиля */
+.atlas-container .content-block .atlas-table-frame .atlas-table thead th {
+  text-align: left;
+  padding: 10px;
+  font-weight: 700;
+  color: var(--atlas-ink);
+  border-bottom: 2px solid var(--atlas-border-strong);
 }
 
-.atlas-container .atlas-node .atlas-table thead th {
-    text-align: left;
-    padding: 10px;
-    font-size: 10px;
-    text-transform: uppercase;
-    border-bottom: 2px solid var(--atlas-ink, #000);
-    color: var(--atlas-ink, #000);
+.atlas-container .content-block .atlas-table-frame .atlas-table tbody td {
+  padding: 10px;
+  border-bottom: 1px solid var(--atlas-border);
 }
 
-.atlas-container .atlas-node .atlas-table tbody td {
-    padding: 10px;
-    font-size: 11px;
-    border-bottom: 1px dashed var(--atlas-ink-muted, rgba(0,0,0,0.3));
-    color: var(--atlas-ink, #000);
+/* Зебра-эффект (опционально, очень легковесный) */
+.atlas-container .content-block .atlas-table-frame .atlas-table tbody tr:nth-child(even) {
+  background: var(--atlas-bg-alt);
+}
+
+
+/* ── МОДИФИКАТОР: `--solid` (ИНЖЕНЕРНЫЙ СТИЛЬ С ЧЕРНОЙ ШАПКОЙ) ─────────── */
+
+/* Перебиваем дефолтную прозрачную шапку core, сдвигая паддинг обратно наверх */
+.atlas-container .content-block .atlas-table-frame--solid {
+  padding-top: 16px; /* Возвращаем стандартный внутренний отступ сверху */
+}
+
+/* Скрываем авто-генерируемый текст, так как заголовок будет в HTML */
+.atlas-container .content-block .atlas-table-frame--solid::before {
+  display: none;
+}
+
+/* Компонент заголовка внутри HTML (строго по твоей любимой верстке) */
+.atlas-container .content-block .atlas-table-header-solid {
+  background: var(--atlas-ink);
+  color: var(--atlas-bg);
+  padding: 6px 10px;
+  font-size: 10px;
+  font-family: var(--atlas-font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin: -16px -16px 16px -16px; /* Растягиваем плашку вплотную к краям рамки */
+  border-bottom: 1px solid var(--atlas-ink);
+}
+
+/* Специфичные границы для таблицы внутри черного блока */
+.atlas-container .content-block .atlas-table-frame--solid .atlas-table {
+  border: 1px solid var(--atlas-border);
 }
 
 /* ── NAMESPACE: ATLAS-UML-DIAG ────────────────────────────────────── */
