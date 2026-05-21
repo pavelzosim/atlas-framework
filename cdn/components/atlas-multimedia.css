@@ -1,47 +1,59 @@
 /* ==========================================================================
-   atlas-multimedia.css - MEDIA MODULE [v2.0.0_clean]
+   atlas-multimedia.css - MEDIA MODULE [v2.3.0_no_important]
    ────────────────────────────────────────────────────────────────────────── */
 
 /* ── MODULE 1: MEDIA FRAME (Инженерный визуальный контейнер) ───────────── */
 
-.atlas-container .media-frame {
-  /* Базовая геометрия рамок и шапок уже автоматически пришла из core! */
-  display: block;
+.atlas-container .content-block .media-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Наполнение уникальным текстом плашки для медиа */
-.atlas-container .media-frame::before {
-  content: "[ MEDIA_ASSET // VISUAL_DATA ]" !important;
+.atlas-container .content-block .media-frame::before {
+  content: "[ MEDIA_ASSET // VISUAL_DATA ]";
 }
 
-/* Внутреннее наполнение контейнера картиной */
-.atlas-container .media-frame img {
+/* Внутреннее наполнение контейнера (картинки, видео, айфреймы) */
+.atlas-container .content-block .media-frame img,
+.atlas-container .content-block .media-frame video,
+.atlas-container .content-block .media-frame iframe {
   display: block;
-  width: 100%;
+  max-width: 100%;
   height: auto;
   border: 1px solid var(--atlas-border);
+  margin: 0 auto;
 }
 
-.atlas-container .media-caption {
+/* Автоматическое удержание пропорций для YouTube/Vimeo iframe */
+.atlas-container .content-block .media-frame iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.atlas-container .content-block .media-caption {
   font-family: var(--atlas-font-mono);
   font-size: var(--fs-status); /* 10px */
   color: var(--atlas-ink-muted);
-  margin-top: 8px;
-  text-align: left;
+  margin-top: 12px;
+  text-align: center;
+  width: 100%;
 }
 
-/* ── MODULE 2: GALLERY GRID (Инженерная сетка) ─────────────────────────── */
+/* ── MODULE 2: GALLERY GRID (Инженерная сетка изображений) ─────────────── */
 
-.atlas-container .gallery-grid {
+.atlas-container .content-block .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(2, 12fr);
+  grid-template-columns: repeat(2, 1fr); /* 2 равные колонки без избыточности */
   gap: 16px;
   margin: 24px 0;
   width: 100%;
 }
 
 @media (max-width: 768px) {
-  .atlas-container .gallery-grid {
-    grid-template-columns: 1fr;
+  .atlas-container .content-block .gallery-grid {
+    grid-template-columns: 1fr; /* На мобильных перестраиваем в один поток */
   }
 }
