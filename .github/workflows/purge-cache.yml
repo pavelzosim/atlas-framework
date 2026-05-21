@@ -27,17 +27,18 @@ jobs:
           LC_ALL=C printf '/* ATLAS FRAMEWORK | VERSION: %s | BUILD: %s */\n\n' "$VERSION" "$(date -u)" > cdn/atlas-framework.css
           sed -i '1s/^\xEF\xBB\xBF//' cdn/atlas-framework.css
           
-          cat cdn/atlas-core.css \
-              cdn/components/atlas-typography.css \
-              cdn/components/atlas-layout-global.css \
-              cdn/components/atlas-header.css \
-              cdn/components/atlas-code-theme.css \
-              cdn/components/atlas-multimedia.css \
-            | sed 's/\xEF\xBB\xBF//g' \
-            >> cdn/atlas-framework.css
-          
-          # Добавляем отступы между файлами (две пустые строки)
-          sed -i 's/$/\n\n/' cdn/atlas-framework.css
+          # Сборка файлов с отступами между ними
+          for file in \
+            cdn/atlas-core.css \
+            cdn/components/atlas-typography.css \
+            cdn/components/atlas-layout-global.css \
+            cdn/components/atlas-header.css \
+            cdn/components/atlas-code-theme.css \
+            cdn/components/atlas-multimedia.css
+          do
+            sed 's/\xEF\xBB\xBF//g' "$file" >> cdn/atlas-framework.css
+            echo -e "\n\n" >> cdn/atlas-framework.css
+          done
          
           if [ ! -s cdn/atlas-framework.css ]; then exit 1; fi
 
@@ -54,7 +55,6 @@ jobs:
 
       - name: Purge jsDelivr Cache
         run: |
-          # Очистка кэша и проверка результата
           URL="https://purge.jsdelivr.net/gh/pavelzosim/atlas-framework@master/cdn/atlas-framework.css"
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
          
