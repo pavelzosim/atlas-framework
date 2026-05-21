@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@c3fdecea1bdb01a45de25a7171c43cee5bc33001/cdn/atlas-framework.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@e197f44cb69678f7c58ef198ab929eb942eae393/cdn/atlas-framework.css">
 
 
   
@@ -77,7 +77,7 @@ void ExecuteForwardBasePass() {
     <span class="atlas-eof-divider__line"></span>
   </div>
 
-<div class="atlas-container">
+
     <div class="comparison-matrix">
         <div class="comp-col">
             <div class="comp-label">Δ1 // LABEL_A</div>
@@ -88,7 +88,14 @@ void ExecuteForwardBasePass() {
             <div class="comp-body">Текст для второй колонки.</div>
         </div>
     </div>
-</div>
+
+<div class="atlas-callout atlas-callout--note">
+        <p>The system maintains consistency by prioritizing atomic operations during state transitions. No manual intervention is required for standard sync sequences.</p>
+    </div>
+
+    <div class="atlas-callout atlas-callout--quote">
+        <p>Architecture is the deliberate containment of complexity. It is not about adding features, but about ensuring the system remains legible under load.</p>
+    </div>
 
   <div id="atlas-footer"></div>
 </div>
