@@ -121,30 +121,74 @@
 
 /* ── MODULE: FOOTER (ATLAS Namespace) ───────────────────────── */
 
-/* Внешняя рамка всего футера */
+/* ── MODULE: FOOTER (ATLAS Namespace) ───────────────────────── */
+
 .atlas-container .atlas-footer-wrapper {
   border: 2px solid var(--atlas-ink);
-  padding: var(--atlas-space-md);
-  border-top: 2px solid var(--atlas-ink); /* Перекрываем дефолтный border-top */
+  background: var(--atlas-bg);
+  display: flex;
+  flex-direction: column;
 }
 
-/* Создаем "табличную" сетку для матрицы */
+/* Секция 1: Header */
+.atlas-container .atlas-footer-block__support-header {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--atlas-space-sm) var(--atlas-space-md);
+  border-bottom: 2px solid var(--atlas-ink);
+  font-size: var(--fs-meta);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0;
+}
+.atlas-container .atlas-footer-block__kaomoji {
+  color: var(--atlas-ink); /* В макете черный */
+}
+.atlas-container .atlas-footer-block__support-header > div:last-child {
+  color: var(--atlas-ink-muted); /* Надпись LET'S STAY IN TOUCH серая */
+}
+
+/* Секция 2: Content */
+.atlas-container .atlas-footer-block__support-content {
+  padding: var(--atlas-space-md) var(--atlas-space-md);
+  border-bottom: 2px solid var(--atlas-ink);
+  margin: 0;
+}
+
+/* Секция 3: Matrix Grid */
 .atlas-container .atlas-footer-block__matrix-zone {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2px; /* Толщина внутренней "линии" сетки */
-  background: var(--atlas-ink); /* Этот цвет заполнит щели (gap), создавая рамки */
-  border-top: 2px solid var(--atlas-ink);
-  padding-top: var(--atlas-space-md);
+  gap: 2px; /* Эта щель между ячейками станет вертикальными линиями */
+  background: var(--atlas-ink); /* Цвет линий сетки */
 }
 
+/* Сами колонки */
 .atlas-container .atlas-footer-block__matrix-column {
-  background: var(--atlas-bg); /* Цвет фона ячейки */
-  padding: var(--atlas-space-sm);
+  background: var(--atlas-bg);
+  padding: var(--atlas-space-sm) var(--atlas-space-md) var(--atlas-space-md);
 }
 
-/* Убираем подчеркивание заголовков, чтобы не мешало рамкам */
 .atlas-container .atlas-footer-block__column-label {
-  border-bottom: none;
+  display: block;
+  font-weight: 700;
   color: var(--atlas-ink-muted);
+  margin-bottom: var(--atlas-space-sm);
+  border-bottom: none;
+}
+
+.atlas-container .atlas-footer-block__column-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.atlas-container .atlas-blueprint-link {
+  text-decoration: none;
+  color: var(--atlas-ink);
+  font-size: var(--fs-body);
+  transition: opacity 0.2s;
+}
+.atlas-container .atlas-blueprint-link:hover {
+  opacity: 0.6;
 }

@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework/cdn/atlas-framework.css?t=<?php echo time(); ?>">
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.8.6/cdn/atlas-framework.css?v=1.8.6">
 
   <style>
-    /* Локальный патч для паспорта (остальное в cdn) */
+    /* Локальный патч для паспорта */
     .atlas-container .passport-cell-line::before {
       font-weight: 700; margin-right: 12px; text-transform: uppercase;
       color: var(--atlas-ink-muted); min-width: 70px;
@@ -16,6 +17,7 @@
     .atlas-container .passport-cell-line[data-key="module"]::before  { content: "MODULE"; }
     .atlas-container .passport-cell-line[data-key="version"]::before { content: "VERSION"; }
     .atlas-container .passport-cell-line[data-key="log_id"]::before  { content: "LOG_ID"; }
+    
     .atlas-container .passport-meta-item { display: inline-block; }
     .atlas-container .passport-meta-item::before { font-weight: 700; color: var(--atlas-ink); }
     .atlas-container .passport-meta-item[data-meta="auth"]::before     { content: "AUTH: "; }
@@ -28,13 +30,12 @@
 
 <div class="atlas-container">
   <div id="site-passport"></div>
-  
   <div id="atlas-footer"></div>
 </div>
 
 <script>
 /* ═══════════════════════════════════════════════════════════════
-   ПАСПОРТ: Логика (оставлена без изменений)
+   ПАСПОРТ: Логика
    ─────────────────────────────────────────────────────────────── */
 var CONFIG = {
   user: 'pavelzosim', path: '~', command: 'cat unity_shaderlab_cheatsheet.log',
@@ -64,17 +65,15 @@ function applyData(d) {
   window.render && window.render();
 }
 
-// Fetch Passport Data
 (function () {
   var slug = CONFIG.slug || '';
   if (!slug) return;
   fetch(BACKEND_URL + '?slug=' + encodeURIComponent(slug))
-    .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (data) { if (data && !data.error) applyData(data); })
-    .catch(function (err) { console.warn('[ATLAS] Passport fetch failed', err); });
+    .then(r => r.ok ? r.json() : null)
+    .then(data => { if (data && !data.error) applyData(data); })
+    .catch(err => console.warn('[ATLAS] Passport fetch failed', err));
 })();
 
-// Render Passport
 (function () {
   function render() {
     var o = CONFIG;
@@ -87,9 +86,9 @@ function applyData(d) {
 
     var tagsHTML = '';
     if (Array.isArray(o.tags) && o.tags.length) {
-      tagsHTML = '<div class="passport-tags">' + o.tags.map(function (tg) {
-        return '<a href="' + o.tagBaseUrl + tg.toLowerCase().replace(/\s+/g, '-') + '" class="passport-tag" target="_top">#' + tg.toUpperCase() + '</a>';
-      }).join('') + '</div>';
+      tagsHTML = '<div class="passport-tags">' + o.tags.map(tg => 
+        '<a href="' + o.tagBaseUrl + tg.toLowerCase().replace(/\s+/g, '-') + '" class="passport-tag" target="_top">#' + tg.toUpperCase() + '</a>'
+      ).join('') + '</div>';
     }
 
     document.getElementById('site-passport').innerHTML =
@@ -111,16 +110,16 @@ function applyData(d) {
 }());
 
 /* ═══════════════════════════════════════════════════════════════
-   ФУТЕР: Асинхронный рендер по классам ATLAS Framework
+   ФУТЕР: Асинхронный рендер
    ─────────────────────────────────────────────────────────────── */
 (function() {
+  // Добавляем timestamp, чтобы jsDelivr не отдавал кэшированный JSON
   var FOOTER_CONFIG_URL = 'https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework/cdn/atlas-site-footer-config.json?t=' + Date.now();
   
   fetch(FOOTER_CONFIG_URL)
     .then(r => r.json())
-    .then(function(c) {
+    .then(c => {
       var footer = document.getElementById('atlas-footer');
-      // Используем твои классы из atlas-framework.css
       footer.innerHTML = `
         <div class="atlas-footer-wrapper">
           <div class="atlas-footer-block__support-header">
