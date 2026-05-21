@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260521-053016 | BUILD: Thu May 21 05:30:16 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260521-062826 | BUILD: Thu May 21 06:28:26 UTC 2026 */
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
 /* ── Reset: Критические стили для подавления Wix-настроек ── */
@@ -123,7 +123,86 @@ html, body {
   background: var(--atlas-bg-alt);
   padding: 2px 4px;
   border: 1px solid var(--atlas-border);
-}/* ==========================================================================
+}
+
+/* ── MODULE: TYPOGRAPHY EXTENDED (Headers & Dividers) ──────────────── */
+
+/* Контейнер контента */
+.atlas-container .content-block {
+  margin: 32px 0;
+}
+
+/* Заголовки (H2-H4) */
+.atlas-container .content-block h2 {
+  font-family: var(--atlas-font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--atlas-ink);
+  margin: 0 0 12px 0;
+  display: flex;
+  align-items: center;
+}
+
+.atlas-container .content-block h2::before {
+  content: "» ";
+  color: var(--atlas-crit);
+  margin-right: 8px;
+  font-weight: 400;
+}
+
+.atlas-container .content-block p {
+  font-family: var(--atlas-font-mono);
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--atlas-ink-soft);
+  margin: 0 0 16px 0;
+  text-align: justify;
+}
+
+/* Разделители секций (atlas-section-break) */
+.atlas-container .atlas-section-break {
+  position: relative;
+  display: block;
+  height: 1px;
+  background: var(--atlas-border);
+  margin: 4rem 0;
+}
+
+.atlas-container .atlas-section-break::before {
+  content: attr(data-index);
+  position: absolute;
+  top: -9px;
+  left: 24px;
+  background: var(--atlas-bg);
+  padding: 0 0.6rem;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--atlas-crit);
+}
+
+/* Финальный EOF разделитель */
+.atlas-container .atlas-eof-divider {
+  display: flex;
+  align-items: center;
+  margin: 5.5rem 0 2rem 0;
+  font-size: 11px;
+  color: var(--atlas-ink-muted);
+  letter-spacing: 0.12em;
+  width: 100%;
+}
+
+.atlas-container .atlas-eof-divider__line {
+  flex: 1;
+  border-bottom: 1px dashed var(--atlas-border);
+}
+
+.atlas-container .atlas-eof-divider__meta {
+  padding: 0 1.2rem;
+  font-weight: 700;
+}
+/* ==========================================================================
    MODULE: PASSPORT (Clean-Data Implementation)
    ========================================================================== */
 
@@ -316,14 +395,14 @@ html, body {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2px; /* Толщина внутренних разделительных линий */
-  background: var(--atlas-ink); /* Цвет линий сетки */
+  background: transparent; /* Цвет линий сетки */
   border-top: none;
   padding-top: 0;
 }
 
 /* Ячейка матрицы — наследует логику и отступы .passport-cell */
 .atlas-container .atlas-footer-block__matrix-column {
-  background: var(--atlas-bg); /* Принудительное перекрытие фона сетки */
+  background: transparent; /* Принудительное перекрытие фона сетки */
   padding: var(--atlas-space-sm);
   box-sizing: border-box;
 }
