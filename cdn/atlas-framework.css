@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260521-190210 | BUILD: Thu May 21 19:02:10 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260521-191552 | BUILD: Thu May 21 19:15:52 UTC 2026 */
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
@@ -495,23 +495,22 @@ p {
 
 
 /* ==========================================================================
-   c_atlas-header.css - ATLAS FRAMEWORK: PASSPORT & FOOTER MODULE [v3.0.0]
+   c_atlas-header.css - ATLAS FRAMEWORK: PASSPORT & FOOTER MODULE [v3.1.0]
    ────────────────────────────────────────────────────────────────────────── */
 
 /* ── MODULE 1: PASSPORT (Инженерная шапка документа) ───────────────────── */
 
-/* Главный внешний контейнер паспорта */
-.atlas-container .content-block .passport-bp {
+/* Достаточно привязки к .atlas-container, чтобы не зависеть от .content-block */
+.atlas-container .passport-bp {
   border: 2px solid var(--atlas-ink);
-  padding: var(--atlas-space-sm); /* 15px */
+  padding: var(--atlas-space-sm);
   background: transparent;
   box-sizing: border-box;
-  margin-bottom: var(--atlas-space-md); /* 25px */
+  margin-bottom: var(--atlas-space-md);
   width: 100%;
 }
 
-/* Верхняя полоса: Промпт системы и Статус документа */
-.atlas-container .content-block .passport-title-bar {
+.atlas-container .passport-title-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -519,13 +518,12 @@ p {
   padding-bottom: 6px;
   margin-bottom: var(--atlas-space-sm);
   font-family: var(--atlas-font-mono);
-  font-size: var(--fs-meta); /* 11px */
+  font-size: var(--fs-meta);
 }
 
-/* Главный заголовок (Имя документа / Спецификации) */
-.atlas-container .content-block .passport-main-title {
+.atlas-container .passport-main-title {
   font-family: var(--atlas-font-mono);
-  font-size: var(--fs-h1); /* 20px */
+  font-size: var(--fs-h1);
   font-weight: 700;
   text-transform: uppercase;
   margin-bottom: var(--atlas-space-sm);
@@ -533,8 +531,7 @@ p {
   color: var(--atlas-ink);
 }
 
-/* Сетка параметров 2x2 (Метаданные документа) */
-.atlas-container .content-block .passport-grid {
+.atlas-container .passport-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
@@ -542,25 +539,92 @@ p {
   border-top: 1px dashed var(--atlas-border);
 }
 
-/* Ячейка параметров */
-.atlas-container .content-block .passport-cell {
+.atlas-container .passport-cell {
   font-family: var(--atlas-font-mono);
-  font-size: var(--fs-code); /* 12px */
+  font-size: var(--fs-code);
   line-height: 1.4;
 }
 
-/* Метки (ключи) параметров, например: "AUTH:", "DATE:" */
-.atlas-container .content-block .passport-cell-label {
+.atlas-container .passport-cell-label {
   font-weight: 700;
   color: var(--atlas-ink-muted);
   text-transform: uppercase;
   margin-right: 6px;
 }
 
-.atlas-container .content-block .passport-cell-value {
+.atlas-container .passport-cell-value {
   color: var(--atlas-ink-soft);
 }
 
+
+/* ── MODULE 2: FOOTER (Системный подвал и Матрица навигации) ───────────── */
+
+.atlas-container .atlas-footer-block {
+  margin-top: var(--atlas-space-xl);
+  border-top: 2px solid var(--atlas-ink);
+  padding-top: var(--atlas-space-md);
+  width: 100%;
+}
+
+.atlas-container .atlas-footer-block__matrix-zone {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  background: transparent;
+  width: 100%;
+}
+
+.atlas-container .atlas-footer-block__matrix-column {
+  background: transparent;
+  box-sizing: border-box;
+}
+
+.atlas-container .atlas-footer-block__column-label {
+  display: block;
+  font-family: var(--atlas-font-mono);
+  font-size: var(--fs-meta);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--atlas-ink-muted);
+  margin-bottom: var(--atlas-space-sm);
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--atlas-border);
+  padding-bottom: 4px;
+}
+
+.atlas-container .atlas-footer-block__column-items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Унифицируем ссылки: теперь работают оба класса (и старый из скрипта, и новый) */
+.atlas-container .atlas-footer-block__item-link,
+.atlas-container .atlas-blueprint-link {
+  font-family: var(--atlas-font-mono) !important;
+  font-size: var(--fs-code) !important;
+  color: var(--atlas-ink-soft) !important;
+  text-decoration: none !important;
+  transition: color 0.15s ease;
+}
+
+.atlas-container .atlas-footer-block__item-link:hover,
+.atlas-container .atlas-blueprint-link:hover {
+  color: var(--atlas-crit) !important;
+}
+
+/* ── АДАПТИВНОСТЬ ──────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .atlas-container .passport-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .atlas-container .atlas-footer-block__matrix-zone {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
 
 /* ── MODULE 2: FOOTER (Системный подвал и Матрица навигации) ───────────── */
 
