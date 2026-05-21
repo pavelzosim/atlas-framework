@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@9f643088b339887ee9a63fe285252fab84cb1133/cdn/atlas-framework.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@8108a2979bf7c989ce04b20a8a5d6a7cdd960f53/cdn/atlas-framework.css">
 
   
 </head>
@@ -12,37 +12,53 @@
 
 <div class="atlas-container">
   <div id="site-passport"></div>
-
-<div class="atlas-container">
+    
   <div class="content-block">
     
     <h2>01 COMPONENT SPECIFICATION & CORE ROOT RULES</h2>
-    
-    <h3>TYPOGRAPHY FLOW & INLINE ENGINE VARIABLES</h3>
-    
-    <h4>HIERARCHY VALIDATION</h4>
+    <p>This structural paragraph defines how text tokens inside the canvas container inherit general rules from the main layout. Every element requires strict baseline alignment to eliminate vertical positioning noise.</p>
 
-    <p>This structural paragraph defines how text tokens inside the canvas container inherit general rules from the main layout. Every element requires strict baseline alignment to eliminate vertical positioning noise and maintain semantic layout flow.</p>
+    <pre class="atlas-code-block"><code class="language-c">/* fig 01.1: Core hardware pass declaration 
+   Responsibility: Low-level state vector assignment */
+void ExecuteForwardBasePass() {
+    int zWriteState = 0; // ZWrite Off
+    float4 blendMode = GetAlphaBlend();
     
+    // Core state execution boundary validation
+    if (zWriteState == 0) {
+        float4 fragColor = float4(1.0, 0.0, 0.0, 1.0);
+        SubmitFrameBuffer(fragColor);
+    }
+}</code></pre>
+
+    <h3>TYPOGRAPHY FLOW & INLINE ENGINE VARIABLES</h3>
+    <h4>HIERARCHY VALIDATION</h4>
+    <p>The boundary conditions for the system require strict separation of execution passes. The final rendering state vector can be evaluated using the following tensor decomposition pipeline:</p>
+    
+    <div class="atlas-math-block">
+      $$\mathbf{V}_{\text{state}} = \sum_{i=1}^{N} \alpha_i \cdot \int_{\Omega} f_i(x) \, d\Omega$$
+    </div>
+
     <ul>
-      <li>Global block definitions and container width properties</li>
-      <li>System token properties and atomic element attributes:
-        
+      <li>Primary rasterization constraints and geometry data blocks</li>
+      <li>Secondary illumination evaluation parameters:
         <ul>
-          <li>Inline code tag background contrast metrics</li>
-          <li>Critical word accent line-height calculation steps</li>
-          <li>Font smoothing optimization parameters for monospace families</li>
+          <li>Specular highlights lookup distribution metrics</li>
+          <li>Diffuse ambient occlusion approximation factors</li>
         </ul>
-        
       </li>
-      <li>Section break index assignment and layout termination points</li>
     </ul>
     
   </div>
-</div>
 
+  <div class="atlas-section-break" data-index="// 01"></div>
 
-<div class="atlas-section-break" data-index="// 01"></div>
+  <div class="atlas-eof-divider">
+    <span class="atlas-eof-divider__line"></span>
+    <span class="atlas-eof-divider__meta">// END OF SESSION // EOF</span>
+    <span class="atlas-eof-divider__line"></span>
+  </div>
+
   <div id="atlas-footer"></div>
 </div>
 

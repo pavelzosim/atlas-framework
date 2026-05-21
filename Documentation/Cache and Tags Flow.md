@@ -21,7 +21,6 @@ git tag v1.1.2
 git push origin v1.1.2
 
 ```
-
 ---
 
 ### Обновление линка (Инспектор кода в Wix iFrame)
@@ -31,6 +30,7 @@ git push origin v1.1.2
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.0.1/cdn/atlas-framework.css">
 
+лучше всего использовать для быстрый итераций имя коммита!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ```
  
 ### 🔍 Что ты увидишь в Консоли (F12) при таком флоу:
