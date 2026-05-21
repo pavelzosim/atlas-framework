@@ -136,20 +136,30 @@
     text-align: left;
 }
 
-/* Логика (Decision) */
+/* Логика (Decision) — СТРОГИЙ ИНЖЕНЕРНЫЙ РОМБ */
 .atlas-uml-diag__node--decision {
-    transform: rotate(45deg);
-    padding: 10px;
-    min-width: 50px;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
+  transform: rotate(45deg);
+  width: 64px;               /* Фиксированная ширина ромба */
+  height: 64px;              /* Фиксированная высота ромба для идеального квадрата */
+  min-width: 64px;           /* Блокируем растяжение от Wix */
+  padding: 0;                /* Обнуляем паддинги, ломающие геометрию */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;            /* Идеальное выравнивание по центру контейнера */
+  border: 1px solid var(--uml-ink);
+  background: var(--uml-bg);
 }
+
 .atlas-uml-diag__node--decision span {
-    transform: rotate(-45deg);
-    display: block;
-    font-size: 10px;
-    font-weight: 700;
+  transform: rotate(-45deg); /* Возвращаем текст в горизонтальное положение */
+  display: block;
+  font-size: 9px;            /* Оптимальный читаемый кегль для ромба */
+  font-weight: 700;
+  font-family: var(--atlas-font-mono);
+  text-align: center;
+  white-space: nowrap;       /* Запрещаем тексту переноситься и ломать блок */
+  line-height: 1;
 }
 
 /* Стрелки */
