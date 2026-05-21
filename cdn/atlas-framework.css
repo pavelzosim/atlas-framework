@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260521-181619 | BUILD: Thu May 21 18:16:19 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260521-182355 | BUILD: Thu May 21 18:23:55 UTC 2026 */
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
@@ -111,6 +111,11 @@ html, body {
   background: rgba(0, 0, 0, 0.015);
   border-bottom: 1px solid var(--atlas-border);
 }
+
+
+/* ==========================================================================
+   atlas-callout-tables-schemes.css - Schemes and tables
+   ────────────────────────────────────────────────────────────────────────── */
 
 
 /* ── MODULE: ATLAS-NODE (ENGINEERING_BLOCK) ─────────────────────── */
@@ -272,7 +277,7 @@ html, body {
 
 
 /* ==========================================================================
-   ATLAS FRAMEWORK: COMPARISON MATRIX MODULE [v1.0.0]
+   atlas-callout_comparsion.css - ATLAS FRAMEWORK: COMPARISON MATRIX MODULE [v1.0.0]
    ────────────────────────────────────────────────────────────────────────── */
 
 .atlas-container .comparison-matrix {
@@ -376,8 +381,8 @@ p {
 
 
 /* ==========================================================================
-   MODULE: PASSPORT (Clean-Data Implementation)
-   ========================================================================== */
+   atlas-header.css - ATLAS FRAMEWORK: PASSPORT
+   ────────────────────────────────────────────────────────────────────────── */
 
 .atlas-container .passport-bp {
   border: 2px solid var(--atlas-ink);
@@ -616,121 +621,57 @@ p {
 
 
 /* ==========================================================================
-   ATLAS FRAMEWORK: CODE, MATH & MEDIA MODULE — [v1.7.0_production]
+   atlas-multimedia.css - MEDIA MODULE [v2.0.0_clean]
    ────────────────────────────────────────────────────────────────────────── */
-
-/* ── GLOBAL GEOMETRY: ОБЩИЕ ПРАВИЛА ОТСТУПОВ ───────────────────────────── */
-.atlas-container .content-block pre.atlas-code-block,
-.atlas-container .content-block .atlas-math-block,
-.atlas-container .content-block .media-frame {
-  margin: 24px 24px 24px 24px;
-  max-width: calc(100% - 48px);
-  background: transparent !important;
-  border: 1px solid var(--atlas-border);
-  box-sizing: border-box;
-}
 
 /* ── MODULE 1: MEDIA FRAME (Инженерный визуальный контейнер) ───────────── */
 
-.atlas-container .content-block .media-frame {
-  position: relative;
-  padding: 34px 16px 16px 16px;
-}
-
-.atlas-container .content-block .media-frame::before {
-  content: "[ MEDIA_ASSET // VISUAL_DATA ]";
-  position: absolute;
-  top: 0; left: 0; right: 0; height: 24px;
-  border-bottom: 1px solid var(--atlas-border);
-  font-family: var(--atlas-font-mono);
-  font-size: 9px; line-height: 24px; padding-left: 16px;
-  color: var(--atlas-ink-muted);
-}
-
-.atlas-container .content-block .media-box {
-  width: 100%;
-  min-height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.atlas-container .content-block .media-box img,
-.atlas-container .content-block .media-box video {
-  max-width: 100%;
-  max-height: 70vh;
-  object-fit: contain;
+.atlas-container .media-frame {
+  /* Базовая геометрия рамок и шапок уже автоматически пришла из core! */
   display: block;
 }
 
-.atlas-container .content-block .media-caption {
-  margin-top: 12px;
-  font-family: var(--atlas-font-mono);
-  font-size: 10px;
-  color: var(--atlas-ink-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-top: 1px solid var(--atlas-border);
-  padding-top: 8px;
+/* Наполнение уникальным текстом плашки для медиа */
+.atlas-container .media-frame::before {
+  content: "[ MEDIA_ASSET // VISUAL_DATA ]" !important;
 }
 
-.atlas-container .content-block .gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
+/* Внутреннее наполнение контейнера картиной */
+.atlas-container .media-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--atlas-border);
+}
+
+.atlas-container .media-caption {
+  font-family: var(--atlas-font-mono);
+  font-size: var(--fs-status); /* 10px */
+  color: var(--atlas-ink-muted);
   margin-top: 8px;
+  text-align: left;
 }
 
-/* ── MODULE 2: CODE BLOCK (Инженерный листинг) ─────────────────────────── */
+/* ── MODULE 2: GALLERY GRID (Инженерная сетка) ─────────────────────────── */
 
-.atlas-container .content-block pre.atlas-code-block {
-  border-left: 3px solid var(--atlas-crit);
-  padding: 34px 16px 14px 16px;
-  overflow-x: auto;
+.atlas-container .gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 12fr);
+  gap: 16px;
+  margin: 24px 0;
+  width: 100%;
 }
 
-.atlas-container .content-block pre.atlas-code-block::before {
-  content: "[ CODE_LISTING // TRANSPILED_ALGORITHM ]";
-  position: absolute;
-  top: 0; left: 0; right: 0; height: 24px;
-  border-bottom: 1px solid var(--atlas-border);
-  font-family: var(--atlas-font-mono);
-  font-size: 9px; line-height: 24px; padding-left: 16px;
-  color: var(--atlas-ink-muted);
-}
-
-/* ── MODULE 3: MATH BLOCK (Математический аппарат) ────────────────────── */
-
-.atlas-container .content-block .atlas-math-block {
-  padding: 34px 16px 18px 16px;
-  border-style: dashed;
-}
-
-.atlas-container .content-block .atlas-math-block::before {
-  content: "[ MATH_MODEL // МАТЕМАТИЧЕСКИЙ АППАРАТ ]";
-  position: absolute;
-  top: 0; left: 0; right: 0; height: 24px;
-  border-bottom: 1px dashed var(--atlas-border);
-  font-family: var(--atlas-font-mono);
-  font-size: 9px; line-height: 24px; padding-left: 16px;
-  color: var(--atlas-ink-muted);
-}
-
-/* ── MODULE 4: SMART COUPLING (Бесшовное слияние) ──────────────────────── */
-
-.atlas-container .content-block .atlas-math-block:has(+ pre.atlas-code-block) {
-  margin-bottom: 0;
-  border-bottom: none;
-}
-
-.atlas-container .content-block .atlas-math-block + pre.atlas-code-block {
-  margin-top: 0;
-  border-top: 1px dashed var(--atlas-border);
+@media (max-width: 768px) {
+  .atlas-container .gallery-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 
-/* ── MODULE: TYPOGRAPHY (Clean Version) ────────────────────── */
+/* ==========================================================================
+   atlas-typography.css - ATLAS FRAMEWORK: TYPOGRAPHY
+   ────────────────────────────────────────────────────────────────────────── */
 
 /* Мы используем вложенность. Если элемент находится внутри 
    .atlas-container, он автоматически получает эти стили. 
@@ -971,35 +912,30 @@ p {
 
 
 /* ==========================================================================
-   ATLAS FRAMEWORK: CODE & MATHEMATICS MODULE — [v2.1.0_final]
+   c_atlas-code-math.css - ATLAS FRAMEWORK: CODE & MATHEMATICS MODULE [v2.1.0]
    ────────────────────────────────────────────────────────────────────────── */
 
-/* ── MODULE 1: УНИКАЛЬНЫЕ СТИЛИ ГРАНИЦ И ОСОБЕННОСТИ ───────────────────── */
-
 .atlas-container pre.atlas-code-block {
-  border-left: 3px solid var(--atlas-crit) !important; /* Наша фирменная красная линия */
-  overflow-x: auto; /* Защита от вылезания длинного кода за границы */
-}
-
-.atlas-container .atlas-math-block {
-  border-style: dashed !important; /* Математика — строго пунктирная */
+  border-left: 3px solid var(--atlas-crit) !important;
   overflow-x: auto;
 }
 
-/* ── MODULE 2: ЖЕСТКАЯ СТАБИЛИЗАЦИЯ ШРИФТОВ (КОД И МАТЕМАТИКА) ─────────── */
+.atlas-container .atlas-math-block {
+  border-style: dashed !important;
+  overflow-x: auto;
+}
 
-/* Защита блока кода и синтаксиса */
+/* Жесткая стабилизация шрифтов */
 .atlas-container pre.atlas-code-block,
 .atlas-container pre.atlas-code-block code {
   font-family: var(--atlas-font-mono) !important;
-  font-size: var(--fs-code) !important; /* 12px из core-токенов */
+  font-size: var(--fs-code) !important; 
   line-height: 1.6 !important;
   color: var(--atlas-ink-soft) !important;
   background: transparent !important;
   text-shadow: none !important;
 }
 
-/* Защита математического контента от смены шрифтов */
 .atlas-container .atlas-math-block {
   font-family: var(--atlas-font-mono) !important;
   font-size: var(--fs-code) !important;
@@ -1007,30 +943,21 @@ p {
   color: var(--atlas-ink-soft) !important;
 }
 
-/* ── MODULE 3: ТЕКСТ ДЛЯ АВТО-ШАПОК (ГЕОМЕТРИЯ ПРИХОДИТ ИЗ CORE) ───────── */
+/* Наполнение шапок текстом */
+.atlas-container pre.atlas-code-block::before { content: "[ CODE_LISTING // TRANSPILED_ALGORITHM ]" !important; }
+.atlas-container .atlas-math-block::before { content: "[ MATH_MODEL // МАТЕМАТИЧЕСКИЙ АППАРАТ ]" !important; }
 
-.atlas-container pre.atlas-code-block::before { 
-  content: "[ CODE_LISTING // TRANSPILED_ALGORITHM ]" !important; 
-}
-
-.atlas-container .atlas-math-block::before { 
-  content: "[ MATH_MODEL // МАТЕМАТИЧЕСКИЙ АППАРАТ ]" !important; 
-}
-
-/* ── MODULE 4: БЕСШОВНОЕ СЛИЯНИЕ (SMART COUPLING) ───────────────────────── */
-
+/* Умное сшивание */
 .atlas-container .atlas-math-block:has(+ pre.atlas-code-block) {
   margin-bottom: 0 !important;
   border-bottom: none !important;
 }
-
 .atlas-container .atlas-math-block + pre.atlas-code-block {
   margin-top: 0 !important;
-  border-top: 1px dashed var(--atlas-border) !important; /* Красивый внутренний стык при слиянии */
+  border-top: 1px dashed var(--atlas-border) !important;
 }
 
-/* ── MODULE 5: ПАЛИТРА ПОДСВЕТКИ СИНТАКСИСА (LOW-CONTRAST PRISM) ───────── */
-
+/* Prism.js Подсветка */
 .atlas-container pre.atlas-code-block code .token.comment { color: var(--atlas-ink-muted); font-style: italic; }
 .atlas-container pre.atlas-code-block code .token.punctuation { color: rgba(0, 0, 0, 0.4); }
 .atlas-container pre.atlas-code-block code .token.number,
