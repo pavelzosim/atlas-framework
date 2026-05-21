@@ -34,6 +34,8 @@ jobs:
               cdn/components/atlas-layout-global.css \
               cdn/components/atlas-header.css \
               cdn/components/atlas-code-theme.css \
+              cdn/components/atlas-multimedia.css \
+            
             | sed 's/\xEF\xBB\xBF//g' \
             >> cdn/atlas-framework.css
           
