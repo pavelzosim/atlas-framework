@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260521-192149 | BUILD: Thu May 21 19:21:49 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260521-192722 | BUILD: Thu May 21 19:27:22 UTC 2026 */
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
@@ -495,7 +495,7 @@ p {
 
 
 /* ==========================================================================
-   c_atlas-header.css - ATLAS FRAMEWORK: PASSPORT & FOOTER MODULE [v3.2.0]
+   c_atlas-header.css - ATLAS FRAMEWORK: PASSPORT & FOOTER MODULE [v3.3.0]
    Синхронизировано с динамическим JS-рендерером метаданных Wix/Velo
    ────────────────────────────────────────────────────────────────────────── */
 
@@ -540,23 +540,23 @@ p {
   color: var(--atlas-ink);
 }
 
-/* Сетка параметров 2x2 */
+/* Сетка параметров 1x2 (Две большие колонки: Левая и Правая) */
 .atlas-container .passport-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: 24px; /* Увеличенный отступ между левой и правой ячейкой */
   padding: var(--atlas-space-sm) 0;
   border-top: 1px dashed var(--atlas-border);
 }
 
-/* Ячейка параметров */
+/* Ячейка параметров (Левая или Правая) */
 .atlas-container .passport-cell {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Элементы внутри ячейки строго друг под другом */
   gap: 6px;
 }
 
-/* Строка внутри ячейки */
+/* Строка внутри ячейки (Проект, Модуль, Версия, Лог) */
 .atlas-container .passport-cell-line {
   font-family: var(--atlas-font-mono);
   font-size: var(--fs-code); /* 12px */
@@ -564,7 +564,7 @@ p {
   color: var(--atlas-ink-soft);
 }
 
-/* АВТОМАТИЧЕСКАЯ ПОДСТАНОВКА МЕТОК (КЛЮЧЕЙ) ИЗ DATA-KEY */
+/* Автоматическая генерация текстовых меток перед значениями */
 .atlas-container .passport-cell-line::before {
   font-weight: 700;
   color: var(--atlas-ink-muted);
@@ -578,11 +578,13 @@ p {
 .atlas-container .passport-cell-line[data-key="log_id"]::before  { content: "LOG_ID:"; }
 
 
-/* ── БЛОК МЕТА-ДАННЫХ (Нижняя строка паспорта) ────────────────────────── */
+/* ── БЛОК МЕТА-ДАННЫХ (Строго одна горизонтальная линия) ───────────────── */
 
 .atlas-container .passport-meta {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row; /* Всегда в строчку */
+  flex-wrap: wrap;     /* Защита от переполнения с переносом */
+  align-items: center;
   gap: 16px;
   margin-top: var(--atlas-space-sm);
   padding-top: var(--atlas-space-xs);
@@ -593,6 +595,16 @@ p {
   font-family: var(--atlas-font-mono);
   font-size: var(--fs-meta); /* 11px */
   color: var(--atlas-ink-soft);
+  display: flex;
+  align-items: center;
+}
+
+/* Инженерный разделитель между элементами метаданных */
+.atlas-container .passport-meta-item:not(:last-child)::after {
+  content: "//";
+  margin-left: 16px;
+  color: var(--atlas-border-strong);
+  font-weight: 300;
 }
 
 /* Подстановка префиксов для мета-данных */
@@ -640,7 +652,7 @@ p {
 /* ── MODULE 2: FOOTER (Системный подвал и Матрица навигации) ───────────── */
 
 .atlas-container .atlas-footer-block {
-  margin-top: var(--atlas-space-xl); /* 60px отступа сверху */
+  margin-top: var(--atlas-space-xl);
   border-top: 2px solid var(--atlas-ink);
   padding-top: var(--atlas-space-md);
   width: 100%;
@@ -681,7 +693,7 @@ p {
   gap: 6px;
 }
 
-/* Инженерные ссылки в футере (поддерживаем оба класса) */
+/* Инженерные ссылки в футере */
 .atlas-container .atlas-footer-block__item-link,
 .atlas-container .atlas-blueprint-link {
   font-family: var(--atlas-font-mono) !important;
@@ -693,28 +705,29 @@ p {
 
 .atlas-container .atlas-footer-block__item-link:hover,
 .atlas-container .atlas-blueprint-link:hover {
-  color: var(--atlas-crit) !important; /* Фокус при наведении */
+  color: var(--atlas-crit) !important;
 }
 
 
 /* ── АДАПТИВНОСТЬ (Защита интерфейса на мобильных экранах) ─────────────── */
 
 @media (max-width: 768px) {
-  /* Перестраиваем сетку паспорта в 1 колонку */
+  /* На мобильных сетка паспорта переходит в 1 колонку, но строки остаются сгруппированными */
   .atlas-container .passport-grid {
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 12px;
   }
   
-  /* Перестраиваем матрицу футера в 1 колонку */
+  /* Матрица футера в 1 колонку */
   .atlas-container .atlas-footer-block__matrix-zone {
     grid-template-columns: 1fr;
     gap: 24px;
   }
 
+  /* Метаданные остаются в строку, разрешая перенос при критической нехватке места */
   .atlas-container .passport-meta {
-    flex-direction: column;
-    gap: 6px;
+    flex-wrap: wrap;
+    gap: 10px;
   }
 }
 
