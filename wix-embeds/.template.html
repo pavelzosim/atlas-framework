@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@8108a2979bf7c989ce04b20a8a5d6a7cdd960f53/cdn/atlas-framework.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@543dd904307806f1f3a552547becbc17eab7feb6/cdn/atlas-framework.css">
+
 
   
 </head>
@@ -36,8 +37,8 @@ void ExecuteForwardBasePass() {
     <p>The boundary conditions for the system require strict separation of execution passes. The final rendering state vector can be evaluated using the following tensor decomposition pipeline:</p>
     
     <div class="atlas-math-block">
-      $$\mathbf{V}_{\text{state}} = \sum_{i=1}^{N} \alpha_i \cdot \int_{\Omega} f_i(x) \, d\Omega$$
-    </div>
+  $$\mathbf{V}_{\text{state}} = \sum_{i=1}^{N} \alpha_i \cdot \int_{\Omega} f_i(x) \, d\Omega$$
+</div>
 
     <ul>
       <li>Primary rasterization constraints and geometry data blocks</li>
@@ -183,6 +184,14 @@ function applyData(d) {
     .catch(e => console.error('[ATLAS] Footer component failed to render:', e));
 })();
 </script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+
 
 </body>
 </html>
