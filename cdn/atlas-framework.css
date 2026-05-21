@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260521-051036 | BUILD: Thu May 21 05:10:36 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260521-053016 | BUILD: Thu May 21 05:30:16 UTC 2026 */
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
 /* ── Reset: Критические стили для подавления Wix-настроек ── */
@@ -14,7 +14,7 @@ html, body {
 *, *::before, *::after {
   box-sizing: border-box;
 }
-
+ 
 /* ── Design tokens: Единая палитра и метрики ──────────────── */
 :root {
   --atlas-bg:            rgb(230, 220, 210);
