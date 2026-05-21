@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260521-195844 | BUILD: Thu May 21 19:58:44 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260521-203445 | BUILD: Thu May 21 20:34:45 UTC 2026 */
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
@@ -859,71 +859,245 @@ p {
 }
 
 
-/* ==========================================================================\
-   ATLAS FRAMEWORK: TYPOGRAPHY SYSTEM [v2.0.0]
-   Привязка к .atlas-container без жестких зависимостей
+/* ==========================================================================
+   atlas-typography.css - ATLAS FRAMEWORK: TYPOGRAPHY
    ────────────────────────────────────────────────────────────────────────── */
 
-/* 1. ЗАГОЛОВКИ (Наследование стилей) */
-.atlas-container h1, .atlas-container .atlas-h1 {
+/* Мы используем вложенность. Если элемент находится внутри 
+   .atlas-container, он автоматически получает эти стили. 
+   !important больше не нужен. */
+
+.atlas-container .atlas-h1 {
   font-family: var(--atlas-font-mono);
   font-size: var(--fs-h1);
   font-weight: 700;
+  line-height: 1.2;
   text-transform: uppercase;
   color: var(--atlas-ink);
-  margin: 24px 0 16px 0;
-  line-height: 1.2;
+  margin: 0 0 var(--atlas-space-sm) 0;
+  letter-spacing: -0.01em;
 }
 
-.atlas-container h2, .atlas-container .atlas-title {
+.atlas-container .atlas-title {
   font-family: var(--atlas-font-mono);
   font-size: var(--fs-title);
   font-weight: 700;
+  line-height: 1.3;
   text-transform: uppercase;
   color: var(--atlas-ink);
-  margin: 20px 0 12px 0;
+  margin: 0 0 var(--atlas-space-xs) 0;
 }
 
-/* 2. ТЕКСТОВОЕ ТЕЛО */
-.atlas-container p, .atlas-container .atlas-body {
+.atlas-container .atlas-body {
   font-family: var(--atlas-font-mono);
   font-size: var(--fs-body);
+  font-weight: 400;
   line-height: 1.6;
   color: var(--atlas-ink-soft);
-  margin-bottom: 16px;
+  margin: 0 0 var(--atlas-space-sm) 0;
 }
 
-/* 3. СПИСКИ (Инженерная разметка) */
-.atlas-container ul, .atlas-container ol {
-  padding-left: 0;
-  list-style: none;
-  margin-bottom: 16px;
-}
-
-.atlas-container li {
-  position: relative;
-  padding-left: 20px;
-  margin-bottom: 8px;
+.atlas-container .atlas-meta {
   font-family: var(--atlas-font-mono);
-  font-size: var(--fs-body);
-  color: var(--atlas-ink-soft);
+  font-size: var(--fs-meta);
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--atlas-ink-muted);
+  letter-spacing: 0.05em;
 }
 
-/* Кастомные маркеры (Инженерные плюсы) */
-.atlas-container li::before {
-  content: "+";
-  position: absolute;
-  left: 0;
+.atlas-container .atlas-code-inline {
+  font-family: var(--atlas-font-mono);
+  font-size: var(--fs-code);
   color: var(--atlas-crit);
+  background: var(--atlas-bg-alt);
+  padding: 2px 4px;
+  border: 1px solid var(--atlas-border);
+}
+
+/* ── MODULE: TYPOGRAPHY EXTENDED (Headers & Dividers) ──────────────── */
+
+.atlas-container .content-block {
+  margin: 32px 0;
+}
+
+/* Общая база для всех заголовков в контенте */
+.atlas-container .content-block h2,
+.atlas-container .content-block h3,
+.atlas-container .content-block h4 {
+  font-family: var(--atlas-font-mono);
+  font-weight: 700;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  margin: 0 0 12px 0;
+  line-height: 1.2;
+}
+
+/* = H2: Главный раздел = */
+.atlas-container .content-block h2 {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--atlas-ink);
+}
+.atlas-container .content-block h2::before {
+  content: "» ";
+  color: var(--atlas-crit); /* Красный акцент */
+  margin-right: 8px;
+  font-weight: 400;
+}
+
+/* = H3: Подраздел = */
+.atlas-container .content-block h3 {
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--atlas-ink-soft);
+  margin-top: 24px; /* Отбивка сверху для вложенных секций */
+}
+.atlas-container .content-block h3::before {
+  content: "> ";
+  color: var(--atlas-ink-muted);
+  margin-right: 8px;
+  font-weight: 400;
+}
+
+/* = H4: Микро-заголовок (Списки, параметры) = */
+.atlas-container .content-block h4 {
+  font-size: var(--fs-meta, 11px);
+  letter-spacing: 0.05em;
+  color: var(--atlas-ink-muted);
+  margin-top: 16px;
+}
+.atlas-container .content-block h4::before {
+  content: "+ ";
+  color: var(--atlas-ink-muted);
+  margin-right: 8px;
+  font-weight: 400;
+}
+
+/* Базовый текст */
+.atlas-container .content-block p {
+  font-family: var(--atlas-font-mono);
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--atlas-ink-soft);
+  margin: 0 0 16px 0;
+  text-align: justify;
+}
+
+/* Разделители секций (atlas-section-break) */
+.atlas-container .atlas-section-break {
+  position: relative;
+  display: block;
+  height: 1px;
+  background: var(--atlas-border);
+  margin: 4rem 0;
+}
+.atlas-container .atlas-section-break::before {
+  content: attr(data-index);
+  position: absolute;
+  top: -9px;
+  left: 24px;
+  background: var(--atlas-bg);
+  padding: 0 0.6rem;
+  font-size: var(--fs-meta, 11px);
+  font-weight: 700;
+  color: var(--atlas-crit);
+}
+
+/* Финальный EOF разделитель */
+.atlas-container .atlas-eof-divider {
+  display: flex;
+  align-items: center;
+  margin: 5.5rem 0 2rem 0;
+  font-size: var(--fs-meta, 11px);
+  color: var(--atlas-ink-muted);
+  letter-spacing: 0.12em;
+  width: 100%;
+}
+.atlas-container .atlas-eof-divider__line {
+  flex: 1;
+  border-bottom: 1px dashed var(--atlas-border);
+}
+.atlas-container .atlas-eof-divider__meta {
+  padding: 0 1.2rem;
   font-weight: 700;
 }
 
-/* Вложенные списки (Второстепенная ось) */
-.atlas-container ul ul, 
-.atlas-container ol ol {
-  margin-left: 14px;
-  border-left: 1px dashed var(--atlas-border);
-  padding-top: 8px;
+/* ── MODULE: TYPOGRAPHY EXTENDED (CAD / BLUEPRINT LISTS) ────────────── */
+
+/* Инициализация внутренних счетчиков для автоматической сквозной нумерации */
+.atlas-container .content-block {
+  counter-reset: l1-counter;
+}
+
+/* Базовый сброс блочных отступов списков */
+.atlas-container .content-block ul, 
+.atlas-container .content-block ol {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 16px 0; 
+}
+
+/* === LEVEL 1 (Первый уровень вложенности) === */
+.atlas-container .content-block > ul, 
+.atlas-container .content-block > ol {
+  margin-left: 24px;          /* Точное выравнивание по левой границе параграфа */
+  padding-left: 14px;
+  border-left: 1px solid var(--atlas-border); /* Сплошная направляющая ось */
+}
+
+.atlas-container .content-block > ul > li,
+.atlas-container .content-block > ol > li {
+  font-family: var(--atlas-font-mono);
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--atlas-ink-soft);
+  position: relative;
+  padding-left: 18px; 
+  margin-bottom: 8px;  
+}
+
+/* Маркер Level 1: Инженерное перекрестие */
+.atlas-container .content-block > ul > li::before,
+.atlas-container .content-block > ol > li::before {
+  content: "+"; 
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--atlas-crit); /* Фирменный бордовый акцент */
+  font-weight: 700;
+}
+
+/* === LEVEL 2 (Второй уровень вложенности) === */
+.atlas-container .content-block ul ul, 
+.atlas-container .content-block ol ul,
+.atlas-container .content-block ul ol,
+.atlas-container .content-block ol ol {
+  margin-left: 14px; 
+  margin-top: 8px;   
+  padding-left: 14px;
+  border-left: 1px dashed var(--atlas-border); /* Суб-ось становится прерывистой */
+}
+
+.atlas-container .content-block ul ul > li,
+.atlas-container .content-block ul ol > li {
+  font-size: 12px; /* Уменьшенный технический кегль */
+  line-height: 1.6;
+  color: var(--atlas-ink-soft);
+  position: relative;
+  padding-left: 16px; 
+  margin-bottom: 6px;
+}
+
+/* Маркер Level 2: Чертежная пиксельная точка-квадрат */
+.atlas-container .content-block ul ul > li::before,
+.atlas-container .content-block ul ol > li::before {
+  content: "▪"; 
+  position: absolute;
+  left: 0;
+  color: var(--atlas-ink-muted);
+  font-size: 9px;
 }
 
 
