@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260521-172450 | BUILD: Thu May 21 17:24:50 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260521-174550 | BUILD: Thu May 21 17:45:50 UTC 2026 */
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
@@ -494,6 +494,44 @@ p {
 }
 .atlas-container .content-block pre.atlas-code-block code .token.operator {
   color: var(--atlas-ink);
+}
+
+/* ==========================================================================
+   ATLAS CORE: UNIFIED SYSTEM BLOCKS
+   Унифицированный контейнер для всех модулей (Code, Math, Callout, Media, Data)
+   ========================================================================== */
+
+.atlas-container .comparison-matrix,
+.atlas-container .atlas-callout,
+.atlas-container .media-frame,
+.atlas-container pre.atlas-code-block,
+.atlas-container .atlas-math-block {
+  position: relative;
+  background: transparent;
+  border: 1px solid var(--atlas-border);
+  box-sizing: border-box;
+  margin: 24px 0;       /* Идеально ровные отступы сверху/снизу. По бокам — вровень с текстом */
+  width: 100%;          /* Блок всегда занимает 100% ширины контента */
+  padding: 34px 16px 16px 16px; /* Место под шапку (24px) + внутренний отступ (10px) */
+}
+
+/* Единая системная шапка (Pseudo-header) для всех блоков */
+.atlas-container .comparison-matrix::before,
+.atlas-container .atlas-callout::before,
+.atlas-container .media-frame::before,
+.atlas-container pre.atlas-code-block::before,
+.atlas-container .atlas-math-block::before {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 24px;
+  line-height: 24px;
+  padding-left: 16px;
+  font-family: var(--atlas-font-mono);
+  font-size: 9px;
+  color: var(--atlas-ink-muted);
+  letter-spacing: 0.05em;
+  background: rgba(0, 0, 0, 0.015);
+  border-bottom: 1px solid var(--atlas-border);
 }
 
 
