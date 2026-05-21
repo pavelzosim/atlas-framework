@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260521-193420 | BUILD: Thu May 21 19:34:20 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260521-194058 | BUILD: Thu May 21 19:40:58 UTC 2026 */
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
@@ -785,7 +785,9 @@ p {
 
 /* ── АДАПТИВНОСТЬ (Мобильные экраны) ────────────────────────────────────── */
 
-@media (max-width: 768px) {
+/* Снизили порог с 768px до 550px, чтобы узкие десктопные колонки блога (600-750px) 
+   не триггерили мобильную верстку и не ломали сетку паспорта 2x2 */
+@media (max-width: 550px) {
   .atlas-container #site-passport .passport-grid {
     grid-template-columns: 1fr;
     gap: 12px;
