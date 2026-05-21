@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260521-172021 | BUILD: Thu May 21 17:20:21 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260521-172450 | BUILD: Thu May 21 17:24:50 UTC 2026 */
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
@@ -75,18 +75,36 @@ html, body {
 } 
 
 
-/* ── MODULE: ATLAS-TABLE (Fixed & Robust) ────────────────────────── */
+/* ── MODULE: ATLAS-NODE (ENGINEERING_BLOCK) ─────────────────────── */
 
-.atlas-container .atlas-table {
+.atlas-container .atlas-node {
+    border: 2px solid var(--atlas-ink, #000);
+    margin-bottom: 24px;
+    background: transparent;
     width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed; /* Гарантирует, что колонки не "разъедутся" */
-    font-family: inherit;
-    margin: 0;
+    box-sizing: border-box;
 }
 
-/* Заголовок */
-.atlas-container .atlas-table thead th {
+/* Теперь имя уникальное: atlas-node__header */
+.atlas-container .atlas-node__header {
+    background: var(--atlas-ink, #000);
+    color: var(--atlas-bg, #e6dcd2);
+    padding: 6px 10px;
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+}
+
+/* Стили таблицы остаются прежними, но теперь они защищены внутри .atlas-node */
+.atlas-container .atlas-node .atlas-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.atlas-container .atlas-node .atlas-table thead th {
     text-align: left;
     padding: 10px;
     font-size: 10px;
@@ -95,18 +113,11 @@ html, body {
     color: var(--atlas-ink, #000);
 }
 
-/* Строки */
-.atlas-container .atlas-table tbody td {
+.atlas-container .atlas-node .atlas-table tbody td {
     padding: 10px;
-    font-size: 11px; /* Чуть побольше для читаемости */
+    font-size: 11px;
     border-bottom: 1px dashed var(--atlas-ink-muted, rgba(0,0,0,0.3));
     color: var(--atlas-ink, #000);
-    vertical-align: top;
-}
-
-/* Удаление границы у последней строки */
-.atlas-container .atlas-table tbody tr:last-child td {
-    border-bottom: none;
 }
 
 /* ── NAMESPACE: ATLAS-UML-DIAG ────────────────────────────────────── */
