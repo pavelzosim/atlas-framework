@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260521-182355 | BUILD: Thu May 21 18:23:55 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260521-183844 | BUILD: Thu May 21 18:38:44 UTC 2026 */
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
@@ -621,50 +621,62 @@ p {
 
 
 /* ==========================================================================
-   atlas-multimedia.css - MEDIA MODULE [v2.0.0_clean]
+   atlas-multimedia.css - MEDIA MODULE [v2.3.0_no_important]
    ────────────────────────────────────────────────────────────────────────── */
 
 /* ── MODULE 1: MEDIA FRAME (Инженерный визуальный контейнер) ───────────── */
 
-.atlas-container .media-frame {
-  /* Базовая геометрия рамок и шапок уже автоматически пришла из core! */
-  display: block;
+.atlas-container .content-block .media-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Наполнение уникальным текстом плашки для медиа */
-.atlas-container .media-frame::before {
-  content: "[ MEDIA_ASSET // VISUAL_DATA ]" !important;
+.atlas-container .content-block .media-frame::before {
+  content: "[ MEDIA_ASSET // VISUAL_DATA ]";
 }
 
-/* Внутреннее наполнение контейнера картиной */
-.atlas-container .media-frame img {
+/* Внутреннее наполнение контейнера (картинки, видео, айфреймы) */
+.atlas-container .content-block .media-frame img,
+.atlas-container .content-block .media-frame video,
+.atlas-container .content-block .media-frame iframe {
   display: block;
-  width: 100%;
+  max-width: 100%;
   height: auto;
   border: 1px solid var(--atlas-border);
+  margin: 0 auto;
 }
 
-.atlas-container .media-caption {
+/* Автоматическое удержание пропорций для YouTube/Vimeo iframe */
+.atlas-container .content-block .media-frame iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.atlas-container .content-block .media-caption {
   font-family: var(--atlas-font-mono);
   font-size: var(--fs-status); /* 10px */
   color: var(--atlas-ink-muted);
-  margin-top: 8px;
-  text-align: left;
+  margin-top: 12px;
+  text-align: center;
+  width: 100%;
 }
 
-/* ── MODULE 2: GALLERY GRID (Инженерная сетка) ─────────────────────────── */
+/* ── MODULE 2: GALLERY GRID (Инженерная сетка изображений) ─────────────── */
 
-.atlas-container .gallery-grid {
+.atlas-container .content-block .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(2, 12fr);
+  grid-template-columns: repeat(2, 1fr); /* 2 равные колонки без избыточности */
   gap: 16px;
   margin: 24px 0;
   width: 100%;
 }
 
 @media (max-width: 768px) {
-  .atlas-container .gallery-grid {
-    grid-template-columns: 1fr;
+  .atlas-container .content-block .gallery-grid {
+    grid-template-columns: 1fr; /* На мобильных перестраиваем в один поток */
   }
 }
 
@@ -912,61 +924,81 @@ p {
 
 
 /* ==========================================================================
-   c_atlas-code-math.css - ATLAS FRAMEWORK: CODE & MATHEMATICS MODULE [v2.1.0]
+   c_atlas-code-math.css - CODE & MATHEMATICS MODULE [v2.3.0_no_important]
    ────────────────────────────────────────────────────────────────────────── */
 
-.atlas-container pre.atlas-code-block {
-  border-left: 3px solid var(--atlas-crit) !important;
+/* ── MODULE 1: УНИКАЛЬНЫЕ СТИЛИ ГРАНИЦ И ОСОБЕННОСТИ ───────────────────── */
+
+.atlas-container .content-block pre.atlas-code-block {
+  border-left: 3px solid var(--atlas-crit); /* Наша фирменная красная линия */
   overflow-x: auto;
 }
 
-.atlas-container .atlas-math-block {
-  border-style: dashed !important;
+.atlas-container .content-block .atlas-math-block {
+  border-style: dashed; /* Математика — строго пунктирная */
   overflow-x: auto;
 }
 
-/* Жесткая стабилизация шрифтов */
-.atlas-container pre.atlas-code-block,
-.atlas-container pre.atlas-code-block code {
-  font-family: var(--atlas-font-mono) !important;
-  font-size: var(--fs-code) !important; 
-  line-height: 1.6 !important;
-  color: var(--atlas-ink-soft) !important;
-  background: transparent !important;
-  text-shadow: none !important;
+/* ── MODULE 2: СТАБИЛИЗАЦИЯ ШРИФТОВ (КОД И МАТЕМАТИКА) ─────────────────── */
+
+/* Защита блока кода и синтаксиса от внешних системных шрифтов */
+.atlas-container .content-block pre.atlas-code-block,
+.atlas-container .content-block pre.atlas-code-block code {
+  font-family: var(--atlas-font-mono);
+  font-size: var(--fs-code); /* 12px */
+  line-height: 1.6;
+  color: var(--atlas-ink-soft);
+  background: transparent;
+  text-shadow: none;
 }
 
-.atlas-container .atlas-math-block {
-  font-family: var(--atlas-font-mono) !important;
-  font-size: var(--fs-code) !important;
-  line-height: 1.6 !important;
-  color: var(--atlas-ink-soft) !important;
+/* Защита математического контента */
+.atlas-container .content-block .atlas-math-block {
+  font-family: var(--atlas-font-mono);
+  font-size: var(--fs-code);
+  line-height: 1.6;
+  color: var(--atlas-ink-soft);
 }
 
-/* Наполнение шапок текстом */
-.atlas-container pre.atlas-code-block::before { content: "[ CODE_LISTING // TRANSPILED_ALGORITHM ]" !important; }
-.atlas-container .atlas-math-block::before { content: "[ MATH_MODEL // МАТЕМАТИЧЕСКИЙ АППАРАТ ]" !important; }
+/* ── MODULE 3: ТЕКСТ ДЛЯ АВТО-ШАПОК ────────────────────────────────────── */
 
-/* Умное сшивание */
-.atlas-container .atlas-math-block:has(+ pre.atlas-code-block) {
-  margin-bottom: 0 !important;
-  border-bottom: none !important;
-}
-.atlas-container .atlas-math-block + pre.atlas-code-block {
-  margin-top: 0 !important;
-  border-top: 1px dashed var(--atlas-border) !important;
+.atlas-container .content-block pre.atlas-code-block::before { 
+  content: "[ CODE_LISTING // TRANSPILED_ALGORITHM ]"; 
 }
 
-/* Prism.js Подсветка */
-.atlas-container pre.atlas-code-block code .token.comment { color: var(--atlas-ink-muted); font-style: italic; }
-.atlas-container pre.atlas-code-block code .token.punctuation { color: rgba(0, 0, 0, 0.4); }
-.atlas-container pre.atlas-code-block code .token.number,
-.atlas-container pre.atlas-code-block code .token.boolean { color: var(--atlas-warn); }
-.atlas-container pre.atlas-code-block code .token.string,
-.atlas-container pre.atlas-code-block code .token.char { color: var(--atlas-ok); }
-.atlas-container pre.atlas-code-block code .token.keyword,
-.atlas-container pre.atlas-code-block code .token.class-name { color: var(--atlas-ink); font-weight: 700; }
-.atlas-container pre.atlas-code-block code .token.function { color: var(--atlas-crit); font-weight: 700; }
-.atlas-container pre.atlas-code-block code .token.operator { color: var(--atlas-ink); }
+.atlas-container .content-block .atlas-math-block::before { 
+  content: "[ MATH_MODEL // МАТЕМАТИЧЕСКИЙ АППАРАТ ]"; 
+}
+
+/* ── MODULE 4: БЕСШОВНОЕ СЛИЯНИЕ (SMART COUPLING) ───────────────────────── */
+
+.atlas-container .content-block .atlas-math-block:has(+ pre.atlas-code-block) {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.atlas-container .content-block .atlas-math-block + pre.atlas-code-block {
+  margin-top: 0;
+  border-top: 1px dashed var(--atlas-border);
+}
+
+/* ── MODULE 5: ПАЛИТРА ПОДСВЕТКИ СИНТАКСИСА (LOW-CONTRAST PRISM) ───────── */
+
+/* Естественный сброс фонов (подложек) у всех спецсимволов Prism.js */
+.atlas-container .content-block pre.atlas-code-block code .token {
+  background: transparent;
+  text-shadow: none;
+}
+
+.atlas-container .content-block pre.atlas-code-block code .token.comment { color: var(--atlas-ink-muted); font-style: italic; }
+.atlas-container .content-block pre.atlas-code-block code .token.punctuation { color: rgba(0, 0, 0, 0.4); }
+.atlas-container .content-block pre.atlas-code-block code .token.number,
+.atlas-container .content-block pre.atlas-code-block code .token.boolean { color: var(--atlas-warn); }
+.atlas-container .content-block pre.atlas-code-block code .token.string,
+.atlas-container .content-block pre.atlas-code-block code .token.char { color: var(--atlas-ok); }
+.atlas-container .content-block pre.atlas-code-block code .token.keyword,
+.atlas-container .content-block pre.atlas-code-block code .token.class-name { color: var(--atlas-ink); font-weight: 700; }
+.atlas-container .content-block pre.atlas-code-block code .token.function { color: var(--atlas-crit); font-weight: 700; }
+.atlas-container .content-block pre.atlas-code-block code .token.operator { color: var(--atlas-ink); }
 
 
