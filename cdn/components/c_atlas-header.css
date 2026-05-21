@@ -1,6 +1,6 @@
 /* ==========================================================================
-   c_atlas-header.css - ATLAS FRAMEWORK: PASSPORT & FOOTER MODULE [v3.3.0]
-   Синхронизировано с динамическим JS-рендерером метаданных Wix/Velo
+   c_atlas-header.css - ATLAS FRAMEWORK: PASSPORT & FOOTER MODULE [v3.4.0]
+   Чистая спецификация каскада без использования !important
    ────────────────────────────────────────────────────────────────────────── */
 
 /* ── MODULE 1: PASSPORT (Инженерная шапка документа) ───────────────────── */
@@ -8,10 +8,10 @@
 /* Главный внешний контейнер паспорта */
 .atlas-container .passport-bp {
   border: 2px solid var(--atlas-ink);
-  padding: var(--atlas-space-sm); /* 15px */
+  padding: var(--atlas-space-sm);
   background: transparent;
   box-sizing: border-box;
-  margin-bottom: var(--atlas-space-md); /* 25px */
+  margin-bottom: var(--atlas-space-md);
   width: 100%;
 }
 
@@ -24,19 +24,19 @@
   padding-bottom: 6px;
   margin-bottom: var(--atlas-space-sm);
   font-family: var(--atlas-font-mono);
-  font-size: var(--fs-meta); /* 11px */
+  font-size: var(--fs-meta);
   color: var(--atlas-ink);
 }
 
 .atlas-container .passport-title-bar b {
   font-weight: 700;
-  color: var(--atlas-crit); /* Статус подсвечиваем фирменным цветом */
+  color: var(--atlas-crit);
 }
 
-/* Главный заголовок (Имя текущего поста / Лога) */
+/* Главный заголовок лога / статьи */
 .atlas-container .passport-main-title {
   font-family: var(--atlas-font-mono);
-  font-size: var(--fs-h1); /* 20px */
+  font-size: var(--fs-h1);
   font-weight: 700;
   text-transform: uppercase;
   margin-bottom: var(--atlas-space-sm);
@@ -44,36 +44,45 @@
   color: var(--atlas-ink);
 }
 
-/* Сетка параметров 1x2 (Две большие колонки: Левая и Правая) */
+/* СЕТКА ПАРАМЕТРОВ: Четкое разделение на левую и правую колонки (50/50) */
 .atlas-container .passport-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24px; /* Увеличенный отступ между левой и правой ячейкой */
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
   padding: var(--atlas-space-sm) 0;
   border-top: 1px dashed var(--atlas-border);
+  box-sizing: border-box;
+  width: 100%;
 }
 
-/* Ячейка параметров (Левая или Правая) */
+/* Ячейки параметров (Левая: Project/Module, Правая: Version/Log_ID) */
 .atlas-container .passport-cell {
   display: flex;
-  flex-direction: column; /* Элементы внутри ячейки строго друг под другом */
-  gap: 6px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 8px;
+  box-sizing: border-box;
 }
 
-/* Строка внутри ячейки (Проект, Модуль, Версия, Лог) */
+/* Индивидуальная строка параметров */
 .atlas-container .passport-cell-line {
+  display: block;
   font-family: var(--atlas-font-mono);
-  font-size: var(--fs-code); /* 12px */
+  font-size: var(--fs-code);
   line-height: 1.4;
   color: var(--atlas-ink-soft);
+  margin: 0;
+  padding: 0;
 }
 
-/* Автоматическая генерация текстовых меток перед значениями */
+/* Автоматическая подстановка инженерных префиксов через data-key */
 .atlas-container .passport-cell-line::before {
   font-weight: 700;
   color: var(--atlas-ink-muted);
   text-transform: uppercase;
   margin-right: 8px;
+  display: inline-block;
 }
 
 .atlas-container .passport-cell-line[data-key="project"]::before { content: "PROJECT:"; }
@@ -82,12 +91,11 @@
 .atlas-container .passport-cell-line[data-key="log_id"]::before  { content: "LOG_ID:"; }
 
 
-/* ── БЛОК МЕТА-ДАННЫХ (Строго одна горизонтальная линия) ───────────────── */
-
+/* БЛОК МЕТА-ДАННЫХ (Строго горизонтальная линия) */
 .atlas-container .passport-meta {
   display: flex;
-  flex-direction: row; /* Всегда в строчку */
-  flex-wrap: wrap;     /* Защита от переполнения с переносом */
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   gap: 16px;
   margin-top: var(--atlas-space-sm);
@@ -97,13 +105,13 @@
 
 .atlas-container .passport-meta-item {
   font-family: var(--atlas-font-mono);
-  font-size: var(--fs-meta); /* 11px */
+  font-size: var(--fs-meta);
   color: var(--atlas-ink-soft);
   display: flex;
   align-items: center;
 }
 
-/* Инженерный разделитель между элементами метаданных */
+/* Инженерный разделитель данных */
 .atlas-container .passport-meta-item:not(:last-child)::after {
   content: "//";
   margin-left: 16px;
@@ -111,7 +119,6 @@
   font-weight: 300;
 }
 
-/* Подстановка префиксов для мета-данных */
 .atlas-container .passport-meta-item::before {
   font-weight: 700;
   color: var(--atlas-ink-muted);
@@ -125,8 +132,7 @@
 .atlas-container .passport-meta-item[data-meta="read"]::before     { content: "READ_TIME:"; }
 
 
-/* ── БЛОК ТЕГОВ (PASSPORT TAGS) ───────────────────────────────────────── */
-
+/* БЛОК ХЭШТЕГОВ */
 .atlas-container .passport-tags {
   display: flex;
   flex-wrap: wrap;
@@ -136,7 +142,7 @@
 
 .atlas-container .passport-tag {
   font-family: var(--atlas-font-mono);
-  font-size: var(--fs-status); /* 10px */
+  font-size: var(--fs-status);
   font-weight: 700;
   color: var(--atlas-crit);
   text-decoration: none;
@@ -153,34 +159,96 @@
 }
 
 
-/* ── MODULE 2: FOOTER (Системный подвал и Матрица навигации) ───────────── */
+/* ── MODULE 2: FOOTER (Системный подвал по новой JS-структуре) ─────────── */
 
-.atlas-container .atlas-footer-block {
+/* Главный базовый блок подвала (Замена невалидного .atlas-footer-block) */
+.atlas-container #atlas-footer {
   margin-top: var(--atlas-space-xl);
-  border-top: 2px solid var(--atlas-ink);
-  padding-top: var(--atlas-space-md);
   width: 100%;
-}
-
-/* Зона матрицы навигации (3 колонки ссылок) */
-.atlas-container .atlas-footer-block__matrix-zone {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  background: transparent;
-  width: 100%;
-}
-
-.atlas-container .atlas-footer-block__matrix-column {
-  background: transparent;
   box-sizing: border-box;
 }
 
-/* Метки категорий в футере */
+/* Корневая внутренняя обертка из скрипта */
+.atlas-container .atlas-footer-wrapper {
+  border-top: 2px solid var(--atlas-ink);
+  padding-top: var(--atlas-space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--atlas-space-md);
+  width: 100%;
+}
+
+/* Верхняя статусная линия подвала */
+.atlas-container .atlas-footer-block__support-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--atlas-font-mono);
+  font-size: var(--fs-meta);
+  font-weight: 700;
+  color: var(--atlas-ink);
+  border-bottom: 1px solid var(--atlas-ink);
+  padding-bottom: 6px;
+}
+
+/* Системный Kaomoji-статус */
+.atlas-container .atlas-footer-block__kaomoji {
+  color: var(--atlas-crit);
+}
+
+/* Средняя зона: Текст поддержки и каналы связи */
+.atlas-container .atlas-footer-block__support-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  padding-bottom: var(--atlas-space-sm);
+  border-bottom: 1px dashed var(--atlas-border);
+}
+
+.atlas-container .atlas-footer-block__support-text {
+  font-family: var(--atlas-font-mono);
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  color: var(--atlas-ink-soft);
+  max-width: 60%;
+}
+
+/* Контейнер горизонтальных линков саппорта */
+.atlas-container .atlas-footer-block__support-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Разделитель пайпов "|" */
+.atlas-container .atlas-footer-block__support-divider {
+  font-family: var(--atlas-font-mono);
+  font-size: var(--fs-code);
+  color: var(--atlas-border-strong);
+}
+
+
+/* НИЖНЯЯ ЗОНА: Матрица навигации (Строго 3 колонки) */
+.atlas-container .atlas-footer-block__matrix-zone {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.atlas-container .atlas-footer-block__matrix-column {
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+}
+
+/* Заголовки категорий матрицы */
 .atlas-container .atlas-footer-block__column-label {
   display: block;
   font-family: var(--atlas-font-mono);
-  font-size: var(--fs-meta); /* 11px */
+  font-size: var(--fs-meta);
   font-weight: 700;
   text-transform: uppercase;
   color: var(--atlas-ink-muted);
@@ -190,45 +258,53 @@
   padding-bottom: 4px;
 }
 
-/* Контейнер списка ссылок */
+/* Вертикальный стек навигационных ссылок */
 .atlas-container .atlas-footer-block__column-items {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-/* Инженерные ссылки в футере */
-.atlas-container .atlas-footer-block__item-link,
+/* Универсальные инженерные ссылки (Изолированный каскад без !important) */
 .atlas-container .atlas-blueprint-link {
-  font-family: var(--atlas-font-mono) !important;
-  font-size: var(--fs-code) !important; /* 12px */
-  color: var(--atlas-ink-soft) !important;
-  text-decoration: none !important;
+  font-family: var(--atlas-font-mono);
+  font-size: var(--fs-code);
+  color: var(--atlas-ink-soft);
+  text-decoration: none;
   transition: color 0.15s ease;
+  display: inline-block;
 }
 
-.atlas-container .atlas-footer-block__item-link:hover,
 .atlas-container .atlas-blueprint-link:hover {
-  color: var(--atlas-crit) !important;
+  color: var(--atlas-crit);
 }
 
 
-/* ── АДАПТИВНОСТЬ (Защита интерфейса на мобильных экранах) ─────────────── */
+/* ── АДАПТИВНОСТЬ (Мобильные экраны и оптимизация геометрии) ────────────── */
 
 @media (max-width: 768px) {
-  /* На мобильных сетка паспорта переходит в 1 колонку, но строки остаются сгруппированными */
+  /* Паспорт переходит в одну вертикальную колонку */
   .atlas-container .passport-grid {
     grid-template-columns: 1fr;
     gap: 12px;
   }
+
+  /* Панель саппорта перестраивается сверху вниз */
+  .atlas-container .atlas-footer-block__support-content {
+    flex-direction: column;
+    gap: 16px;
+  }
   
-  /* Матрица футера в 1 колонку */
+  .atlas-container .atlas-footer-block__support-text {
+    max-width: 100%;
+  }
+
+  /* Матрица футера переходит в один монолитный стек */
   .atlas-container .atlas-footer-block__matrix-zone {
     grid-template-columns: 1fr;
     gap: 24px;
   }
 
-  /* Метаданные остаются в строку, разрешая перенос при критической нехватке места */
   .atlas-container .passport-meta {
     flex-wrap: wrap;
     gap: 10px;
