@@ -168,12 +168,18 @@
   margin-top: var(--atlas-space-xl);
   width: 100%;
   box-sizing: border-box;
+  
+  /* Добавляем общую рамку блока */
+  border: 1px solid var(--atlas-border);
+  padding: 16px; /* Внутренний отступ для всей области футера */
+  position: relative;
 }
 
-/* Корневая внутренняя обертка из скрипта */
+/* Корневая обертка больше не должна иметь border-top, 
+   так как мы перенесли границы на родителя */
 .atlas-container #atlas-footer .atlas-footer-wrapper {
-  border-top: 2px solid var(--atlas-ink);
-  padding-top: var(--atlas-space-md);
+  border-top: none; 
+  padding-top: 0;
   display: flex;
   flex-direction: column;
   gap: var(--atlas-space-md);
