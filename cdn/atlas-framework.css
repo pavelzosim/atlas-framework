@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260521-123859 | BUILD: Thu May 21 12:38:59 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260521-125929 | BUILD: Thu May 21 12:59:29 UTC 2026 */
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
 /* ── Reset: Критические стили для подавления Wix-настроек ── */
@@ -546,33 +546,25 @@ html, body {
 .atlas-container .atlas-blueprint-link:hover {
   opacity: 0.5;
 }/* ==========================================================================
-   ATLAS CODE & MATHEMATICS MODULE — [v1.3.0]
-   ──────────────────────────────────────────────────────────────────────────
-   Scope: .atlas-container .content-block [pre.atlas-code-block, .atlas-math-block]
-   Responsibility: Clean parsing layout for production shaders (HLSL), data 
-   structures, and advanced LaTeX mathematical formulations.
-   ========================================================================== */
+   ATLAS CODE & MATHEMATICS MODULE — [v1.4.0_optimized]
+   ────────────────────────────────────────────────────────────────────────── */
 
-/* ── MODULE 1: CODE LISTING & GEOMETRY (Контейнеры кода) ────────────────── */
+/* ── MODULE 1: CONTAINER GEOMETRY ──────────────────────────────────────── */
 
-/* 1.1 Главная оболочка листинга кода (Preformatted Wrapper) */
 .atlas-container .content-block pre.atlas-code-block {
   position: relative;
-  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.03)); /* Контрастная подложка */
+  background: var(--atlas-bg-alt, rgba(0, 0, 0, 0.03));
   border: 1px solid var(--atlas-border);
-  /* Инженерный акцент слева — связывает код с визуальным языком списков */
-  border-left: 3px solid var(--atlas-crit); 
+  border-left: 3px solid var(--atlas-crit); /* Наш фирменный инженерный маркер */
   padding: 14px 16px;
-  /* Сдвиг влево на 24px, чтобы блок шел строго по оси абзаца <p> */
   margin: 24px 0 24px 24px; 
-  overflow-x: auto; /* Включение горизонтального скролла */
+  overflow-x: auto;
   display: block;
-  border-radius: 0; /* Полный отказ от скруглений углов */
+  border-radius: 0;
   box-sizing: border-box;
   -webkit-overflow-scrolling: touch;
 }
 
-/* 1.2 Сброс и базовые настройки шрифта внутри блока */
 .atlas-container .content-block pre.atlas-code-block code {
   font-family: var(--atlas-font-mono);
   font-size: var(--fs-code, 11.5px); 
@@ -583,111 +575,64 @@ html, body {
   padding: 0;
   margin: 0;
   display: block;
-  white-space: pre; /* Сохранение исходных табов и пробелов форматирования */
+  white-space: pre;
   word-wrap: normal;
   word-break: normal;
 }
 
-/* ── MODULE 2: PRISM.JS TOKEN COMPILER MAPPING (Подсветка синтаксиса) ─── */
+/* ── MODULE 2: PRISM.JS C-LIKE MAPPING (Поддержка Си/C++/C# синтаксиса) ── */
 
-.atlas-container .content-block pre.atlas-code-block code .token.comment,
-.atlas-container .content-block pre.atlas-code-block code .token.prolog,
-.atlas-container .content-block pre.atlas-code-block code .token.doctype,
-.atlas-container .content-block pre.atlas-code-block code .token.cdata {
+/* Общие селекторы токенов Prism, работающие для классов language-c, cpp, csharp */
+.atlas-container .content-block pre.atlas-code-block code .token.comment {
   color: var(--atlas-ink-muted);
-  font-style: italic; /* Комментарии компилятора всегда выделяются курсивом */
+  font-style: italic;
 }
-
 .atlas-container .content-block pre.atlas-code-block code .token.punctuation {
-  color: rgba(0, 0, 0, 0.5); /* Фигурные скобки, точки с запятой */
+  color: rgba(0, 0, 0, 0.5);
 }
-
-.atlas-container .content-block pre.atlas-code-block code .token.namespace {
-  opacity: .7;
-}
-
-.atlas-container .content-block pre.atlas-code-block code .token.property,
-.atlas-container .content-block pre.atlas-code-block code .token.tag,
-.atlas-container .content-block pre.atlas-code-block code .token.constant,
-.atlas-container .content-block pre.atlas-code-block code .token.symbol,
-.atlas-container .content-block pre.atlas-code-block code .token.deleted {
-  color: var(--atlas-ink);
-  font-weight: 700;
-}
-
-.atlas-container .content-block pre.atlas-code-block code .token.boolean,
-.atlas-container .content-block pre.atlas-code-block code .token.number {
-  color: var(--atlas-warn, #7a5200); /* Янтарный оттенок для сырых данных/чисел */
-  font-weight: 400;
-}
-
-.atlas-container .content-block pre.atlas-code-block code .token.selector,
-.atlas-container .content-block pre.atlas-code-block code .token.attr-name,
-.atlas-container .content-block pre.atlas-code-block code .token.string,
-.atlas-container .content-block pre.atlas-code-block code .token.char,
-.atlas-container .content-block pre.atlas-code-block code .token.builtin,
-.atlas-container .content-block pre.atlas-code-block code .token.built-in, 
-.atlas-container .content-block pre.atlas-code-block code .token.inserted {
-  color: var(--atlas-ok, #1a4d1a); /* Темно-зеленый для строк и типов */
-}
-
-.atlas-container .content-block pre.atlas-code-block code .token.operator,
-.atlas-container .content-block pre.atlas-code-block code .token.entity,
-.atlas-container .content-block pre.atlas-code-block code .token.url {
-  color: var(--atlas-ink);
-  font-weight: 400;
-}
-
-.atlas-container .content-block pre.atlas-code-block code .token.atrule,
-.atlas-container .content-block pre.atlas-code-block code .token.attr-value,
-.atlas-container .content-block pre.atlas-code-block code .token.attribute, 
-.atlas-container .content-block pre.atlas-code-block code .token.keyword {
-  color: var(--atlas-ink);
-  font-weight: 700; /* Ключевые слова выделены жирным моноширинным */
-}
-
-.atlas-container .content-block pre.atlas-code-block code .token.function,
-.atlas-container .content-block pre.atlas-code-block code .token.class-name {
-  color: var(--atlas-crit); /* Функции и методы подсвечиваются бордовым */
-  font-weight: 700;
-}
-
-.atlas-container .content-block pre.atlas-code-block code .token.regex,
-.atlas-container .content-block pre.atlas-code-block code .token.important,
-.atlas-container .content-block pre.atlas-code-block code .token.variable {
+.atlas-container .content-block pre.atlas-code-block code .token.number,
+.atlas-container .content-block pre.atlas-code-block code .token.boolean {
   color: var(--atlas-warn, #7a5200);
 }
+.atlas-container .content-block pre.atlas-code-block code .token.string,
+.atlas-container .content-block pre.atlas-code-block code .token.char {
+  color: var(--atlas-ok, #1a4d1a);
+}
+.atlas-container .content-block pre.atlas-code-block code .token.keyword,
+.atlas-container .content-block pre.atlas-code-block code .token.class-name {
+  color: var(--atlas-ink);
+  font-weight: 700;
+}
+.atlas-container .content-block pre.atlas-code-block code .token.function {
+  color: var(--atlas-crit); /* Функции Си красятся в бордовый */
+  font-weight: 700;
+}
+.atlas-container .content-block pre.atlas-code-block code .token.operator {
+  color: var(--atlas-ink);
+}
 
+/* ── MODULE 3: VALID MATHEMATICS LOGIC ─────────────────────────────────── */
 
-/* ── MODULE 3: MATHEMATICAL FORMULATIONS (Научные формулы LaTeX) ───────── */
-
-/* 3.1 Крупный выключной математический блок (Уравнения и Матрицы) */
 .atlas-container .content-block .atlas-math-block {
   display: flex;
-  justify-content: center; /* Центрирование формулы по ГОСТу */
+  justify-content: center; 
   align-items: center;
   padding: 18px 16px;
-  /* Выравнивание по оси параграфа и отбивка от текста */
   margin: 24px 0 24px 24px; 
   background: transparent;
-  /* Тонкие верхняя и нижняя технические границы, зажимающие формулу */
   border-top: 1px dashed var(--atlas-border);
   border-bottom: 1px dashed var(--atlas-border);
   box-sizing: border-box;
 }
 
-/* Корректировка отображения KaTeX/MathJax внутри нашего блока */
-.atlas-container .content-block .atlas-math-block .katex-display,
-.atlas-container .content-block .atlas-math-block MJX-container[display="true"] {
-  margin: 0 !important;
-  font-size: 14px; /* Чуть увеличенный кегль для читаемости индексов */
-  color: var(--atlas-ink);
+/* Гарантируем, что если парсер создаст вложенные контейнеры, они наследуют цвет */
+.atlas-container .content-block .atlas-math-block * {
+  color: var(--atlas-ink) !important;
+  font-family: inherit;
 }
 
-/* 3.2 Инлайновые формулы внутри текста */
 .atlas-container .content-block .atlas-math-inline {
   font-size: 12.5px;
-  line-height: 1;
-  color: var(--atlas-crit); /* Выделяем инлайн-переменные бордовым акцентом */
-  padding: 0 2px;
+  color: var(--atlas-crit);
+  font-weight: 700;
 }
