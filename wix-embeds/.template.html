@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.8.9/cdn/atlas-framework.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@9f643088b339887ee9a63fe285252fab84cb1133/cdn/atlas-framework.css">
 
   
 </head>
@@ -12,6 +12,37 @@
 
 <div class="atlas-container">
   <div id="site-passport"></div>
+
+<div class="atlas-container">
+  <div class="content-block">
+    
+    <h2>01 COMPONENT SPECIFICATION & CORE ROOT RULES</h2>
+    
+    <h3>TYPOGRAPHY FLOW & INLINE ENGINE VARIABLES</h3>
+    
+    <h4>HIERARCHY VALIDATION</h4>
+
+    <p>This structural paragraph defines how text tokens inside the canvas container inherit general rules from the main layout. Every element requires strict baseline alignment to eliminate vertical positioning noise and maintain semantic layout flow.</p>
+    
+    <ul>
+      <li>Global block definitions and container width properties</li>
+      <li>System token properties and atomic element attributes:
+        
+        <ul>
+          <li>Inline code tag background contrast metrics</li>
+          <li>Critical word accent line-height calculation steps</li>
+          <li>Font smoothing optimization parameters for monospace families</li>
+        </ul>
+        
+      </li>
+      <li>Section break index assignment and layout termination points</li>
+    </ul>
+    
+  </div>
+</div>
+
+
+<div class="atlas-section-break" data-index="// 01"></div>
   <div id="atlas-footer"></div>
 </div>
 
@@ -91,9 +122,7 @@ function applyData(d) {
   render();
 }());
 
-/* ═══════════════════════════════════════════════════════════════
-   ФУТЕР: Асинхронный рендер
-   ─────────────────────────────────────────────────────────────── */
+
 /* ═══════════════════════════════════════════════════════════════
    ФУТЕР: Нативный рендер (без CSS-патчей)
    ─────────────────────────────────────────────────────────────── */
