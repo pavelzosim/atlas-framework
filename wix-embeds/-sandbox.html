@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@af9d6c67ce18eaa8825001f9b8b5307d07822abf/cdn/atlas-framework.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@d8be0f38f1ce62814cb0a0f0e2b8fa70ce8e3800/cdn/atlas-framework.css">
 
 
   
@@ -92,25 +92,51 @@ void ExecuteForwardBasePass() {
     </div>
 
 
-        <div class="header">// SPECIFICATION_TABLE</div>
-        <table class="atlas-table">
-            <thead>
-                <tr><th>Component</th><th>Status</th><th>Value</th></tr>
-            </thead>
-            <tbody>
-                <tr><td>Vector_Engine</td><td>Active</td><td>0.4ms</td></tr>
-                <tr><td>Buffer_Core</td><td>Sync</td><td>1.2ms</td></tr>
-            </tbody>
-        </table>
+<div class="atlas-node">
+    <div class="header">// SPECIFICATION_TABLE</div>
+    <table class="atlas-table">
+        <thead>
+            <tr>
+                <th style="width: 40%;">Component</th>
+                <th style="width: 20%;">Status</th>
+                <th style="width: 40%;">Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Vector_Engine</td>
+                <td>Active</td>
+                <td>0.4ms</td>
+            </tr>
+            <tr>
+                <td>Buffer_Core</td>
+                <td>Sync</td>
+                <td>1.2ms</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 
 <div class="atlas-uml-diag">
     <div class="atlas-uml-diag__widget">
-        <div class="atlas-uml-diag__header">// SYSTEM_FLOW</div>
-        <div class="atlas-uml-diag__node atlas-uml-diag__node--dashed">
-             <div class="atlas-uml-diag__node-title">CPU</div>
+        <div class="atlas-uml-diag__header">// SYSTEM_RENDER_PIPELINE</div>
+        
+        <div class="atlas-uml-diag__content" style="padding: 15px;">
+            <div class="atlas-uml-diag__scope">
+                <div class="atlas-uml-diag__scope-label">HOST_SPACE</div>
+                <div class="atlas-uml-diag__node atlas-uml-diag__node--dashed">
+                    <div class="atlas-uml-diag__node-title">CPU_CORE</div>
+                </div>
+            </div>
+            
+            </div>
+
+        <div class="atlas-uml-diag__legend">
+            <span>[---] MEMORY</span>
+            <span>[—>] FLOW</span>
         </div>
-        </div>
+    </div>
 </div>
 
 

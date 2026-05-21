@@ -1,48 +1,35 @@
-/* ── MODULE: ATLAS-NODE (ENGINEERING_TABLE_BLOCK) ─────────────────────── */
+/* ── MODULE: ATLAS-TABLE (Fixed & Robust) ────────────────────────── */
 
-.atlas-container .atlas-node {
-  border: 2px solid var(--atlas-ink);
-  margin-bottom: 24px;
-  background: transparent;
-  width: 100%;
-  box-sizing: border-box;
+.atlas-container .atlas-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Гарантирует, что колонки не "разъедутся" */
+    font-family: inherit;
+    margin: 0;
 }
 
-.atlas-container .atlas-node .header {
-  background: var(--atlas-ink);
-  color: var(--atlas-bg);
-  padding: 4px 10px;
-  font-size: 10px;
-  font-family: 'JetBrains Mono', monospace;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  display: block;
+/* Заголовок */
+.atlas-container .atlas-table thead th {
+    text-align: left;
+    padding: 10px;
+    font-size: 10px;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--atlas-ink, #000);
+    color: var(--atlas-ink, #000);
 }
 
-.atlas-container .atlas-node .atlas-table {
-  width: 100%;
-  border-collapse: collapse;
+/* Строки */
+.atlas-container .atlas-table tbody td {
+    padding: 10px;
+    font-size: 11px; /* Чуть побольше для читаемости */
+    border-bottom: 1px dashed var(--atlas-ink-muted, rgba(0,0,0,0.3));
+    color: var(--atlas-ink, #000);
+    vertical-align: top;
 }
 
-/* Заголовок таблицы (Solid line) */
-.atlas-container .atlas-node .atlas-table thead th {
-  text-align: left;
-  padding: 8px 10px;
-  font-size: 10px;
-  text-transform: uppercase;
-  border-bottom: 2px solid var(--atlas-ink);
-}
-
-/* Строки таблицы (Dashed line) */
-.atlas-container .atlas-node .atlas-table tbody td {
-  padding: 8px 10px;
-  font-size: 12px;
-  border-bottom: 1px dashed var(--atlas-ink-muted);
-}
-
-/* Убираем лишнюю линию у последней строки */
-.atlas-container .atlas-node .atlas-table tbody tr:last-child td {
-  border-bottom: none;
+/* Удаление границы у последней строки */
+.atlas-container .atlas-table tbody tr:last-child td {
+    border-bottom: none;
 }
 
 /* ── NAMESPACE: ATLAS-UML-DIAG ────────────────────────────────────── */
