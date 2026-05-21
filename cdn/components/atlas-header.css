@@ -191,14 +191,14 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2px; /* Толщина внутренних разделительных линий */
-  background: var(--atlas-ink); /* Цвет линий сетки */
+  background: transparent; /* Цвет линий сетки */
   border-top: none;
   padding-top: 0;
 }
 
 /* Ячейка матрицы — наследует логику и отступы .passport-cell */
 .atlas-container .atlas-footer-block__matrix-column {
-  background: var(--atlas-bg); /* Принудительное перекрытие фона сетки */
+  background: transparent; /* Принудительное перекрытие фона сетки */
   padding: var(--atlas-space-sm);
   box-sizing: border-box;
 }

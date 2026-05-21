@@ -6,46 +6,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.8.6/cdn/atlas-framework.css?v=1.8.6">
-  
-  <style>
-    /* ПАТЧ: Перебиваем старый кэш jsDelivr */
-    .atlas-container .passport-cell {
-    }
-    
-    .atlas-container .passport-cell-line::before {
-      font-weight: 700;
-      margin-right: 12px;
-      text-transform: uppercase;
-      color: var(--atlas-ink-muted, rgba(0,0,0,0.5));
-      min-width: 70px;
-    }
-    .atlas-container .passport-cell-line[data-key="project"]::before { content: "PROJECT"; }
-    .atlas-container .passport-cell-line[data-key="module"]::before  { content: "MODULE"; }
-    .atlas-container .passport-cell-line[data-key="version"]::before { content: "VERSION"; }
-    .atlas-container .passport-cell-line[data-key="log_id"]::before  { content: "LOG_ID"; }
-    
-    .atlas-container .passport-meta-item {
-      display: inline-block;
-    }
-    .atlas-container .passport-meta-item::before {
-      font-weight: 700;
-      color: var(--atlas-ink, #000000);
-    }
-    .atlas-container .passport-meta-item[data-meta="auth"]::before     { content: "AUTH: "; }
-    .atlas-container .passport-meta-item[data-meta="created"]::before  { content: "CREATED: "; }
-    .atlas-container .passport-meta-item[data-meta="modified"]::before { content: "LAST_MODIFIED: "; }
-    .atlas-container .passport-meta-item[data-meta="read"]::before     { content: "READ: "; }
-  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.8.7/cdn/atlas-framework.css?v=1.8.7">
 </head>
 <body>
 
 <div class="atlas-container">
   <div id="site-passport"></div>
 </div>
-
-
-
 
 <script>
 /* ═══════════════════════════════════════════════════════════════

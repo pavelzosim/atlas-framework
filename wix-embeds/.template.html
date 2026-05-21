@@ -4,27 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
-  
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.8.6/cdn/atlas-framework.css?v=1.8.6">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.8.9/cdn/atlas-framework.css">
 
-  <style>
-    /* Локальный патч для паспорта */
-    .atlas-container .passport-cell-line::before {
-      font-weight: 700; margin-right: 12px; text-transform: uppercase;
-      color: var(--atlas-ink-muted); min-width: 70px;
-    }
-    .atlas-container .passport-cell-line[data-key="project"]::before { content: "PROJECT"; }
-    .atlas-container .passport-cell-line[data-key="module"]::before  { content: "MODULE"; }
-    .atlas-container .passport-cell-line[data-key="version"]::before { content: "VERSION"; }
-    .atlas-container .passport-cell-line[data-key="log_id"]::before  { content: "LOG_ID"; }
-    
-    .atlas-container .passport-meta-item { display: inline-block; }
-    .atlas-container .passport-meta-item::before { font-weight: 700; color: var(--atlas-ink); }
-    .atlas-container .passport-meta-item[data-meta="auth"]::before     { content: "AUTH: "; }
-    .atlas-container .passport-meta-item[data-meta="created"]::before  { content: "CREATED: "; }
-    .atlas-container .passport-meta-item[data-meta="modified"]::before { content: "LAST_MODIFIED: "; }
-    .atlas-container .passport-meta-item[data-meta="read"]::before     { content: "READ: "; }
-  </style>
+  
 </head>
 <body>
 
@@ -112,26 +94,34 @@ function applyData(d) {
 /* ═══════════════════════════════════════════════════════════════
    ФУТЕР: Асинхронный рендер
    ─────────────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   ФУТЕР: Нативный рендер (без CSS-патчей)
+   ─────────────────────────────────────────────────────────────── */
 (function() {
-  // Добавляем timestamp, чтобы jsDelivr не отдавал кэшированный JSON
   var FOOTER_CONFIG_URL = 'https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework/cdn/atlas-site-footer-config.json?t=' + Date.now();
   
   fetch(FOOTER_CONFIG_URL)
     .then(r => r.json())
     .then(c => {
       var footer = document.getElementById('atlas-footer');
+      // Создаем структуру, соответствующую atlas-framework.css
       footer.innerHTML = `
         <div class="atlas-footer-wrapper">
           <div class="atlas-footer-block__support-header">
-            <div class="atlas-footer-block__kaomoji">${c.tagline}</div>
-            <div>LET'S STAY IN TOUCH</div>
+            <span class="atlas-footer-block__kaomoji">${c.tagline}</span>
+            <span>LET'S STAY IN TOUCH</span>
           </div>
+          
           <div class="atlas-footer-block__support-content">
-            <div>${c.support.text}</div>
-            <div style="margin-top:10px;">
-              ${c.support.links.map(l => `<a href="${l.url}" class="atlas-blueprint-link" style="margin-right:15px;">[ ${l.text} ]</a>`).join(' | ')}
+            <div class="atlas-footer-block__support-text">${c.support.text}</div>
+            <div class="atlas-footer-block__support-links">
+              ${c.support.links.map((l, idx, arr) => `
+                <a href="${l.url}" class="atlas-blueprint-link">${l.text}</a>
+                ${idx < arr.length - 1 ? '<span class="atlas-footer-block__support-divider">|</span>' : ''}
+              `).join('')}
             </div>
           </div>
+
           <div class="atlas-footer-block__matrix-zone">
             ${c.links.map(g => `
               <div class="atlas-footer-block__matrix-column">
@@ -145,7 +135,7 @@ function applyData(d) {
         </div>
       `;
     })
-    .catch(e => console.error('[ATLAS] Footer load failed:', e));
+    .catch(e => console.error('[ATLAS] Footer component failed to render:', e));
 })();
 </script>
 
