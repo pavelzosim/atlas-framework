@@ -30,12 +30,7 @@ jobs:
           # Сборка файлов с отступами между ними
           for file in \
             cdn/atlas-core.css \
-            cdn/components/atlas-typography.css \
-            cdn/components/atlas-header.css \
-            cdn/components/atlas-code-theme.css \
-            cdn/components/atlas-multimedia.css \
-            cdn/components/atlas-callout_comparsion.css \ 
-            cdn/components/atlas-callout-tables-schemes.css \
+            cdn/components/* \
           do
             sed 's/\xEF\xBB\xBF//g' "$file" >> cdn/atlas-framework.css
             echo -e "\n\n" >> cdn/atlas-framework.css
