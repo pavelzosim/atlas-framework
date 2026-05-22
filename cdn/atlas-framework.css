@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260522-051009 | BUILD: Fri May 22 05:10:09 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260522-051847 | BUILD: Fri May 22 05:18:47 UTC 2026 */
 
 /* ==========================================================================
    FILE: 01-atlas-core.css
@@ -1054,15 +1054,8 @@
 /* Если нужно вернуть 24px — убрать блок из core и задать здесь явно.      */
 
 .atlas-container .comparison-matrix {
-  margin: 24px;
-  max-width: calc(100% - 48px);
-  border: 1px solid var(--atlas-border);
-  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  padding-top: 34px; /* Синхронизировано с core: 24px шапка + 10px зазор */
-  box-sizing: border-box;
-  background: transparent;
 }
 
 /* Псевдо-шапка матрицы */
