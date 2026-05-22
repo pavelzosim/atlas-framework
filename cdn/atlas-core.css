@@ -12,6 +12,7 @@
 }
 
 :root {
+  /* ── Цвета и отступы (твои текущие) ── */
   --atlas-bg:            rgb(230, 220, 210);
   --atlas-bg-alt:        rgba(0,0,0,0.02);
   --atlas-ink:           #000000;
@@ -25,6 +26,15 @@
   --atlas-space-sm:      15px;
   --atlas-space-md:      25px;
   --atlas-space-xl:      60px;
+
+  /* ── ТИПОГРАФИКА (Восстановленные переменные) ── */
+  --atlas-font-mono:     'JetBrains Mono', 'Courier New', monospace;
+  --fs-h1:               24px;
+  --fs-title:            20px;
+  --fs-body:             12.5px;
+  --fs-code:             12px;
+  --fs-meta:             10px;
+  --fs-status:           10px;
 }
 
 /* ── СИСТЕМНЫЕ БЛОКИ (Геометрия) ── */
