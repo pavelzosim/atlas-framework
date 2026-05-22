@@ -52,15 +52,8 @@
 /* Если нужно вернуть 24px — убрать блок из core и задать здесь явно.      */
 
 .atlas-container .comparison-matrix {
-  margin: 24px;
-  max-width: calc(100% - 48px);
-  border: 1px solid var(--atlas-border);
-  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  padding-top: 34px; /* Синхронизировано с core: 24px шапка + 10px зазор */
-  box-sizing: border-box;
-  background: transparent;
 }
 
 /* Псевдо-шапка матрицы */
