@@ -63,3 +63,17 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ── ИСПРАВЛЕНИЕ: Специфичность для галереи (4 класса) ────────── */
+
+/* Увеличиваем вес селектора (4 класса против 3), чтобы перекрыть общие стили .media-frame */
+.atlas-container .content-block .gallery-grid .media-frame {
+  display: block;
+  padding: 0;
+  border: 1px solid var(--atlas-border); /* Если нужно сохранить рамку */
+}
+
+/* Скрываем системную шапку внутри сетки через специфичность */
+.atlas-container .content-block .gallery-grid .media-frame::before {
+  display: none;
+}
