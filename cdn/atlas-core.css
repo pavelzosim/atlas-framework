@@ -89,3 +89,17 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Глобальные настройки для всех таблиц внутри контейнера */
+.atlas-container table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--atlas-font-mono);
+  font-size: var(--fs-code); /* Берем переменную */
+}
+
+/* Глобальные настройки для текста */
+.atlas-container p {
+  font-size: var(--fs-body);
+  line-height: 1.6;
+}

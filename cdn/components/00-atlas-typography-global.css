@@ -1,0 +1,37 @@
+/* ==========================================================================
+   00-typography-global.css - GLOBAL OVERRIDES [v1.0.0]
+   Принудительное наследование шрифтов для всех элементов atlas-container
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* 1. Глобальный сброс для всего, что внутри контейнера */
+.atlas-container {
+  font-family: var(--atlas-font-mono);
+  color: var(--atlas-ink);
+  font-size: 12.5px; /* Базовый системный размер */
+}
+
+/* 2. Принудительный кегль для Passport (используем meta) */
+.atlas-container #site-passport,
+.atlas-container #site-passport * {
+  font-size: var(--fs-meta);
+}
+
+/* 3. Принудительный кегль для Таблиц */
+.atlas-container .atlas-table,
+.atlas-container .atlas-table th,
+.atlas-container .atlas-table td {
+  font-size: var(--fs-code);
+}
+
+/* 4. Принудительный кегль для Футера */
+.atlas-container #atlas-footer,
+.atlas-container #atlas-footer .atlas-blueprint-link {
+  font-size: var(--fs-code);
+}
+
+/* 5. Общий сброс для заголовков (чтобы они не были 16px+ от внешних стилей) */
+.atlas-container h1, .atlas-container h2, .atlas-container h3 {
+  font-family: var(--atlas-font-mono);
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
