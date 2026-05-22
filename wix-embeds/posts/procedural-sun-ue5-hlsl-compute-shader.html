@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ATLAS FRAMEWORK: Component Map</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@25fa96cebc7e4791bb97039cc79b636d84303bc5/cdn/atlas-framework.css">
+</head>
+<body>
+
+
+<div class="map-wrapper">
+  <div class="atlas-container">
+	<div id="site-passport"></div>
+
+    	<div class="content-block">
+    	<h2>01 Physical Based Sun on Unreal Engine</h2>
+    		<p>This post covers an ongoing R&D project: a <b>no-texture, physically-based sun surface plugin</b> for Unreal Engine 5.7. The goal was not to make "a nice-looking sun" — it was to build a system where every visual parameter is grounded in <span class="atlas-code-inline">solar_physics</span> and expressible as math, not painted by hand.</p>
+			
+			<p>I am documenting this process in real-time. As the project progresses, this report will be updated to reflect the evolving C++ architecture and the math driving the solar photosphere.</p>
+
+			<div class="media-frame">
+			<img src="https://static.wixstatic.com/media/ace175_ca6589de87f445ed80b88a7ce666e7b0~mv2.png/v1/fill/w_925,h_853,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/ace175_ca6589de87f445ed80b88a7ce666e7b0~mv2.png" alt="Unreal RAW alpha footage">
+			<div class="media-caption">Fig 01: Unreal RAW alpha footage.</div>
+			</div>
+
+			<div class="media-frame">
+			<img src="https://static.wixstatic.com/media/ace175_8e3b8e68379949f7bcec8a4be710a738~mv2.png/v1/fill/w_2425,h_794,al_c,q_90/ace175_8e3b8e68379949f7bcec8a4be710a738~mv2.webp" alt="Unreal RAW alpha footage">
+			<div class="media-caption">Fig 02: Houdini Prototype (Biot-Savart Magnetic Field ).</div>
+			</div>
+
+		<h3>Why Not Use Textures?</h3>
+			<div class="atlas-callout atlas-callout--note">
+	        <p><strong>The short answer:</strong> "Textures lie." - A tiled noise texture can look like granulation. But it won't behave like it — it won't flow around sunspots, won't respond to a magnetic field map, won't darken physically at the limb. The moment you ask it to do anything beyond "look similar," you hit a wall.</p>    	
+
+			<div class="comparison-matrix">			  
+			  <div class="comp-col">
+			    <div class="comp-label">Δ1 The Texture Wall (Static)</div>
+			    <div class="comp-body">
+			      <div>• Locked resolution/bit-depth</div>
+			      <div>• No awareness of magnetic topology</div>
+			      <div>• Static spectral response</div>
+			      <div>• High <span class="atlas-param">VRAM</span> footprint</div>
+			    </div>
+			  </div>
+			  
+			  <div class="comp-col">
+			    <div class="comp-label">Δ2 The Procedural Bet (Dynamic)</div>
+			    <div class="comp-body">
+			      <div>• Infinite detail (<span class="atlas-param">ALU</span> bound)</div>
+			      <div>• Responsive to <span class="atlas-param">magnetic_field_maps</span></div>
+			      <div>• Blackbody-driven color curves</div>
+			      <div>• Zero <span class="atlas-param">VRAM</span> overhead (Runtime gen)</div>
+			    </div>
+			  </div>
+			  </div>
+			  <p>Procedural generation from first principles costs more in ALU, but gives you a system with actual degrees of freedom. Change the temperature range, and the color responds via a blackbody curve. Change the spot seed, and the magnetic topology changes — and so does the chromosphere above it, and the corona loops above that.<br>That's the architectural bet here: <b>pay the compute cost upfront, gain full physical controllability downstream.</b></p>
+			</div>
+	    <div class="atlas-section-break" data-index="// § 01 — SECTION_END"></div>
+	    </div>  <!-- End .content-block -->
+
+	    <div class="content-block">
+    	<h2>02 Plugin Architecture: Implementing UE5 HLSL Compute Shaders</h2>
+			  <div class="atlas-uml-diag__widget" style="border: none; padding: 0;">
+			    
+			    <div class="atlas-uml-diag__scope" style="padding: var(--atlas-space-sm); margin-bottom: var(--atlas-space-md);">
+			      <div class="layer-title" style="font-family: 'JetBrains Mono', monospace; font-size: var(--fs-h6); font-weight: 700; text-transform: uppercase; margin-bottom: 15px;">
+			        [ 1. CPU Layer // C++ Architecture ]
+			      </div>
+			      
+			      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px;">
+			        
+			        <div class="atlas-uml-diag__node">
+			          <div class="atlas-uml-diag__header" style="padding: 6px 12px; font-weight: 700; font-size: var(--fs-code); border-bottom: 1px solid var(--atlas-ink);">SunTextureManager</div>
+			          <ul style="margin: 0; padding: 10px 12px; list-style: none; font-size: var(--fs-code); line-height: 1.6;">
+			            <li>UWorldSubsystem</li>
+			            <li>BlackbodyLUT_RGBA</li>
+			            <li>BFieldRT_R16F</li>
+			          </ul>
+			        </div>
+
+			        <div class="atlas-uml-diag__node">
+			          <div class="atlas-uml-diag__header" style="padding: 6px 12px; font-weight: 700; font-size: var(--fs-code); border-bottom: 1px solid var(--atlas-ink);">SunTextureHelper</div>
+			          <ul style="margin: 0; padding: 10px 12px; list-style: none; font-size: var(--fs-code); line-height: 1.6;">
+			            <li>BlackbodyToLinearRGB()</li>
+			            <li>BakeLUT_Analytic()</li>
+			          </ul>
+			        </div>
+
+			        <div style="grid-column: 1 / -1; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: var(--fs-meta); color: var(--atlas-ink-muted); text-transform: uppercase; letter-spacing: 0.15em; margin: 5px 0;">
+			          // Data Flux: Ownership & Lifecycle //
+			        </div>
+
+			        <div class="atlas-uml-diag__node atlas-uml-diag__node--dashed" style="grid-column: 1 / -1;">
+			          <div class="atlas-uml-diag__header" style="padding: 6px 12px; font-weight: 700; font-size: var(--fs-code); border-bottom: 1px dashed var(--atlas-border);">FSunTextureParams</div>
+			          <ul style="margin: 0; padding: 10px 12px; list-style: none; font-size: var(--fs-code); line-height: 1.6;">
+			            <li>Single_Source_Of_Truth</li>
+			            <li>Seed_Radii_Octaves</li>
+			          </ul>
+			        </div>
+
+			      </div>
+			    </div>
+
+			    <div style="display: flex; flex-direction: column; align-items: center; margin: -15px 0 var(--atlas-space-md) 0;">
+			      <div style="width: 1px; height: 40px; background: var(--atlas-border-strong);"></div>
+			      <div style="font-size: 9px; color: var(--atlas-ink); margin-top: -4px;">▼</div>
+			    </div>
+
+			    <div class="atlas-uml-diag__scope" style="padding: var(--atlas-space-sm); margin-bottom: var(--atlas-space-md); border-color: var(--atlas-crit);">
+			      <div class="layer-title" style="font-family: 'JetBrains Mono', monospace; font-size: var(--fs-h6); font-weight: 700; text-transform: uppercase; margin-bottom: 15px; color: var(--atlas-crit);">
+			        [ 2. GPU Layer // Compute Pipeline ]
+			      </div>
+			      
+			      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px;">
+			        
+			        <div class="atlas-uml-diag__node" style="border-color: var(--atlas-crit);">
+			          <div class="atlas-uml-diag__header" style="padding: 6px 12px; font-weight: 700; font-size: var(--fs-code); border-bottom: 1px solid var(--atlas-crit); background: rgba(139, 0, 0, 0.05); color: var(--atlas-crit);">CPU_Dispatcher</div>
+			          <ul style="margin: 0; padding: 10px 12px; list-style: none; font-size: var(--fs-code); line-height: 1.6;">
+			            <li>GenerateSpotPositions()</li>
+			            <li>Apply_Hales_Law()</li>
+			          </ul>
+			        </div>
+
+			        <div class="atlas-uml-diag__node" style="border-color: var(--atlas-crit);">
+			          <div class="atlas-uml-diag__header" style="padding: 6px 12px; font-weight: 700; font-size: var(--fs-code); border-bottom: 1px solid var(--atlas-crit); background: rgba(139, 0, 0, 0.05); color: var(--atlas-crit);">FSunBFieldCSParams</div>
+			          <ul style="margin: 0; padding: 10px 12px; list-style: none; font-size: var(--fs-code); line-height: 1.6;">
+			            <li>Uniform_Buffer</li>
+			            <li>SpotData_Array_8</li>
+			          </ul>
+			        </div>
+
+			        <div style="grid-column: 1 / -1; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: var(--fs-meta); color: var(--atlas-crit); text-transform: uppercase; letter-spacing: 0.15em; margin: 5px 0; opacity: 0.8;">
+			          // Execution: Kernel Dispatch //
+			        </div>
+
+			        <div class="atlas-uml-diag__node" style="grid-column: 1 / -1; border-color: var(--atlas-crit); background: rgba(139, 0, 0, 0.02);">
+			          <div class="atlas-uml-diag__header" style="padding: 6px 12px; font-weight: 700; font-size: var(--fs-code); border-bottom: 1px solid var(--atlas-crit); background: rgba(139, 0, 0, 0.08); color: var(--atlas-crit);">SunBFieldCompute_USF</div>
+			          <ul style="margin: 0; padding: 10px 12px; list-style: none; font-size: var(--fs-code); line-height: 1.6;">
+			            <li>R_Magnetic_Bz // Magnetic Pressure</li>
+			            <li>GB_FlowVectors // Plasma Velocity</li>
+			          </ul>
+			        </div>
+
+			      </div>
+			    </div>
+
+			    <div style="display: flex; flex-direction: column; align-items: center; margin: -15px 0 var(--atlas-space-md) 0;">
+			      <div style="width: 1px; height: 40px; background: var(--atlas-border-strong);"></div>
+			      <div style="font-size: 9px; color: var(--atlas-ink); margin-top: -4px;">▼</div>
+			    </div>
+
+			    <div class="atlas-uml-diag__scope" style="padding: var(--atlas-space-sm);">
+			      <div class="layer-title" style="font-family: 'JetBrains Mono', monospace; font-size: var(--fs-h6); font-weight: 700; text-transform: uppercase; margin-bottom: 15px;">
+			        [ 3. HLSL Material Library // Final Assembly ]
+			      </div>
+			      
+			      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px;">
+			        
+			        <div class="atlas-uml-diag__node" style="grid-column: 1 / -1;">
+			          <div class="atlas-uml-diag__header" style="padding: 6px 12px; font-weight: 700; font-size: var(--fs-code); border-bottom: 1px solid var(--atlas-ink);">Material_Graph</div>
+			          <ul style="margin: 0; padding: 10px 12px; list-style: none; font-size: var(--fs-code); line-height: 1.6;">
+			            <li>Custom_Node (Includes SunMaster_USH)</li>
+			          </ul>
+			        </div>
+
+			        <div class="atlas-uml-diag__node">
+			          <div class="atlas-uml-diag__header" style="padding: 6px 12px; font-weight: 700; font-size: var(--fs-code); border-bottom: 1px solid var(--atlas-ink);">SunMaster_USH</div>
+			          <ul style="margin: 0; padding: 10px 12px; list-style: none; font-size: var(--fs-code); line-height: 1.6;">
+			            <li>Canonical_Entry_Point</li>
+			            <li>Module Linker</li>
+			          </ul>
+			        </div>
+
+			        <div class="atlas-uml-diag__node">
+			          <div class="atlas-uml-diag__header" style="padding: 6px 12px; font-weight: 700; font-size: var(--fs-code); border-bottom: 1px solid var(--atlas-ink);">Modules</div>
+			          <ul style="margin: 0; padding: 10px 12px; list-style: none; font-size: var(--fs-code); line-height: 1.6;">
+			            <li>SunMath_Projection</li>
+			            <li>SunMagnetic_Flow</li>
+			            <li>Granulation_V08</li>
+			          </ul>
+			        </div>
+
+			      </div>
+			    </div>
+
+			  </div>
+    <div class="atlas-section-break" data-index="// § 02 — SECTION_END"></div>
+	    </div>  <!-- End .content-block -->
+
+		<div class="content-block">
+		  <h2 class="atlas-h2">03 Geometric Layering</h2>
+
+		  <div class="content-block">
+		    <p>The solar body is simulated using three concentric spherical meshes. This cross-section illustrates how the volumes are nested to provide the necessary spatial depth for the photosphere and atmospheric effects.</p>
+
+		    <div style="margin: var(--atlas-space-md) 0; padding: var(--atlas-space-sm); border: 1px solid var(--atlas-border); background: var(--atlas-bg-alt);">
+		      
+		      <div style="display: flex; justify-content: center; margin-bottom: var(--atlas-space-md); border-bottom: 1px dashed var(--atlas-border); padding-bottom: var(--atlas-space-md);">
+		        <svg viewBox="0 0 220 140" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-width: 500px; width: 100%; height: auto;">
+		          <circle cx="110" cy="70" r="60" stroke="var(--atlas-ink)" stroke-width="0.5" opacity="0.2" />
+		          <circle cx="110" cy="70" r="38" stroke="var(--atlas-ink)" stroke-width="0.5" stroke-dasharray="3 2" opacity="0.5" />
+		          
+		          <path d="M110 70 L145 70 A35 35 0 1 0 75 70 L110 70" fill="var(--atlas-bg)" stroke="var(--atlas-ink)" stroke-width="1.2"/>
+		          <circle cx="110" cy="70" r="35" stroke="var(--atlas-ink)" stroke-width="0.5" opacity="0.3"/>
+
+		          <line x1="145" y1="70" x2="180" y2="45" stroke="var(--atlas-ink)" stroke-width="0.5" />
+		          <text x="183" y="43" font-family="JetBrains Mono" font-size="5" font-weight="700" fill="var(--atlas-ink)">PHOTOSPHERE</text>
+		          
+		          <line x1="140" y1="95" x2="170" y2="115" stroke="var(--atlas-ink)" stroke-width="0.5" />
+		          <text x="173" y="118" font-family="JetBrains Mono" font-size="5" font-weight="700" fill="var(--atlas-ink)">CORONA</text>
+		        </svg>
+		      </div>
+
+		      <div style="display: flex; flex-direction: column; gap: var(--atlas-space-sm); margin-bottom: var(--atlas-space-md);">
+		        
+		        <div style="border-left: 2px solid var(--atlas-ink); padding-left: 15px;">
+		          <span style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: var(--fs-code); text-transform: uppercase; display: block; margin-bottom: 4px;">Photosphere</span>
+		          <span style="font-size: var(--fs-body); opacity: 0.7; display: block; line-height: 1.4; color: var(--atlas-ink-soft);">Base radius (×1.0). The primary surface where granular noise is calculated.</span>
+		        </div>
+		        
+		        <div style="border-left: 2px solid var(--atlas-crit); padding-left: 15px;">
+		          <span style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: var(--fs-code); text-transform: uppercase; display: block; margin-bottom: 4px; color: var(--atlas-crit);">Chromosphere</span>
+		          <span style="font-size: var(--fs-body); opacity: 0.7; display: block; line-height: 1.4; color: var(--atlas-ink-soft);">Scale ×1.005–1.015. Transition layer for spicules and limb darkening logic.</span>
+		        </div>
+		        
+		        <div style="border-left: 2px solid var(--atlas-ink); padding-left: 15px;">
+		          <span style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: var(--fs-code); text-transform: uppercase; display: block; margin-bottom: 4px;">Corona</span>
+		          <span style="font-size: var(--fs-body); opacity: 0.7; display: block; line-height: 1.4; color: var(--atlas-ink-soft);">Scale ×1.5–3.0. Extended volume for volumetric prominences and solar wind.</span>
+		        </div>
+
+		      </div>
+
+		      <div style="height: 1px; background: var(--atlas-border); margin-bottom: var(--atlas-space-xs);"></div>
+		      <div style="display: flex; flex-direction: column; gap: 12px;"> 
+
+		        <div style="display: flex; gap: 12px; align-items: flex-start;">
+		          <div style="font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: var(--fs-status); background: var(--atlas-ink); color: var(--atlas-bg); padding: 2px 6px; text-transform: uppercase; flex-shrink: 0; margin-top: 1px;">
+		            SYNC_STAMP
+		          </div>
+		          <div style="font-size: var(--fs-code); line-height: 1.5; color: var(--atlas-ink-soft);">
+		            All three layers share the same <span class="atlas-code-inline">BFieldRT</span> (Magnetic Field Render Target). Consequently, sunspots, spicules, and coronal loops are spatially synchronized at zero extra cost.
+		          </div>
+		        </div>
+
+		      </div></div>
+		  </div>
+    <div class="atlas-section-break" data-index="// § 03 — SECTION_END"></div>
+	    </div>  <!-- End .content-block -->
+
+		<div class="content-block">
+		<h2 class="atlas-h2">04 The HLSL Layer Stack: UV Contract</h2>
+			<p>Spatial synchronization across all three atmospheric shells is maintained via a Canonical UV Derivation. This ensures that magnetic field data aligns perfectly between the photosphere and the outer corona.</p>
+    
+		    <div class="atlas-callout atlas-callout--important" style="margin: var(--atlas-space-md) 0;">
+		      <p style="font-weight: 700; color: var(--atlas-crit); margin-bottom: var(--atlas-space-xs);">Canonical Entry (HLSL)</p>
+		      <p>Using <span class="atlas-param">normalize(WorldPos)</span> causes UV-Sliding.</p>
+		      <p style="margin-top: 4px; opacity: 0.8;">→ Issue: UV gets fixed in World Space.<br>→ Rotation causes patterns to "slide".<br>→ Fix: Use <span class="atlas-param">(WorldPos - ActorPos)</span>.</p>
+		    </div>
+
+		    <div class="atlas-callout atlas-callout--important" style="margin: var(--atlas-space-md) 0;">
+		      <p style="font-weight: 700; color: var(--atlas-crit); margin-bottom: var(--atlas-space-xs);">Critical Pitfall</p>
+		      <p>Using normalize(WorldPos) causes UV-Sliding.</p>
+		      <p style="margin-top: 4px; opacity: 0.8;">→ Issue: UV gets fixed in World Space.<br>→ Rotation causes patterns to "slide".<br>→ Fix: Use <span class="atlas-param">(WorldPos - ActorPos)</span>.</p>
+		    </div>
+
+		    <div style="font-size: var(--fs-code); line-height: 1.5; color: var(--atlas-ink-soft);">
+		          All three layers share the same <span class="atlas-code-inline">BFieldRT</span> (Magnetic Field Render Target). Consequently, sunspots, spicules, and coronal loops are spatially synchronized at zero extra cost.
+		    </div>
+
+    <div class="media-frame">
+      <div class="gallery-grid">
+        <div class="media-placeholder media-placeholder--grid">[ IMG 1 ]</div>
+        <div class="media-placeholder media-placeholder--grid">[ IMG 2 ]</div>
+        <div class="media-placeholder media-placeholder--grid">[ IMG 3 ]</div>
+        <div class="media-placeholder media-placeholder--grid">[ IMG 4 ]</div>
+      </div>
+      <div class="media-caption">Gallery 01: Auto-fit grid. 4 items → 2–3 columns by available width.</div>
+    </div>
+
+
+		<div class="atlas-section-break" data-index="// SECTION_END"></div>	
+	    </div>  <!-- End .content-block -->
+
+
+
+
+      <div class="atlas-eof-divider">
+        <span class="atlas-eof-divider__line"></span>
+        <span class="atlas-eof-divider__meta">// END OF CONTENT // EOF</span>
+        <span class="atlas-eof-divider__line"></span>
+      </div>
+
+<div id="atlas-footer"></div>
+
+	</div> <!-- End .atlas-container -->
+</div>
+
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   ПАСПОРТ: Логика
+   ─────────────────────────────────────────────────────────────── */
+var CONFIG = {
+  user: 'pavelzosim', path: '~', command: 'cat unity_shaderlab_cheatsheet.log',
+  project: 'SunShaderPlugin', module: 'Compute Shader & Niagara', version: 'UE 5.7', logId: 'SOL_RND_01', status: 'Mid-Dev',
+  slug: 'procedural-sun-ue5-hlsl-compute-shaders',
+  author: '...', created: '----.--.--', modified: null, wordCount: null, title: null, tags: [],
+  tagBaseUrl: 'https://www.pavelzosim.com/blog/tags/'
+};
+
+var BACKEND_URL = 'https://www.pavelzosim.com/_functions/getPostData';
+
+function applyData(d) {
+  if (d.author) CONFIG.author = d.author;
+  if (d.title) {
+    CONFIG.title = d.title;
+    CONFIG.command = 'cat ' + d.title.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/(^_|_$)/g, '') + '.log';
+  }
+  if (d.created) CONFIG.created = d.created;
+  if (d.modified) CONFIG.modified = d.modified;
+  if (d.project) CONFIG.project = d.project;
+  if (d.module) CONFIG.module = d.module;
+  if (d.version) CONFIG.version = d.version;
+  if (d.logId) CONFIG.logId = d.logId;
+  if (d.status) CONFIG.status = d.status;
+  if (d.wordCount) CONFIG.wordCount = d.wordCount;
+  if (Array.isArray(d.tags)) CONFIG.tags = d.tags;
+  window.render && window.render();
+}
+
+(function () {
+  var slug = CONFIG.slug || '';
+  if (!slug) return;
+  fetch(BACKEND_URL + '?slug=' + encodeURIComponent(slug))
+    .then(r => r.ok ? r.json() : null)
+    .then(data => { if (data && !data.error) applyData(data); })
+    .catch(err => console.warn('[ATLAS] Passport fetch failed', err));
+})();
+
+(function () {
+  function render() {
+    var o = CONFIG;
+    var status = (o.status || 'DRAFT').toUpperCase();
+    var rt = o.readTime || (o.wordCount ? '~' + Math.ceil(Number(o.wordCount) / 200) + ' MIN' : null);
+    var metaHTML = '<div class="passport-meta-item" data-meta="auth">' + (o.author || '—') + '</div>' +
+                   '<div class="passport-meta-item" data-meta="created">' + (o.created || '—') + '</div>';
+    if (o.modified) metaHTML += '<div class="passport-meta-item" data-meta="modified">' + o.modified + '</div>';
+    if (rt) metaHTML += '<div class="passport-meta-item" data-meta="read">' + rt + '</div>';
+
+    var tagsHTML = '';
+    if (Array.isArray(o.tags) && o.tags.length) {
+      tagsHTML = '<div class="passport-tags">' + o.tags.map(tg => 
+        '<a href="' + o.tagBaseUrl + tg.toLowerCase().replace(/\s+/g, '-') + '" class="passport-tag" target="_top">#' + tg.toUpperCase() + '</a>'
+      ).join('') + '</div>';
+    }
+
+    document.getElementById('site-passport').innerHTML =
+      '<div class="passport-bp">' +
+        '<div class="passport-title-bar">' +
+          '<div>' + o.user + ' : ' + o.path + ' # ' + o.command + '</div>' +
+          '<div>[ SYS_STATUS: <b>' + status + '</b> ]</div>' +
+        '</div>' +
+        (o.title ? '<div class="passport-main-title">' + o.title.toUpperCase() + '</div>' : '') +
+        '<div class="passport-grid">' +
+          '<div class="passport-cell"><div class="passport-cell-line" data-key="project">' + o.project + '</div><div class="passport-cell-line" data-key="module">' + o.module + '</div></div>' +
+          '<div class="passport-cell"><div class="passport-cell-line" data-key="version">' + o.version + '</div><div class="passport-cell-line" data-key="log_id">' + o.logId + '</div></div>' +
+        '</div>' +
+        '<div class="passport-meta">' + metaHTML + '</div>' + tagsHTML +
+      '</div>';
+  }
+  window.render = render;
+  render();
+}());
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ФУТЕР: Нативный рендер (без CSS-патчей)
+   ─────────────────────────────────────────────────────────────── */
+(function() {
+  var FOOTER_CONFIG_URL = 'https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework/cdn/atlas-site-footer-config.json?t=' + Date.now();
+  
+  fetch(FOOTER_CONFIG_URL)
+    .then(r => r.json())
+    .then(c => {
+      var footer = document.getElementById('atlas-footer');
+      // Создаем структуру, соответствующую atlas-framework.css
+      footer.innerHTML = `
+        <div class="atlas-footer-wrapper">
+          <div class="atlas-footer-block__support-header">
+            <span class="atlas-footer-block__kaomoji">${c.tagline}</span>
+            <span>LET'S STAY IN TOUCH</span>
+          </div>
+          
+          <div class="atlas-footer-block__support-content">
+            <div class="atlas-footer-block__support-text">${c.support.text}</div>
+            <div class="atlas-footer-block__support-links">
+              ${c.support.links.map((l, idx, arr) => `
+                <a href="${l.url}" class="atlas-blueprint-link">${l.text}</a>
+                ${idx < arr.length - 1 ? '<span class="atlas-footer-block__support-divider">|</span>' : ''}
+              `).join('')}
+            </div>
+          </div>
+
+          <div class="atlas-footer-block__matrix-zone">
+            ${c.links.map(g => `
+              <div class="atlas-footer-block__matrix-column">
+                <span class="atlas-footer-block__column-label">${g.label}</span>
+                <div class="atlas-footer-block__column-items">
+                  ${g.items.map(i => `<a href="${i.url}" class="atlas-blueprint-link">/ ${i.text}</a>`).join('')}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    })
+    .catch(e => console.error('[ATLAS] Footer component failed to render:', e));
+})();
+</script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+
+</body>
+</html>

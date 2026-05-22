@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ATLAS FRAMEWORK: Component Map</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.9.4/cdn/atlas-framework.css">
+</head>
+<body>
+
+<div class="map-wrapper">
+  <div class="atlas-container">
+<div id="site-passport"></div>
+
+    <div class="content-block">
+
+      <div class="content-block">
+  <h2>Procedural Tire Generator – Scalable System Breakdown</h2>
+  
+  <p class="atlas-body">
+    This procedural tire generator is built around real-world automotive dimensions. Scaling is driven by width, aspect ratio, and rim diameter, ensuring predictable and physically consistent results across different tire sizes.
+  </p>
+
+  <p class="atlas-body">
+    The focus here is not on handcrafted geometry, but on a procedural logic that remains stable regardless of tread complexity. Instead of modeling the entire tire at once, the system is based on a <strong>repeating thread segment</strong> [00:00:36], distributed procedurally across the surface.
+  </p>
+
+  <div class="media-frame">
+    <iframe width="100%" height="450" src="https://www.youtube.com/embed/6cHgWhs3Gz0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div class="media-caption">Procedural Tire System: Workflow Demonstration</div>
+  </div>
+</div>
+
+<div class="content-block">
+  <h3>What this system demonstrates</h3>
+  <ul>
+    <li><strong>Physically Consistent Scaling:</strong> Logic updates correctly based on real-world parameters (width, profile, rim size) [00:01:34].</li>
+    <li><strong>System Stability:</strong> Thread geometry recalculates without artifacts, regardless of complexity.</li>
+    <li><strong>Dual Workflow Approach:</strong> 
+      <ul>
+        <li><em>Production-oriented:</em> Precise, stable, supports clean topology for subdivision [00:01:15].</li>
+        <li><em>Exploration (Fast):</em> Decoupled tread elements for rapid iteration [00:02:13].</li>
+      </ul>
+    </li>
+    <li><strong>Vector-Driven Sidewall:</strong> Branding and text adapt automatically to tire dimensions, separated from the core mesh [00:01:54].</li>
+  </ul>
+</div>
+
+<div class="content-block">
+  <h3>Why this matters</h3>
+  <p class="atlas-body">
+    Manual tire modeling does not scale. Variation across different tire sizes is error-prone and labor-intensive. A procedural system reduces rework, ensures consistency, and allows for quick preset switching — all while keeping the underlying system architecture unchanged [00:01:24].
+  </p>
+</div>
+
+    <div class="atlas-section-break" data-index="// SECTION_END"></div>
+
+    <div class="content-block">
+  <h2>Procedural Tire Generator – Scaling and Physical Consistency</h2>
+
+  <div class="media-frame">
+    <img src="https://static.wixstatic.com/media/ace175_a9a1803f63574df98a21a3fd75615b85~mv2.png/v1/fill/w_925,h_578,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/ace175_a9a1803f63574df98a21a3fd75615b85~mv2.png" alt="Procedural Tire Generator Overview">
+  </div>
+
+  <h3>Objective</h3>
+  <p class="atlas-body">
+    The goal of this tool is to generate a flexible and physically accurate tire model based on tire measurements and a specific tread pattern. It accounts for both symmetrical and asymmetrical tread designs.
+  </p>
+
+  <h3>Key Parameters</h3>
+  <p class="atlas-body">
+    To ensure the generator behaves like a real-world object, the system uses inputs derived from standard tire specifications:
+  </p>
+  <ul>
+    <li><strong>Tire Width (mm):</strong> The width of the tire from sidewall to sidewall.</li>
+    <li><strong>Aspect Ratio (%):</strong> The ratio of the tire's sidewall height to its width.</li>
+    <li><strong>Wheel Diameter (inches):</strong> The diameter of the wheel on which the tire is mounted.</li>
+  </ul>
+
+  <h3>System Logic</h3>
+  <p class="atlas-body">
+    The internal logic creates a cascading dependency where the base parameters define the final geometry:
+  </p>
+  <ul>
+    <li><strong>Tire Width</strong> acts as the master scale for the tread and sidewall surface.</li>
+    <li><strong>Aspect Ratio</strong> drives the vertical displacement of the sidewall.</li>
+    <li><strong>Wheel Diameter</strong> dictates the central aperture size.</li>
+  </ul>
+
+  <div class="media-frame">
+    <img src="https://static.wixstatic.com/media/ace175_82a3230c7c444f5195cf41a697b2f69b~mv2.gif" alt="Tire parameter scaling animation">
+    <div class="media-caption">Dynamic scaling based on real-world inputs</div>
+  </div>
+</div>
+
+<div class="content-block">
+  <h3>Technical Implementation (VEX)</h3>
+  <p class="atlas-body">
+    The core of the system relies on strict unit conversion. Since Houdini operates primarily in meters, normalizing diverse units (mm, inches, %) is critical to maintaining a predictable scale.
+  </p>
+  <pre class="atlas-code-block"><code class="language-cpp">// Input parameters
+float tireWidth = chf('tire_width'); // mm
+float aspectRatio = chf('aspect_ratio') * 0.01; // % to decimal
+float wheelDiameter = chf('wheel_diameter'); // inches
+
+// Unit normalization to meters
+f@tireWidth = tireWidth / 1000; // mm to meters
+f@sidewallHeight = (tireWidth * 0.03937 * aspectRatio) / 37.37; // sidewall height in meters
+f@wheelDiameter = wheelDiameter / 39.37; // inches to meters</code></pre>
+</div>
+
+<div class="atlas-section-break" data-index="// SECTION_END"></div>
+
+<div class="content-block">
+  <h2>Pattern Tiling and Adjustments</h2>
+  
+  <p class="atlas-body">
+    Once the tire's profile is defined, the tread pattern is tiled. To ensure proper meshing, the minimum division for the tread sections is set to 32. The tile itself is represented by a curve spanning from the outer circle to the inner circle of the tire.
+  </p>
+
+  <p class="atlas-body">
+    To avoid point overlaps or misalignments along the length of the tile, each section is adjusted by calculating the angle (θ) for every spline section point. These corrections ensure a seamless, closed-loop cylinder without the need for manual vertex tweaking.
+  </p>
+
+  <div class="media-frame">
+    <img src="https://static.wixstatic.com/media/ace175_08aed83cd49c478284db9e87ee9b4a7d~mv2.gif" alt="Tread pattern tiling and angular adjustment">
+    <div class="media-caption">Seamless tread tiling calculation</div>
+  </div>
+</div>
+
+<div class="content-block">
+  <h2>Preparing for Extrusion</h2>
+  
+  <p class="atlas-body">
+    After generating the base tire shape, the geometry requires vertical and horizontal division for controlled extrusion. Standard Houdini tools proved inadequate here due to variations in polygon sizes and orientations, which led to the development of a custom tool.
+  </p>
+
+  <p class="atlas-body">
+    This custom approach ensures uniform splitting by:
+  </p>
+  <ul>
+    <li>Calculating edge weights and iteratively dividing groups.</li>
+    <li>Maintaining consistent polygon edge lengths across the topology.</li>
+    <li>Preserving circular radii to prevent geometric distortion during processing.</li>
+  </ul>
+
+  <div class="media-frame">
+    <img src="https://static.wixstatic.com/media/ace175_22ed8a1f9cd542c1ab7f2836ceb24d3f~mv2.gif" alt="Uniform subdivision for extrusion">
+    <div class="media-caption">Custom tool for uniform polygon division</div>
+  </div>
+</div>
+
+<div class="content-block">
+  <h2>Radial Polygon Displacement</h2>
+  
+  <p class="atlas-body">
+    For the final tread height and shape, a specific displacement tool is used. It allows for the grouping of edge loops, supporting both symmetrical and asymmetrical patterns. By implementing soft selection, we ensure smooth transitions between displaced areas, providing high precision and flexibility in design.
+  </p>
+
+  <div class="media-frame">
+    <img src="https://static.wixstatic.com/media/ace175_ae599551827448bf8933df9ab3be98f2~mv2.gif" alt="Radial displacement with soft selection">
+    <div class="media-caption">Radial displacement for tread depth</div>
+  </div>
+</div>
+
+<div class="content-block">
+  <h2>UV Mapping Strategy</h2>
+  
+  <p class="atlas-body">
+    To support both complex tread patterns and sidewall branding, a dual UV mapping approach is employed:
+  </p>
+
+  <h3>1. Pattern-Based UVs</h3>
+  <p class="atlas-body">
+    Divides the tire into distinct quadrants. This allows for dedicated mapping of the tread and sidewall areas, essential for high-fidelity texturing.
+  </p>
+
+  <h3>2. Cylindrical UVs</h3>
+  <p class="atlas-body">
+    Ensures seamless wrapping along the tire's circular profile, vital for minimizing seams in game engines.
+  </p>
+
+  <div class="media-frame">
+    <img src="https://static.wixstatic.com/media/ace175_23b668e3ff8d4009b988e04d60a34b15~mv2.png/v1/fill/w_608,h_608,fp_0.50_0.50,q_90/ace175_23b668e3ff8d4009b988e04d60a34b15~mv2.webp" alt="Pattern-Based UVs">
+    <img src="https://static.wixstatic.com/media/ace175_321495aedb6e4c1792ffebc95777cc67~mv2.png/v1/fill/w_610,h_608,fp_0.50_0.50,q_90/ace175_321495aedb6e4c1792ffebc95777cc67~mv2.webp" alt="Cylindrical UVs">
+    <div class="media-caption">Dual UV setup for texture baking and customization</div>
+  </div>
+</div>
+
+<div class="content-block">
+  <h2>Sidewall Markings & SVG Export</h2>
+  
+  <p class="atlas-body">
+    To allow for detailed sidewall customization, I built an SVG export tool. It converts geometry into splines and generates editable vector tiles. These can be edited in external software and re-applied to the tire model. 
+  </p>
+
+  <p class="atlas-body">
+    The utility of this tool extends beyond just tire branding; it functions as a general-purpose geometry-to-vector converter, making it highly reusable for other hard-surface assets.
+  </p>
+
+  <div class="media-frame">
+    <img src="https://static.wixstatic.com/media/ace175_9e043f574d0648738df33b0b18e6bb32~mv2.gif" alt="SVG export tool for sidewall markings">
+    <div class="media-caption">Procedural geometry to SVG conversion workflow</div>
+  </div>
+
+  <p class="atlas-body">
+    The core logic handles coordinate space transformation and path data generation:
+  </p>
+
+  <pre class="atlas-code-block"><code class="language-python"># Define SVG dimensions for proper scaling
+width = maxsize if size.x() > size.y() else maxsize * size.x() / size.y()
+height = maxsize * size.y() / size.x() if size.x() > size.y() else maxsize
+
+# Transform points from Houdini geometry to SVG coordinates
+def transform_points(points):
+    return [hou.Vector2(
+        (p.x() - minv.x()) / size.x() * width,
+        (1.0 - (p.y() - minv.y()) / size.y()) * height
+    ) for p in points]
+
+# Write SVG path data to file
+with open(filename, 'w') as fp:
+    fp.write('&lt;svg width="{}px" height="{}px" version="1.1"&gt;\n'.format(width, height))
+    for prim in geo.iterPrims():
+        if prim.type() == hou.primType.Polygon:
+            points = transform_points([v.point().position() for v in prim.vertices()])
+            fp.write('&lt;path d="M{} {}{}"/&gt;\n'.format(
+                points[0].x(), points[0].y(),
+                ' '.join(f'L{p.x()} {p.y()}' for p in points[1:])
+            ))
+    fp.write('&lt;/svg&gt;')</code></pre>
+</div>
+
+<div class="content-block">
+  <h2>Tread Pattern Creation</h2>
+  
+  <p class="atlas-body">
+    The tread pattern workflow is designed to balance creative freedom with procedural stability. Artists can utilize standard modeling operations — such as extrusion, deletion, and displacement — while the system handles the complex backend math.
+  </p>
+
+  
+
+  <p class="atlas-body">
+    Automated calculations ensure the following:
+  </p>
+  <ul>
+    <li><strong>Seamless Tiling:</strong> Ensures the pattern loops perfectly around the tire's circumference without artifacts.</li>
+    <li><strong>Height Adjustment:</strong> Automatically calculates and maintains uniform depth for extruded areas, regardless of tire size.</li>
+    <li><strong>Surface Alignment:</strong> Automatically conforms the pattern to the curved surface of the tire, eliminating the need for manual corrections or vertex snapping.</li>
+  </ul>
+
+  <p class="atlas-body">
+    By abstracting the technical "heavy lifting" (math, snapping, and looping), the artist can focus purely on design, knowing that the procedural consistency of the model will remain intact.
+  </p>
+</div>
+
+
+    
+      <div class="atlas-eof-divider">
+        <span class="atlas-eof-divider__line"></span>
+        <span class="atlas-eof-divider__meta">// END OF CONTENT // EOF</span>
+        <span class="atlas-eof-divider__line"></span>
+      </div>
+
+    </div>  
+
+<div id="atlas-footer"></div>
+</div> <!-- End .atlas-container -->
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   ПАСПОРТ: Логика
+   ─────────────────────────────────────────────────────────────── */
+var CONFIG = {
+  user: 'pavelzosim', path: '~', command: 'cat unity_shaderlab_cheatsheet.log',
+  project: '—', module: '—', version: '1.0', logId: '—', status: 'R&D',
+  slug: 'procedural-modeling-tire-generator',
+  author: '...', created: '----.--.--', modified: null, wordCount: null, title: null, tags: [],
+  tagBaseUrl: 'https://www.pavelzosim.com/blog/tags/'
+};
+
+var BACKEND_URL = 'https://www.pavelzosim.com/_functions/getPostData';
+
+function applyData(d) {
+  if (d.author) CONFIG.author = d.author;
+  if (d.title) {
+    CONFIG.title = d.title;
+    CONFIG.command = 'cat ' + d.title.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/(^_|_$)/g, '') + '.log';
+  }
+  if (d.created) CONFIG.created = d.created;
+  if (d.modified) CONFIG.modified = d.modified;
+  if (d.project) CONFIG.project = d.project;
+  if (d.module) CONFIG.module = d.module;
+  if (d.version) CONFIG.version = d.version;
+  if (d.logId) CONFIG.logId = d.logId;
+  if (d.status) CONFIG.status = d.status;
+  if (d.wordCount) CONFIG.wordCount = d.wordCount;
+  if (Array.isArray(d.tags)) CONFIG.tags = d.tags;
+  window.render && window.render();
+}
+
+(function () {
+  var slug = CONFIG.slug || '';
+  if (!slug) return;
+  fetch(BACKEND_URL + '?slug=' + encodeURIComponent(slug))
+    .then(r => r.ok ? r.json() : null)
+    .then(data => { if (data && !data.error) applyData(data); })
+    .catch(err => console.warn('[ATLAS] Passport fetch failed', err));
+})();
+
+(function () {
+  function render() {
+    var o = CONFIG;
+    var status = (o.status || 'DRAFT').toUpperCase();
+    var rt = o.readTime || (o.wordCount ? '~' + Math.ceil(Number(o.wordCount) / 200) + ' MIN' : null);
+    var metaHTML = '<div class="passport-meta-item" data-meta="auth">' + (o.author || '—') + '</div>' +
+                   '<div class="passport-meta-item" data-meta="created">' + (o.created || '—') + '</div>';
+    if (o.modified) metaHTML += '<div class="passport-meta-item" data-meta="modified">' + o.modified + '</div>';
+    if (rt) metaHTML += '<div class="passport-meta-item" data-meta="read">' + rt + '</div>';
+
+    var tagsHTML = '';
+    if (Array.isArray(o.tags) && o.tags.length) {
+      tagsHTML = '<div class="passport-tags">' + o.tags.map(tg => 
+        '<a href="' + o.tagBaseUrl + tg.toLowerCase().replace(/\s+/g, '-') + '" class="passport-tag" target="_top">#' + tg.toUpperCase() + '</a>'
+      ).join('') + '</div>';
+    }
+
+    document.getElementById('site-passport').innerHTML =
+      '<div class="passport-bp">' +
+        '<div class="passport-title-bar">' +
+          '<div>' + o.user + ' : ' + o.path + ' # ' + o.command + '</div>' +
+          '<div>[ SYS_STATUS: <b>' + status + '</b> ]</div>' +
+        '</div>' +
+        (o.title ? '<div class="passport-main-title">' + o.title.toUpperCase() + '</div>' : '') +
+        '<div class="passport-grid">' +
+          '<div class="passport-cell"><div class="passport-cell-line" data-key="project">' + o.project + '</div><div class="passport-cell-line" data-key="module">' + o.module + '</div></div>' +
+          '<div class="passport-cell"><div class="passport-cell-line" data-key="version">' + o.version + '</div><div class="passport-cell-line" data-key="log_id">' + o.logId + '</div></div>' +
+        '</div>' +
+        '<div class="passport-meta">' + metaHTML + '</div>' + tagsHTML +
+      '</div>';
+  }
+  window.render = render;
+  render();
+}());
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ФУТЕР: Нативный рендер (без CSS-патчей)
+   ─────────────────────────────────────────────────────────────── */
+(function() {
+  var FOOTER_CONFIG_URL = 'https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework/cdn/atlas-site-footer-config.json?t=' + Date.now();
+  
+  fetch(FOOTER_CONFIG_URL)
+    .then(r => r.json())
+    .then(c => {
+      var footer = document.getElementById('atlas-footer');
+      // Создаем структуру, соответствующую atlas-framework.css
+      footer.innerHTML = `
+        <div class="atlas-footer-wrapper">
+          <div class="atlas-footer-block__support-header">
+            <span class="atlas-footer-block__kaomoji">${c.tagline}</span>
+            <span>LET'S STAY IN TOUCH</span>
+          </div>
+          
+          <div class="atlas-footer-block__support-content">
+            <div class="atlas-footer-block__support-text">${c.support.text}</div>
+            <div class="atlas-footer-block__support-links">
+              ${c.support.links.map((l, idx, arr) => `
+                <a href="${l.url}" class="atlas-blueprint-link">${l.text}</a>
+                ${idx < arr.length - 1 ? '<span class="atlas-footer-block__support-divider">|</span>' : ''}
+              `).join('')}
+            </div>
+          </div>
+
+          <div class="atlas-footer-block__matrix-zone">
+            ${c.links.map(g => `
+              <div class="atlas-footer-block__matrix-column">
+                <span class="atlas-footer-block__column-label">${g.label}</span>
+                <div class="atlas-footer-block__column-items">
+                  ${g.items.map(i => `<a href="${i.url}" class="atlas-blueprint-link">/ ${i.text}</a>`).join('')}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    })
+    .catch(e => console.error('[ATLAS] Footer component failed to render:', e));
+})();
+</script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+
+</body>
+</html>
