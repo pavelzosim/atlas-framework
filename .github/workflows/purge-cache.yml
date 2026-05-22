@@ -28,7 +28,7 @@ jobs:
           sed -i '1s/^\xEF\xBB\xBF//' cdn/atlas-framework.css
          
           # 1. Сначала core (базовый файл)
-          echo "→ Adding: cdn/atlas-core.css"
+          echo "→ Adding: cdn/01-atlas-core.css"
           sed 's/\xEF\xBB\xBF//g' "cdn/atlas-core.css" >> cdn/atlas-framework.css
           echo -e "\n\n" >> cdn/atlas-framework.css
 
