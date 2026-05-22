@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260522-051847 | BUILD: Fri May 22 05:18:47 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260522-061528 | BUILD: Fri May 22 06:15:28 UTC 2026 */
 
 /* ==========================================================================
    FILE: 01-atlas-core.css
@@ -1156,6 +1156,20 @@
   .atlas-container .content-block .gallery-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ── ИСПРАВЛЕНИЕ: Специфичность для галереи (4 класса) ────────── */
+
+/* Увеличиваем вес селектора (4 класса против 3), чтобы перекрыть общие стили .media-frame */
+.atlas-container .content-block .gallery-grid .media-frame {
+  display: block;
+  padding: 0;
+  border: 1px solid var(--atlas-border); /* Если нужно сохранить рамку */
+}
+
+/* Скрываем системную шапку внутри сетки через специфичность */
+.atlas-container .content-block .gallery-grid .media-frame::before {
+  display: none;
 }
 
 
