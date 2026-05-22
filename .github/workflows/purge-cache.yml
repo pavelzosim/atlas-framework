@@ -29,7 +29,7 @@ jobs:
          
           # 1. Сначала core (базовый файл)
           echo "→ Adding: cdn/01-atlas-core.css"
-          sed 's/\xEF\xBB\xBF//g' "cdn/atlas-core.css" >> cdn/atlas-framework.css
+          sed 's/\xEF\xBB\xBF//g' "cdn/01-atlas-core.css" >> cdn/atlas-framework.css
           echo -e "\n\n" >> cdn/atlas-framework.css
 
           # 2. Все компоненты строго по алфавиту
