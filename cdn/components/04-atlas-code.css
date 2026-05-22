@@ -1,0 +1,84 @@
+/* ==========================================================================
+   FILE: 04-atlas-code.css
+   ROLE: Блоки кода (pre.atlas-code-block) и математики (.atlas-math-block).
+         Подсветка синтаксиса Prism.js (low-contrast палитра).
+         Smart-coupling: математика вплотную сливается с кодом.
+   ЗАВИСИМОСТИ: 01-atlas-core.css (системная геометрия блоков)
+   ПОРЯДОК В МОНОЛИТЕ: 4 из 7
+   ========================================================================== */
+
+/* ── СЕКЦИЯ A: УНИКАЛЬНЫЕ ШАПКИ И ГРАНИЦЫ ───────────────────────────────── */
+/* Геометрия (border, padding, position) задана в 01-atlas-core.css.        */
+/* Здесь — только то, что отличает code и math от других блоков.            */
+
+/* Красная левая полоса — фирменный идентификатор кодового блока */
+.atlas-container .content-block pre.atlas-code-block {
+  border-left: 3px solid var(--atlas-crit);
+  overflow-x: auto;
+}
+
+/* Математика: пунктирная рамка вместо сплошной */
+.atlas-container .content-block .atlas-math-block {
+  border-style: dashed;
+  overflow-x: auto;
+}
+
+/* Тексты псевдо-шапок */
+.atlas-container .content-block pre.atlas-code-block::before {
+  content: "[ CODE_LISTING // TRANSPILED_ALGORITHM ]";
+}
+.atlas-container .content-block .atlas-math-block::before {
+  content: "[ MATH_MODEL // МАТЕМАТИЧЕСКИЙ АППАРАТ ]";
+}
+
+/* ── СЕКЦИЯ B: СТАБИЛИЗАЦИЯ ШРИФТОВ ─────────────────────────────────────── */
+/* Защита от системных шрифтов Wix и text-shadow Prism тем.                */
+
+.atlas-container .content-block pre.atlas-code-block,
+.atlas-container .content-block pre.atlas-code-block code {
+  font-size: var(--fs-code);
+  line-height: 1.6;
+  color: var(--atlas-ink-soft);
+  background: transparent;
+  text-shadow: none;
+}
+
+.atlas-container .content-block .atlas-math-block {
+  font-size: var(--fs-code);
+  line-height: 1.6;
+  color: var(--atlas-ink-soft);
+}
+
+/* ── СЕКЦИЯ C: SMART COUPLING — Бесшовное слияние math + code ────────────── */
+/* Когда .atlas-math-block стоит ПРЯМО перед pre.atlas-code-block,         */
+/* нижняя граница math убирается и верхняя граница code становится          */
+/* пунктирной — блоки визуально сливаются в одну единицу.                  */
+
+.atlas-container .content-block .atlas-math-block:has(+ pre.atlas-code-block) {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+.atlas-container .content-block .atlas-math-block + pre.atlas-code-block {
+  margin-top: 0;
+  border-top: 1px dashed var(--atlas-border);
+}
+
+/* ── СЕКЦИЯ D: PRISM.JS — Low-contrast синтаксис ────────────────────────── */
+/* Палитра адаптирована под монохромную тему Atlas.                         */
+/* Все фоны токенов обнуляются (Prism темы добавляют цветные подложки).    */
+
+.atlas-container .content-block pre.atlas-code-block code .token {
+  background: transparent;
+  text-shadow: none;
+}
+
+.atlas-container .content-block pre.atlas-code-block code .token.comment    { color: var(--atlas-ink-muted); font-style: italic; }
+.atlas-container .content-block pre.atlas-code-block code .token.punctuation { color: rgba(0, 0, 0, 0.4); }
+.atlas-container .content-block pre.atlas-code-block code .token.number,
+.atlas-container .content-block pre.atlas-code-block code .token.boolean    { color: var(--atlas-warn); }
+.atlas-container .content-block pre.atlas-code-block code .token.string,
+.atlas-container .content-block pre.atlas-code-block code .token.char       { color: var(--atlas-ok); }
+.atlas-container .content-block pre.atlas-code-block code .token.keyword,
+.atlas-container .content-block pre.atlas-code-block code .token.class-name { color: var(--atlas-ink); font-weight: 700; }
+.atlas-container .content-block pre.atlas-code-block code .token.function   { color: var(--atlas-crit); font-weight: 700; }
+.atlas-container .content-block pre.atlas-code-block code .token.operator   { color: var(--atlas-ink); }

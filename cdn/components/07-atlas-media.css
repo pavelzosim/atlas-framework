@@ -1,0 +1,65 @@
+/* ==========================================================================
+   FILE: 07-atlas-media.css
+   ROLE: Медиа-контейнеры (.media-frame) и галерейная сетка (.gallery-grid).
+         Поддержка img, video, iframe (16:9 авто-пропорции для YouTube/Vimeo).
+   ЗАВИСИМОСТИ: 01-atlas-core.css (геометрия .media-frame)
+   ПОРЯДОК В МОНОЛИТЕ: 7 из 7 (последний)
+   ========================================================================== */
+
+/* ── СЕКЦИЯ A: MEDIA FRAME — Инженерный визуальный контейнер ────────────── */
+/* Геометрия (border, padding, ::before) задана в 01-atlas-core.css.       */
+
+/* Компоновка: контент по центру */
+.atlas-container .content-block .media-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Псевдо-шапка */
+.atlas-container .content-block .media-frame::before {
+  content: "[ MEDIA_ASSET // VISUAL_DATA ]";
+}
+
+/* Внутренние медиа-элементы */
+.atlas-container .content-block .media-frame img,
+.atlas-container .content-block .media-frame video,
+.atlas-container .content-block .media-frame iframe {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--atlas-border);
+  margin: 0 auto;
+}
+
+/* iframe (YouTube, Vimeo): авто-пропорция 16:9 */
+.atlas-container .content-block .media-frame iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+/* Подпись под медиа */
+.atlas-container .content-block .media-caption {
+  font-size: var(--fs-status);
+  color: var(--atlas-ink-muted);
+  margin-top: 12px;
+  text-align: center;
+  width: 100%;
+}
+
+/* ── СЕКЦИЯ B: GALLERY GRID — 2-колоночная сетка изображений ────────────── */
+
+.atlas-container .content-block .gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .atlas-container .content-block .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+}

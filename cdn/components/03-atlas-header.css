@@ -1,11 +1,20 @@
 /* ==========================================================================
-   c_atlas-header.css - ATLAS FRAMEWORK: PASSPORT & FOOTER MODULE [v3.6.0]
-   Синхронизировано с глобальным ядром atlas-core.css без !important
-   ────────────────────────────────────────────────────────────────────────── */
+   FILE: 03-atlas-header.css
+   ROLE: Паспорт документа (#site-passport) и системный футер (#atlas-footer).
+         Сетка параметров, мета-строка, теги, навигационная матрица.
+   ЗАВИСИМОСТИ: 01-atlas-core.css
+   ПОРЯДОК В МОНОЛИТЕ: 3 из 7
+   ========================================================================== */
 
-/* ── MODULE 1: PASSPORT (Инженерная шапка документа) ───────────────────── */
+/* ── СЕКЦИЯ A: PASSPORT — Инженерная шапка документа ────────────────────── */
+/* Структура HTML:                                                           */
+/*   #site-passport > .passport-bp                                          */
+/*     > .passport-title-bar                                                */
+/*     > .passport-main-title                                               */
+/*     > .passport-grid > .passport-cell > .passport-cell-line[data-key]   */
+/*     > .passport-meta > .passport-meta-item[data-meta]                   */
+/*     > .passport-tags > .passport-tag                                     */
 
-/* Главный внешний контейнер паспорта */
 .atlas-container #site-passport .passport-bp {
   border: 2px solid var(--atlas-ink);
   padding: var(--atlas-space-sm);
@@ -15,7 +24,7 @@
   width: 100%;
 }
 
-/* Верхняя полоса: Промпт системы и Статус документа */
+/* Верхняя полоса: промпт системы + статус */
 .atlas-container #site-passport .passport-title-bar {
   display: flex;
   justify-content: space-between;
@@ -23,20 +32,17 @@
   border-bottom: 2px solid var(--atlas-ink);
   padding-bottom: 6px;
   margin-bottom: var(--atlas-space-sm);
-  font-family: var(--atlas-font-mono);
   font-size: var(--fs-meta);
   color: var(--atlas-ink);
-  white-space: nowrap; /* ЗАЩИТА от нежелательного переноса */
+  white-space: nowrap;
 }
-
 .atlas-container #site-passport .passport-title-bar b {
   font-weight: 700;
   color: var(--atlas-crit);
 }
 
-/* Главный заголовок лога / статьи */
+/* Главный заголовок */
 .atlas-container #site-passport .passport-main-title {
-  font-family: var(--atlas-font-mono);
   font-size: var(--fs-h1);
   font-weight: 700;
   text-transform: uppercase;
@@ -45,7 +51,7 @@
   color: var(--atlas-ink);
 }
 
-/* СЕТКА ПАРАМЕТРОВ: Четкое разделение на левую и правую колонки (50/50) */
+/* Сетка параметров 2 колонки */
 .atlas-container #site-passport .passport-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -56,7 +62,6 @@
   width: 100%;
 }
 
-/* Ячейки параметров (Левая: Project/Module, Правая: Version/Log_ID) */
 .atlas-container #site-passport .passport-cell {
   display: flex;
   flex-direction: column;
@@ -66,19 +71,16 @@
   box-sizing: border-box;
 }
 
-/* Индивидуальная строка параметров с защитой от переноса слов */
+/* Строка параметра. Префикс генерируется через data-key */
 .atlas-container #site-passport .passport-cell-line {
   display: block;
-  font-family: var(--atlas-font-mono);
   font-size: var(--fs-code);
   line-height: 1.4;
   color: var(--atlas-ink-soft);
   margin: 0;
   padding: 0;
-  white-space: nowrap; /* ЗАЩИТА: Значения параметров идут в одну строку */
+  white-space: nowrap;
 }
-
-/* Автоматическая подстановка инженерных префиксов через data-key */
 .atlas-container #site-passport .passport-cell-line::before {
   font-weight: 700;
   color: var(--atlas-ink-muted);
@@ -86,14 +88,12 @@
   margin-right: 8px;
   display: inline-block;
 }
-
 .atlas-container #site-passport .passport-cell-line[data-key="project"]::before { content: "PROJECT:"; }
 .atlas-container #site-passport .passport-cell-line[data-key="module"]::before  { content: "MODULE:"; }
 .atlas-container #site-passport .passport-cell-line[data-key="version"]::before { content: "VERSION:"; }
 .atlas-container #site-passport .passport-cell-line[data-key="log_id"]::before  { content: "LOG_ID:"; }
 
-
-/* БЛОК МЕТА-ДАННЫХ (Строго горизонтальная линия) */
+/* Мета-строка (AUTH, CREATED, MODIFIED, READ_TIME) */
 .atlas-container #site-passport .passport-meta {
   display: flex;
   flex-direction: row;
@@ -104,47 +104,38 @@
   padding-top: var(--atlas-space-xs);
   border-top: 1px solid var(--atlas-border);
 }
-
 .atlas-container #site-passport .passport-meta-item {
-  font-family: var(--atlas-font-mono);
   font-size: var(--fs-meta);
   color: var(--atlas-ink-soft);
   display: flex;
   align-items: center;
-  white-space: nowrap; /* ЗАЩИТА: AUTH, CREATED, MODIFIED не бьются на части */
+  white-space: nowrap;
 }
-
-/* Инженерный разделитель данных */
 .atlas-container #site-passport .passport-meta-item:not(:last-child)::after {
   content: "//";
   margin-left: 16px;
   color: var(--atlas-border-strong);
   font-weight: 300;
 }
-
 .atlas-container #site-passport .passport-meta-item::before {
   font-weight: 700;
   color: var(--atlas-ink-muted);
   margin-right: 6px;
   text-transform: uppercase;
 }
-
 .atlas-container #site-passport .passport-meta-item[data-meta="auth"]::before     { content: "AUTH:"; }
 .atlas-container #site-passport .passport-meta-item[data-meta="created"]::before  { content: "CREATED:"; }
 .atlas-container #site-passport .passport-meta-item[data-meta="modified"]::before { content: "MODIFIED:"; }
 .atlas-container #site-passport .passport-meta-item[data-meta="read"]::before     { content: "READ_TIME:"; }
 
-
-/* БЛОК ХЭШТЕГОВ */
+/* Теги */
 .atlas-container #site-passport .passport-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 12px;
 }
-
 .atlas-container #site-passport .passport-tag {
-  font-family: var(--atlas-font-mono);
   font-size: var(--fs-status);
   font-weight: 700;
   color: var(--atlas-crit);
@@ -154,44 +145,45 @@
   background: rgba(0, 0, 0, 0.02);
   transition: all 0.15s ease;
 }
-
 .atlas-container #site-passport .passport-tag:hover {
   background: var(--atlas-ink);
   color: var(--atlas-bg);
   border-color: var(--atlas-ink);
 }
 
-
-/* ── MODULE 2: FOOTER (Системный подвал по новой JS-структуре) ─────────── */
+/* ── СЕКЦИЯ B: FOOTER — Системный подвал ────────────────────────────────── */
+/* Структура HTML:                                                           */
+/*   #atlas-footer > .atlas-footer-wrapper                                  */
+/*     > .atlas-footer-block__support-header                                */
+/*     > .atlas-footer-block__support-content                               */
+/*       > .atlas-footer-block__support-text                                */
+/*       > .atlas-footer-block__support-links > .atlas-blueprint-link       */
+/*     > .atlas-footer-block__matrix-zone (3 колонки)                       */
+/*       > .atlas-footer-block__matrix-column                               */
+/*         > .atlas-footer-block__column-label                              */
+/*         > .atlas-footer-block__column-items > .atlas-blueprint-link      */
 
 .atlas-container #atlas-footer {
   margin-top: var(--atlas-space-xl);
   width: 100%;
   box-sizing: border-box;
-  
-  /* Добавляем общую рамку блока */
   border: 1px solid var(--atlas-border);
-  padding: 16px; /* Внутренний отступ для всей области футера */
+  padding: 16px;
   position: relative;
 }
 
-/* Корневая обертка больше не должна иметь border-top, 
-   так как мы перенесли границы на родителя */
 .atlas-container #atlas-footer .atlas-footer-wrapper {
-  border-top: none; 
-  padding-top: 0;
   display: flex;
   flex-direction: column;
   gap: var(--atlas-space-md);
   width: 100%;
 }
 
-/* Верхняя статусная линия подвала */
+/* Верхняя статусная линия */
 .atlas-container #atlas-footer .atlas-footer-block__support-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: var(--atlas-font-mono);
   font-size: var(--fs-meta);
   font-weight: 700;
   color: var(--atlas-ink);
@@ -199,13 +191,11 @@
   padding-bottom: 6px;
   white-space: nowrap;
 }
-
-/* Системный Kaomoji-статус */
 .atlas-container #atlas-footer .atlas-footer-block__kaomoji {
   color: var(--atlas-crit);
 }
 
-/* Средняя зона: Текст поддержки и каналы связи */
+/* Средняя зона: текст + ссылки поддержки */
 .atlas-container #atlas-footer .atlas-footer-block__support-content {
   display: flex;
   justify-content: space-between;
@@ -214,51 +204,38 @@
   padding-bottom: var(--atlas-space-sm);
   border-bottom: 1px dashed var(--atlas-border);
 }
-
 .atlas-container #atlas-footer .atlas-footer-block__support-text {
-  font-family: var(--atlas-font-mono);
   font-size: var(--fs-body);
   line-height: 1.5;
   color: var(--atlas-ink-soft);
   max-width: 60%;
 }
-
-/* Контейнер горизонтальных линков саппорта */
 .atlas-container #atlas-footer .atlas-footer-block__support-links {
   display: flex;
   align-items: center;
   gap: 12px;
   white-space: nowrap;
 }
-
-/* Разделитель пайпов "|" */
 .atlas-container #atlas-footer .atlas-footer-block__support-divider {
-  font-family: var(--atlas-font-mono);
   font-size: var(--fs-code);
   color: var(--atlas-border-strong);
 }
 
-
-/* НИЖНЯЯ ЗОНА: Матрица навигации (Строго 3 колонки) */
+/* Нижняя матрица навигации: строго 3 колонки */
 .atlas-container #atlas-footer .atlas-footer-block__matrix-zone {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   width: 100%;
   box-sizing: border-box;
-  padding: 0; /* СБРОС влияния глобального padding: 34px из atlas-core.css */
 }
-
 .atlas-container #atlas-footer .atlas-footer-block__matrix-column {
   display: flex;
   flex-direction: column;
   background: transparent;
 }
-
-/* Заголовки категорий матрицы с защитой от переноса */
 .atlas-container #atlas-footer .atlas-footer-block__column-label {
   display: block;
-  font-family: var(--atlas-font-mono);
   font-size: var(--fs-meta);
   font-weight: 700;
   text-transform: uppercase;
@@ -267,58 +244,47 @@
   letter-spacing: 0.05em;
   border-bottom: 1px solid var(--atlas-border);
   padding-bottom: 4px;
-  white-space: nowrap; /* ЗАЩИТА: Метки PROD_PIPELINES не разбиваются */
+  white-space: nowrap;
 }
-
-/* Вертикальный стек навигационных ссылок */
 .atlas-container #atlas-footer .atlas-footer-block__column-items {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
-
-/* Универсальные инженерные ссылки в футере */
 .atlas-container #atlas-footer .atlas-blueprint-link {
-  font-family: var(--atlas-font-mono);
   font-size: var(--fs-code);
   color: var(--atlas-ink-soft);
   text-decoration: none;
   transition: color 0.15s ease;
   display: inline-block;
-  white-space: nowrap; /* Линки в подвале не рвутся внутри слов */
+  white-space: nowrap;
 }
-
 .atlas-container #atlas-footer .atlas-blueprint-link:hover {
   color: var(--atlas-crit);
 }
 
+/* ── СЕКЦИЯ C: АДАПТИВНОСТЬ ──────────────────────────────────────────────── */
+/* Порог 550px: узкие десктопные колонки блога (600-750px) не триггерят     */
+/* мобильную верстку и не ломают сетку паспорта 2×2.                       */
 
-/* ── АДАПТИВНОСТЬ (Мобильные экраны) ────────────────────────────────────── */
-
-/* Снизили порог с 768px до 550px, чтобы узкие десктопные колонки блога (600-750px) 
-   не триггерили мобильную верстку и не ломали сетку паспорта 2x2 */
 @media (max-width: 550px) {
   .atlas-container #site-passport .passport-grid {
     grid-template-columns: 1fr;
     gap: 12px;
   }
-
+  .atlas-container #site-passport .passport-meta {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
   .atlas-container #atlas-footer .atlas-footer-block__support-content {
     flex-direction: column;
     gap: 16px;
   }
-  
   .atlas-container #atlas-footer .atlas-footer-block__support-text {
     max-width: 100%;
   }
-
   .atlas-container #atlas-footer .atlas-footer-block__matrix-zone {
     grid-template-columns: 1fr;
     gap: 24px;
-  }
-
-  .atlas-container #site-passport .passport-meta {
-    flex-wrap: wrap;
-    gap: 10px;
   }
 }
