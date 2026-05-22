@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260521-203445 | BUILD: Thu May 21 20:34:45 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260522-043224 | BUILD: Fri May 22 04:32:24 UTC 2026 */
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap');
 
@@ -90,6 +90,59 @@
   .atlas-container #atlas-footer .atlas-footer-block__matrix-zone {
     grid-template-columns: 1fr;
   }
+}
+
+/* Глобальные настройки для всех таблиц внутри контейнера */
+.atlas-container table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--atlas-font-mono);
+  font-size: var(--fs-code); /* Берем переменную */
+}
+
+/* Глобальные настройки для текста */
+.atlas-container p {
+  font-size: var(--fs-body);
+  line-height: 1.6;
+}
+
+
+/* ==========================================================================
+   00-typography-global.css - GLOBAL OVERRIDES [v1.0.0]
+   Принудительное наследование шрифтов для всех элементов atlas-container
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* 1. Глобальный сброс для всего, что внутри контейнера */
+.atlas-container {
+  font-family: var(--atlas-font-mono);
+  color: var(--atlas-ink);
+  font-size: 12.5px; /* Базовый системный размер */
+}
+
+/* 2. Принудительный кегль для Passport (используем meta) */
+.atlas-container #site-passport,
+.atlas-container #site-passport * {
+  font-size: var(--fs-meta);
+}
+
+/* 3. Принудительный кегль для Таблиц */
+.atlas-container .atlas-table,
+.atlas-container .atlas-table th,
+.atlas-container .atlas-table td {
+  font-size: var(--fs-code);
+}
+
+/* 4. Принудительный кегль для Футера */
+.atlas-container #atlas-footer,
+.atlas-container #atlas-footer .atlas-blueprint-link {
+  font-size: var(--fs-code);
+}
+
+/* 5. Общий сброс для заголовков (чтобы они не были 16px+ от внешних стилей) */
+.atlas-container h1, .atlas-container h2, .atlas-container h3 {
+  font-family: var(--atlas-font-mono);
+  margin-top: 1em;
+  margin-bottom: 0.5em;
 }
 
 
