@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Procedural Sun — UE5 HLSL Compute Shader</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@1b94ccf8eceef058d93848d15ee6551dc61bdf26/cdn/atlas-framework.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.9.5/cdn/atlas-framework.css?v=1.9.5">
 
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+  <link rel="canonical" href="https://www.pavelzosim.com/post/procedural-sun-ue5-hlsl-compute-shaders"/>
 
 <script>
 (function() {
@@ -687,18 +688,333 @@ RWMagneticField[DispatchID.xy] = saturate(Bz * FieldStrength);</code></pre>
     </div>
 
         <div class="atlas-section-break" data-index="// § 06"></div>
+
+
+      <h4>Live Shader Preview</h4>
+
+    <div class="atlas-interactive-frame">
+      <iframe
+        src="https://pavelzosim.github.io/sun-shader-magnetic/"
+        style="width:100%;height:500px;border:none;display:block;margin:0;padding:0;overflow:hidden;"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+
+    <h3>Sunspot Fibril Structure</h3>
+    <p>The penumbra is not a uniform grey ring. It's made of <strong>fibrils</strong> — dark filaments of plasma aligned along magnetic field lines that splay outward from the umbral core. Three independent fibril layers are composited via a Z-buffer winner approach:</p>
+
+    <pre class="atlas-code-block"><code class="language-c">// 3 independent fibril layers, composited via Z-buffer.
+// Each layer has a different angular offset — strands interleave.
+// Waviness: sin(Bz * waveFreq) — buckle frequency is higher near the umbra,
+// where field lines are denser. Physically correct, not hand-tuned.
+
+[unroll]
+for (int li = 0; li < 3; li++)
+{
+    float lSectorF = (angle + float(li) * 0.31) * (FibrilFreq / SUN_TWO_PI);
+    float lAngleID = floor(lSectorF);
+
+    // 5 independent randoms per strand: phase, drift, depth, waviness, erosion
+    float lr1 = frac(sin(lAngleID * 12.9898 + lSeed) * 43758.5453);
+    float lr2 = frac(sin(lAngleID * 78.233  + lSeed) * 43758.5453);
+    // ...
+}
+
+// Z-buffer winner: highest strand surface wins — produces hard occlusion
+// between tubes instead of blurred sum. Makes them read as "spaghetti".</code></pre>
+
+    <div class="atlas-section-break" data-index="// § 06"></div>
   </div>
 
-
-    <!-- ══════════════════════════════════════════════════════════════
-       07: Layer 3: Temperature Pipeline
+  <!-- ══════════════════════════════════════════════════════════════
+       07: TEMPERATURE PIPELINE
        ══════════════════════════════════════════════════════════════ -->
-<div class="content-block">
+  <div class="content-block">
     <h2>07 Layer 3: Temperature Pipeline</h2>
-    <p>This is where physics becomes color. The pipeline in SunTemperature.ush:</p>
+    <p>This is where physics becomes color. Every surface region — granule center, intergranular lane, umbra, penumbra, facula — carries a temperature value in Kelvin. The pipeline in <span class="atlas-code-inline">SunTemperature.ush</span> maps that value to a physically grounded radiance output.</p>
 
+    <h3>Granule → Spot → Facula Compositing</h3>
+    <p>Three passes composite in order: granulation sets the base temperature field, sunspot darkening suppresses it inside spot regions, faculae brighten the exterior ring. Each pass is a <span class="atlas-code-inline">lerp()</span> gated by a mask:</p>
 
+    <div class="atlas-table-frame">
+      <table class="atlas-table">
+        <thead>
+          <tr><th>PASS</th><th>INPUT MASK</th><th>OPERATION</th><th>TEMPERATURE RANGE</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1. Granulation</td><td>VoronoiF1 brightness</td><td>lerp(MinT, MaxT, bright)</td><td>5500K – 6200K</td></tr>
+          <tr><td>2. Spot darkening</td><td>SpotDarkening [0..1]</td><td>lerp(tGran, MinT, spot)</td><td>down to ~3800K (umbra)</td></tr>
+          <tr><td>3. Faculae boost</td><td>SpotExterior > 0</td><td>lerp(tBase, FaculaeT, mask)</td><td>up to ~6400K</td></tr>
+          <tr><td>4. Clamp</td><td>—</td><td>clamp(finalT, MinT, MaxT)</td><td>hard physical bounds</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Blackbody LUT Sampling</h3>
+    <p>Temperature maps to color via a 256×1 <span class="atlas-code-inline">BlackbodyLUT</span> sampled at <span class="atlas-code-inline">(T − MinT) / (MaxT − MinT)</span>. The LUT is baked on CPU at startup using an analytic blackbody curve (<span class="atlas-code-inline">BlackbodyToLinearRGB</span> in <span class="atlas-code-inline">SunTextureHelper.cpp</span>), normalized to linear working space — no sRGB conversion problems, no gamma drift.</p>
+
+    <h3>Stefan-Boltzmann Radiance Weighting</h3>
+    <p>Before cinematic grade, each pixel's brightness is weighted by its temperature raised to the fourth power — matching the physical relationship between temperature and total radiated power:</p>
+
+<div class="atlas-math-block">
+  $$\omega = \left( \frac{T}{T_{\max}} \right)^4$$
+</div>
+
+    <div class="atlas-table-frame atlas-table-frame--solid">
+      <div class="atlas-table-header-solid">[ STEFAN-BOLTZMANN WEIGHTS // SOLAR FEATURES ]</div>
+      <table class="atlas-table">
+        <thead>
+          <tr><th>SOLAR FEATURE</th><th>TEMPERATURE</th><th>WEIGHT w</th><th>VISUAL RESULT</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Umbra</td><td>~3800K</td><td>≈ 0.14</td><td>Physically dark</td></tr>
+          <tr><td>Mean photosphere</td><td>~5778K</td><td>≈ 0.57</td><td>Reference baseline</td></tr>
+          <tr><td>Hot granule</td><td>~6200K</td><td>1.00</td><td>Peak brightness</td></tr>
+          <tr><td>Faculae</td><td>~6400K</td><td>≈ 1.13</td><td>Slightly brighter</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="atlas-callout atlas-callout--note">
+      <p>The umbra at weight 0.14 is not manually darkened — it emerges directly from the T⁴ law. The same formula that makes a tungsten filament dim when it cools makes a sunspot dark. No artistic override required.</p>
+    </div>
+
+    <div class="atlas-section-break" data-index="// § 07"></div>
   </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       08: LIMB DARKENING
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="content-block">
+    <h2>08 Layer 4: Limb Darkening</h2>
+    <p>The solar disc appears darker at the edges because at oblique viewing angles we look through a greater column of photospheric plasma — deeper, hotter layers are hidden. This is not an artistic choice. It is a direct consequence of photospheric opacity.</p>
+    <p>The viewing angle cosine <span class="atlas-code-inline">μ = dot(N_world, -V_world)</span> drives two physical models selectable per quality preset:</p>
+
+    <div class="comparison-matrix">
+      <div class="comp-col">
+        <div class="comp-label">Δ1 // QUADRATIC — Neckel &amp; Labs 1994</div>
+        <div class="comp-body">Fast, one shader ALU pass. Good for background / mid-distance suns.</div>
+      </div>
+      <div class="comp-col">
+        <div class="comp-label">Δ2 // CLARET 4-TERM — V-Band accurate</div>
+        <div class="comp-body">Physically accurate for solar V-band close-ups. Four coefficients, four MADs.</div>
+      </div>
+    </div>
+
+<div class="atlas-math-block">
+  $$\\frac{I(\\mu)}{I(1)} = 0.294 + 0.884\\mu - 0.178\\mu^2 \\quad \\text{(Quadratic)}$$
+</div>
+
+<div class="atlas-math-block">
+  $$\\frac{I(\\mu)}{I(1)} = 1 - \\sum_{k=1}^{4} a_k\\left(1 - \\mu^{k/2}\\right), \\quad a = [0.4361,\\; 0.2860,\\; 0.1567,\\; {-0.0885}]$$
+</div>
+
+    <div class="atlas-callout atlas-callout--important">
+      <p><strong>UE ACES Fix — limbFloor parameter</strong></p>
+      <p>UE's ACES tonemapper has an aggressive toe curve that converts subtle limb darkening into a hard black crust at the disc edge. The fix is a <span class="atlas-code-inline">limbFloor</span> parameter that prevents <span class="atlas-code-inline">I(μ)</span> from dropping below a minimum value — an artistic override that restores control without breaking the physics in the bright range.</p>
+    </div>
+
+    <div class="atlas-section-break" data-index="// § 08"></div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       09: POM ON A SPHERE
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="content-block">
+    <h2>09 Layer 5: Parallax Occlusion Mapping on a Sphere</h2>
+    <p>POM on a sphere requires latitude-corrected tangent space. A flat TBN doesn't account for the fact that a UV step at the equator covers different physical area than the same step near the poles — which causes POM to stretch at the poles and compress at the equator.</p>
+
+    <h3>Latitude-Corrected TBN</h3>
+    <p>The corrected tangent frame in <span class="atlas-code-inline">SunProjection.ush</span> derives <span class="atlas-code-inline">T</span> and <span class="atlas-code-inline">B</span> analytically from the sphere's local position vector, then projects the view vector into that frame:</p>
+
+    <pre class="atlas-code-block"><code class="language-c">float  sinTheta = max(length(P.xy), 0.05);   // guard against pole singularity
+float3 T        = float3(-P.y, P.x, 0) / sinTheta;  // dP/dU — latitude-scaled
+float3 B        = cross(P, normalize(T));             // dP/dV — unit
+
+// View vector must be in LOCAL space before projection:
+float3 V_local  = mul(float4(V_world, 0), WorldToLocal).xyz;
+float2 dir;
+dir.x   = dot(V_local, T);
+dir.y   = dot(V_local, B);
+float2 offset = dir * HeightScale;</code></pre>
+
+    <div class="atlas-callout atlas-callout--note">
+      <p><strong>Pole singularity:</strong> the <span class="atlas-code-inline">max(..., 0.05)</span> clamp limits the singularity to a ~3° polar cap. At any reasonable camera distance this cap is visually invisible — the alternative (per-vertex TBN baked in Houdini) costs an extra vertex stream with no perceptible quality gain outside of extreme close-ups.</p>
+    </div>
+
+    <div class="atlas-section-break" data-index="// § 09"></div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       10: CHROMOSPHERE
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="content-block">
+    <h2>10 Layer 6: Chromosphere</h2>
+    <p>The chromosphere is a thin shell of hot plasma above the photosphere, visible primarily at the limb during eclipses. On the disc center it's hidden behind the optically thick photosphere — only at the limb, where we look tangentially through the shell, does it become visible.</p>
+
+    <h3>Fresnel Limb Gate</h3>
+    <p>Fresnel opacity gates the chromosphere off the disc center and opens it fully at the limb:</p>
+
+<div class="atlas-math-block">
+  $$\\text{opacity} = (1 - \\mu)^k, \\quad k \\approx 3$$
+</div>
+
+    <div class="atlas-table-frame">
+      <table class="atlas-table">
+        <thead>
+          <tr><th>CONDITION</th><th>μ VALUE</th><th>OPACITY</th><th>VISUAL RESULT</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Disc center</td><td>μ = 1</td><td>0.00</td><td>Chromosphere invisible — photosphere visible</td></tr>
+          <tr><td>Mid-disc</td><td>μ = 0.5</td><td>≈ 0.13</td><td>Faint bleed, active regions only</td></tr>
+          <tr><td>Limb</td><td>μ = 0</td><td>1.00</td><td>Full chromosphere emission</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Temperature-Driven Color</h3>
+    <p>Unlike the photosphere which stays in the 5500–6400K range, the chromosphere spans a much wider temperature range depending on activity level. Colors are computed analytically to support up to 50,000K — a LUT at that range would require impractical resolution:</p>
+
+    <ul>
+      <li><strong>Quiet chromosphere (~8,000K)</strong> — H-alpha orange-red, visible as the pink ring during total solar eclipses</li>
+      <li><strong>Active regions (~50,000K)</strong> — EUV blue-white, corresponding to extreme ultraviolet emission from superheated plasma in flare regions</li>
+    </ul>
+
+    <p>Spicules are flow-aligned anisotropic FBM, oriented by <span class="atlas-code-inline">BFieldRT.gb</span> flow vectors. World Position Offset extrudes them along the vertex normal — no additional mesh geometry required.</p>
+
+    <div class="atlas-section-break" data-index="// § 10"></div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       11: CORONA
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="content-block">
+    <h2>11 Layer 7: Corona</h2>
+    <p>The K-corona — the inner white corona visible during total eclipses — is not thermal emission. It's Thomson scattering of photosphere light off free electrons in the coronal plasma. The color is approximately the photosphere's spectral distribution — white — not a blackbody curve at coronal temperatures.</p>
+
+    <pre class="atlas-code-block"><code class="language-c">// K-corona: scattered photosphere light, not temperature emission.
+// ThomsonScatterFactor encodes electron column density along the view ray.
+float3 ScatteredColor = SunColor * ThomsonScatterFactor;</code></pre>
+
+    <h3>Magnetic Synchronization</h3>
+    <p>Coronal loops are gated by <span class="atlas-code-inline">BFieldRT.r</span> (Bz magnitude) — they only appear above active regions where the magnetic field is strong enough to confine plasma along closed field lines. Since photosphere spots, chromosphere plages, and coronal loops all sample the same <span class="atlas-code-inline">BFieldRT</span>, spatial alignment is guaranteed with zero additional synchronization cost.</p>
+
+    <div class="atlas-callout atlas-callout--note">
+      <p><strong>Streamers</strong> are multi-layer FBM noise with flow-aligned anisotropy — the same flow vectors from <span class="atlas-code-inline">BFieldRT.gb</span> that drive chromospheric spicules. Three parallax depth layers provide visual depth without raymarching cost: the parallax offset fakes the volumetric feel of a thick streamer belt.</p>
+    </div>
+
+    <div class="atlas-section-break" data-index="// § 11"></div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       12: CINEMATIC GRADE
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="content-block">
+    <h2>12 Cinematic Grade</h2>
+    <p>Physical blackbody output for a real sun at 5778K is perceptually nearly white — correct physics, poor cinematics. A grade module (<span class="atlas-code-inline">SunGrade.ush</span>) sits between the LUT sample and the final compositor, operating entirely in linear space to preserve HDR fidelity.</p>
+
+    <div class="atlas-table-frame atlas-table-frame--solid">
+      <div class="atlas-table-header-solid">[ CINEMATIC_PRESETS // SUNGRADE.USH ]</div>
+      <table class="atlas-table">
+        <thead>
+          <tr><th>PRESET</th><th>CHARACTER</th><th>USE CASE</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="atlas-code-inline">PresetGolden</span></td><td>Warm cinematic sun</td><td>Realistic daytime, hero shots</td></tr>
+          <tr><td><span class="atlas-code-inline">PresetTealOrange</span></td><td>Split-tone grade</td><td>Cinematic contrast, stylized</td></tr>
+          <tr><td><span class="atlas-code-inline">PresetBlueGiant</span></td><td>Cold sci-fi star</td><td>O/B-type star simulation</td></tr>
+          <tr><td><span class="atlas-code-inline">PresetPhysical</span></td><td>Unmodified physics output</td><td>Scientific visualization</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="atlas-section-break" data-index="// § 12"></div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       13: NIAGARA PROMINENCES
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="content-block">
+    <h2>13 Niagara: Solar Prominences</h2>
+    <p>A separate Niagara emitter system handles solar prominences — large magnetic plasma arcs above the chromosphere. The core challenge was GPU-stable particle pairing: prominences require particle pairs (arc start / arc end), and maintaining stable pairs across frames on the GPU is a non-trivial synchronization problem.</p>
+
+    <div class="media-frame">
+      <div class="gallery-grid gallery-grid--2col">
+        <img src="https://static.wixstatic.com/media/ace175_b1152c1cb0cb4a418c3909663b2d970b~mv2.png/v1/fill/w_608,h_608,fp_0.50_0.50,q_90/ace175_b1152c1cb0cb4a418c3909663b2d970b~mv2.webp" alt="Solar prominence arc 1">
+        <img src="https://static.wixstatic.com/media/ace175_ba8b96f230df4aa9875250d0fd3435b6~mv2.png/v1/fill/w_610,h_608,fp_0.50_0.50,q_90/ace175_ba8b96f230df4aa9875250d0fd3435b6~mv2.webp" alt="Solar prominence arc 2">
+      </div>
+      <div class="media-caption">Fig 13: Niagara solar prominences — GPU particle pairing via adapted Gale-Shapley algorithm.</div>
+    </div>
+
+    <h3>Gale-Shapley Stable Matching on GPU</h3>
+    <p>The solution uses an adapted Gale-Shapley stable matching algorithm across three Generic Simulation Stages:</p>
+
+    <ul>
+      <li><strong>FillGrid</strong> — populate a <span class="atlas-code-inline">NeighborGrid3D</span> with particle positions</li>
+      <li><strong>FindAndPropose</strong> — each particle proposes to its nearest neighbor</li>
+      <li><strong>ValidateAndPair</strong> — validate mutual proposals, write stable pairs via <span class="atlas-code-inline">InterlockedMin / InterlockedMax</span></li>
+    </ul>
+
+    <h3>Compiler-Level Issues Encountered</h3>
+
+    <div class="atlas-table-frame">
+      <table class="atlas-table">
+        <thead>
+          <tr><th>ISSUE</th><th>SYMPTOM</th><th>FIX</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="atlas-code-inline">[unroll]</span> on dynamic-bound loops</td><td>DXC compiler hang in UE 5.7</td><td>Removed, replaced with explicit fixed-count loops</td></tr>
+          <tr><td><span class="atlas-code-inline">AttributeReader</span> timing</td><td>Returns T-1 frame data</td><td>Explicit one-frame delay in ValidateAndPair stage</td></tr>
+          <tr><td><span class="atlas-code-inline">RWBuffer</span> write collisions</td><td>Unstable pairs under contention</td><td>Lane ordering via InterlockedMin / InterlockedMax</td></tr>
+          <tr><td><span class="atlas-code-inline">NeighborGrid3D</span> fill failure</td><td>Grid silently empty on GPU</td><td>Explicit SimulationToUnit matrix recalibration</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Arc geometry is shaped via a sine-envelope lift along interpolated surface normals, with a shared <span class="atlas-code-inline">RibbonID</span> per pair for the ribbon renderer.</p>
+
+    <div class="atlas-section-break" data-index="// § 13"></div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       14: CURRENT STATUS
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="content-block">
+    <h2>14 Current Status</h2>
+
+    <div class="comparison-matrix">
+      <div class="comp-col">
+        <div class="comp-label">✓ DONE</div>
+        <div class="comp-body">
+          <ul>
+            <li>Photosphere: granulation, sunspots (umbra / penumbra / fibrils), temperature pipeline, limb darkening, POM, cinematic grade</li>
+            <li>Chromosphere: spicules, plages, Fresnel limb opacity, WPO extrusion</li>
+            <li>Corona: K-corona, streamers, coronal loops, Bz synchronization</li>
+            <li>Compute shader: BField RT, spot generation, RDG dispatch pipeline</li>
+            <li>C++ plugin: Blueprint API, WorldSubsystem lifecycle, editor subsystem</li>
+          </ul>
+        </div>
+      </div>
+      <div class="comp-col">
+        <div class="comp-label">⟳ IN PROGRESS</div>
+        <div class="comp-body">
+          <ul>
+            <li>Niagara prominences: pairing algorithm stable, arc ribbon renderer in progress</li>
+            <li>Houdini reference simulation: separate post — VEX magnetic field sim used as ground truth for the HLSL approximations</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
 
   <!-- ══════════════════════════════════════════════════════════════
        EOF + REFS
@@ -738,12 +1054,36 @@ RWMagneticField[DispatchID.xy] = saturate(Bz * FieldStrength);</code></pre>
             <br><a href="https://pavelzosim.github.io/sun-shader-granulation/" class="atlas-ref-link" target="_top">pavelzosim.github.io/sun-shader-granulation</a>
           </div>
         </li>
+        <li class="atlas-ref-item">
+          <span class="atlas-ref-num">[05]</span>
+          <div>
+            <span class="atlas-ref-tag">PAPER</span>
+            <span class="atlas-ref-author">Neckel H., Labs D.</span> — Solar limb darkening 1986–1990. Solar Physics, 153, 1994.
+            <br><a href="https://link.springer.com/article/10.1007/BF00712494" class="atlas-ref-link" target="_top">link.springer.com — Neckel &amp; Labs 1994</a>
+          </div>
+        </li>
+        <li class="atlas-ref-item">
+          <span class="atlas-ref-num">[06]</span>
+          <div>
+            <span class="atlas-ref-tag">PAPER</span>
+            <span class="atlas-ref-author">Claret A.</span> — A new non-linear limb-darkening law for LTE stellar atmosphere models. A&amp;A, 363, 2000.
+            <br><a href="https://ui.adsabs.harvard.edu/abs/2000A%26A...363.1081C" class="atlas-ref-link" target="_top">ui.adsabs.harvard.edu — Claret 2000</a>
+          </div>
+        </li>
+        <li class="atlas-ref-item">
+          <span class="atlas-ref-num">[07]</span>
+          <div>
+            <span class="atlas-ref-tag">DOCS</span>
+            <span class="atlas-ref-author">Epic Games</span> — Niagara Simulation Stages. Unreal Engine 5 Documentation.
+            <br><a href="https://docs.unrealengine.com/5.0/en-US/niagara-simulation-stages-in-unreal-engine/" class="atlas-ref-link" target="_top">docs.unrealengine.com — Niagara Simulation Stages</a>
+          </div>
+        </li>
       </ul>
     </div>
 
     <div class="atlas-eof-divider">
       <span class="atlas-eof-divider__line"></span>
-      <span class="atlas-eof-divider__meta">// END OF SESSION // SOL_RND_01 // EOF</span>
+      <span class="atlas-eof-divider__meta">// END OF LOG // SOL_RND_01 // SECTIONS 01–14 // EOF</span>
       <span class="atlas-eof-divider__line"></span>
     </div>
   </div>
@@ -859,11 +1199,6 @@ function applyData(d) {
     .catch(e => console.error('[ATLAS] Footer failed:', e));
 }());
 </script>
-
-
-
-
-
 
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 

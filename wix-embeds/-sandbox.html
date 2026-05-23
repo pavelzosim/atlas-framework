@@ -3,200 +3,1182 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unity ShaderLab Cheatsheet — Atlas Framework</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@639513919528ea3b53498b357ad9694d90d6db69/cdn/atlas-framework.css">  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@v1.9.5/cdn/atlas-framework.css?v=1.9.5">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+
+  <style>
+    html, body { margin: 0; padding: 0; background: transparent; }
+    .atlas-container { width: 100%; max-width: 900px; margin: 0 auto; padding: 0 16px; }
+
+    /* ── TOC (inline) ─────────────────────────────────────── */
+    .atlas-container .content-block .atlas-toc{position:relative;border:1px solid rgba(0,0,0,.15);padding:34px 0 8px;margin:24px 0;width:100%}
+    .atlas-container .content-block .atlas-toc::before{content:"[ TABLE_OF_CONTENTS // NAVIGATION ]";position:absolute;top:0;left:0;right:0;height:24px;line-height:24px;padding-left:16px;font-size:9px;font-weight:700;color:rgba(0,0,0,.45);background:rgba(0,0,0,.015);border-bottom:1px solid rgba(0,0,0,.12);letter-spacing:.06em;font-family:'JetBrains Mono',monospace}
+    .atlas-container .content-block .atlas-toc__list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column}
+    .atlas-container .content-block .atlas-toc__item{display:grid;grid-template-columns:32px 1fr;align-items:center;border-bottom:1px dashed rgba(0,0,0,.12);transition:background .1s}
+    .atlas-container .content-block .atlas-toc__item:last-child{border-bottom:none}
+    .atlas-container .content-block .atlas-toc__item:hover{background:rgba(0,0,0,.02)}
+    .atlas-container .content-block .atlas-toc__item a{display:contents;text-decoration:none;color:inherit}
+    .atlas-container .content-block .atlas-toc__item:hover .atlas-toc__num,
+    .atlas-container .content-block .atlas-toc__item:hover .atlas-toc__title{color:#8b0000}
+    .atlas-container .content-block .atlas-toc__num{font-size:9px;font-weight:700;color:rgba(0,0,0,.35);padding:7px 0 7px 16px;letter-spacing:.04em;transition:color .1s}
+    .atlas-container .content-block .atlas-toc__row{display:flex;align-items:center;gap:4px;padding:7px 16px 7px 8px;overflow:hidden}
+    .atlas-container .content-block .atlas-toc__title{font-size:12px;font-weight:700;color:#000;white-space:nowrap;flex-shrink:0;transition:color .1s}
+    .atlas-container .content-block .atlas-toc__dots{flex:1;border-bottom:1px dotted rgba(0,0,0,.15);min-width:12px;height:0;align-self:center;margin-bottom:2px}
+    .atlas-container .content-block .atlas-toc__item--h3 .atlas-toc__title{font-size:11px;font-weight:400;color:rgba(0,0,0,.7);padding-left:14px}
+    .atlas-container .content-block .atlas-toc__item--h3 .atlas-toc__num{color:rgba(0,0,0,.2)}
+    .atlas-container .content-block .atlas-toc__item--h4 .atlas-toc__title{font-size:10px;font-weight:400;color:rgba(0,0,0,.5);padding-left:28px}
+    .atlas-container .content-block .atlas-toc__item--h4 .atlas-toc__num{color:rgba(0,0,0,.15)}
+
+    /* ── Pipeline status badges ───────────────────────────── */
+    .pipeline-badge {
+      display: inline-block;
+      font-size: 9px; font-weight: 700; letter-spacing: .06em;
+      text-transform: uppercase; padding: 1px 6px;
+      border: 1px solid; vertical-align: middle;
+    }
+    .pipeline-badge--ok   { color: var(--atlas-ok);   border-color: var(--atlas-ok); }
+    .pipeline-badge--warn { color: var(--atlas-warn);  border-color: var(--atlas-warn); }
+    .pipeline-badge--crit { color: var(--atlas-crit);  border-color: var(--atlas-crit); }
+
+    /* ── Pipeline flow diagram ────────────────────────────── */
+    .atlas-pipeline-flow {
+      border: 1px solid rgba(0,0,0,.15);
+      padding: 16px;
+      margin: 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .atlas-pipeline-step {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 0;
+      align-items: baseline;
+      padding: 7px 0;
+      border-bottom: 1px dashed rgba(0,0,0,.1);
+      font-size: 12px;
+    }
+    .atlas-pipeline-step:last-child { border-bottom: none; }
+    .atlas-pipeline-step__num {
+      font-size: 9px; font-weight: 700;
+      color: var(--atlas-crit); padding-top: 1px;
+    }
+    .atlas-pipeline-step__label { font-weight: 700; color: var(--atlas-ink); }
+    .atlas-pipeline-step__desc  { color: var(--atlas-ink-soft); font-size: 11px; margin-top: 1px; }
+
+    /* ── Blend equation display ───────────────────────────── */
+    .blend-eq {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      background: var(--atlas-bg-alt);
+      border: 1px solid var(--atlas-border);
+      padding: 8px 14px;
+      margin: 8px 0;
+      color: var(--atlas-ink);
+    }
+    .blend-eq strong { color: var(--atlas-crit); }
+
+    /* ── Gallery fix ──────────────────────────────────────── */
+    .atlas-container .content-block .gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;width:100%}
+    .atlas-container .content-block .gallery-grid img{display:block;width:100%;height:220px;object-fit:cover;border:1px solid rgba(0,0,0,.15)}
+    .atlas-container .content-block .media-frame:has(.gallery-grid)::before{content:"[ GALLERY // IMAGE_SEQUENCE ]"}
+    .atlas-container .content-block .media-frame > .gallery-grid{margin:0;width:100%}
+
+    /* ── refs inline ──────────────────────────────────────── */
+    .atlas-container .content-block .atlas-refs{position:relative;border:1px solid rgba(0,0,0,.15);padding:34px 16px 16px;margin:24px 0;width:100%}
+    .atlas-container .content-block .atlas-refs::before{content:"[ REFERENCES // ИСТОЧНИКИ ]";position:absolute;top:0;left:0;right:0;height:24px;line-height:24px;padding-left:16px;font-size:9px;font-weight:700;color:rgba(0,0,0,.45);background:rgba(0,0,0,.015);border-bottom:1px solid rgba(0,0,0,.12);letter-spacing:.06em;font-family:'JetBrains Mono',monospace}
+    .atlas-container .content-block .atlas-ref-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0}
+    .atlas-container .content-block .atlas-ref-item{display:grid;grid-template-columns:28px 1fr;align-items:baseline;font-size:12px;line-height:1.6;color:rgba(0,0,0,.85);padding:8px 0;border-bottom:1px dashed rgba(0,0,0,.12)}
+    .atlas-container .content-block .atlas-ref-item:last-child{border-bottom:none}
+    .atlas-container .content-block .atlas-ref-num{font-size:9px;font-weight:700;color:#8b0000;letter-spacing:.04em}
+    .atlas-container .content-block .atlas-ref-tag{display:inline-block;font-size:9px;font-weight:700;color:rgba(0,0,0,.45);border:1px solid rgba(0,0,0,.2);padding:0 5px;margin-right:6px;vertical-align:middle}
+    .atlas-container .content-block .atlas-ref-author{color:rgba(0,0,0,.5)}
+    .atlas-container .content-block .atlas-ref-link{display:inline-block;margin-top:2px;font-size:10px;color:#8b0000;text-decoration:none;border-bottom:1px solid rgba(139,0,0,.2);transition:border-color .15s}
+    .atlas-container .content-block .atlas-ref-link::before{content:'→ ';font-weight:700}
+    .atlas-container .content-block .atlas-ref-link:hover{border-bottom-color:#8b0000}
+  </style>
 </head>
 <body>
-
 <div class="atlas-container">
-  <div id="site-passport"></div>
-  <div class="content-block">
-    
-  <h2>01 COMPONENT SPECIFICATION & CORE ROOT RULES</h2>
-  <p>This structural paragraph defines how text tokens inside the canvas container inherit general rules from the main layout. Every element requires strict baseline alignment to eliminate vertical positioning noise.</p>
 
-  <h3>TYPOGRAPHY FLOW & INLINE ENGINE VARIABLES</h3>
-  <h4>HIERARCHY VALIDATION</h4>
-  <p>The boundary conditions for the system require strict separation of execution passes. The final rendering state vector can be evaluated using the following tensor decomposition pipeline, transfiguring mathematical constraints into execution logic:</p>
-  
-  <div class="atlas-math-block">
-    $$\mathbf{V}_{\text{state}} = \sum_{i=1}^{N} \alpha_i \cdot \int_{\Omega} f_i(x) \, d\Omega$$
+  <div id="site-passport"></div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       TOC
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="content-block">
+    <div class="atlas-toc">
+      <ul class="atlas-toc__list">
+        <li class="atlas-toc__item atlas-toc__item--h2"><a href="#s01"><span class="atlas-toc__num">01</span><span class="atlas-toc__row"><span class="atlas-toc__title">Introduction — ShaderLab vs CG/HLSL</span><span class="atlas-toc__dots"></span></span></a></li>
+        <li class="atlas-toc__item atlas-toc__item--h3"><a href="#s01-timeline"><span class="atlas-toc__num">—</span><span class="atlas-toc__row"><span class="atlas-toc__title">Timeline & Pipeline Status (2024–2026)</span><span class="atlas-toc__dots"></span></span></a></li>
+        <li class="atlas-toc__item atlas-toc__item--h3"><a href="#s01-matrix"><span class="atlas-toc__num">—</span><span class="atlas-toc__row"><span class="atlas-toc__title">Production Architecture Matrix</span><span class="atlas-toc__dots"></span></span></a></li>
+        <li class="atlas-toc__item atlas-toc__item--h2"><a href="#s02"><span class="atlas-toc__num">02</span><span class="atlas-toc__row"><span class="atlas-toc__title">GPU Execution Pipeline</span><span class="atlas-toc__dots"></span></span></a></li>
+        <li class="atlas-toc__item atlas-toc__item--h3"><a href="#s02-code"><span class="atlas-toc__num">—</span><span class="atlas-toc__row"><span class="atlas-toc__title">Basic Color Shader — Full Blueprint</span><span class="atlas-toc__dots"></span></span></a></li>
+        <li class="atlas-toc__item atlas-toc__item--h2"><a href="#s03"><span class="atlas-toc__num">03</span><span class="atlas-toc__row"><span class="atlas-toc__title">Shader Identity & Property Binding</span><span class="atlas-toc__dots"></span></span></a></li>
+        <li class="atlas-toc__item atlas-toc__item--h3"><a href="#s03-drawers"><span class="atlas-toc__num">—</span><span class="atlas-toc__row"><span class="atlas-toc__title">Drawer Attributes Reference</span><span class="atlas-toc__dots"></span></span></a></li>
+        <li class="atlas-toc__item atlas-toc__item--h2"><a href="#s04"><span class="atlas-toc__num">04</span><span class="atlas-toc__row"><span class="atlas-toc__title">SubShader Setup — Tags & Queue</span><span class="atlas-toc__dots"></span></span></a></li>
+        <li class="atlas-toc__item atlas-toc__item--h2"><a href="#s05"><span class="atlas-toc__num">05</span><span class="atlas-toc__row"><span class="atlas-toc__title">Blending Modes</span><span class="atlas-toc__dots"></span></span></a></li>
+        <li class="atlas-toc__item atlas-toc__item--h2"><a href="#s06"><span class="atlas-toc__num">06</span><span class="atlas-toc__row"><span class="atlas-toc__title">AlphaToMask & ColorMask</span><span class="atlas-toc__dots"></span></span></a></li>
+        <li class="atlas-toc__item atlas-toc__item--h2"><a href="#s07"><span class="atlas-toc__num">07</span><span class="atlas-toc__row"><span class="atlas-toc__title">Culling, ZWrite, ZTest & Stencil</span><span class="atlas-toc__dots"></span></span></a></li>
+        <li class="atlas-toc__item atlas-toc__item--h2"><a href="#s08"><span class="atlas-toc__num">08</span><span class="atlas-toc__row"><span class="atlas-toc__title">CGPROGRAM / HLSLPROGRAM Reference</span><span class="atlas-toc__dots"></span></span></a></li>
+        <li class="atlas-toc__item atlas-toc__item--h2"><a href="#s09"><span class="atlas-toc__num">09</span><span class="atlas-toc__row"><span class="atlas-toc__title">Vertex & Fragment Stages — Data Structures</span><span class="atlas-toc__dots"></span></span></a></li>
+        <li class="atlas-toc__item atlas-toc__item--h3"><a href="#s09-sv"><span class="atlas-toc__num">—</span><span class="atlas-toc__row"><span class="atlas-toc__title">SV Semantics Matrix</span><span class="atlas-toc__dots"></span></span></a></li>
+        <li class="atlas-toc__item atlas-toc__item--h2"><a href="#s10"><span class="atlas-toc__num">10</span><span class="atlas-toc__row"><span class="atlas-toc__title">Data Types & Precision</span><span class="atlas-toc__dots"></span></span></a></li>
+        <li class="atlas-toc__item atlas-toc__item--h2"><a href="#s11"><span class="atlas-toc__num">11</span><span class="atlas-toc__row"><span class="atlas-toc__title">Intrinsic Functions Reference</span><span class="atlas-toc__dots"></span></span></a></li>
+      </ul>
+    </div>
   </div>
 
-  <pre class="atlas-code-block"><code class="language-c">/* fig 01.1: Core hardware pass declaration 
-     Responsibility: Low-level state vector assignment */
-void ExecuteForwardBasePass() {
-    int zWriteState = 0; // ZWrite Off
-    float4 blendMode = GetAlphaBlend();
-    
-    // Core state execution boundary validation
-    if (zWriteState == 0) {
-        float4 fragColor = float4(1.0, 0.0, 0.0, 1.0);
-        SubmitFrameBuffer(fragColor);
+
+  <!-- ══════════════════════════════════════════════════════════════
+       01: INTRODUCTION
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="content-block">
+    <h2 id="s01">01 Introduction — ShaderLab vs CG/HLSL</h2>
+    <p>This is a structured, production-oriented reference for technical artists working with hand-written shaders in Unity. It covers shader code structure, property declaration, GPU execution flow, and pipeline-specific differences across BiRP, URP, and HDRP.</p>
+
+    <div class="comparison-matrix">
+      <div class="comp-col">
+        <div class="comp-label">Δ1 // CG_HLSL_PROGRAM — Core</div>
+        <div class="comp-body">Low-level GPU execution language. Shader code lives inside <span class="atlas-code-inline">CGPROGRAM / ENDCG</span> (legacy) or <span class="atlas-code-inline">HLSLPROGRAM / ENDHLSL</span> (modern SRP) blocks. Compiled directly to GPU bytecode.</div>
+      </div>
+      <div class="comp-col">
+        <div class="comp-label">Δ2 // SHADERLAB — Wrapper</div>
+        <div class="comp-body">Unity-specific declarative layer. Defines properties, SubShaders, passes, and fallback states. Orchestrates how your HLSL code connects to the Material Inspector UI and the rendering pipeline.</div>
+      </div>
+    </div>
+
+    <h3 id="s01-timeline">Timeline & Pipeline Status (2024–2026)</h3>
+
+    <div class="atlas-callout atlas-callout--important">
+      <p><strong>Strategy shift (2026):</strong> Unity has officially consolidated all graphics engineering into URP. HDRP enters maintenance mode. BiRP deprecation begins in Unity 6.5 — supported through 6.7 LTS (~2028) for Enterprise, then EOL.</p>
+    </div>
+
+    <h4>[ 2024 ] Legacy Cleansing & SRP Convergence</h4>
+    <ul>
+      <li><strong>CGPROGRAM fully deprecated</strong> in URP/HDRP. <span class="atlas-code-inline">HLSLPROGRAM / ENDHLSL</span> is mandatory for modern shader target compatibility.</li>
+      <li><strong>URP 3D Textures (v12+):</strong> Stable native support for volumetric effects within Universal pipeline.</li>
+      <li><strong>Render Graph Architecture:</strong> Initial framework convergence aligning URP and HDRP execution passes under the hood.</li>
+    </ul>
+
+    <h4>[ 2025 ] Unity 6 Production Lifecycle</h4>
+    <ul>
+      <li><strong>GPU Resident Drawer & Render Graph:</strong> Massive draw-call reduction via hardware-driven data residency and automatic frame-graph optimization.</li>
+      <li><strong>Unity 6.1 — Deferred+ & VRS:</strong> <span class="atlas-code-inline">Deferred+</span> rendering path in URP + native Variable Rate Shading for modern hardware.</li>
+      <li><strong>Advanced Feature Reflow:</strong> Motion Vectors, Enhanced Alpha Processing, Lights 2D upgrades — URP approaching old HDRP feature parity.</li>
+    </ul>
+
+    <h4>[ 2026 ] The Single Architecture Push</h4>
+    <ul>
+      <li><strong>URP as master pipeline</strong> — receives Physical Light Units, Auto-Exposure, Physical Sky, SSR, and real-time GI previously locked to HDRP.</li>
+      <li><strong>HDRP frozen</strong> — stability, bug fixes, Nintendo Switch 2 preview only.</li>
+      <li><strong>BiRP EOL begins Unity 6.5</strong> — all Asset Store assets and docs transition to URP defaults.</li>
+    </ul>
+
+    <h3 id="s01-matrix">Production Architecture Matrix (2026+)</h3>
+
+    <div class="atlas-table-frame atlas-table-frame--solid">
+      <div class="atlas-table-header-solid">[ PIPELINE_STATUS // 2026 ]</div>
+      <table class="atlas-table">
+        <thead>
+          <tr><th>PIPELINE</th><th>STATUS</th><th>SHADER BLOCK</th><th>TARGET HARDWARE</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Universal (URP)</strong></td>
+            <td><span class="pipeline-badge pipeline-badge--ok">ACTIVE / PRIMARY</span></td>
+            <td><span class="atlas-code-inline">HLSLPROGRAM</span> mandatory</td>
+            <td>Mobile, Web, XR, High-End Console</td>
+          </tr>
+          <tr>
+            <td><strong>High Definition (HDRP)</strong></td>
+            <td><span class="pipeline-badge pipeline-badge--warn">MAINTENANCE</span></td>
+            <td><span class="atlas-code-inline">HLSLPROGRAM</span> mandatory</td>
+            <td>High-End PC / Gen 9 / Switch 2</td>
+          </tr>
+          <tr>
+            <td><strong>Built-in (BiRP)</strong></td>
+            <td><span class="pipeline-badge pipeline-badge--crit">DEPRECATED 6.5</span></td>
+            <td><span class="atlas-code-inline">CGPROGRAM</span> legacy only</td>
+            <td>Frozen / LTS until ~2028</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="atlas-table-frame">
+      <table class="atlas-table">
+        <thead>
+          <tr><th>CAPABILITY</th><th>BiRP (Legacy)</th><th>URP (Primary)</th><th>HDRP (Maintenance)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Status</td><td><span class="pipeline-badge pipeline-badge--crit">DEPRECATED</span></td><td><span class="pipeline-badge pipeline-badge--ok">PRIMARY</span></td><td><span class="pipeline-badge pipeline-badge--warn">MAINTENANCE</span></td></tr>
+          <tr><td>Ray Traced AO</td><td>None</td><td>Limited / Unified RT</td><td><span class="pipeline-badge pipeline-badge--ok">Full DX12/Vulkan</span></td></tr>
+          <tr><td>Ray Traced GI</td><td>None</td><td>SS + New RT GI (2026)</td><td><span class="pipeline-badge pipeline-badge--ok">Full support</span></td></tr>
+          <tr><td>Screen Space Reflections</td><td>Basic</td><td><span class="pipeline-badge pipeline-badge--ok">New 2026</span></td><td><span class="pipeline-badge pipeline-badge--ok">Advanced</span></td></tr>
+          <tr><td>Physical Light Units</td><td>None</td><td><span class="pipeline-badge pipeline-badge--ok">Integrated 2026</span></td><td><span class="pipeline-badge pipeline-badge--ok">Full</span></td></tr>
+          <tr><td>Variable Rate Shading</td><td>None</td><td><span class="pipeline-badge pipeline-badge--ok">Supported</span></td><td><span class="pipeline-badge pipeline-badge--ok">Supported</span></td></tr>
+          <tr><td>Deferred Rendering</td><td>Native</td><td><span class="pipeline-badge pipeline-badge--ok">Deferred+ Unity 6+</span></td><td><span class="pipeline-badge pipeline-badge--ok">Advanced Path</span></td></tr>
+          <tr><td>Shader Model Target</td><td>~3.0–5.0</td><td>4.5–6.5+ (HLSLPROGRAM)</td><td>6.5+ (HLSLPROGRAM)</td></tr>
+          <tr><td>Custom Shader Code</td><td><span class="atlas-code-inline">CGPROGRAM</span></td><td><span class="atlas-code-inline">HLSLPROGRAM</span></td><td><span class="atlas-code-inline">HLSLPROGRAM</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="atlas-section-break" data-index="// § 01"></div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       02: GPU EXECUTION PIPELINE
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="content-block">
+    <h2 id="s02">02 GPU Execution Pipeline</h2>
+    <p>The GPU reads shader code sequentially, top to bottom. The execution pipeline inside a <span class="atlas-code-inline">CGPROGRAM / HLSLPROGRAM</span> block follows a strict stage sequence:</p>
+
+    <div class="atlas-pipeline-flow">
+      <div class="atlas-pipeline-step">
+        <span class="atlas-pipeline-step__num">1</span>
+        <div><div class="atlas-pipeline-step__label">Properties</div><div class="atlas-pipeline-step__desc">Material Inspector parameters — textures, vectors, colors, floats.</div></div>
+      </div>
+      <div class="atlas-pipeline-step">
+        <span class="atlas-pipeline-step__num">2</span>
+        <div><div class="atlas-pipeline-step__label">SubShader Setup</div><div class="atlas-pipeline-step__desc">Hardware tags, render states, LOD, compilation passes.</div></div>
+      </div>
+      <div class="atlas-pipeline-step">
+        <span class="atlas-pipeline-step__num">3</span>
+        <div><div class="atlas-pipeline-step__label">Variables & Structures</div><div class="atlas-pipeline-step__desc">Global uniforms, CBUFFER blocks, Attributes / Varyings / appdata / v2f.</div></div>
+      </div>
+      <div class="atlas-pipeline-step">
+        <span class="atlas-pipeline-step__num">4</span>
+        <div><div class="atlas-pipeline-step__label">Helper Functions</div><div class="atlas-pipeline-step__desc">Math utilities, lighting functions — must be declared before use (forward eval only).</div></div>
+      </div>
+      <div class="atlas-pipeline-step">
+        <span class="atlas-pipeline-step__num">5</span>
+        <div><div class="atlas-pipeline-step__label">Vertex Shader</div><div class="atlas-pipeline-step__desc">Per-vertex: object-space → clip-space geometry transformation.</div></div>
+      </div>
+      <div class="atlas-pipeline-step">
+        <span class="atlas-pipeline-step__num">6</span>
+        <div><div class="atlas-pipeline-step__label">Rasterization</div><div class="atlas-pipeline-step__desc">Fixed-function hardware stage: primitives → pixel fragments. No sort guarantee.</div></div>
+      </div>
+      <div class="atlas-pipeline-step">
+        <span class="atlas-pipeline-step__num">7</span>
+        <div><div class="atlas-pipeline-step__label">Fragment Shader</div><div class="atlas-pipeline-step__desc">Per-pixel: texturing, lighting, final color. Massive parallel execution — no ordering.</div></div>
+      </div>
+      <div class="atlas-pipeline-step">
+        <span class="atlas-pipeline-step__num">8</span>
+        <div><div class="atlas-pipeline-step__label">Frame Buffer</div><div class="atlas-pipeline-step__desc">Output: alpha blending, depth/stencil testing, raster presentation.</div></div>
+      </div>
+    </div>
+
+    <div class="atlas-callout atlas-callout--note">
+      <p><strong>Execution rules:</strong> Functions must be declared before they are called. The Vertex stage always completes before the Fragment stage. The hardware processes thousands of vertices and pixels simultaneously — there is zero ordering guarantee within the same stage.</p>
+    </div>
+
+    <h3 id="s02-code">Basic Color Shader — Full Blueprint (URP)</h3>
+    <p>Production-ready unlit shader demonstrating how ShaderLab properties bind to uniform variables inside the HLSL stages:</p>
+
+    <pre class="atlas-code-block"><code class="language-c">Shader "Custom/Pipeline/BasicColor"
+{
+    Properties
+    {
+        _Color ("Main Color", Color) = (1.0, 1.0, 1.0, 1.0)
+    }
+
+    SubShader
+    {
+        Tags
+        {
+            "RenderType"     = "Opaque"
+            "RenderPipeline" = "UniversalPipeline"
+        }
+
+        Pass
+        {
+            Name "ForwardLit"
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+            // CPU → Vertex Shader
+            struct Attributes { float4 positionOS : POSITION; };
+            // Vertex Shader → Fragment Shader
+            struct Varyings   { float4 positionCS : SV_POSITION; };
+
+            // Uniform buffer — SRP Batcher compatible
+            CBUFFER_START(UnityPerMaterial)
+                half4 _Color;
+            CBUFFER_END
+
+            Varyings vert(Attributes input)
+            {
+                Varyings output;
+                output.positionCS = TransformObjectToHClip(input.positionOS.xyz);
+                return output;
+            }
+
+            half4 frag(Varyings input) : SV_Target
+            {
+                return _Color;  // uniform color from Material Inspector
+            }
+            ENDHLSL
+        }
     }
 }</code></pre>
 
-  <p>Primary rasterization constraints and geometry data blocks operate alongside secondary illumination evaluation parameters, including specular highlights lookup distribution metrics and diffuse ambient occlusion approximation factors to secure target frame execution bounds.</p>
-
-  <div class="media-frame">
-    <img src="path/to/image.png" alt="Engineering Diagram">
-    <div class="media-caption">Fig 02: Structural analysis of the data conduit.</div>
-  </div>
-
-  <div class="media-frame">
-    <video controls>
-      <source src="path/to/video.mp4" type="video/mp4">
-    </video>
-    <div class="media-caption">Video 01: Dynamic load simulation.</div>
-  </div>
-
-  <div class="media-frame">
-    <div class="gallery-grid">
-      <img src="img1.png" alt="Sequence 1">
-      <img src="img2.png" alt="Sequence 2">
-      <img src="img3.png" alt="Sequence 3">
+    <div class="atlas-callout atlas-callout--note">
+      <p><strong>CBUFFER / SRP Batcher:</strong> wrapping <span class="atlas-code-inline">_Color</span> in <span class="atlas-code-inline">UnityPerMaterial</span> constant buffer enables the SRP Batcher — GPU caches material data across draw calls. Without it the Batcher silently falls back to non-batched mode.</p>
     </div>
-    <div class="media-caption">Gallery 01: Comparative test sequences.</div>
+
+    <div class="atlas-section-break" data-index="// § 02"></div>
   </div>
 
-  <div class="comparison-matrix">
-    <div class="comp-col">
-      <div class="comp-label">Δ1 // LABEL_A</div>
-      <div class="comp-body">Текст для первой колонки.</div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       03: PROPERTIES & DRAWERS
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="content-block">
+    <h2 id="s03">03 Shader Identity & Property Binding</h2>
+    <p>Two tasks happen at the top of every shader file: establish the shader's identity (namespace path for Unity's database and Inspector menus) and declare Inspector-editable properties. Properties expose textures, colors, floats, and vectors to the Material Inspector — they drive runtime behavior by updating uniform buffers without triggering shader recompilation.</p>
+
+    <pre class="atlas-code-block"><code class="language-c">Shader "Custom/Pipeline/ExampleFlow"
+{
+    Properties
+    {
+        // Display Name       Type             Default
+        _Color   ("Color",    Color)         = (1, 1, 1, 1)
+        _MainTex ("Texture",  2D)            = "white" {}
+        _Value   ("Strength", Range(0, 1))   = 0.5
+        _VecProp ("Vector",   Vector)        = (0, 0, 0, 0)
+        _IntVal  ("Count",    Integer)       = 4
+    }
+    // ... SubShader follows
+}</code></pre>
+
+    <div class="atlas-callout atlas-callout--note">
+      <p>No semicolons at the end of Properties lines in ShaderLab syntax. Semicolons are for HLSL code inside <span class="atlas-code-inline">HLSLPROGRAM</span> blocks only.</p>
     </div>
-    <div class="comp-col">
-      <div class="comp-label">Δ2 // LABEL_B</div>
-      <div class="comp-body">Текст для второй колонки.</div>
+
+    <h3 id="s03-drawers">Drawer Attributes Reference</h3>
+    <p>Drawers modify how properties appear in the Material Inspector. They go in square brackets before the property declaration.</p>
+
+    <h4>Organization Drawers</h4>
+    <pre class="atlas-code-block"><code class="language-c">[Header(Rendering Settings)]   // Section label
+[Space(10)]                    // 10px gap
+[HideInInspector] _Internal    // Hidden from artist, readable by code
+[Header(Texture Properties)]
+_MainTex ("Texture", 2D) = "white" {}</code></pre>
+
+    <h4>Range & Numeric Drawers</h4>
+    <pre class="atlas-code-block"><code class="language-c">[PowerSlider(3.0)] _Brightness ("Brightness", Range(0.01, 1)) = 0.08
+[IntRange]         _Samples    ("Samples",    Range(0, 255))  = 100</code></pre>
+
+    <h4>Shader Variant Drawers — Boolean Toggles</h4>
+    <p>ShaderLab has no native boolean type. Toggle and KeywordEnum simulate booleans via float properties and auto-generated keywords:</p>
+
+    <pre class="atlas-code-block"><code class="language-c">[Toggle(ENABLE_FANCY)] _Fancy ("Enable Fancy", Float) = 0
+
+// In shader code:
+#pragma shader_feature _ENABLE_FANCY_ON
+
+#if _ENABLE_FANCY_ON
+    // feature enabled path
+#else
+    // default path
+#endif
+
+// Dropdown with multiple keyword variants:
+[KeywordEnum(None, Add, Multiply)] _Overlay ("Overlay Mode", Float) = 0
+#pragma multi_compile _OVERLAY_NONE _OVERLAY_ADD _OVERLAY_MULTIPLY
+
+// Enum from Unity rendering enums:
+[Enum(UnityEngine.Rendering.BlendMode)]       _Blend    ("Blend Mode",  Float) = 1
+[Enum(UnityEngine.Rendering.CompareFunction)] _ZTest    ("ZTest",       Float) = 0
+[Enum(UnityEngine.Rendering.CullMode)]        _CullMode ("Cull Mode",   Int)   = 0</code></pre>
+
+    <h4>Texture & Color Drawers</h4>
+    <pre class="atlas-code-block"><code class="language-c">[Normal]          _BumpMap   ("Normal Map",      2D)    = "bump"  {}
+[HDR]             _Emission  ("Emission Color",  Color) = (1,1,1,1)
+[Gamma]           _Tint      ("Tint Color",      Color) = (1,1,1,1)
+[PerRendererData] _DetailTex ("Detail Texture",  2D)    = "gray"  {}</code></pre>
+
+    <div class="atlas-callout atlas-callout--note">
+      <p><strong>[HDR]</strong> is critical in HDRP — without it the tonemapper converts emission values incorrectly. <strong>[Gamma]</strong> ensures float properties defined in sRGB space are converted properly when the project uses linear color space.</p>
     </div>
+
+    <div class="atlas-section-break" data-index="// § 03"></div>
   </div>
 
-  <div class="atlas-callout atlas-callout--note">
-    <p>The system maintains consistency by prioritizing atomic operations during state transitions. No manual intervention is required for standard sync sequences.</p>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       04: SUBSHADER — TAGS & QUEUE
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="content-block">
+    <h2 id="s04">04 SubShader Setup — Tags & Queue</h2>
+    <p>Every shader needs at least one SubShader. Unity selects the most compatible SubShader based on target hardware and active render pipeline. Tags are key–value pairs providing essential metadata: draw order, render type, and pipeline-specific behavior.</p>
+
+    <h3>Queue Tags — Draw Order</h3>
+    <p>The render queue determines the order in which objects are drawn. The GPU sorts draw calls by these numerical ranges:</p>
+
+    <div class="atlas-table-frame">
+      <table class="atlas-table">
+        <thead>
+          <tr><th>QUEUE TAG</th><th>RANGE</th><th>DEFAULT</th><th>USE CASE</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="atlas-code-inline">Background</span></td><td>0–1499</td><td>1000</td><td>Skyboxes, distant scenery — renders first</td></tr>
+          <tr><td><span class="atlas-code-inline">Geometry</span></td><td>1500–2399</td><td>2000</td><td>Default for opaque objects</td></tr>
+          <tr><td><span class="atlas-code-inline">AlphaTest</span></td><td>2400–2699</td><td>2450</td><td>Cutout transparency — foliage, vegetation</td></tr>
+          <tr><td><span class="atlas-code-inline">Transparent</span></td><td>2700–3599</td><td>3000</td><td>Transparent — drawn back-to-front</td></tr>
+          <tr><td><span class="atlas-code-inline">Overlay</span></td><td>3600–5000</td><td>4000</td><td>UI, halos, flares — renders last</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>RenderType Tags</h3>
+    <p>Categorizes shaders for global replacement systems (<span class="atlas-code-inline">Camera.RenderWithShader</span>) and post-processing filters:</p>
+
+    <div class="atlas-table-frame">
+      <table class="atlas-table">
+        <thead>
+          <tr><th>RENDERTYPE</th><th>APPLIES TO</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="atlas-code-inline">Opaque</span></td><td>Default for non-transparent materials. Normal, Reflective, terrain shaders.</td></tr>
+          <tr><td><span class="atlas-code-inline">Transparent</span></td><td>Alpha-blended objects: glass, particles, font shaders.</td></tr>
+          <tr><td><span class="atlas-code-inline">TransparentCutout</span></td><td>Alpha-tested (masked) materials: foliage, two-pass vegetation.</td></tr>
+          <tr><td><span class="atlas-code-inline">Background</span></td><td>Skyboxes and distant scenery.</td></tr>
+          <tr><td><span class="atlas-code-inline">Overlay</span></td><td>GUITexture, Halo, Flare shaders.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Additional Tags</h3>
+
+    <div class="atlas-table-frame">
+      <table class="atlas-table">
+        <thead>
+          <tr><th>TAG</th><th>VALUES</th><th>EFFECT</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="atlas-code-inline">DisableBatching</span></td><td>True / False / LODFading</td><td>Controls dynamic batching eligibility.</td></tr>
+          <tr><td><span class="atlas-code-inline">ForceNoShadowCasting</span></td><td>True / False</td><td>Prevents shadow casting. HDRP: does not affect contact shadows.</td></tr>
+          <tr><td><span class="atlas-code-inline">IgnoreProjector</span></td><td>True / False</td><td>Excludes from projectors. BiRP only.</td></tr>
+          <tr><td><span class="atlas-code-inline">PreviewType</span></td><td>Sphere / Plane / Skybox</td><td>Editor material preview shape.</td></tr>
+          <tr><td><span class="atlas-code-inline">CanUseSpriteAtlas</span></td><td>True / False</td><td>Enables Sprite Atlas batching.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>GrabPass & UsePass</h3>
+    <pre class="atlas-code-block"><code class="language-c">// Capture current screen to texture (expensive: one grab per object)
+GrabPass { }
+
+// Named grab — one grab per frame regardless of object count (preferred)
+GrabPass { "TextureName" }
+
+// Reuse a named pass from another shader
+UsePass "Shader/PassName"</code></pre>
+
+    <div class="atlas-section-break" data-index="// § 04"></div>
   </div>
 
-  <div class="atlas-callout atlas-callout--quote">
-    <p>Architecture is the deliberate containment of complexity. It is not about adding features, but about ensuring the system remains legible under load.</p>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       05: BLENDING
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="content-block">
+    <h2 id="s05">05 Blending Modes</h2>
+    <p>Blending combines the fragment shader output (<span class="atlas-code-inline">SrcValue</span>) with the existing render target color (<span class="atlas-code-inline">DstValue</span>). The blend equation:</p>
+
+    <div class="blend-eq">FinalColor = <strong>SrcFactor</strong> × SrcValue + <strong>DstFactor</strong> × DstValue</div>
+    <p>The default operation is Add. Alternative operations: Sub, RevSub, Min, Max (set via <span class="atlas-code-inline">BlendOp</span>).</p>
+
+    <h3>Blend Factors Reference</h3>
+
+    <div class="atlas-table-frame">
+      <table class="atlas-table">
+        <thead>
+          <tr><th>FACTOR</th><th>RGB VALUE</th><th>USE CASE</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="atlas-code-inline">One</span></td><td>(1,1,1)</td><td>Full color contribution — additive glow, emission</td></tr>
+          <tr><td><span class="atlas-code-inline">Zero</span></td><td>(0,0,0)</td><td>Eliminate the value entirely</td></tr>
+          <tr><td><span class="atlas-code-inline">SrcAlpha</span></td><td>(A,A,A)</td><td>Standard transparency — UI, glass</td></tr>
+          <tr><td><span class="atlas-code-inline">OneMinusSrcAlpha</span></td><td>(1-A,1-A,1-A)</td><td>Inverse alpha mask — soft particles</td></tr>
+          <tr><td><span class="atlas-code-inline">DstColor</span></td><td>(R,G,B)</td><td>Multiplicative — stained glass</td></tr>
+          <tr><td><span class="atlas-code-inline">SrcColor</span></td><td>(R,G,B)</td><td>Source color overlay</td></tr>
+          <tr><td><span class="atlas-code-inline">OneMinusDstColor</span></td><td>(1-R,1-G,1-B)</td><td>Soft light effects</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Blend Presets</h3>
+
+    <div class="atlas-table-frame atlas-table-frame--solid">
+      <div class="atlas-table-header-solid">[ BLEND_PRESETS // COMMON CONFIGURATIONS ]</div>
+      <table class="atlas-table">
+        <thead>
+          <tr><th>PRESET</th><th>COMMAND</th><th>USE CASE</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Traditional Alpha</td><td><span class="atlas-code-inline">Blend SrcAlpha OneMinusSrcAlpha</span></td><td>UI, glass, standard transparency</td></tr>
+          <tr><td>Additive</td><td><span class="atlas-code-inline">Blend One One</span></td><td>VFX, particles, glow, fire, lasers</td></tr>
+          <tr><td>Mild Additive</td><td><span class="atlas-code-inline">Blend OneMinusDstColor One</span></td><td>Soft additive, bloom contribution</td></tr>
+          <tr><td>Multiplicative</td><td><span class="atlas-code-inline">Blend DstColor Zero</span></td><td>Projectors, shadows, stained glass</td></tr>
+          <tr><td>Multiplicative ×2</td><td><span class="atlas-code-inline">Blend DstColor SrcColor</span></td><td>Intensified multiply, richer colors</td></tr>
+          <tr><td>Overlay</td><td><span class="atlas-code-inline">Blend SrcColor One</span></td><td>Color overlay on background</td></tr>
+          <tr><td>Soft Light</td><td><span class="atlas-code-inline">Blend OneMinusSrcColor One</span></td><td>Subtle highlights, soft shadows</td></tr>
+          <tr><td>Negative</td><td><span class="atlas-code-inline">Blend Zero OneMinusSrcColor</span></td><td>Color inversion effect</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Pipeline Implementation</h3>
+    <pre class="atlas-code-block"><code class="language-c">// Option A: Hardcoded in shader (BiRP)
+SubShader {
+    Tags { "Queue" = "Transparent" }
+    Blend SrcAlpha OneMinusSrcAlpha
+    ZWrite Off  // disable depth write for transparency
+    Pass { CGPROGRAM /* ... */ ENDCG }
+}
+
+// Option B: Artist-controlled via Inspector (URP)
+Properties {
+    [Enum(UnityEngine.Rendering.BlendMode)] _SrcBlend ("Src Factor", Float) = 1
+    [Enum(UnityEngine.Rendering.BlendMode)] _DstBlend ("Dst Factor", Float) = 0
+}
+SubShader {
+    Tags { "RenderPipeline" = "UniversalPipeline" "Queue" = "Transparent" }
+    Blend [_SrcBlend] [_DstBlend]
+    ZWrite Off
+    Pass { HLSLPROGRAM /* ... */ ENDHLSL }
+}</code></pre>
+
+    <h3>Troubleshooting</h3>
+    <div class="atlas-table-frame">
+      <table class="atlas-table">
+        <thead><tr><th>ISSUE</th><th>FIX</th></tr></thead>
+        <tbody>
+          <tr><td>HDRP transparency not working</td><td>Set Surface Type → Transparent in Material Inspector. HDRP manages transparency via material settings, not shader Blend commands.</td></tr>
+          <tr><td>URP additive rendering artifacts</td><td>Adjust render queue: <span class="atlas-code-inline">Tags { "Queue"="Transparent+100" }</span></td></tr>
+          <tr><td>Depth sorting issues in BiRP</td><td>Use <span class="atlas-code-inline">Offset -1, -1</span> to manually shift depth value.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="atlas-section-break" data-index="// § 05"></div>
   </div>
 
-  <div class="atlas-table-frame">
-    <table class="atlas-table">
-      <thead>
-        <tr><th>Параметр</th><th>Значение</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Специфичность</td><td>Естественная каскадная</td></tr>
-        <tr><td>Селекторы</td><td>Чистые без !important</td></tr>
-      </tbody>
-    </table>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       06: ALPHATOMASK & COLORMASK
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="content-block">
+    <h2 id="s06">06 AlphaToMask & ColorMask</h2>
+
+    <h3>AlphaToMask</h3>
+    <p>Forces the alpha channel to behave as a binary mask (0 or 1) instead of a gradient. Produces hard-edged transparency — foliage cutouts, portal effects, any scenario where crisp edges are required. Unlike blending, no Queue change is needed.</p>
+
+    <pre class="atlas-code-block"><code class="language-c">Shader "Custom/AlphaToMaskExample" {
+    Properties { _MainTex ("Texture", 2D) = "white" {} }
+    SubShader {
+        Tags { "RenderType" = "Opaque" }
+        AlphaToMask On  // converts alpha output → binary 0/1 mask
+        Pass {
+            CGPROGRAM
+                // shader code here
+            ENDCG
+        }
+    }
+}</code></pre>
+
+    <h3>ColorMask</h3>
+    <p>Restricts which color channels the GPU writes to the render target. Default is RGBA (all channels). Use for channel isolation, debugging, or stencil mask passes:</p>
+
+    <div class="atlas-table-frame">
+      <table class="atlas-table">
+        <thead><tr><th>COMMAND</th><th>WRITES</th><th>USE CASE</th></tr></thead>
+        <tbody>
+          <tr><td><span class="atlas-code-inline">ColorMask RGBA</span></td><td>All channels</td><td>Default behavior</td></tr>
+          <tr><td><span class="atlas-code-inline">ColorMask RGB</span></td><td>Color only, no alpha</td><td>Opaque pass optimization</td></tr>
+          <tr><td><span class="atlas-code-inline">ColorMask R</span></td><td>Red only</td><td>Channel isolation / debug</td></tr>
+          <tr><td><span class="atlas-code-inline">ColorMask A</span></td><td>Alpha only</td><td>Debug transparency values</td></tr>
+          <tr><td><span class="atlas-code-inline">ColorMask 0</span></td><td>Nothing</td><td>Stencil mask pass — invisible but writes stencil</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="atlas-section-break" data-index="// § 06"></div>
   </div>
 
-  <div class="atlas-table-frame atlas-table-frame--solid">
-    <div class="atlas-table-header-solid">[ SPECIFICATION // ТЕХНИЧЕСКИЕ ДАННЫЕ ]</div>
-    <table class="atlas-table">
-      <thead><tr><th>Модуль</th><th>Статус</th></tr></thead>
-      <tbody>
-        <tr><td>Core Geometry</td><td>Стабилен</td></tr>
-        <tr><td>Table System</td><td>Унифицирован</td></tr>
-      </tbody>
-    </table>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       07: CULL / ZWRITE / ZTEST / STENCIL
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="content-block">
+    <h2 id="s07">07 Culling, ZWrite, ZTest & Stencil</h2>
+
+    <div class="media-frame">
+      <img src="https://static.wixstatic.com/media/ace175_e33de05129d5471c8876847c81a0912c~mv2.png/v1/fill/w_925,h_289,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/ace175_e33de05129d5471c8876847c81a0912c~mv2.png" alt="Depth Testing Pipeline">
+      <div class="media-caption">Fig 07a: Hardware Depth Test Comparison Stages.</div>
+    </div>
+
+    <h3>Cull Mode</h3>
+    <p>Controls which polygon faces are rendered. Applied at SubShader or Pass level:</p>
+
+    <div class="atlas-table-frame">
+      <table class="atlas-table">
+        <thead><tr><th>COMMAND</th><th>RENDERS</th><th>USE CASE</th></tr></thead>
+        <tbody>
+          <tr><td><span class="atlas-code-inline">Cull Back</span></td><td>Front faces only</td><td>Default — most geometry</td></tr>
+          <tr><td><span class="atlas-code-inline">Cull Front</span></td><td>Back faces only</td><td>Inside-out effects</td></tr>
+          <tr><td><span class="atlas-code-inline">Cull Off</span></td><td>Both faces</td><td>Double-sided — thin cloth, foliage</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <pre class="atlas-code-block"><code class="language-c">// Dynamic cull mode via Inspector Enum:
+Properties {
+    [Enum(UnityEngine.Rendering.CullMode)] _Cull ("Cull Mode", Float) = 2
+}
+SubShader {
+    Cull [_Cull]
+    Pass { HLSLPROGRAM /* ... */ ENDHLSL }
+}
+
+// Different texture per face via SV_IsFrontFace:
+half4 frag(Varyings i, bool isFront : SV_IsFrontFace) : SV_Target
+{
+    return isFront ? tex2D(_FrontTex, i.uv) : tex2D(_BackTex, i.uv);
+}</code></pre>
+
+    <h3>ZWrite & ZTest</h3>
+
+    <div class="atlas-table-frame">
+      <table class="atlas-table">
+        <thead><tr><th>COMMAND</th><th>VALUES</th><th>BEHAVIOR</th></tr></thead>
+        <tbody>
+          <tr><td><span class="atlas-code-inline">ZWrite On</span></td><td>Default</td><td>Writes depth to Z-Buffer. Use for opaque objects.</td></tr>
+          <tr><td><span class="atlas-code-inline">ZWrite Off</span></td><td>—</td><td>Does not write depth. Required for transparency to avoid Z-fighting.</td></tr>
+          <tr><td><span class="atlas-code-inline">ZTest Less</span></td><td>&lt;</td><td>Draws pixel if closer than stored depth.</td></tr>
+          <tr><td><span class="atlas-code-inline">ZTest LEqual</span></td><td>≤ (default)</td><td>Draws if closer or equal.</td></tr>
+          <tr><td><span class="atlas-code-inline">ZTest Greater</span></td><td>&gt;</td><td>Draws if farther than stored depth.</td></tr>
+          <tr><td><span class="atlas-code-inline">ZTest Always</span></td><td>—</td><td>Ignores depth — draws over everything.</td></tr>
+          <tr><td><span class="atlas-code-inline">ZTest Equal</span></td><td>==</td><td>Draws only at exact depth match.</td></tr>
+          <tr><td><span class="atlas-code-inline">ZTest NotEqual</span></td><td>!=</td><td>Draws everywhere except the stored depth.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="media-frame">
+      <div class="gallery-grid">
+        <img src="https://static.wixstatic.com/media/ace175_63660de4c9534791bcf2c0ce5c7a9be3~mv2.png/v1/fill/w_920,h_457,al_c,q_90,enc_avif,quality_auto/ace175_63660de4c9534791bcf2c0ce5c7a9be3~mv2.png" alt="Z-Buffer vs Color Buffer">
+        <img src="https://static.wixstatic.com/media/ace175_75b757e2abb14964a72b27280444d468~mv2.png/v1/fill/w_922,h_455,al_c,q_90,enc_avif,quality_auto/ace175_75b757e2abb14964a72b27280444d468~mv2.png" alt="Depth Test Conditional">
+      </div>
+      <div class="media-caption">Gallery 07: Z-Buffer vs Color Buffer relationship / Depth Test conditional evaluation.</div>
+    </div>
+
+    <h3>Transparent Objects & Z-Buffer</h3>
+    <ul>
+      <li><strong>Opaque:</strong> Render front-to-back — Z-Buffer correctly discards hidden pixels.</li>
+      <li><strong>Transparent:</strong> Render back-to-front with <span class="atlas-code-inline">ZWrite Off</span> — prevents partially overlapped pixels from being incorrectly discarded.</li>
+      <li><strong>Z-fighting:</strong> Occurs when two surfaces share identical depth values — GPU can't determine ordering, producing flickering. Fix: <span class="atlas-code-inline">ZWrite Off</span>, or <span class="atlas-code-inline">Offset -1, -1</span>.</li>
+    </ul>
+
+    <div class="media-frame">
+      <img src="https://static.wixstatic.com/media/ace175_25c6f16649af4dbabfc55ff5130a484b~mv2.png/v1/fill/w_803,h_408,al_c,lg_1,q_85,enc_avif,quality_auto/ace175_25c6f16649af4dbabfc55ff5130a484b~mv2.png" alt="Z-fighting artifact">
+      <div class="media-caption">Fig 07b: Co-planar geometry conflict resulting in Z-fighting artifacts.</div>
+    </div>
+
+    <h3>Stencil Buffer</h3>
+    <p>An 8-bit integer buffer (0–255) per pixel in the Frame Buffer. The GPU performs a Stencil Test before executing the fragment shader — acts as a pixel-level mask. Test equation:</p>
+
+    <pre class="atlas-code-block"><code class="language-c">if ( (StencilRef & ReadMask) [Comp] (StencilBuffer & ReadMask) )
+    Accept pixel → proceed to ZTest → Fragment Shader
+else
+    Discard pixel</code></pre>
+
+    <h4>Stencil Comparison Functions</h4>
+    <div class="atlas-table-frame">
+      <table class="atlas-table">
+        <thead><tr><th>COMP VALUE</th><th>CONDITION</th></tr></thead>
+        <tbody>
+          <tr><td><span class="atlas-code-inline">Always</span></td><td>Always passes — used for writing the mask</td></tr>
+          <tr><td><span class="atlas-code-inline">Equal</span></td><td>Passes if ref == buffer value</td></tr>
+          <tr><td><span class="atlas-code-inline">NotEqual</span></td><td>Passes if ref ≠ buffer value — render everywhere except mask</td></tr>
+          <tr><td><span class="atlas-code-inline">Less / Greater</span></td><td>Ordered comparison</td></tr>
+          <tr><td><span class="atlas-code-inline">LEqual / GEqual</span></td><td>Inclusive ordered comparison</td></tr>
+          <tr><td><span class="atlas-code-inline">Never</span></td><td>Always fails — pixel never draws</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Practical Stencil Mask — Two Shader Pattern</h4>
+    <pre class="atlas-code-block"><code class="language-c">// SHADER 1: Mask writer — invisible, writes stencil value 2
+Shader "Custom/StencilMask" {
+    SubShader {
+        Tags { "Queue" = "Geometry-1" }  // process before default geometry
+        ZWrite Off
+        ColorMask 0  // invisible — no color output
+        Stencil {
+            Ref  2
+            Comp Always   // always write
+            Pass Replace  // set buffer value to Ref (2)
+        }
+        Pass { CGPROGRAM /* minimal */ ENDCG }
+    }
+}
+
+// SHADER 2: Masked object — renders only where stencil ≠ 2
+Shader "Custom/StencilObject" {
+    Properties { _Color ("Color", Color) = (1,1,1,1) }
+    SubShader {
+        Tags { "Queue" = "Geometry" }
+        ZWrite On
+        Stencil {
+            Ref  2
+            Comp NotEqual  // skip pixels where mask wrote its value
+            Pass Keep      // don't modify stencil buffer
+        }
+        Pass { CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            fixed4 _Color;
+            struct appdata { float4 vertex : POSITION; };
+            struct v2f    { float4 pos    : SV_POSITION; };
+            v2f   vert(appdata v) { v2f o; o.pos = UnityObjectToClipPos(v.vertex); return o; }
+            fixed4 frag(v2f i) : SV_Target { return _Color; }
+        ENDCG }
+    }
+}</code></pre>
+
+    <div class="media-frame">
+      <div class="gallery-grid">
+        <img src="https://static.wixstatic.com/media/ace175_0cee99e88fe04eb28a8957883aceda01~mv2.png/v1/fill/w_918,h_455,al_c,q_90,enc_avif,quality_auto/ace175_0cee99e88fe04eb28a8957883aceda01~mv2.png" alt="Stencil Buffer Pipeline">
+        <img src="https://static.wixstatic.com/media/ace175_48d961d9427e4f1483305760063db870~mv2.png/v1/fill/w_925,h_316,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/ace175_48d961d9427e4f1483305760063db870~mv2.png" alt="Stencil Mask Result">
+      </div>
+      <div class="media-caption">Gallery 07b: Stencil buffer pipeline masking / Queue Geometry-1 execution result.</div>
+    </div>
+
+    <div class="atlas-section-break" data-index="// § 07"></div>
   </div>
 
-  <div class="atlas-uml-diag">
-    <div class="atlas-uml-diag__widget">
-      <div class="atlas-uml-diag__header">// UML_COMPONENT_REFERENCE</div>
-      <div class="atlas-uml-diag__content">
-        <div class="atlas-uml-diag__scope">
-          <div class="atlas-uml-diag__scope-label">HOST_SPACE</div>
-          <div class="atlas-uml-diag__node">
-            <div class="atlas-uml-diag__node-title">PROCESSOR</div>
-            <div class="atlas-uml-diag__node-body">Main thread execution logic.</div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       08: CGPROGRAM / HLSLPROGRAM REFERENCE
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="content-block">
+    <h2 id="s08">08 CGPROGRAM / HLSLPROGRAM Reference</h2>
+    <p>The programmable GPU stage begins here. Full-featured BiRP shader with all annotation layers:</p>
+
+    <pre class="atlas-code-block"><code class="language-c">Shader "Custom/FullReference"
+{
+    // ── 1. INSPECTOR INTERFACE ───────────────────────
+    Properties
+    {
+        _MainTex ("Texture", 2D)    = "white" {}
+        _Color   ("Color",   Color) = (1, 1, 1, 1)
+    }
+
+    // ── 2. RENDER PIPELINE CONFIG ────────────────────
+    SubShader
+    {
+        Tags { "RenderType"="Opaque" }
+        LOD 100
+
+        // ── 3. GPU PROGRAM ────────────────────────────
+        Pass
+        {
+            CGPROGRAM
+            #pragma vertex vert      // declare vertex function
+            #pragma fragment frag    // declare fragment function
+            #pragma multi_compile_fog
+            #include "UnityCG.cginc"
+
+            // Global uniforms (outside CBUFFER for BiRP)
+            sampler2D _MainTex;
+            fixed4    _Color;
+
+            // ── 4. DATA STRUCTURES ────────────────────
+            struct appdata            // CPU → Vertex
+            {
+                float4 vertex : POSITION;
+                float2 uv     : TEXCOORD0;
+            };
+
+            struct v2f                // Vertex → Fragment
+            {
+                float4 vertex : SV_POSITION;
+                float2 uv     : TEXCOORD0;
+                UNITY_FOG_COORDS(1)
+            };
+
+            // ── 5. VERTEX STAGE ───────────────────────
+            v2f vert(appdata v)
+            {
+                v2f o;
+                o.vertex = UnityObjectToClipPos(v.vertex);   // OS → ClipSpace
+                o.uv     = TRANSFORM_TEX(v.uv, _MainTex);
+                UNITY_TRANSFER_FOG(o, o.vertex);
+                return o;
+            }
+
+            // ── 6. FRAGMENT STAGE ─────────────────────
+            fixed4 frag(v2f i) : SV_Target
+            {
+                fixed4 col = tex2D(_MainTex, i.uv) * _Color;
+                UNITY_APPLY_FOG(i.fogCoord, col);
+                return col;
+            }
+            ENDCG
+        }
+    }
+    FallBack "Diffuse"
+}</code></pre>
+
+    <h3>Pragma Directives Reference</h3>
+
+    <div class="atlas-table-frame">
+      <table class="atlas-table">
+        <thead><tr><th>PRAGMA</th><th>PURPOSE</th></tr></thead>
+        <tbody>
+          <tr><td><span class="atlas-code-inline">#pragma vertex vert</span></td><td>Declare vertex stage entry function</td></tr>
+          <tr><td><span class="atlas-code-inline">#pragma fragment frag</span></td><td>Declare fragment stage entry function</td></tr>
+          <tr><td><span class="atlas-code-inline">#pragma target 4.5</span></td><td>Minimum shader model target</td></tr>
+          <tr><td><span class="atlas-code-inline">#pragma shader_feature _FEAT_ON</span></td><td>Compile variant — stripped if keyword unused</td></tr>
+          <tr><td><span class="atlas-code-inline">#pragma multi_compile A B C</span></td><td>Compile all listed variants — always included</td></tr>
+          <tr><td><span class="atlas-code-inline">#pragma multi_compile_fog</span></td><td>Fog variants for BiRP</td></tr>
+          <tr><td><span class="atlas-code-inline">#pragma multi_compile_fwdbase</span></td><td>Forward base pass variants (lighting)</td></tr>
+          <tr><td><span class="atlas-code-inline">#pragma enable_d3d11_debug_symbols</span></td><td>Enable GPU debugger symbols</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Include Files</h3>
+    <div class="atlas-table-frame">
+      <table class="atlas-table">
+        <thead><tr><th>INCLUDE</th><th>PIPELINE</th><th>KEY UTILITIES</th></tr></thead>
+        <tbody>
+          <tr><td><span class="atlas-code-inline">UnityCG.cginc</span></td><td>BiRP</td><td>UnityObjectToClipPos, tex2D, UNITY_PI, fog macros</td></tr>
+          <tr><td><span class="atlas-code-inline">UnityShaderVariables.cginc</span></td><td>BiRP</td><td>unity_ObjectToWorld, UNITY_MATRIX_VP, built-in uniforms</td></tr>
+          <tr><td><span class="atlas-code-inline">Core.hlsl</span> (URP)</td><td>URP</td><td>TransformObjectToHClip, GetVertexPositionInputs</td></tr>
+          <tr><td><span class="atlas-code-inline">Lighting.hlsl</span> (URP)</td><td>URP</td><td>GetMainLight, LightingLambert, LightingSpecular</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="atlas-callout atlas-callout--note">
+      <p><strong>CGPROGRAM → HLSLPROGRAM migration:</strong> Replace <span class="atlas-code-inline">CGPROGRAM / ENDCG</span> with <span class="atlas-code-inline">HLSLPROGRAM / ENDHLSL</span>. Replace <span class="atlas-code-inline">fixed</span> types with <span class="atlas-code-inline">half</span>. Replace <span class="atlas-code-inline">#include "UnityCG.cginc"</span> with the URP Core.hlsl include path. Wrap properties in <span class="atlas-code-inline">CBUFFER_START(UnityPerMaterial) / CBUFFER_END</span>.</p>
+    </div>
+
+    <div class="atlas-section-break" data-index="// § 08"></div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       09: VERTEX / FRAGMENT — DATA STRUCTURES & SEMANTICS
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="content-block">
+    <h2 id="s09">09 Vertex & Fragment Stages — Data Structures</h2>
+    <p>Structs are compound data type declarations grouping multiple elements. Two primary structs form the data contract between pipeline stages:</p>
+
+    <div class="comparison-matrix">
+      <div class="comp-col">
+        <div class="comp-label">Δ1 // appdata / Attributes</div>
+        <div class="comp-body"><strong>Vertex input</strong> — CPU → Vertex Shader. Stores per-vertex object properties: position, normals, UVs, tangents, vertex colors. BiRP: <span class="atlas-code-inline">appdata</span>. URP: <span class="atlas-code-inline">Attributes</span>.</div>
+      </div>
+      <div class="comp-col">
+        <div class="comp-label">Δ2 // v2f / Varyings</div>
+        <div class="comp-body"><strong>Vertex output</strong> — Vertex Shader → Fragment Shader. Rasterized, interpolated values passed per pixel. BiRP: <span class="atlas-code-inline">v2f</span>. URP: <span class="atlas-code-inline">Varyings</span>.</div>
+      </div>
+    </div>
+
+    <p>Struct syntax — semantic connects the field to a hardware resource:</p>
+    <pre class="atlas-code-block"><code class="language-c">struct name
+{
+    vectorType fieldName : SEMANTIC;
+};</code></pre>
+
+    <h3>Vertex Input Semantics</h3>
+    <div class="atlas-table-frame">
+      <table class="atlas-table">
+        <thead><tr><th>SEMANTIC</th><th>DIMENSIONS</th><th>ACCESS</th></tr></thead>
+        <tbody>
+          <tr><td><span class="atlas-code-inline">POSITION[n]</span></td><td>up to 4</td><td>Vertex position in object space</td></tr>
+          <tr><td><span class="atlas-code-inline">TEXCOORD[n]</span></td><td>up to 4</td><td>UV coordinates (x, y, z, w)</td></tr>
+          <tr><td><span class="atlas-code-inline">NORMAL[n]</span></td><td>up to 4</td><td>Vertex normals — required for lighting</td></tr>
+          <tr><td><span class="atlas-code-inline">TANGENT[n]</span></td><td>up to 4</td><td>Tangents — required for normal maps</td></tr>
+          <tr><td><span class="atlas-code-inline">COLOR[n]</span></td><td>up to 4</td><td>Vertex color channels</td></tr>
+          <tr><td><span class="atlas-code-inline">BINORMAL[n]</span></td><td>up to 4</td><td>Binormal / bitangent vectors</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="s09-sv">SV (System Value) Semantics Matrix</h3>
+    <div class="atlas-table-frame">
+      <table class="atlas-table">
+        <thead><tr><th>SEMANTIC</th><th>STAGE</th><th>DESCRIPTION</th></tr></thead>
+        <tbody>
+          <tr><td><span class="atlas-code-inline">SV_POSITION</span></td><td>V→F output</td><td>Vertex position in clip / screen space. Required on Varyings.positionCS.</td></tr>
+          <tr><td><span class="atlas-code-inline">SV_Target</span></td><td>Fragment output</td><td>Final color output to the render target / frame buffer.</td></tr>
+          <tr><td><span class="atlas-code-inline">SV_Depth</span></td><td>Fragment output</td><td>Manual depth value override.</td></tr>
+          <tr><td><span class="atlas-code-inline">SV_IsFrontFace</span></td><td>Fragment input</td><td>Boolean: true if front face, false if back face.</td></tr>
+          <tr><td><span class="atlas-code-inline">SV_VertexID</span></td><td>Vertex input</td><td>Integer index of the current vertex in the draw call.</td></tr>
+          <tr><td><span class="atlas-code-inline">SV_InstanceID</span></td><td>Vertex input</td><td>Instance index for GPU instancing.</td></tr>
+          <tr><td><span class="atlas-code-inline">SV_Coverage</span></td><td>Fragment</td><td>MSAA coverage mask for the current sample.</td></tr>
+          <tr><td><span class="atlas-code-inline">SV_ClipDistance</span></td><td>Vertex output</td><td>Per-vertex clip plane distance.</td></tr>
+          <tr><td><span class="atlas-code-inline">SV_DispatchThreadID</span></td><td>Compute</td><td>Global thread ID in a compute shader dispatch.</td></tr>
+          <tr><td><span class="atlas-code-inline">SV_GroupID</span></td><td>Compute</td><td>Thread group index within the dispatch.</td></tr>
+          <tr><td><span class="atlas-code-inline">SV_GroupThreadID</span></td><td>Compute</td><td>Thread index within its group.</td></tr>
+          <tr><td><span class="atlas-code-inline">SV_GroupIndex</span></td><td>Compute</td><td>Flattened thread index within the group.</td></tr>
+          <tr><td><span class="atlas-code-inline">SV_StencilRef</span></td><td>Fragment output</td><td>Per-pixel stencil reference value override.</td></tr>
+          <tr><td><span class="atlas-code-inline">SV_RenderTargetArrayIndex</span></td><td>Vertex/Geometry</td><td>Target slice in a texture array render target.</td></tr>
+          <tr><td><span class="atlas-code-inline">SV_ViewportArrayIndex</span></td><td>Vertex/Geometry</td><td>Viewport index for multi-viewport rendering.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Vertex Transform — UnityObjectToClipPos</h3>
+    <p>The first operation in the vertex stage: transform object-space vertices to clip space. This multiplies the model matrix by the VP matrix:</p>
+    <div class="atlas-math-block">
+      $$\text{ClipPos} = \text{UNITY\_MATRIX\_VP} \cdot \text{unity\_ObjectToWorld} \cdot \text{float4(posOS, 1.0)}$$
+    </div>
+
+    <h3>Fragment Stage — Output Types</h3>
+    <pre class="atlas-code-block"><code class="language-c">// BiRP (Cg): fixed4 return type — 11-bit precision
+fixed4 frag(v2f i) : SV_Target { return fixed4(1,0,0,1); }
+
+// URP/HDRP (HLSL): half4 return type — 16-bit precision
+half4  frag(Varyings i) : SV_Target { return half4(1,0,0,1); }</code></pre>
+
+    <div class="atlas-callout atlas-callout--note">
+      <p><span class="atlas-code-inline">fixed4</span> is Cg-only and compiles only in BiRP. Use <span class="atlas-code-inline">half4</span> for URP/HDRP compatibility. <span class="atlas-code-inline">SV_Target</span> replaced the old <span class="atlas-code-inline">COLOR</span> semantic in D3D10+ — always use <span class="atlas-code-inline">SV_Target</span> in modern shaders.</p>
+    </div>
+
+    <div class="atlas-section-break" data-index="// § 09"></div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       10: DATA TYPES & PRECISION
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="content-block">
+    <h2 id="s10">10 Data Types & Precision</h2>
+
+    <div class="atlas-table-frame atlas-table-frame--solid">
+      <div class="atlas-table-header-solid">[ DATA_TYPES // PRECISION & USE CASES ]</div>
+      <table class="atlas-table">
+        <thead><tr><th>TYPE</th><th>BITS</th><th>LANGUAGE</th><th>USE CASE</th></tr></thead>
+        <tbody>
+          <tr><td><span class="atlas-code-inline">float</span></td><td>32</td><td>Cg + HLSL</td><td>World-space positions, UV coordinates, trigonometry, exponentiation</td></tr>
+          <tr><td><span class="atlas-code-inline">half</span></td><td>16</td><td>Cg + HLSL</td><td>Directions, object-space positions, HDR colors, low-magnitude vectors</td></tr>
+          <tr><td><span class="atlas-code-inline">fixed</span></td><td>11</td><td>Cg only</td><td>Simple color storage, 0–1 range values. BiRP only.</td></tr>
+          <tr><td><span class="atlas-code-inline">int</span></td><td>32</td><td>Cg + HLSL</td><td>Integer counters, indices, loop bounds</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="atlas-callout atlas-callout--note">
+      <p>Higher precision = more ALU cost + GPU heat. Match the type to the minimum precision the calculation requires. World-space positions need <span class="atlas-code-inline">float</span>. Normal vectors work fine as <span class="atlas-code-inline">half</span>. Simple 0–1 mask values are <span class="atlas-code-inline">fixed</span> in BiRP or <span class="atlas-code-inline">half</span> in URP/HDRP.</p>
+    </div>
+
+    <h3>Texture Sampling — Two Patterns</h3>
+    <pre class="atlas-code-block"><code class="language-c">// Pattern A: Modern HLSL (separate Texture2D + SamplerState)
+Texture2D      _MainTex;
+SamplerState   sampler_MainTex;
+
+half4 frag(Varyings i) : SV_Target {
+    return _MainTex.Sample(sampler_MainTex, i.uv);
+}
+
+// Pattern B: Legacy macro (Cg / BiRP shorthand)
+sampler2D _MainTex;
+
+fixed4 frag(v2f i) : SV_Target {
+    return tex2D(_MainTex, i.uv);  // equivalent to .Sample()
+}</code></pre>
+
+    <h3>Matrix Types</h3>
+    <pre class="atlas-code-block"><code class="language-c">// 3x3 — rotation, scaling (no translation)
+float3x3 mat33 = float3x3(
+    1,0,0,
+    0,1,0,
+    0,0,1
+);
+
+// 4x4 — full TRS transform (includes translation)
+float4x4 mat44 = float4x4(
+    1,0,0,0,
+    0,1,0,0,
+    0,0,1,0,
+    0,0,0,1
+);
+
+// Usage:
+float3 rotated = mul(mat33, input.normal);
+float4 clipped = mul(mat44, float4(posOS, 1.0));</code></pre>
+
+    <div class="atlas-section-break" data-index="// § 10"></div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════════════
+       11: INTRINSIC FUNCTIONS
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="content-block">
+    <h2 id="s11">11 Intrinsic Functions Reference</h2>
+
+    <div class="atlas-table-frame atlas-table-frame--solid">
+      <div class="atlas-table-header-solid">[ HLSL_INTRINSICS // MATH & GEOMETRY ]</div>
+      <table class="atlas-table">
+        <thead><tr><th>FUNCTION</th><th>DESCRIPTION</th></tr></thead>
+        <tbody>
+          <tr><td><span class="atlas-code-inline">abs(x)</span></td><td>Absolute value — scalar or vector</td></tr>
+          <tr><td><span class="atlas-code-inline">ceil(x)</span></td><td>Round up to nearest integer</td></tr>
+          <tr><td><span class="atlas-code-inline">floor(x)</span></td><td>Round down to nearest integer</td></tr>
+          <tr><td><span class="atlas-code-inline">round(x)</span></td><td>Round to nearest integer</td></tr>
+          <tr><td><span class="atlas-code-inline">frac(x)</span></td><td>Fractional part of x — useful for tiling patterns</td></tr>
+          <tr><td><span class="atlas-code-inline">clamp(x, min, max)</span></td><td>Restrict x to [min, max] range</td></tr>
+          <tr><td><span class="atlas-code-inline">saturate(x)</span></td><td>Clamp to [0, 1] — equivalent to clamp(x,0,1)</td></tr>
+          <tr><td><span class="atlas-code-inline">lerp(a, b, t)</span></td><td>Linear interpolation: a + t*(b-a)</td></tr>
+          <tr><td><span class="atlas-code-inline">smoothstep(e0, e1, x)</span></td><td>Hermite smooth interpolation between e0 and e1</td></tr>
+          <tr><td><span class="atlas-code-inline">step(edge, x)</span></td><td>0 if x &lt; edge, 1 otherwise</td></tr>
+          <tr><td><span class="atlas-code-inline">sin(x) / cos(x) / tan(x)</span></td><td>Trigonometric functions (radians)</td></tr>
+          <tr><td><span class="atlas-code-inline">asin(x) / acos(x) / atan(x)</span></td><td>Inverse trigonometric functions</td></tr>
+          <tr><td><span class="atlas-code-inline">atan2(y, x)</span></td><td>Arc tangent of y/x — respects quadrant</td></tr>
+          <tr><td><span class="atlas-code-inline">pow(x, y)</span></td><td>x raised to the power y</td></tr>
+          <tr><td><span class="atlas-code-inline">exp(x) / exp2(x)</span></td><td>e^x / 2^x</td></tr>
+          <tr><td><span class="atlas-code-inline">log(x) / log2(x)</span></td><td>Natural log / base-2 log</td></tr>
+          <tr><td><span class="atlas-code-inline">sqrt(x)</span></td><td>Square root</td></tr>
+          <tr><td><span class="atlas-code-inline">rsqrt(x)</span></td><td>Reciprocal square root — 1/sqrt(x), fast on GPU</td></tr>
+          <tr><td><span class="atlas-code-inline">dot(a, b)</span></td><td>Dot product — scalar result</td></tr>
+          <tr><td><span class="atlas-code-inline">cross(a, b)</span></td><td>Cross product — vector result (3D only)</td></tr>
+          <tr><td><span class="atlas-code-inline">length(v)</span></td><td>Vector magnitude</td></tr>
+          <tr><td><span class="atlas-code-inline">normalize(v)</span></td><td>Unit vector — v / length(v)</td></tr>
+          <tr><td><span class="atlas-code-inline">reflect(i, n)</span></td><td>Reflection of incident ray i around normal n</td></tr>
+          <tr><td><span class="atlas-code-inline">refract(i, n, eta)</span></td><td>Refraction of ray i through surface with IOR ratio eta</td></tr>
+          <tr><td><span class="atlas-code-inline">mul(m, v)</span></td><td>Matrix × vector multiplication</td></tr>
+          <tr><td><span class="atlas-code-inline">transpose(m)</span></td><td>Matrix transpose</td></tr>
+          <tr><td><span class="atlas-code-inline">max(a, b) / min(a, b)</span></td><td>Component-wise max / min</td></tr>
+          <tr><td><span class="atlas-code-inline">sign(x)</span></td><td>-1, 0, or 1 — sign of x</td></tr>
+          <tr><td><span class="atlas-code-inline">ddx(x) / ddy(x)</span></td><td>Screen-space partial derivatives — for normal reconstruction, mip selection</td></tr>
+          <tr><td><span class="atlas-code-inline">tex2D(s, uv)</span></td><td>Sample 2D texture at UV (BiRP Cg)</td></tr>
+          <tr><td><span class="atlas-code-inline">tex.Sample(s, uv)</span></td><td>Sample 2D texture at UV (HLSL modern)</td></tr>
+          <tr><td><span class="atlas-code-inline">tex.SampleLevel(s, uv, lod)</span></td><td>Sample at explicit mip level</td></tr>
+          <tr><td><span class="atlas-code-inline">tex.SampleGrad(s, uv, ddx, ddy)</span></td><td>Sample with explicit gradients</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="atlas-refs">
+      <ul class="atlas-ref-list">
+        <li class="atlas-ref-item">
+          <span class="atlas-ref-num">[01]</span>
+          <div>
+            <span class="atlas-ref-tag">DOCS</span>
+            <span class="atlas-ref-author">Unity Technologies</span> — ShaderLab Code Blocks. Unity Manual, 2024.
+            <br><a href="https://docs.unity3d.com/Manual/shader-shaderlab-code-blocks.html" class="atlas-ref-link" target="_top">docs.unity3d.com — ShaderLab Code Blocks</a>
           </div>
-        </div>
-        <div class="atlas-uml-diag__arrow-wrapper">
-          <div class="atlas-uml-diag__arrow-line"></div>
-          <div class="atlas-uml-diag__arrow-head"></div>
-        </div>
-        <div class="atlas-uml-diag__node atlas-uml-diag__node--dashed">
-          <div class="atlas-uml-diag__node-title">INPUT_BUFFER</div>
-          <div class="atlas-uml-diag__node-body">Raw data stream</div>
-        </div>
-      </div>
-      <div class="atlas-uml-diag__legend">
-        <span>[---] MEMORY</span> <span>[—>] FLOW</span> <span>[#] CRITICAL</span>
-      </div>
+        </li>
+        <li class="atlas-ref-item">
+          <span class="atlas-ref-num">[02]</span>
+          <div>
+            <span class="atlas-ref-tag">DOCS</span>
+            <span class="atlas-ref-author">Unity Technologies</span> — What's New in Unity 6. Unity 6000.0 Documentation.
+            <br><a href="https://docs.unity3d.com/6000.0/Documentation/Manual/WhatsNewUnity6.html" class="atlas-ref-link" target="_top">docs.unity3d.com — Unity 6 What's New</a>
+          </div>
+        </li>
+        <li class="atlas-ref-item">
+          <span class="atlas-ref-num">[03]</span>
+          <div>
+            <span class="atlas-ref-tag">ROADMAP</span>
+            <span class="atlas-ref-author">Unity Technologies</span> — Render Pipelines Strategy for 2026.
+            <br><a href="https://unity.com/topics/render-pipelines-strategy-for-2026" class="atlas-ref-link" target="_top">unity.com — Render Pipeline Strategy 2026</a>
+          </div>
+        </li>
+        <li class="atlas-ref-item">
+          <span class="atlas-ref-num">[04]</span>
+          <div>
+            <span class="atlas-ref-tag">DOCS</span>
+            <span class="atlas-ref-author">Unity Technologies</span> — URP Changelog 17.0.x.
+            <br><a href="https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@17.0/changelog/CHANGELOG.html" class="atlas-ref-link" target="_top">docs.unity3d.com — URP Changelog 17.0.x</a>
+          </div>
+        </li>
+        <li class="atlas-ref-item">
+          <span class="atlas-ref-num">[05]</span>
+          <div>
+            <span class="atlas-ref-tag">SPEC</span>
+            <span class="atlas-ref-author">Microsoft</span> — HLSL Intrinsic Functions. DirectX Shader Compiler Documentation.
+            <br><a href="https://learn.microsoft.com/en-us/windows/win32/direct3dhlsl/dx-graphics-hlsl-intrinsic-functions" class="atlas-ref-link" target="_top">learn.microsoft.com — HLSL Intrinsic Functions</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="atlas-eof-divider">
+      <span class="atlas-eof-divider__line"></span>
+      <span class="atlas-eof-divider__meta">// END OF LOG // UNITY_SHADERLAB_CHEATSHEET // 11 SECTIONS // EOF</span>
+      <span class="atlas-eof-divider__line"></span>
     </div>
   </div>
 
-  <div class="atlas-section-break" data-index="// 01"></div>
-
-  <div class="atlas-eof-divider">
-    <span class="atlas-eof-divider__line"></span>
-    <span class="atlas-eof-divider__meta">// END OF SESSION // EOF</span>
-    <span class="atlas-eof-divider__line"></span>
-  </div>
-</div>
   <div id="atlas-footer"></div>
-</div>
 
+</div><!-- /atlas-container -->
 
 <script>
-/* ═══════════════════════════════════════════════════════════════
-   ПАСПОРТ: Логика
-   ─────────────────────────────────────────────────────────────── */
 var CONFIG = {
   user: 'pavelzosim', path: '~', command: 'cat unity_shaderlab_cheatsheet.log',
-  project: '—', module: '—', version: '1.0', logId: '—', status: 'R&D',
-  slug: 'procedural-modeling-tire-generator',
-  author: '...', created: '----.--.--', modified: null, wordCount: null, title: null, tags: [],
+  project: 'Unity ShaderLab', module: 'HLSL / CG / SRP Reference',
+  version: 'Unity 6 / 2026', logId: 'SHDR_REF_01', status: 'STABLE',
+  slug: 'unity-shaderlab-cheatsheet',
+  author: 'Pavel Zosim', created: '2025.01.10', modified: null,
+  wordCount: null, title: null, tags: [],
   tagBaseUrl: 'https://www.pavelzosim.com/blog/tags/'
 };
 
 var BACKEND_URL = 'https://www.pavelzosim.com/_functions/getPostData';
 
 function applyData(d) {
-  if (d.author) CONFIG.author = d.author;
+  if (d.author)   CONFIG.author   = d.author;
   if (d.title) {
-    CONFIG.title = d.title;
-    CONFIG.command = 'cat ' + d.title.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/(^_|_$)/g, '') + '.log';
+    CONFIG.title   = d.title;
+    CONFIG.command = 'cat ' + d.title.toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/(^_|_$)/g,'') + '.log';
   }
-  if (d.created) CONFIG.created = d.created;
-  if (d.modified) CONFIG.modified = d.modified;
-  if (d.project) CONFIG.project = d.project;
-  if (d.module) CONFIG.module = d.module;
-  if (d.version) CONFIG.version = d.version;
-  if (d.logId) CONFIG.logId = d.logId;
-  if (d.status) CONFIG.status = d.status;
+  if (d.created)   CONFIG.created   = d.created;
+  if (d.modified)  CONFIG.modified  = d.modified;
   if (d.wordCount) CONFIG.wordCount = d.wordCount;
   if (Array.isArray(d.tags)) CONFIG.tags = d.tags;
   window.render && window.render();
 }
 
-(function () {
-  var slug = CONFIG.slug || '';
-  if (!slug) return;
-  fetch(BACKEND_URL + '?slug=' + encodeURIComponent(slug))
+(function(){
+  if (!CONFIG.slug) return;
+  fetch(BACKEND_URL + '?slug=' + encodeURIComponent(CONFIG.slug))
     .then(r => r.ok ? r.json() : null)
-    .then(data => { if (data && !data.error) applyData(data); })
-    .catch(err => console.warn('[ATLAS] Passport fetch failed', err));
+    .then(d => { if (d && !d.error) applyData(d); })
+    .catch(e => console.warn('[ATLAS] Passport fetch failed', e));
 })();
 
-(function () {
+(function(){
   function render() {
     var o = CONFIG;
     var status = (o.status || 'DRAFT').toUpperCase();
-    var rt = o.readTime || (o.wordCount ? '~' + Math.ceil(Number(o.wordCount) / 200) + ' MIN' : null);
-    var metaHTML = '<div class="passport-meta-item" data-meta="auth">' + (o.author || '—') + '</div>' +
-                   '<div class="passport-meta-item" data-meta="created">' + (o.created || '—') + '</div>';
-    if (o.modified) metaHTML += '<div class="passport-meta-item" data-meta="modified">' + o.modified + '</div>';
-    if (rt) metaHTML += '<div class="passport-meta-item" data-meta="read">' + rt + '</div>';
-
-    var tagsHTML = '';
-    if (Array.isArray(o.tags) && o.tags.length) {
-      tagsHTML = '<div class="passport-tags">' + o.tags.map(tg => 
-        '<a href="' + o.tagBaseUrl + tg.toLowerCase().replace(/\s+/g, '-') + '" class="passport-tag" target="_top">#' + tg.toUpperCase() + '</a>'
-      ).join('') + '</div>';
-    }
-
+    var rt = o.wordCount ? '~' + Math.ceil(Number(o.wordCount)/200) + ' MIN' : null;
+    var meta = '<div class="passport-meta-item" data-meta="auth">'    + (o.author  || '—') + '</div>' +
+               '<div class="passport-meta-item" data-meta="created">' + (o.created || '—') + '</div>';
+    if (o.modified) meta += '<div class="passport-meta-item" data-meta="modified">' + o.modified + '</div>';
+    if (rt)         meta += '<div class="passport-meta-item" data-meta="read">'     + rt         + '</div>';
+    var tags = Array.isArray(o.tags) && o.tags.length
+      ? '<div class="passport-tags">' + o.tags.map(t =>
+          '<a href="' + o.tagBaseUrl + t.toLowerCase().replace(/\s+/g,'-') + '" class="passport-tag" target="_top">#' + t.toUpperCase() + '</a>'
+        ).join('') + '</div>'
+      : '';
     document.getElementById('site-passport').innerHTML =
       '<div class="passport-bp">' +
         '<div class="passport-title-bar">' +
@@ -205,69 +1187,74 @@ function applyData(d) {
         '</div>' +
         (o.title ? '<div class="passport-main-title">' + o.title.toUpperCase() + '</div>' : '') +
         '<div class="passport-grid">' +
-          '<div class="passport-cell"><div class="passport-cell-line" data-key="project">' + o.project + '</div><div class="passport-cell-line" data-key="module">' + o.module + '</div></div>' +
-          '<div class="passport-cell"><div class="passport-cell-line" data-key="version">' + o.version + '</div><div class="passport-cell-line" data-key="log_id">' + o.logId + '</div></div>' +
+          '<div class="passport-cell">' +
+            '<div class="passport-cell-line" data-key="project">' + o.project + '</div>' +
+            '<div class="passport-cell-line" data-key="module">'  + o.module  + '</div>' +
+          '</div>' +
+          '<div class="passport-cell">' +
+            '<div class="passport-cell-line" data-key="version">' + o.version + '</div>' +
+            '<div class="passport-cell-line" data-key="log_id">'  + o.logId   + '</div>' +
+          '</div>' +
         '</div>' +
-        '<div class="passport-meta">' + metaHTML + '</div>' + tagsHTML +
+        '<div class="passport-meta">' + meta + '</div>' + tags +
       '</div>';
   }
   window.render = render;
   render();
 }());
 
-
-/* ═══════════════════════════════════════════════════════════════
-   ФУТЕР: Нативный рендер (без CSS-патчей)
-   ─────────────────────────────────────────────────────────────── */
-(function() {
-  var FOOTER_CONFIG_URL = 'https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework/cdn/atlas-site-footer-config.json?t=' + Date.now();
-  
-  fetch(FOOTER_CONFIG_URL)
+(function(){
+  fetch('https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework/cdn/atlas-site-footer-config.json?t=' + Date.now())
     .then(r => r.json())
     .then(c => {
-      var footer = document.getElementById('atlas-footer');
-      // Создаем структуру, соответствующую atlas-framework.css
-      footer.innerHTML = `
-        <div class="atlas-footer-wrapper">
-          <div class="atlas-footer-block__support-header">
-            <span class="atlas-footer-block__kaomoji">${c.tagline}</span>
-            <span>LET'S STAY IN TOUCH</span>
-          </div>
-          
-          <div class="atlas-footer-block__support-content">
-            <div class="atlas-footer-block__support-text">${c.support.text}</div>
-            <div class="atlas-footer-block__support-links">
-              ${c.support.links.map((l, idx, arr) => `
-                <a href="${l.url}" class="atlas-blueprint-link">${l.text}</a>
-                ${idx < arr.length - 1 ? '<span class="atlas-footer-block__support-divider">|</span>' : ''}
-              `).join('')}
-            </div>
-          </div>
-
-          <div class="atlas-footer-block__matrix-zone">
-            ${c.links.map(g => `
-              <div class="atlas-footer-block__matrix-column">
-                <span class="atlas-footer-block__column-label">${g.label}</span>
-                <div class="atlas-footer-block__column-items">
-                  ${g.items.map(i => `<a href="${i.url}" class="atlas-blueprint-link">/ ${i.text}</a>`).join('')}
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      `;
+      document.getElementById('atlas-footer').innerHTML =
+        '<div class="atlas-footer-wrapper">' +
+          '<div class="atlas-footer-block__support-header">' +
+            '<span class="atlas-footer-block__kaomoji">' + c.tagline + '</span>' +
+            '<span>LET\'S STAY IN TOUCH</span>' +
+          '</div>' +
+          '<div class="atlas-footer-block__support-content">' +
+            '<div class="atlas-footer-block__support-text">' + c.support.text + '</div>' +
+            '<div class="atlas-footer-block__support-links">' +
+              c.support.links.map((l,i,a) =>
+                '<a href="' + l.url + '" class="atlas-blueprint-link">' + l.text + '</a>' +
+                (i < a.length-1 ? '<span class="atlas-footer-block__support-divider">|</span>' : '')
+              ).join('') +
+            '</div>' +
+          '</div>' +
+          '<div class="atlas-footer-block__matrix-zone">' +
+            c.links.map(g =>
+              '<div class="atlas-footer-block__matrix-column">' +
+                '<span class="atlas-footer-block__column-label">' + g.label + '</span>' +
+                '<div class="atlas-footer-block__column-items">' +
+                  g.items.map(i => '<a href="' + i.url + '" class="atlas-blueprint-link">/ ' + i.text + '</a>').join('') +
+                '</div>' +
+              '</div>'
+            ).join('') +
+          '</div>' +
+        '</div>';
     })
-    .catch(e => console.error('[ATLAS] Footer component failed to render:', e));
-})();
+    .catch(e => console.error('[ATLAS] Footer failed:', e));
+}());
+
+// ── TOC auto-scroll ──────────────────────────────────────────────────────
+document.addEventListener('click', function(e) {
+  var a = e.target.closest('.atlas-toc__item a');
+  if (!a) return;
+  var href = a.getAttribute('href');
+  if (!href || href[0] !== '#') return;
+  var dest = document.getElementById(href.slice(1));
+  if (!dest) return;
+  e.preventDefault();
+  dest.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  setTimeout(function(){ window.scrollBy(0, -8); }, 350);
+});
 </script>
 
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
-
 
 </body>
 </html>
