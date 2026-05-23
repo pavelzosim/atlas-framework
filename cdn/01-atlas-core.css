@@ -132,3 +132,29 @@
   content: "[ STATUS // SUCCESS ]";
   color: var(--atlas-ok);
 }
+
+/* ── PATCH v3.8.0: НОВЫЕ ТОКЕНЫ ──────────────────────────────────────────── */
+/* Добавлены при рефакторинге 09-atlas-shader-panel.css                     */
+/* Запрещено использовать --atlas-accent вместо --atlas-crit в контенте:    */
+/*   --atlas-crit   = #8b0000  — ошибки, маркеры, акценты КОНТЕНТА         */
+/*   --atlas-accent = #0000AA  — UI-элементы: кнопки, слайдеры, switches    */
+
+:root {
+  /* UI-акцент: Volkov Commander Blue */
+  --atlas-accent:   #0000AA;
+  --atlas-accent-h: #0000DD;   /* hover-состояние accent */
+
+  /* Типографика: математические формулы (MathJax) */
+  /* Крупнее --fs-code (12px) но меньше --fs-h3 (20px)                     */
+  /* MathJax рендерит собственные элементы — переменная задаёт             */
+  /* font-size контейнера .atlas-math-block для масштабирования            */
+  --fs-math: 15px;
+
+  /* Dither SVG-паттерн: 4×4px шахматка для теней и OFF-состояний         */
+  --atlas-dither: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4"><rect width="2" height="2" x="0" y="0" fill="black"/><rect width="2" height="2" x="2" y="2" fill="black"/></svg>');
+}
+
+/* Применяем --fs-math к math-блоку */
+.atlas-container .content-block .atlas-math-block {
+  font-size: var(--fs-math);
+}

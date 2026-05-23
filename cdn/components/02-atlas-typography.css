@@ -125,7 +125,7 @@
 
 /* H2: Главный раздел контента (13px с красным префиксом ») */
 .atlas-container .content-block h2 {
-  font-size: 13px;
+  font-size: 16px;
   letter-spacing: 0.08em;
   color: var(--atlas-ink);
 }

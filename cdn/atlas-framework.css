@@ -277,7 +277,7 @@
 
 /* H3: Подраздел контента (12px с серым префиксом >) */
 .atlas-container .content-block h3 {
-  font-size: 12px;
+  font-size: 16px;
   letter-spacing: 0.05em;
   color: var(--atlas-ink-soft);
   margin-top: 24px;
@@ -305,7 +305,7 @@
 
 /* Параграф внутри контентного блока */
 .atlas-container .content-block p {
-  font-size: 12.5px;
+  font-size: 14px;
   line-height: 1.65;
   color: var(--atlas-ink-soft);
   margin: 0 0 16px 0;
