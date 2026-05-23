@@ -321,17 +321,36 @@
 .atlas-container .atlas-sp-btn-wrap {
   flex: 1;
   position: relative;
-  /* Dither-тень = шахматный паттерн чёрных пикселей */
-  background: var(--atlas-dither) repeat;
-  background-size: 4px 4px;
-  background-color: transparent;
+  display: inline-block;
+  /* КРИТИЧНО: overflow никогда не hidden — тень должна вылезать за блок */
 }
 
-/* Сама кнопка — поверх тени, смещена вверх-влево */
+/* Тень = ::after на обёртке, z-index: 0 — строго ПОД кнопкой.
+   Архитектура: тень и кнопка в одном stacking context,
+   z-index решает порядок без конфликта с background родителя.     */
+.atlas-container .atlas-sp-btn-wrap::after {
+  content: '';
+  position: absolute;
+  /* Смещение тени: 4px вправо + 4px вниз от позиции кнопки */
+  top: 4px; left: 4px;
+  right: -4px; bottom: -4px;
+  /* Dither-паттерн: 4×4px шахматка */
+  background-image:
+    linear-gradient(45deg, rgba(0,0,0,.75) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(0,0,0,.75) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(0,0,0,.75) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(0,0,0,.75) 75%);
+  background-size: 4px 4px;
+  background-position: 0 0, 0 2px, 2px -2px, -2px 0;
+  z-index: 0;   /* ПОД кнопкой */
+  pointer-events: none;
+}
+
+/* Сама кнопка — z-index: 1, всегда поверх тени */
 .atlas-container .atlas-sp-btn {
   width: 100%;
   position: relative;
-  z-index: 1;
+  z-index: 1;   /* НАД ::after тенью */
   background: var(--atlas-bg);
   border: 1px solid var(--atlas-ink);
   border-radius: 0;
@@ -349,13 +368,13 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  /* Ключевое: кнопка над тенью */
+  /* Кнопка смещена вверх-влево — тень выглядывает снизу-справа */
   transform: translate(-4px, -4px);
   transition: transform 0.05s linear;
   white-space: nowrap;
 }
 
-/* Физическое нажатие — кнопка опускается на тень */
+/* Нажатие: кнопка "проваливается" на тень */
 .atlas-container .atlas-sp-btn:active {
   transform: translate(0, 0);
 }

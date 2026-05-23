@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ATLAS FRAMEWORK — Full Component Template</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@25fa96cebc7e4791bb97039cc79b636d84303bc5/cdn/atlas-framework.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@main/cdn/atlas-framework.css">
 
   <style>
     /* ── MAP WRAPPER: служебные метки секций, не часть фреймворка ── */
@@ -29,6 +29,16 @@
       margin-top: 0;
       border-top: none;
     }
+
+
+    /* ── ACCENT + MATH TOKENS (v3.8.0) ─── */
+    :root {
+      --atlas-accent:   #0000AA;
+      --atlas-accent-h: #0000DD;
+      --fs-math: 15px;
+      --atlas-dither: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4"><rect width="2" height="2" x="0" y="0" fill="black"/><rect width="2" height="2" x="2" y="2" fill="black"/></svg>');
+    }
+    .atlas-container .content-block .atlas-math-block { font-size: var(--fs-math); }
 
     /* ── GALLERY FIX: Интегрировано в шаблон до обновления CDN ─── */
     /* Когда в media-frame есть gallery-grid — шапка меняется */
@@ -69,6 +79,36 @@
       .atlas-container .content-block .gallery-grid img { height: 200px; }
     }
 
+    /* ── BUTTONS: 08-atlas-interactive.css (inline до обновления CDN) ─── */
+    .atlas-container .atlas-btn{border-radius:0 !important;-webkit-appearance:none;appearance:none;position:relative;display:inline-block;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:6px 16px;border:none;cursor:pointer;color:#fff;background-color:#0000AA;text-decoration:none;white-space:nowrap;overflow:hidden;outline:none;transition:background-color .1s;user-select:none;vertical-align:middle}
+    .atlas-container .atlas-btn::after{content:'';position:absolute;inset:0;background-image:linear-gradient(45deg,rgba(0,0,170,.5) 25%,transparent 25%),linear-gradient(-45deg,rgba(0,0,170,.5) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,rgba(0,0,170,.5) 75%),linear-gradient(-45deg,transparent 75%,rgba(0,0,170,.5) 75%);background-size:4px 4px;background-position:0 0,0 2px,2px -2px,-2px 0;pointer-events:none;opacity:0;transition:opacity .1s}
+    .atlas-container .atlas-btn:hover::after{opacity:1}
+    .atlas-container .atlas-btn:active{background-color:#00008B;transform:translateY(1px)}
+    .atlas-container .atlas-btn--active{background-color:#00008B;box-shadow:inset 1px 1px 0 rgba(255,255,255,.25)}
+    .atlas-container .atlas-btn--danger{background-color:#8b0000}.atlas-container .atlas-btn--danger:active{background-color:#6a0000}
+    .atlas-container .atlas-btn--ok{background-color:#1a4d1a}.atlas-container .atlas-btn--ok:active{background-color:#123912}
+    .atlas-container .atlas-btn--ghost{background:transparent;color:#8b0000;border:1px solid rgba(0,0,0,.15)}.atlas-container .atlas-btn--ghost::after{display:none}.atlas-container .atlas-btn--ghost:hover{background:rgba(0,0,0,.03)}.atlas-container .atlas-btn--ghost:active{transform:translateY(1px)}
+    .atlas-container .atlas-btn--bracket{background:transparent;color:#000;border:none;padding:4px 8px;letter-spacing:.04em;font-weight:700}
+    .atlas-container .atlas-btn--bracket::before{content:'[';margin-right:3px;color:rgba(0,0,0,.5);font-weight:400}
+    .atlas-container .atlas-btn--bracket::after{content:']';position:static;background-image:none;background-size:auto;pointer-events:auto;opacity:1;transition:none;margin-left:3px;color:rgba(0,0,0,.5);font-weight:400;inset:auto}
+    .atlas-container .atlas-btn--bracket:hover,.atlas-container .atlas-btn--bracket:hover::before,.atlas-container .atlas-btn--bracket:hover::after{color:#8b0000}
+    .atlas-container .atlas-btn--sm{font-size:9px;padding:3px 10px;letter-spacing:.08em}
+    .atlas-container .atlas-btn-group{display:inline-flex;align-items:center}
+    .atlas-container .atlas-btn-group .atlas-btn+.atlas-btn{border-left:1px solid rgba(255,255,255,.2)}
+
+    /* ── REFERENCES: 08-atlas-interactive.css ─── */
+    .atlas-container .content-block .atlas-refs{position:relative;border:1px solid rgba(0,0,0,.15);padding:34px 16px 16px;margin:24px 0;width:100%}
+    .atlas-container .content-block .atlas-refs::before{content:"[ REFERENCES // ИСТОЧНИКИ ]";position:absolute;top:0;left:0;right:0;height:24px;line-height:24px;padding-left:16px;font-size:9px;font-weight:700;color:rgba(0,0,0,.5);background:rgba(0,0,0,.015);border-bottom:1px solid rgba(0,0,0,.15);letter-spacing:.05em;font-family:'JetBrains Mono',monospace}
+    .atlas-container .content-block .atlas-ref-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+    .atlas-container .content-block .atlas-ref-item{display:grid;grid-template-columns:28px 1fr;align-items:baseline;font-size:12px;line-height:1.55;color:rgba(0,0,0,.85);padding-bottom:10px;border-bottom:1px dashed rgba(0,0,0,.15)}
+    .atlas-container .content-block .atlas-ref-item:last-child{border-bottom:none;padding-bottom:0}
+    .atlas-container .content-block .atlas-ref-num{font-size:9px;font-weight:700;color:#8b0000;letter-spacing:.04em;padding-top:2px}
+    .atlas-container .content-block .atlas-ref-tag{display:inline-block;font-size:9px;font-weight:700;color:rgba(0,0,0,.5);border:1px solid rgba(0,0,0,.15);padding:0 5px;margin-right:6px;vertical-align:middle;letter-spacing:.04em}
+    .atlas-container .content-block .atlas-ref-author{color:rgba(0,0,0,.5);font-size:12px}
+    .atlas-container .content-block .atlas-ref-link{display:inline-block;margin-top:3px;font-size:10px;color:#8b0000;text-decoration:none;border-bottom:1px solid rgba(139,0,0,.25);transition:border-color .15s}
+    .atlas-container .content-block .atlas-ref-link::before{content:'→ ';font-weight:700}
+    .atlas-container .content-block .atlas-ref-link:hover{border-bottom-color:#8b0000}
+
     /* Плейсхолдер для медиа в шаблоне */
     .media-placeholder {
       background: var(--atlas-bg-alt);
@@ -85,6 +125,51 @@
     .media-placeholder--grid  { width: 100%; height: 180px; }
     .media-placeholder--tall  { width: 100%; height: 260px; }
     .media-placeholder--thumb { width: 100%; height: 100px; }
+
+    /* ══════════════════════════════════════════════
+       09-atlas-shader-panel.css (inline)
+       ══════════════════════════════════════════════ */
+    .atlas-container .atlas-shader-panel{font-family:var(--atlas-font-mono);width:100%;position:relative;box-sizing:border-box;background:var(--atlas-bg);border:2px solid var(--atlas-ink);box-shadow:8px 8px 0 0 var(--atlas-ink);margin-bottom:12px;margin-right:8px}
+    .atlas-container .atlas-shader-panel__header{background:var(--atlas-ink);color:var(--atlas-bg);padding:8px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--atlas-ink)}
+    .atlas-container .atlas-shader-panel__title{font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--atlas-bg)}
+    .atlas-container .atlas-shader-panel__status{display:flex;align-items:center;gap:7px;font-size:var(--fs-status);font-weight:700;color:var(--atlas-bg);letter-spacing:.1em;opacity:.85}
+    .atlas-container .atlas-shader-panel__led{width:7px;height:7px;background:var(--atlas-bg);border-radius:0;flex-shrink:0;animation:atlas-led-pulse 2s infinite steps(2,end)}
+    @keyframes atlas-led-pulse{0%,100%{opacity:1}50%{opacity:0}}
+    .atlas-container .atlas-shader-panel__body{padding:16px;display:flex;flex-direction:column;gap:20px}
+    .atlas-container .atlas-shader-panel__block{display:flex;flex-direction:column;gap:10px}
+    .atlas-container .atlas-shader-panel__block-title{font-size:var(--fs-status);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--atlas-ink-muted);border-bottom:1px solid var(--atlas-border);padding-bottom:5px;display:flex;justify-content:space-between;align-items:baseline}
+    .atlas-container .atlas-shader-panel__block-hint{font-weight:400;color:var(--atlas-ink-muted);font-size:var(--fs-status);letter-spacing:.04em}
+    .atlas-container .atlas-sp-grid{display:grid;grid-template-columns:40px 1fr auto;column-gap:8px;row-gap:10px;align-items:center}
+    .atlas-container .atlas-sp-prefix{font-size:var(--fs-status);color:var(--atlas-ink-muted);text-align:right;white-space:nowrap}
+    .atlas-container .atlas-sp-label{font-size:var(--fs-code);font-weight:700;color:var(--atlas-ink);letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .atlas-container .atlas-sp-value{font-size:var(--fs-code);font-weight:700;color:var(--atlas-accent);min-width:40px;text-align:right;font-variant-numeric:tabular-nums}
+    .atlas-container .atlas-sp-row-full{grid-column:1/-1}
+    .atlas-container .atlas-sp-slider-wrap{position:relative;height:22px;display:flex;align-items:center}
+    .atlas-container .atlas-sp-slider-wrap::before{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:var(--atlas-ink);z-index:0}
+    .atlas-container .atlas-sp-slider-wrap::after{content:'';position:absolute;left:0;right:0;top:50%;height:7px;margin-top:-3px;background:repeating-linear-gradient(90deg,var(--atlas-ink) 0,var(--atlas-ink) 1px,transparent 1px,transparent 10%);z-index:0;opacity:.2}
+    .atlas-container .atlas-sp-slider{-webkit-appearance:none;appearance:none;background:transparent;height:100%;width:100%;outline:none;cursor:ew-resize;position:relative;z-index:1}
+    .atlas-container .atlas-sp-slider::-webkit-slider-thumb{-webkit-appearance:none;width:6px;height:18px;background:var(--atlas-accent);border:1px solid var(--atlas-ink);border-radius:0;box-shadow:none;cursor:ew-resize;transition:transform .1s}
+    .atlas-container .atlas-sp-slider::-moz-range-thumb{width:6px;height:18px;background:var(--atlas-accent);border:1px solid var(--atlas-ink);border-radius:0;box-shadow:none;cursor:ew-resize;transition:transform .1s}
+    .atlas-container .atlas-sp-switch{position:relative;width:56px;height:20px;cursor:pointer;display:block;flex-shrink:0}
+    .atlas-container .atlas-sp-switch input{opacity:0;width:0;height:0;position:absolute}
+    .atlas-container .atlas-sp-switch__track{position:absolute;inset:0;border:1px solid var(--atlas-ink);border-radius:0;display:flex;align-items:center;justify-content:center;font-size:var(--fs-status);font-weight:700;letter-spacing:.06em;background:var(--atlas-dither) repeat;background-size:4px 4px;background-color:var(--atlas-bg)}
+    .atlas-container .atlas-sp-switch__track::after{content:'OFF';color:var(--atlas-ink-muted);background:var(--atlas-bg);padding:0 3px;position:relative;z-index:1}
+    .atlas-container .atlas-sp-switch input:checked+.atlas-sp-switch__track{background:var(--atlas-accent);background-image:none}
+    .atlas-container .atlas-sp-switch input:checked+.atlas-sp-switch__track::after{content:'ON';color:#fff;background:transparent}
+    .atlas-container .atlas-sp-actions{display:flex;gap:16px;padding-top:4px}
+    .atlas-container .atlas-sp-btn-wrap{flex:1;position:relative;display:inline-block}.atlas-container .atlas-sp-btn-wrap::after{content:'';position:absolute;top:4px;left:4px;right:-4px;bottom:-4px;background-image:linear-gradient(45deg,rgba(0,0,0,.75) 25%,transparent 25%),linear-gradient(-45deg,rgba(0,0,0,.75) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,rgba(0,0,0,.75) 75%),linear-gradient(-45deg,transparent 75%,rgba(0,0,0,.75) 75%);background-size:4px 4px;background-position:0 0,0 2px,2px -2px,-2px 0;z-index:0;pointer-events:none}
+    .atlas-container .atlas-sp-btn{width:100%;position:relative;z-index:1;background:var(--atlas-bg);border:1px solid var(--atlas-ink);border-radius:0;-webkit-appearance:none;appearance:none;color:var(--atlas-ink);font-family:var(--atlas-font-mono);font-size:var(--fs-code);font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:8px 12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transform:translate(-4px,-4px);transition:transform .05s linear;white-space:nowrap}
+    .atlas-container .atlas-sp-btn:active{transform:translate(0,0)}
+    .atlas-container .atlas-sp-btn--accent{background:var(--atlas-accent);color:#fff;border-color:var(--atlas-ink)}
+    .atlas-container .atlas-sp-btn--accent:hover{background:var(--atlas-accent-h)}
+    .atlas-container .atlas-sp-btn--reset:hover{background:rgba(0,0,0,.04)}
+    .atlas-container .atlas-sp-btn__icon{font-size:13px;font-weight:400;line-height:1}
+    .atlas-container .atlas-shader-panel__footer{border-top:2px solid var(--atlas-ink);background:rgba(0,0,0,.03);padding:8px 14px;display:flex;justify-content:space-between;font-size:var(--fs-status)}
+    .atlas-container .atlas-shader-panel__footer-col{display:flex;flex-direction:column;gap:3px}
+    .atlas-container .atlas-shader-panel__footer-col--right{text-align:right}
+    .atlas-container .atlas-sp-meta-line{color:var(--atlas-ink-soft);font-weight:700}
+    .atlas-container .atlas-sp-meta-key{color:var(--atlas-ink-muted);font-weight:400;margin-right:4px}
+
   </style>
 
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
@@ -137,6 +222,51 @@
     <!-- ══════════════════════════════════════════════════════════
          02: TYPOGRAPHY
          ══════════════════════════════════════════════════════════ -->
+
+    <!-- ══════════════════════════════════════════════════════════
+         02b: TABLE OF CONTENTS (авто или ручной)
+         ══════════════════════════════════════════════════════════ -->
+    <div class="component-label">// 02b — TOC · .atlas-toc · H2/H3/H4 · якоря · auto via atlas-toc.js или ручной HTML</div>
+
+    <!-- ВАРИАНТ A: Авто — добавь id="atlas-toc" и подключи atlas-toc.js -->
+    <!-- <div id="atlas-toc"></div> -->
+
+    <!-- ВАРИАНТ B: Ручной HTML — пример ниже -->
+    <div class="atlas-toc">
+      <ul class="atlas-toc__list">
+        <li class="atlas-toc__item atlas-toc__item--h2">
+          <a href="#s01">
+            <span class="atlas-toc__num">01</span>
+            <span class="atlas-toc__row"><span class="atlas-toc__title">Main Section Title (H2)</span><span class="atlas-toc__dots"></span></span>
+          </a>
+        </li>
+        <li class="atlas-toc__item atlas-toc__item--h3">
+          <a href="#s01-sub">
+            <span class="atlas-toc__num">—</span>
+            <span class="atlas-toc__row"><span class="atlas-toc__title">Subsection Header (H3) — indented, regular weight</span><span class="atlas-toc__dots"></span></span>
+          </a>
+        </li>
+        <li class="atlas-toc__item atlas-toc__item--h4">
+          <a href="#s01-micro">
+            <span class="atlas-toc__num">·</span>
+            <span class="atlas-toc__row"><span class="atlas-toc__title">Micro-Header (H4) — double indent, muted</span><span class="atlas-toc__dots"></span></span>
+          </a>
+        </li>
+        <li class="atlas-toc__item atlas-toc__item--h2">
+          <a href="#s02">
+            <span class="atlas-toc__num">02</span>
+            <span class="atlas-toc__row"><span class="atlas-toc__title">Second Main Section</span><span class="atlas-toc__dots"></span></span>
+          </a>
+        </li>
+        <li class="atlas-toc__item atlas-toc__item--h2">
+          <a href="#s03">
+            <span class="atlas-toc__num">03</span>
+            <span class="atlas-toc__row"><span class="atlas-toc__title">Third Main Section</span><span class="atlas-toc__dots"></span></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
     <div class="component-label">// 02 — TYPOGRAPHY · .content-block · h2 / h3 / h4 / p / inline</div>
 
     <h2>01 MAIN SECTION TITLE (H2 — 13px, PREFIX »)</h2>
@@ -422,7 +552,212 @@ void ExecuteForwardBasePass(float4 fragCoord : SV_Position) {
     <!-- ══════════════════════════════════════════════════════════
          18: EOF DIVIDER
          ══════════════════════════════════════════════════════════ -->
-    <div class="component-label">// 18 — EOF DIVIDER · .atlas-eof-divider / __line / __meta</div>
+    <!-- ══════════════════════════════════════════════════════════
+         18: BUTTONS — Volkov Commander style
+         ══════════════════════════════════════════════════════════ -->
+    <div class="component-label">// 18 — BUTTONS SOLID · .atlas-btn · #0000AA fill · dithering on hover · Volkov Commander</div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px;">
+      <button class="atlas-btn">Execute</button>
+      <button class="atlas-btn atlas-btn--active">Selected</button>
+      <button class="atlas-btn atlas-btn--danger">Delete</button>
+      <button class="atlas-btn atlas-btn--ok">Confirm</button>
+      <button class="atlas-btn atlas-btn--sm">Compile ›</button>
+    </div>
+
+    <div class="component-label">// 19 — BUTTONS BRACKET · .atlas-btn--bracket · [Action] · no fill · hover:crit</div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px;">
+      <button class="atlas-btn atlas-btn--bracket">View Source</button>
+      <button class="atlas-btn atlas-btn--bracket">Download</button>
+      <button class="atlas-btn atlas-btn--bracket">Read More</button>
+      <a href="#" class="atlas-btn atlas-btn--bracket">GitHub →</a>
+    </div>
+
+    <div class="component-label">// 20 — BUTTONS GHOST · .atlas-btn--ghost · transparent · border · crit text · secondary actions</div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px;">
+      <button class="atlas-btn atlas-btn--ghost">Cancel</button>
+      <button class="atlas-btn atlas-btn--ghost">Skip</button>
+      <button class="atlas-btn atlas-btn--ghost atlas-btn--sm">Dismiss</button>
+    </div>
+
+    <div class="component-label">// 21 — BUTTON GROUP · .atlas-btn-group · joined buttons · shared divider</div>
+
+    <div class="atlas-btn-group" style="margin-bottom:12px;">
+      <button class="atlas-btn atlas-btn--sm">ALL</button>
+      <button class="atlas-btn atlas-btn--sm atlas-btn--active">R&amp;D</button>
+      <button class="atlas-btn atlas-btn--sm">VFX</button>
+      <button class="atlas-btn atlas-btn--sm">TOOLS</button>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════════════════════
+         22: REFERENCES BLOCK
+         ══════════════════════════════════════════════════════════ -->
+    <div class="component-label">// 22 — REFERENCE BLOCK · .atlas-refs / .atlas-ref-list / .atlas-ref-item · tags: [PAPER][DOCS][CODE][VIDEO][TALK]</div>
+
+    <div class="atlas-refs">
+      <ul class="atlas-ref-list">
+        <li class="atlas-ref-item">
+          <span class="atlas-ref-num">[01]</span>
+          <div class="atlas-ref-body">
+            <span class="atlas-ref-tag">PAPER</span>
+            <span class="atlas-ref-author">Bridson R., Müller-Fischer M.</span> — Fluid Simulation for Computer Graphics. SIGGRAPH 2007 Course Notes.
+            <br><a href="#" class="atlas-ref-link">dl.acm.org/doi/10.1145/1281500.1281681</a>
+          </div>
+        </li>
+        <li class="atlas-ref-item">
+          <span class="atlas-ref-num">[02]</span>
+          <div class="atlas-ref-body">
+            <span class="atlas-ref-tag">DOCS</span>
+            <span class="atlas-ref-author">Epic Games</span> — Niagara VFX System: GPU Simulation Stages. Unreal Engine 5.3 Official Documentation.
+            <br><a href="#" class="atlas-ref-link">docs.unrealengine.com/5.3/en-US/niagara-gpu-simulation</a>
+          </div>
+        </li>
+        <li class="atlas-ref-item">
+          <span class="atlas-ref-num">[03]</span>
+          <div class="atlas-ref-body">
+            <span class="atlas-ref-tag">CODE</span>
+            <span class="atlas-ref-author">pavelzosim</span> — Atlas Framework: Modular CSS Design System for Technical Blogs. GitHub, 2026.
+            <br><a href="#" class="atlas-ref-link">github.com/pavelzosim/atlas-framework</a>
+          </div>
+        </li>
+        <li class="atlas-ref-item">
+          <span class="atlas-ref-num">[04]</span>
+          <div class="atlas-ref-body">
+            <span class="atlas-ref-tag">VIDEO</span>
+            <span class="atlas-ref-author">GDC</span> — Technical Artist Bootcamp: Building Procedural Pipelines at Scale. Game Developers Conference 2024.
+            <br><a href="#" class="atlas-ref-link">gdcvault.com/play/1034xxx</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════════════════════
+         23: EOF DIVIDER (renumbered)
+         ══════════════════════════════════════════════════════════ -->
+
+    <!-- ══════════════════════════════════════════════════════════
+         23: SHADER CONTROL PANEL
+         ══════════════════════════════════════════════════════════ -->
+    <div class="component-label">// 23 — SHADER PANEL · .atlas-shader-panel · dither-shadow · LED · switches · sliders · dither-btn</div>
+
+    <div class="atlas-shader-panel">
+      <div class="atlas-shader-panel__header">
+        <div class="atlas-shader-panel__title">SYS.RENDER.SHADER_REMAP</div>
+        <div class="atlas-shader-panel__status">
+          <span class="atlas-shader-panel__led"></span> ACTIVE
+        </div>
+      </div>
+
+      <div class="atlas-shader-panel__body">
+
+        <!-- BOOLEAN SWITCHES -->
+        <div class="atlas-shader-panel__block">
+          <div class="atlas-shader-panel__block-title">
+            BOOLEAN_SWITCHES <span class="atlas-shader-panel__block-hint">// LOGIC</span>
+          </div>
+          <div class="atlas-sp-grid">
+            <div class="atlas-sp-prefix">bool_</div>
+            <div class="atlas-sp-label">RAYMARCH_VOLUMETRICS</div>
+            <div>
+              <label class="atlas-sp-switch">
+                <input type="checkbox" checked>
+                <span class="atlas-sp-switch__track"></span>
+              </label>
+            </div>
+
+            <div class="atlas-sp-prefix">bool_</div>
+            <div class="atlas-sp-label">ALU_PHYSICS_EMULATOR</div>
+            <div>
+              <label class="atlas-sp-switch">
+                <input type="checkbox">
+                <span class="atlas-sp-switch__track"></span>
+              </label>
+            </div>
+
+            <div class="atlas-sp-prefix">bool_</div>
+            <div class="atlas-sp-label">LIMB_DARKENING</div>
+            <div>
+              <label class="atlas-sp-switch">
+                <input type="checkbox" checked>
+                <span class="atlas-sp-switch__track"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- FLOAT PARAMETERS -->
+        <div class="atlas-shader-panel__block">
+          <div class="atlas-shader-panel__block-title">
+            FLOAT_PARAMETERS <span class="atlas-shader-panel__block-hint">[0.00 – 1.00]</span>
+          </div>
+          <div class="atlas-sp-grid">
+
+            <div class="atlas-sp-prefix">val_</div>
+            <div class="atlas-sp-label">PLASMA_DENSITY</div>
+            <div class="atlas-sp-value" id="sp-val1">0.75</div>
+            <div class="atlas-sp-row-full">
+              <div class="atlas-sp-slider-wrap">
+                <input type="range" min="0" max="1" step="0.01" value="0.75"
+                       class="atlas-sp-slider" oninput="document.getElementById('sp-val1').textContent=parseFloat(this.value).toFixed(2)">
+              </div>
+            </div>
+
+            <div class="atlas-sp-prefix">val_</div>
+            <div class="atlas-sp-label">SPHERICAL_UV_BIAS</div>
+            <div class="atlas-sp-value" id="sp-val2">0.24</div>
+            <div class="atlas-sp-row-full">
+              <div class="atlas-sp-slider-wrap">
+                <input type="range" min="0" max="1" step="0.01" value="0.24"
+                       class="atlas-sp-slider" oninput="document.getElementById('sp-val2').textContent=parseFloat(this.value).toFixed(2)">
+              </div>
+            </div>
+
+            <div class="atlas-sp-prefix">val_</div>
+            <div class="atlas-sp-label">GRANULE_EXPONENT</div>
+            <div class="atlas-sp-value" id="sp-val3">2.00</div>
+            <div class="atlas-sp-row-full">
+              <div class="atlas-sp-slider-wrap">
+                <input type="range" min="1" max="4" step="0.1" value="2"
+                       class="atlas-sp-slider" oninput="document.getElementById('sp-val3').textContent=parseFloat(this.value).toFixed(2)">
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="atlas-sp-actions">
+          <div class="atlas-sp-btn-wrap">
+            <button class="atlas-sp-btn atlas-sp-btn--accent">
+              <span class="atlas-sp-btn__icon">»</span> EXECUTE (F5)
+            </button>
+          </div>
+          <div class="atlas-sp-btn-wrap">
+            <button class="atlas-sp-btn atlas-sp-btn--reset">
+              <span class="atlas-sp-btn__icon">×</span> FLUSH_CACHE
+            </button>
+          </div>
+        </div>
+
+      </div><!-- /body -->
+
+      <div class="atlas-shader-panel__footer">
+        <div class="atlas-shader-panel__footer-col">
+          <div class="atlas-sp-meta-line"><span class="atlas-sp-meta-key">PRJ:</span> CORE_RENDER</div>
+          <div class="atlas-sp-meta-line"><span class="atlas-sp-meta-key">MOD:</span> VTX_SHADER</div>
+        </div>
+        <div class="atlas-shader-panel__footer-col atlas-shader-panel__footer-col--right">
+          <div class="atlas-sp-meta-line"><span class="atlas-sp-meta-key">VER:</span> 3.8.0</div>
+          <div class="atlas-sp-meta-line"><span class="atlas-sp-meta-key">AUT:</span> pavelzosim</div>
+        </div>
+      </div>
+    </div><!-- /atlas-shader-panel -->
+
+    <div class="component-label">// 24 — EOF DIVIDER · .atlas-eof-divider / __line / __meta</div>
 
     <div class="atlas-eof-divider">
       <span class="atlas-eof-divider__line"></span>
@@ -437,7 +772,7 @@ void ExecuteForwardBasePass(float4 fragCoord : SV_Position) {
   <!-- ══════════════════════════════════════════════════════════
        19: FOOTER
        ══════════════════════════════════════════════════════════ -->
-  <div class="component-label">// 19 — FOOTER MODULE · #atlas-footer · support-header / support-content / matrix-zone (3 col) / blueprint-link</div>
+  <div class="component-label">// 24 — FOOTER MODULE · #atlas-footer · support-header / support-content / matrix-zone (3 col) / blueprint-link</div>
 
   <div id="atlas-footer">
     <div class="atlas-footer-wrapper">
@@ -489,6 +824,8 @@ void ExecuteForwardBasePass(float4 fragCoord : SV_Position) {
 
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-glsl.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-glsl.min.js"></script>
 </body>
 </html>
