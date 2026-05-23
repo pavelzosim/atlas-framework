@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260523-093000 | BUILD: Sat May 23 09:30:00 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260523-100234 | BUILD: Sat May 23 10:02:34 UTC 2026 */
 
 /* ==========================================================================
    FILE: 01-atlas-core.css
@@ -1853,17 +1853,36 @@
 .atlas-container .atlas-sp-btn-wrap {
   flex: 1;
   position: relative;
-  /* Dither-тень = шахматный паттерн чёрных пикселей */
-  background: var(--atlas-dither) repeat;
-  background-size: 4px 4px;
-  background-color: transparent;
+  display: inline-block;
+  /* КРИТИЧНО: overflow никогда не hidden — тень должна вылезать за блок */
 }
 
-/* Сама кнопка — поверх тени, смещена вверх-влево */
+/* Тень = ::after на обёртке, z-index: 0 — строго ПОД кнопкой.
+   Архитектура: тень и кнопка в одном stacking context,
+   z-index решает порядок без конфликта с background родителя.     */
+.atlas-container .atlas-sp-btn-wrap::after {
+  content: '';
+  position: absolute;
+  /* Смещение тени: 4px вправо + 4px вниз от позиции кнопки */
+  top: 4px; left: 4px;
+  right: -4px; bottom: -4px;
+  /* Dither-паттерн: 4×4px шахматка */
+  background-image:
+    linear-gradient(45deg, rgba(0,0,0,.75) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(0,0,0,.75) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(0,0,0,.75) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(0,0,0,.75) 75%);
+  background-size: 4px 4px;
+  background-position: 0 0, 0 2px, 2px -2px, -2px 0;
+  z-index: 0;   /* ПОД кнопкой */
+  pointer-events: none;
+}
+
+/* Сама кнопка — z-index: 1, всегда поверх тени */
 .atlas-container .atlas-sp-btn {
   width: 100%;
   position: relative;
-  z-index: 1;
+  z-index: 1;   /* НАД ::after тенью */
   background: var(--atlas-bg);
   border: 1px solid var(--atlas-ink);
   border-radius: 0;
@@ -1881,13 +1900,13 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  /* Ключевое: кнопка над тенью */
+  /* Кнопка смещена вверх-влево — тень выглядывает снизу-справа */
   transform: translate(-4px, -4px);
   transition: transform 0.05s linear;
   white-space: nowrap;
 }
 
-/* Физическое нажатие — кнопка опускается на тень */
+/* Нажатие: кнопка "проваливается" на тень */
 .atlas-container .atlas-sp-btn:active {
   transform: translate(0, 0);
 }
@@ -1947,6 +1966,160 @@
   color: var(--atlas-ink-muted);
   font-weight: 400;
   margin-right: 4px;
+}
+
+
+/* ==========================================================================
+   FILE: 10-atlas-toc.css
+   ROLE: Содержание поста (.atlas-toc) с якорной навигацией по H2/H3/H4.
+         Автоматически генерируется JS (см. ниже) или пишется вручную.
+         Стилистически идентичен .atlas-refs — те же рамки, псевдо-шапка,
+         пунктирные разделители, — но клик ведёт на секцию, а не на URL.
+
+   JS-АВТОГЕНЕРАЦИЯ:
+     Вставь <div id="atlas-toc"></div> в начало поста.
+     Подключи скрипт atlas-toc.js — он найдёт все h2/h3/h4 внутри
+     .content-block, назначит им id и заполнит #atlas-toc.
+
+   ЗАВИСИМОСТИ: 01-atlas-core.css
+   ПОРЯДОК В МОНОЛИТЕ: 10 из 10
+   ========================================================================== */
+
+/* ── СЕКЦИЯ A: КОНТЕЙНЕР ─────────────────────────────────────────────────── */
+
+.atlas-container .content-block .atlas-toc {
+  position: relative;
+  border: 1px solid var(--atlas-border);
+  padding: 34px 0 8px 0;   /* top = 24px шапка + 10px зазор; sides = 0 (у items своих) */
+  margin: 24px 0;
+  width: 100%;
+}
+
+/* Псевдо-шапка — идентична системным блокам */
+.atlas-container .content-block .atlas-toc::before {
+  content: "[ TABLE_OF_CONTENTS // NAVIGATION ]";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 24px;
+  line-height: 24px;
+  padding-left: 16px;
+  font-size: var(--fs-status);
+  font-weight: 700;
+  color: var(--atlas-ink-muted);
+  background: rgba(0, 0, 0, 0.015);
+  border-bottom: 1px solid var(--atlas-border);
+  letter-spacing: 0.06em;
+  font-family: var(--atlas-font-mono);
+}
+
+/* ── СЕКЦИЯ B: СПИСОК ЭЛЕМЕНТОВ ──────────────────────────────────────────── */
+
+.atlas-container .content-block .atlas-toc__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Каждый элемент = 3-колоночная сетка: номер | заголовок | точки */
+.atlas-container .content-block .atlas-toc__item {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  align-items: center;
+  border-bottom: 1px dashed var(--atlas-border);
+  transition: background 0.1s;
+}
+.atlas-container .content-block .atlas-toc__item:last-child {
+  border-bottom: none;
+}
+.atlas-container .content-block .atlas-toc__item:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+/* Ссылка растягивается на весь элемент через display:contents */
+.atlas-container .content-block .atlas-toc__item a {
+  display: contents;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Hover: номер и заголовок краснеют */
+.atlas-container .content-block .atlas-toc__item:hover .atlas-toc__num,
+.atlas-container .content-block .atlas-toc__item:hover .atlas-toc__title {
+  color: var(--atlas-crit);
+}
+
+/* ── СЕКЦИЯ C: ЯЧЕЙКИ ────────────────────────────────────────────────────── */
+
+/* Номер секции: [01] / [—] / [·] */
+.atlas-container .content-block .atlas-toc__num {
+  font-size: var(--fs-status);
+  font-weight: 700;
+  color: var(--atlas-ink-muted);
+  padding: 7px 0 7px 16px;
+  letter-spacing: 0.04em;
+  align-self: center;
+  transition: color 0.1s;
+}
+
+/* Строка заголовка + точки через flex */
+.atlas-container .content-block .atlas-toc__row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 16px 7px 8px;
+  overflow: hidden;
+}
+
+/* Заголовок */
+.atlas-container .content-block .atlas-toc__title {
+  font-size: var(--fs-code);
+  font-weight: 700;
+  color: var(--atlas-ink);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color 0.1s;
+}
+
+/* Точки-заполнитель между заголовком и краем */
+.atlas-container .content-block .atlas-toc__dots {
+  flex: 1;
+  border-bottom: 1px dotted var(--atlas-border);
+  min-width: 12px;
+  height: 0;
+  align-self: center;
+  margin-bottom: 2px;
+}
+
+/* ── СЕКЦИЯ D: УРОВНИ ВЛОЖЕННОСТИ ────────────────────────────────────────── */
+
+/* H2: основной раздел — без отступа, жирный */
+.atlas-container .content-block .atlas-toc__item--h2 .atlas-toc__title {
+  font-size: var(--fs-code);
+  font-weight: 700;
+}
+
+/* H3: подраздел — отступ 20px, обычный вес, приглушённый */
+.atlas-container .content-block .atlas-toc__item--h3 .atlas-toc__title {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--atlas-ink-soft);
+  padding-left: 14px;
+}
+.atlas-container .content-block .atlas-toc__item--h3 .atlas-toc__num {
+  color: rgba(0, 0, 0, 0.2);
+}
+
+/* H4: микро-заголовок — двойной отступ, мелкий, совсем приглушённый */
+.atlas-container .content-block .atlas-toc__item--h4 .atlas-toc__title {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--atlas-ink-muted);
+  padding-left: 28px;
+}
+.atlas-container .content-block .atlas-toc__item--h4 .atlas-toc__num {
+  color: rgba(0, 0, 0, 0.15);
 }
 
 
