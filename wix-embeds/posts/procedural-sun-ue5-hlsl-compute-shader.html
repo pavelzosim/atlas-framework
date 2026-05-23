@@ -5,9 +5,121 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Procedural Sun — UE5 HLSL Compute Shader</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@f406fae22f42b95cf91ccb5c850a0fd9789c92d2/cdn/atlas-framework.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/pavelzosim/atlas-framework@1b94ccf8eceef058d93848d15ee6551dc61bdf26/cdn/atlas-framework.css">
 
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet">
+
+<script>
+(function() {
+  'use strict';
+
+  function atlasTOC(opts) {
+    opts = opts || {};
+    var targetSel = opts.target  || '#atlas-toc';
+    var scopeSel  = opts.scope   || '.content-block';
+    var levels    = opts.levels  || ['h2', 'h3', 'h4'];
+    
+    var target = document.querySelector(targetSel);
+    if (!target) return;
+
+    /* Собираем все заголовки нужных уровней внутри scope,
+       исключая те что внутри самого TOC-контейнера          */
+    var selector = levels.map(function(l) {
+      return scopeSel + ' ' + l + ':not(' + targetSel + ' ' + l + ')';
+    }).join(', ');
+
+    var headings = Array.from(document.querySelectorAll(selector));
+    if (!headings.length) return;
+
+    /* Утилита: текст → slug для id */
+    function toSlug(text) {
+      return text.toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .trim()
+        .replace(/\s+/g, '-')
+        .substring(0, 60);
+    }
+
+    /* Счётчик для уникальности id */
+    var slugCount = {};
+
+    /* Назначаем id каждому заголовку */
+    headings.forEach(function(h) {
+      var base = 'atlas-' + h.tagName.toLowerCase() + '-' + toSlug(h.textContent);
+      var slug = base;
+      if (slugCount[base] !== undefined) {
+        slugCount[base]++;
+        slug = base + '-' + slugCount[base];
+      } else {
+        slugCount[base] = 0;
+      }
+      if (!h.id) h.id = slug;
+    });
+
+    /* Номера для H2 — автоинкремент */
+    var h2count = 0;
+
+    /* Строим HTML */
+    var items = headings.map(function(h) {
+      var level = h.tagName.toLowerCase(); // h2 / h3 / h4
+      var text  = h.textContent.trim();
+      var href  = '#' + h.id;
+
+      var num;
+      if (level === 'h2') {
+        h2count++;
+        num = (h2count < 10 ? '0' : '') + h2count;
+      } else if (level === 'h3') {
+        num = '—';
+      } else {
+        num = '·';
+      }
+
+      return [
+        '<li class="atlas-toc__item atlas-toc__item--' + level + '">',
+          '<a href="' + href + '" target="_self">',
+            '<span class="atlas-toc__num">' + num + '</span>',
+            '<span class="atlas-toc__row">',
+              '<span class="atlas-toc__title">' + text + '</span>',
+              '<span class="atlas-toc__dots"></span>',
+            '</span>',
+          '</a>',
+        '</li>'
+      ].join('');
+    }).join('');
+
+    target.innerHTML =
+      '<div class="atlas-toc">' +
+        '<ul class="atlas-toc__list">' + items + '</ul>' +
+      '</div>';
+
+    /* Плавный скролл к якорю */
+    target.querySelectorAll('.atlas-toc__item a').forEach(function(a) {
+      a.addEventListener('click', function(e) {
+        var href = a.getAttribute('href');
+        if (!href || href[0] !== '#') return;
+        var dest = document.getElementById(href.slice(1));
+        if (!dest) return;
+        e.preventDefault();
+        dest.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        /* Небольшой офсет чтобы заголовок не прятался за шапку */
+        setTimeout(function() { window.scrollBy(0, -8); }, 350);
+      });
+    });
+  }
+
+  /* Авто-запуск после DOMContentLoaded */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { atlasTOC(); });
+  } else {
+    atlasTOC();
+  }
+
+  /* Экспорт для ручного вызова с параметрами */
+  window.atlasTOC = atlasTOC;
+
+}());
+</script>
 
   <style>
     /* ── BUTTON SHADOW FIX: тень смещена на блок, не на текст ──────── */
@@ -204,12 +316,12 @@
 <body>
 
 <div class="atlas-container">
-  <div id="site-passport"></div>
-
+  <div id="site-passport"></div> 
   <!-- ══════════════════════════════════════════════════════════════
        01: OVERVIEW
        ══════════════════════════════════════════════════════════════ -->
   <div class="content-block">
+        <div id="atlas-toc"></div>
     <h2>01 Physical-Based Sun on Unreal Engine</h2>
     <p>This post covers an ongoing R&amp;D project: a <strong>no-texture, physically-based sun surface plugin</strong> for Unreal Engine 5.7. The goal was not to make "a nice-looking sun" — it was to build a system where every visual parameter is grounded in <span class="atlas-code-inline">solar_physics</span> and expressible as math, not painted by hand.</p>
     <p>I am documenting this process in real-time. As the project progresses, this report will be updated to reflect the evolving C++ architecture and the math driving the solar photosphere.</p>
@@ -748,8 +860,17 @@ function applyData(d) {
 }());
 </script>
 
+
+
+
+
+
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-hlsl.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-glsl.min.js"></script>
 
 </body>
