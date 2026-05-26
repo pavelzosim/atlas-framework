@@ -3,66 +3,33 @@
     "support": {
         "text": "Have a project or a pipeline bottleneck? Let's build something deterministic.",
         "links": [
-            {
-                "text": "TELEGRAM",
-                "url": "https://t.me/tlon_exz"
-            },
-            {
-                "text": "LINKEDIN",
-                "url": "https://www.linkedin.com/in/pavelzosim/"
-            },
-            {
-                "text": "EMAIL",
-                "url": "mailto:pavel.zosim@protonmail.com"
-            }
+            { "text": "TELEGRAM", "url": "https://t.me/tlon_exz", "target": "_blank" },
+            { "text": "LINKEDIN", "url": "https://www.linkedin.com/in/pavelzosim/", "target": "_blank" },
+            { "text": "EMAIL", "url": "mailto:pavel.zosim@protonmail.com" }
         ]
     },
     "links": [
         {
             "label": "PROD_PIPELINES",
             "items": [
-                {
-                    "text": "Houdini HDAs",
-                    "url": "https://www.pavelzosim.com/blog/tags/houdini"
-                },
-                {
-                    "text": "Real-time VFX",
-                    "url": "https://www.pavelzosim.com/blog/tags/vfx"
-                },
-                {
-                    "text": "Procedural Systems",
-                    "url": "https://www.pavelzosim.com/blog/tags/procedural"
-                }
+                { "text": "Houdini HDAs", "url": "https://www.pavelzosim.com/blog/tags/houdini", "target": "_blank" },
+                { "text": "Real-time VFX", "url": "https://www.pavelzosim.com/blog/tags/vfx", "target": "_blank" },
+                { "text": "Procedural Systems", "url": "https://www.pavelzosim.com/blog/tags/procedural", "target": "_blank" }
             ]
         },
         {
             "label": "R&D_LOGS",
             "items": [
-                {
-                    "text": "Unity Shaders",
-                    "url": "https://www.pavelzosim.com/blog/tags/unity"
-                },
-                {
-                    "text": "Unreal Engine",
-                    "url": "https://www.pavelzosim.com/blog/tags/unreal"
-                },
-                {
-                    "text": "GPU Optimization",
-                    "url": "https://www.pavelzosim.com/blog/tags/gpu"
-                }
+                { "text": "Unity Shaders", "url": "https://www.pavelzosim.com/blog/tags/unity", "target": "_blank" },
+                { "text": "Unreal Engine", "url": "https://www.pavelzosim.com/blog/tags/unreal", "target": "_blank" },
+                { "text": "GPU Optimization", "url": "https://www.pavelzosim.com/blog/tags/gpu", "target": "_blank" }
             ]
         },
         {
             "label": "SYSTEM_ROOT",
             "items": [
-                {
-                    "text": "Curiculum Vitae",
-                    "url": "https://www.pavelzosim.com/cv"
-                },                
-                {
-                    "text": "GitHub Profile",
-                    "url": "https://github.com/pavelzosim"
-                }
+                { "text": "Curiculum Vitae", "url": "https://www.pavelzosim.com/cv" },
+                { "text": "GitHub Profile", "url": "https://github.com/pavelzosim", "target": "_blank" }
             ]
         }
     ]
