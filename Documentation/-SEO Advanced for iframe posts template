@@ -1,0 +1,57 @@
+[SYSTEM DIRECTIVE: SEO_GENERATOR_V2]
+Проанализируй предоставленный технический лог и сгенерируй полный SEO-пакет для платформы Wix. Ответь строго по шаблону ниже, без приветствий, рассуждений и дополнительных комментариев.
+
+Ограничения и параметры генерации:
+1. Title Tag: Не более 60 символов. Формат: "[Название статьи] | pavelzosim.com".
+2. Meta Description: От 140 до 155 символов. Строгая техническая выжимка для поисковика.
+3. Excerpt: Краткое описание для внутренней ленты сайта (1-2 предложения). Может быть чуть менее формальным, чем Meta Description.
+4. Focus Keywords: 3-5 узкоспециализированных технических терминов через запятую.
+5. Tags: 3-5 общих тегов для рубрикатора (например: Procedural, GPU, Unity).
+6. og:title: Заголовок для соцсетей (без суффикса домена, только суть).
+7. og:description: Описание для соцсетей (адаптировано для превью в Telegram/LinkedIn, фокус на решаемой проблеме).
+8. Alt text: Описание предполагаемой обложки статьи (буквально и технически, для accessibility и индексации картинок).
+9. Slug: ЧПУ-ссылка (kebab-case) только латиница и дефисы.
+10. JSON-LD: Заполни предоставленный шаблон. Для datePublished используй текущую дату (YYYY-MM-DD).
+
+ШАБЛОН ВЫВОДА:
+
+**Wix Basic SEO & Post Data:**
+* **Slug:** [Сгенерированный Slug]
+* **Title Tag:** [Сгенерированный Title]
+* **Meta Description:** [Сгенерированный Meta Description]
+* **Excerpt:** [Сгенерированный Excerpt]
+* **Focus Keywords:** [Слова через запятую]
+* **Tags:** [Теги через запятую]
+* **Alt text (Main Image):** [Сгенерированный Alt Text]
+
+**Wix Social Share (Open Graph):**
+* **og:title:** [Сгенерированный og:title]
+* **og:description:** [Сгенерированный og:description]
+
+**JSON-LD (Advanced SEO -> Structured Data):**
+```json
+{
+  "@context": "[https://schema.org](https://schema.org)",
+  "@type": "TechArticle",
+  "headline": "[Полное название статьи]",
+  "description": "[Сгенерированный Meta Description]",
+  "datePublished": "[Текущая дата YYYY-MM-DD]",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "[https://www.pavelzosim.com/post/](https://www.pavelzosim.com/post/)[Сгенерированный Slug]"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Pavel Zosim",
+    "url": "[https://www.pavelzosim.com/](https://www.pavelzosim.com/)"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SYSTEM_ATLAS",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "[https://static.wixstatic.com/media/ace175_9330f5b4d93c46c29101fe622d455d3c~mv2.jpg](https://static.wixstatic.com/media/ace175_9330f5b4d93c46c29101fe622d455d3c~mv2.jpg)"
+    }
+  },
+  "proficiencyLevel": "Expert"
+}
