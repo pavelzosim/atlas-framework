@@ -1,4 +1,4 @@
-/* ATLAS FRAMEWORK | VERSION: v-20260526-101919 | BUILD: Tue May 26 10:19:19 UTC 2026 */
+/* ATLAS FRAMEWORK | VERSION: v-20260531-130302 | BUILD: Sun May 31 13:03:02 UTC 2026 */
 
 /* ==========================================================================
    FILE: 01-atlas-core.css
@@ -827,6 +827,76 @@
 .atlas-container .content-block pre.atlas-code-block code .token.function   { color: var(--atlas-crit); font-weight: 700; }
 .atlas-container .content-block pre.atlas-code-block code .token.operator   { color: var(--atlas-ink); }
 
+/* ── СЕКЦИЯ E: OVERFLOW FIX — Код внутри составных компонентов ──────────── */
+/* Проблема: pre.atlas-code-block внутри .comparison-matrix и              */
+/* .atlas-table-frame имеет overflow:auto на РОДИТЕЛЕ, но сам pre          */
+/* получает белое пространство без переноса — текст уходит за границу.     */
+/*                                                                          */
+/* Решение: явный overflow-x:auto + max-width:100% на pre в любом          */
+/* контексте, плюс word-break для длинных идентификаторов в таблицах.      */
+
+/* pre внутри comparison-matrix — код в ячейках сравнения */
+.atlas-container .comparison-matrix pre.atlas-code-block {
+  overflow-x: auto;
+  max-width: 100%;
+  box-sizing: border-box;
+  /* Сброс margin который core задаёт системным блокам */
+  margin: 8px 0;
+  /* Шапка ::before не нужна внутри comparison-cell — убираем */
+  padding-top: 12px;
+}
+.atlas-container .comparison-matrix pre.atlas-code-block::before {
+  display: none;
+}
+
+/* pre внутри atlas-table-frame (ячейки таблиц td/th) */
+.atlas-container .content-block .atlas-table-frame pre.atlas-code-block,
+.atlas-container .content-block .atlas-table-frame td pre,
+.atlas-container .content-block .atlas-table-frame th pre {
+  overflow-x: auto;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 4px 0;
+  padding: 6px 8px;
+  border-left: 2px solid var(--atlas-crit);
+  font-size: var(--fs-code);
+  line-height: 1.5;
+}
+.atlas-container .content-block .atlas-table-frame pre.atlas-code-block::before {
+  display: none;
+}
+
+/* atlas-code-inline в ячейках таблиц — предотвращаем растягивание столбца */
+.atlas-container .content-block .atlas-table-frame td .atlas-code-inline,
+.atlas-container .content-block .atlas-table-frame th .atlas-code-inline {
+  display: inline;
+  word-break: break-all;
+  white-space: normal;
+}
+
+/* Глобальный фикс: код внутри любого .comp-col не разрывает layout */
+.atlas-container .comp-col pre,
+.atlas-container .comp-col code,
+.atlas-container .comp-col .atlas-code-block {
+  overflow-x: auto;
+  max-width: 100%;
+  box-sizing: border-box;
+  white-space: pre;          /* сохраняем форматирование */
+  word-break: normal;        /* не ломаем внутри слов */
+}
+
+/* Таблицы: длинные слова в td/th переносятся, не разрывают таблицу */
+.atlas-container .content-block .atlas-table-frame td,
+.atlas-container .content-block .atlas-table-frame th {
+  word-break: break-word;    /* перенос по словам если не помещается */
+  overflow-wrap: break-word; /* fallback для старых браузеров */
+  min-width: 0;              /* позволяет flex/grid ужать ячейку */
+}
+
+/* Горизонтальный скролл на самом table-frame если таблица шире контейнера */
+.atlas-container .content-block .atlas-table-frame {
+  overflow-x: auto;
+}
 
 
 /* ==========================================================================
@@ -1079,8 +1149,15 @@
 /* Если нужно вернуть 24px — убрать блок из core и задать здесь явно.      */
 
 .atlas-container .comparison-matrix {
+  margin: 24px;
+  max-width: calc(100% - 48px);
+  border: 1px solid var(--atlas-border);
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  padding-top: 34px; /* Синхронизировано с core: 24px шапка + 10px зазор */
+  box-sizing: border-box;
+  background: transparent;
 }
 
 /* Псевдо-шапка матрицы */
@@ -1115,6 +1192,39 @@
   color: var(--atlas-ink-soft);
 }
 
+/* ── OVERFLOW FIX (v3.8.1) — comparison-matrix scroll ───────────────────── */
+/* .comparison-matrix — display:grid 1fr 1fr.                               */
+/* Если содержимое ячейки (pre, длинная строка) шире 1fr,                  */
+/* grid не ужимает её ниже min-content без явного min-width: 0.             */
+
+.atlas-container .comparison-matrix {
+  overflow-x: auto;    /* если вся матрица не помещается — скролл */
+}
+
+.atlas-container .comp-col {
+  min-width: 0;        /* критично: разрешает grid ужать колонку */
+  overflow: hidden;    /* контент не вылезает за границу ячейки */
+}
+
+/* pre внутри comp-col: скролл по коду, не разрыв layout */
+.atlas-container .comp-col pre,
+.atlas-container .comp-col pre.atlas-code-block {
+  overflow-x: auto;
+  max-width: 100%;
+  box-sizing: border-box;
+  /* Шапку ::before внутри comparison скрываем — дублирует comp-label */
+  padding-top: 12px;
+}
+.atlas-container .comp-col pre.atlas-code-block::before {
+  display: none;
+}
+
+/* Длинные слова в .comp-body (имена функций, URLs) */
+.atlas-container .comp-body {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  min-width: 0;
+}
 
 
 /* ==========================================================================
